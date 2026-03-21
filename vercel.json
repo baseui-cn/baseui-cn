@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm --filter @baseui-cn/www build",
+  "outputDirectory": "apps/www/.next",
+  "installCommand": "pnpm install",
+  "framework": "nextjs"
+}

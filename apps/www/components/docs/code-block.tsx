@@ -5,9 +5,10 @@ import * as React from "react"
 interface CodeBlockProps {
   code: string
   language?: string
+  filename?: string
 }
 
-export function CodeBlock({ code, language: _ }: CodeBlockProps) {
+export function CodeBlock({ code, language: _, filename }: CodeBlockProps) {
   const [copied, setCopied] = React.useState(false)
 
   const handleCopy = () => {
@@ -18,6 +19,11 @@ export function CodeBlock({ code, language: _ }: CodeBlockProps) {
 
   return (
     <div className="relative rounded-lg border border-border overflow-hidden bg-[#0a0a0a]">
+      {filename && (
+        <div className="flex items-center justify-between border-b border-white/10 px-5 py-2.5">
+          <span className="font-mono text-xs text-zinc-500">{filename}</span>
+        </div>
+      )}
       <button
         onClick={handleCopy}
         className="absolute right-3 top-3 flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs text-zinc-400 hover:text-zinc-200 hover:bg-white/10 transition-colors"
