@@ -1,0 +1,33 @@
+{
+  "files": [
+    {
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Checkbox as CheckboxPrimitive } from \"@base-ui/react/checkbox\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {\n  label?: string\n  description?: string\n}\n\nconst Checkbox = React.forwardRef<\n  React.ElementRef<typeof CheckboxPrimitive.Root>,\n  CheckboxProps\n>(({ className, label, description, id, ...props }, ref) => {\n  const checkboxId = id ?? React.useId()\n  return (\n    <div className=\"flex items-start gap-3\">\n      <CheckboxPrimitive.Root\n        ref={ref}\n        id={checkboxId}\n        className={cn(\n          \"mt-0.5 size-4 shrink-0 rounded border border-input bg-input/30 dark:bg-input/50 shadow-xs\",\n          \"transition-[color,box-shadow,background-color]\",\n          \"focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3\",\n          \"disabled:cursor-not-allowed disabled:opacity-50\",\n          \"data-[checked]:bg-primary data-[checked]:border-primary data-[checked]:text-primary-foreground\",\n          className\n        )}\n        {...props}\n      >\n        <CheckboxPrimitive.Indicator className=\"flex items-center justify-center text-current\">\n          <svg className=\"size-3\" viewBox=\"0 0 12 12\" fill=\"none\">\n            <path d=\"M2 6l3 3 5-5\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n          </svg>\n        </CheckboxPrimitive.Indicator>\n      </CheckboxPrimitive.Root>\n      {(label || description) && (\n        <div className=\"flex flex-col gap-0.5\">\n          {label && (\n            <label\n              htmlFor={checkboxId}\n              className=\"text-sm font-medium leading-none cursor-pointer\"\n            >\n              {label}\n            </label>\n          )}\n          {description && (\n            <p className=\"text-xs text-muted-foreground\">{description}</p>\n          )}\n        </div>\n      )}\n    </div>\n  )\n})\nCheckbox.displayName = \"Checkbox\"\n\nexport { Checkbox }\n", 
+      "path": "checkbox.tsx", 
+      "type": "component"
+    }
+  ], 
+  "registryDependencies": [
+    "utils"
+  ], 
+  "version": "0.1.0", 
+  "name": "checkbox", 
+  "dependencies": {
+    "peer": [], 
+    "required": [
+      "@base-ui/react", 
+      "clsx", 
+      "tailwind-merge"
+    ]
+  }, 
+  "tags": [
+    "form", 
+    "interactive"
+  ], 
+  "docs": {
+    "usage": "", 
+    "notes": ""
+  }, 
+  "baseUIVersion": ">=1.3.0", 
+  "type": "component", 
+  "description": "Base UI Checkbox with indeterminate state support."
+}

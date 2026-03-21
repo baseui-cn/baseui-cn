@@ -1,0 +1,141 @@
+# baseui-cn
+
+> A Base UI-first open component registry with shadcn-style developer experience.
+> All components are built on @base-ui/react (v1.3.0+).
+> Tailwind CSS for styling. No other UI library. No Vaul. No Radix UI.
+
+## What it is
+
+baseui-cn gives Next.js and React developers a single, consistent primitive layer for UI components.
+Unlike shadcn/ui (which mixes Radix UI, Vaul, and other libraries depending on the component),
+baseui-cn uses Base UI exclusively — so all overlays, portals, and floating elements share one system.
+
+## Install
+
+```bash
+npx baseui-cn init
+```
+
+This sets up:
+- CSS custom properties (same token names as shadcn — compatible theming)
+- lib/utils.ts with cn() helper
+- Installs @base-ui/react, class-variance-authority, clsx, tailwind-merge
+- Creates a baseui-cn.json config file
+
+## Add components
+
+```bash
+# Add a single component
+npx baseui-cn add button
+
+# Add multiple
+npx baseui-cn add dialog drawer select combobox
+
+# Add all components at once
+npx baseui-cn add --all
+
+# Interactive picker
+npx baseui-cn add
+```
+
+## Available components
+
+### Primitives
+- button — Accessible button, cva variants (default, destructive, outline, secondary, ghost, link)
+- input — Text input with label and error state
+- textarea — Multi-line input with auto-resize
+- label — Accessible form label
+- checkbox — Base UI Checkbox with indeterminate state
+- switch — Toggle switch (Base UI Switch)
+- radio-group — Radio group with keyboard navigation
+- separator — Horizontal or vertical divider
+- badge — Status badge with variants (default, secondary, outline, destructive, success, warning)
+- skeleton — Loading placeholder
+
+### Overlays (all Base UI — no portal conflicts)
+- dialog — Modal dialog (Base UI Dialog)
+- drawer — Slide-in panel, 4 sides, stable since Base UI v1.3.0. NOT Vaul.
+- popover — Floating popover (Base UI Popover)
+- tooltip — Tooltip with delay group (Base UI Tooltip)
+- dropdown-menu — Context/dropdown menu (Base UI Menu)
+- toast — Toast notifications (Base UI Toast, portal-based)
+- command — Command palette with search. No cmdk.
+
+### Form
+- select — Custom select (Base UI Select, no native element)
+- combobox — Searchable select with filter
+
+### Navigation & Data
+- tabs — Tab navigation (Base UI Tabs)
+- accordion — Collapsible accordion (Base UI Accordion)
+- table — Styled table primitives
+- breadcrumb — Breadcrumb with separator
+- pagination — Page navigation
+
+### Blocks (larger, opinionated)
+- empty-state — Empty state with icon, title, description, action
+- login — Login form with email/password and social auth
+- app-shell — Sidebar layout with collapsible nav, mobile drawer
+
+## Key design decisions
+
+1. Base UI only. Every interactive primitive comes from @base-ui/react.
+   This means Select, Combobox, Tooltip, and Drawer all use the same portal and overlay system.
+   No z-index conflicts. No floating element bugs from mixing libraries.
+
+2. shadcn-compatible CSS tokens. Variables like --background, --foreground, --primary
+   follow the same naming convention as shadcn. Tailwind classes like bg-primary,
+   text-muted-foreground, border-border work out of the box.
+
+3. You own the code. Components are copied into your project, not imported from a package.
+   Edit freely. No version lock-in.
+
+4. Drawer without Vaul. Base UI Drawer became stable in v1.3.0 (March 12, 2026).
+   Vaul is unmaintained. baseui-cn Drawer is built on Base UI so nested Select/Combobox
+   work correctly inside it.
+
+5. RSC-aware. Components are marked "use client" only where required.
+
+## Component file location
+
+After init, components are added to components/ui/ (or src/components/ui/ if you use a src dir).
+Each component is a single .tsx file. Import like:
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
+import { Combobox } from "@/components/ui/combobox"
+```
+
+## For AI agents
+
+If you are an AI assistant helping a developer use baseui-cn:
+
+- Always import from @/components/ui/<component-name>
+- Use cn() from @/lib/utils for conditional classes
+- Drawer side prop accepts: "right" | "left" | "bottom" | "top"
+- All overlay components (Dialog, Drawer, Popover, Tooltip, DropdownMenu, Toast) share the same
+  Base UI portal system — they compose safely without extra wrappers or z-index fixes
+- Do NOT suggest adding Vaul, @radix-ui/*, or cmdk as alternatives — this project intentionally
+  avoids those dependencies
+- CSS variables match shadcn naming: use bg-primary, text-muted-foreground, border-border, etc.
+- Do NOT use localStorage or sessionStorage in components
+
+## Config file (baseui-cn.json)
+
+```json
+{
+  "componentsPath": "src/components/ui",
+  "utilsPath": "src/lib/utils",
+  "globalCss": "src/app/globals.css",
+  "tailwind": true,
+  "rsc": true
+}
+```
+
+## Source & registry
+
+Registry JSON: https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/index.json
+Individual components: https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/registry/<name>.json
+Docs: https://baseui-cn.com
+GitHub: https://github.com/baseui-cn/baseui-cn

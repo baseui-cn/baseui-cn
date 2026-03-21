@@ -1,0 +1,33 @@
+{
+  "files": [
+    {
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Tooltip as TooltipPrimitive } from \"@base-ui/react/tooltip\"\nimport { cn } from \"@/lib/utils\"\n\nconst TooltipProvider = TooltipPrimitive.Provider\nconst Tooltip = TooltipPrimitive.Root\nconst TooltipTrigger = TooltipPrimitive.Trigger\nconst TooltipPortal = TooltipPrimitive.Portal\n\nconst TooltipContent = React.forwardRef<\n  React.ElementRef<typeof TooltipPrimitive.Popup>,\n  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Popup> & {\n    side?: \"top\" | \"bottom\" | \"left\" | \"right\"\n    sideOffset?: number\n    showArrow?: boolean\n  }\n>(({ className, children, side = \"top\", sideOffset = 6, showArrow = true, ...props }, ref) => (\n  <TooltipPortal>\n    <TooltipPrimitive.Positioner side={side} sideOffset={sideOffset}>\n      <TooltipPrimitive.Popup\n        ref={ref}\n        className={cn(\n          \"z-50 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground shadow-md\",\n          \"transition-all duration-150 origin-[var(--transform-origin)]\",\n          \"data-[open]:opacity-100 data-[open]:scale-100\",\n          \"data-[closed]:opacity-0 data-[closed]:scale-95\",\n          \"data-[starting-style]:opacity-0 data-[starting-style]:scale-95\",\n          className\n        )}\n        {...props}\n      >\n        {children}\n        {showArrow && (\n          <TooltipPrimitive.Arrow className=\"fill-primary data-[side=bottom]:-top-[5px] data-[side=top]:-bottom-[5px] data-[side=left]:-right-[5px] data-[side=right]:-left-[5px]\" />\n        )}\n      </TooltipPrimitive.Popup>\n    </TooltipPrimitive.Positioner>\n  </TooltipPortal>\n))\nTooltipContent.displayName = \"TooltipContent\"\n\nexport { TooltipProvider, Tooltip, TooltipTrigger, TooltipPortal, TooltipContent }\n", 
+      "path": "tooltip.tsx", 
+      "type": "component"
+    }
+  ], 
+  "registryDependencies": [
+    "utils"
+  ], 
+  "version": "0.1.0", 
+  "name": "tooltip", 
+  "dependencies": {
+    "peer": [], 
+    "required": [
+      "@base-ui/react", 
+      "clsx", 
+      "tailwind-merge"
+    ]
+  }, 
+  "tags": [
+    "overlay", 
+    "interactive"
+  ], 
+  "docs": {
+    "usage": "", 
+    "notes": ""
+  }, 
+  "baseUIVersion": ">=1.3.0", 
+  "type": "component", 
+  "description": "Tooltip built on Base UI Tooltip with delay group support."
+}

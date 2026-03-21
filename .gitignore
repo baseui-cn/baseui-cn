@@ -1,0 +1,46 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+dist
+.next
+out
+build
+
+# Turbo
+.turbo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Editor
+.vscode
+.idea
+
+# Claude Code
+.claude/
+
+# Dev artifacts
+claude-files/
+COMPONENT_PREVIEW_REFACTOR.md
+apps/www/more-updates-v1/
+apps/www/more-updates-v2/
+apps/www/latest-files/
+apps/www/app/more-updates-v1/
+apps/www/AGENTS.md
+apps/www/CLAUDE.md

@@ -1,0 +1,7 @@
+{
+  "name": "@baseui-cn/registry",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Component registry for baseui-cn",
+  "license": "MIT"
+}

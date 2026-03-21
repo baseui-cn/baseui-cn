@@ -1,0 +1,32 @@
+{
+  "files": [
+    {
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\nimport { buttonVariants } from \"@/components/ui/button\"\n\nconst Pagination = ({ className, ...props }: React.ComponentProps<\"nav\">) => (\n  <nav role=\"navigation\" aria-label=\"pagination\" className={cn(\"mx-auto flex w-full justify-center\", className)} {...props} />\n)\nPagination.displayName = \"Pagination\"\n\nconst PaginationContent = React.forwardRef<HTMLUListElement, React.ComponentProps<\"ul\">>(\n  ({ className, ...props }, ref) => (\n    <ul ref={ref} className={cn(\"flex flex-row items-center gap-1\", className)} {...props} />\n  )\n)\nPaginationContent.displayName = \"PaginationContent\"\n\nconst PaginationItem = React.forwardRef<HTMLLIElement, React.ComponentProps<\"li\">>(\n  ({ className, ...props }, ref) => <li ref={ref} className={cn(\"\", className)} {...props} />\n)\nPaginationItem.displayName = \"PaginationItem\"\n\ntype PaginationLinkProps = { isActive?: boolean } & React.ComponentProps<\"a\">\n\nconst PaginationLink = ({ className, isActive, ...props }: PaginationLinkProps) => (\n  <a\n    aria-current={isActive ? \"page\" : undefined}\n    className={cn(\n      buttonVariants({ variant: isActive ? \"outline\" : \"ghost\", size: \"icon\" }),\n      \"size-9\",\n      className\n    )}\n    {...props}\n  />\n)\nPaginationLink.displayName = \"PaginationLink\"\n\nconst PaginationPrevious = ({ className, ...props }: React.ComponentProps<\"a\">) => (\n  <PaginationLink aria-label=\"Go to previous page\" className={cn(\"w-auto gap-1 px-3\", className)} {...props}>\n    <svg className=\"size-4\" viewBox=\"0 0 16 16\" fill=\"none\">\n      <path d=\"M10 4L6 8l4 4\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n    </svg>\n    <span>Previous</span>\n  </PaginationLink>\n)\nPaginationPrevious.displayName = \"PaginationPrevious\"\n\nconst PaginationNext = ({ className, ...props }: React.ComponentProps<\"a\">) => (\n  <PaginationLink aria-label=\"Go to next page\" className={cn(\"w-auto gap-1 px-3\", className)} {...props}>\n    <span>Next</span>\n    <svg className=\"size-4\" viewBox=\"0 0 16 16\" fill=\"none\">\n      <path d=\"M6 4l4 4-4 4\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n    </svg>\n  </PaginationLink>\n)\nPaginationNext.displayName = \"PaginationNext\"\n\nconst PaginationEllipsis = ({ className, ...props }: React.ComponentProps<\"span\">) => (\n  <span aria-hidden className={cn(\"flex size-9 items-center justify-center\", className)} {...props}>\n    <svg viewBox=\"0 0 16 16\" fill=\"none\" className=\"size-4\">\n      <circle cx=\"3\" cy=\"8\" r=\"1.5\" fill=\"currentColor\" />\n      <circle cx=\"8\" cy=\"8\" r=\"1.5\" fill=\"currentColor\" />\n      <circle cx=\"13\" cy=\"8\" r=\"1.5\" fill=\"currentColor\" />\n    </svg>\n    <span className=\"sr-only\">More pages</span>\n  </span>\n)\nPaginationEllipsis.displayName = \"PaginationEllipsis\"\n\nexport { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis }\n", 
+      "path": "pagination.tsx", 
+      "type": "component"
+    }
+  ], 
+  "registryDependencies": [
+    "utils"
+  ], 
+  "version": "0.1.0", 
+  "name": "pagination", 
+  "dependencies": {
+    "peer": [], 
+    "required": [
+      "clsx", 
+      "tailwind-merge"
+    ]
+  }, 
+  "tags": [
+    "navigation", 
+    "interactive"
+  ], 
+  "docs": {
+    "usage": "", 
+    "notes": ""
+  }, 
+  "baseUIVersion": ">=1.3.0", 
+  "type": "component", 
+  "description": "Page navigation component."
+}

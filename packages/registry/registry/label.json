@@ -1,0 +1,33 @@
+{
+  "files": [
+    {
+      "content": "import * as React from \"react\"\nimport { Field } from \"@base-ui/react/field\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface LabelProps extends React.ComponentPropsWithoutRef<typeof Field.Label> {\n  required?: boolean\n}\n\nconst Label = React.forwardRef<\n  React.ElementRef<typeof Field.Label>,\n  LabelProps\n>(({ className, children, required, ...props }, ref) => (\n  <Field.Label\n    ref={ref}\n    className={cn(\n      \"text-sm font-medium leading-none text-foreground\",\n      \"data-disabled:cursor-not-allowed data-disabled:opacity-70\",\n      className\n    )}\n    {...props}\n  >\n    {children}\n    {required && (\n      <span className=\"ml-1 text-destructive\" aria-hidden=\"true\">*</span>\n    )}\n  </Field.Label>\n))\nLabel.displayName = \"Label\"\n\nexport { Label }\n", 
+      "path": "label.tsx", 
+      "type": "component"
+    }
+  ], 
+  "registryDependencies": [
+    "utils"
+  ], 
+  "version": "0.1.0", 
+  "name": "label", 
+  "dependencies": {
+    "peer": [], 
+    "required": [
+      "@base-ui/react", 
+      "clsx", 
+      "tailwind-merge"
+    ]
+  }, 
+  "tags": [
+    "form", 
+    "primitive"
+  ], 
+  "docs": {
+    "usage": "", 
+    "notes": ""
+  }, 
+  "baseUIVersion": ">=1.3.0", 
+  "type": "component", 
+  "description": "Accessible form label primitive."
+}

@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Menu as MenuPrimitive } from \"@base-ui/react/menu\"\nimport { cn } from \"@/lib/utils\"\n\nconst DropdownMenu = MenuPrimitive.Root\nconst DropdownMenuTrigger = MenuPrimitive.Trigger\nconst DropdownMenuPortal = MenuPrimitive.Portal\nconst DropdownMenuGroup = MenuPrimitive.Group\nconst DropdownMenuRadioGroup = MenuPrimitive.RadioGroup\nconst DropdownMenuSub = MenuPrimitive.Root\nconst DropdownMenuSubTrigger = MenuPrimitive.SubmenuTrigger\n\nconst DropdownMenuContent = React.forwardRef<\n  React.ElementRef<typeof MenuPrimitive.Popup>,\n  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Popup> & {\n    side?: \"top\" | \"bottom\" | \"left\" | \"right\"\n    align?: \"start\" | \"center\" | \"end\"\n    sideOffset?: number\n  }\n>(({ className, side = \"bottom\", align = \"start\", sideOffset = 6, ...props }, ref) => (\n  <MenuPrimitive.Portal>\n    <MenuPrimitive.Positioner side={side} align={align} sideOffset={sideOffset}>\n      <MenuPrimitive.Popup\n        ref={ref}\n        className={cn(\n          \"z-50 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md outline-none\",\n          \"transition-all duration-150 origin-[var(--transform-origin)]\",\n          \"data-[open]:opacity-100 data-[open]:scale-100\",\n          \"data-[closed]:opacity-0 data-[closed]:scale-95\",\n          \"data-[starting-style]:opacity-0 data-[starting-style]:scale-95\",\n          className\n        )}\n        {...props}\n      />\n    </MenuPrimitive.Positioner>\n  </MenuPrimitive.Portal>\n))\nDropdownMenuContent.displayName = \"DropdownMenuContent\"\n\nconst itemBase = cn(\n  \"relative flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none transition-colors\",\n  \"data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground\",\n  \"data-[disabled]:pointer-events-none data-[disabled]:opacity-50\",\n  \"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\"\n)\n\nconst DropdownMenuItem = React.forwardRef<\n  React.ElementRef<typeof MenuPrimitive.Item>,\n  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Item> & {\n    inset?: boolean\n    destructive?: boolean\n  }\n>(({ className, inset, destructive, ...props }, ref) => (\n  <MenuPrimitive.Item\n    ref={ref}\n    className={cn(\n      itemBase,\n      inset && \"pl-8\",\n      destructive && \"text-destructive data-[highlighted]:bg-destructive/10 data-[highlighted]:text-destructive\",\n      className\n    )}\n    {...props}\n  />\n))\nDropdownMenuItem.displayName = \"DropdownMenuItem\"\n\nconst DropdownMenuCheckboxItem = React.forwardRef<\n  React.ElementRef<typeof MenuPrimitive.CheckboxItem>,\n  React.ComponentPropsWithoutRef<typeof MenuPrimitive.CheckboxItem>\n>(({ className, children, ...props }, ref) => (\n  <MenuPrimitive.CheckboxItem\n    ref={ref}\n    className={cn(itemBase, \"pl-8\", className)}\n    {...props}\n  >\n    <span className=\"absolute left-2 flex size-3.5 items-center justify-center\">\n      <MenuPrimitive.CheckboxItemIndicator>\n        <svg className=\"size-3\" viewBox=\"0 0 12 12\" fill=\"none\">\n          <path d=\"M2 6l3 3 5-5\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n        </svg>\n      </MenuPrimitive.CheckboxItemIndicator>\n    </span>\n    {children}\n  </MenuPrimitive.CheckboxItem>\n))\nDropdownMenuCheckboxItem.displayName = \"DropdownMenuCheckboxItem\"\n\nconst DropdownMenuRadioItem = React.forwardRef<\n  React.ElementRef<typeof MenuPrimitive.RadioItem>,\n  React.ComponentPropsWithoutRef<typeof MenuPrimitive.RadioItem>\n>(({ className, children, ...props }, ref) => (\n  <MenuPrimitive.RadioItem\n    ref={ref}\n    className={cn(itemBase, \"pl-8\", className)}\n    {...props}\n  >\n    <span className=\"absolute left-2 flex size-3.5 items-center justify-center\">\n      <MenuPrimitive.RadioItemIndicator>\n        <svg className=\"size-2\" viewBox=\"0 0 8 8\" fill=\"currentColor\">\n          <circle cx=\"4\" cy=\"4\" r=\"3\" />\n        </svg>\n      </MenuPrimitive.RadioItemIndicator>\n    </span>\n    {children}\n  </MenuPrimitive.RadioItem>\n))\nDropdownMenuRadioItem.displayName = \"DropdownMenuRadioItem\"\n\nconst DropdownMenuLabel = React.forwardRef<\n  React.ElementRef<typeof MenuPrimitive.GroupLabel>,\n  React.ComponentPropsWithoutRef<typeof MenuPrimitive.GroupLabel> & { inset?: boolean }\n>(({ className, inset, ...props }, ref) => (\n  <MenuPrimitive.GroupLabel\n    ref={ref}\n    className={cn(\"px-2 py-1.5 text-xs font-semibold text-muted-foreground\", inset && \"pl-8\", className)}\n    {...props}\n  />\n))\nDropdownMenuLabel.displayName = \"DropdownMenuLabel\"\n\nconst DropdownMenuSeparator = React.forwardRef<\n  React.ElementRef<typeof MenuPrimitive.Separator>,\n  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Separator>\n>(({ className, ...props }, ref) => (\n  <MenuPrimitive.Separator\n    ref={ref}\n    className={cn(\"-mx-1 my-1 h-px bg-border\", className)}\n    {...props}\n  />\n))\nDropdownMenuSeparator.displayName = \"DropdownMenuSeparator\"\n\nconst DropdownMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => (\n  <span className={cn(\"ml-auto text-xs tracking-widest text-muted-foreground\", className)} {...props} />\n)\nDropdownMenuShortcut.displayName = \"DropdownMenuShortcut\"\n\nexport {\n  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,\n  DropdownMenuPortal, DropdownMenuGroup, DropdownMenuSub,\n  DropdownMenuSubTrigger, DropdownMenuRadioGroup,\n  DropdownMenuItem, DropdownMenuCheckboxItem, DropdownMenuRadioItem,\n  DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut,\n}\n", 
+      "path": "dropdown-menu.tsx", 
+      "type": "component"
+    }
+  ], 
+  "registryDependencies": [
+    "utils"
+  ], 
+  "version": "0.1.0", 
+  "name": "dropdown-menu", 
+  "dependencies": {
+    "peer": [], 
+    "required": [
+      "@base-ui/react", 
+      "clsx", 
+      "tailwind-merge"
+    ]
+  }, 
+  "tags": [
+    "overlay", 
+    "interactive", 
+    "navigation"
+  ], 
+  "docs": {
+    "usage": "", 
+    "notes": ""
+  }, 
+  "baseUIVersion": ">=1.3.0", 
+  "type": "component", 
+  "description": "Context/dropdown menu built on Base UI Menu primitive."
+}

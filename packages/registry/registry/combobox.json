@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Combobox as ComboboxPrimitive } from \"@base-ui/react/combobox\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface ComboboxOption {\n  value: string\n  label: string\n  disabled?: boolean\n}\n\nexport interface ComboboxProps {\n  options: ComboboxOption[]\n  value?: string\n  onValueChange?: (value: string) => void\n  placeholder?: string\n  searchPlaceholder?: string\n  emptyText?: string\n  disabled?: boolean\n  className?: string\n  label?: string\n  error?: string\n}\n\nexport function Combobox({\n  options,\n  value,\n  onValueChange,\n  placeholder = \"Select an option...\",\n  searchPlaceholder = \"Search...\",\n  emptyText = \"No results found.\",\n  disabled,\n  className,\n  label,\n  error,\n}: ComboboxProps) {\n  const [inputValue, setInputValue] = React.useState(\n    options.find(o => o.value === value)?.label ?? \"\"\n  )\n  const inputId = React.useId()\n\n  const filtered = React.useMemo(\n    () => options.filter(o => o.label.toLowerCase().includes(inputValue.toLowerCase())),\n    [options, inputValue]\n  )\n\n  return (\n    <div className=\"flex flex-col gap-1.5\">\n      {label && (\n        <label htmlFor={inputId} className=\"text-sm font-medium text-foreground\">\n          {label}\n        </label>\n      )}\n      <ComboboxPrimitive.Root\n        value={value}\n        onValueChange={(val) => {\n          onValueChange?.(val as string)\n          const found = options.find(o => o.value === val)\n          setInputValue(found?.label ?? \"\")\n        }}\n        disabled={disabled}\n        inputValue={inputValue}\n        onInputValueChange={(val) => setInputValue(val)}\n      >\n        <div className=\"relative\">\n          <ComboboxPrimitive.Input\n            id={inputId}\n            placeholder={placeholder}\n            className={cn(\n              \"flex h-9 w-full rounded-lg border border-input bg-input/30 dark:bg-input/50 px-3 py-1 text-sm shadow-xs\",\n              \"placeholder:text-muted-foreground\",\n              \"transition-[color,box-shadow]\",\n              \"focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3\",\n              \"disabled:cursor-not-allowed disabled:opacity-50\",\n              error && \"border-destructive focus-visible:ring-destructive/20\",\n              className\n            )}\n            aria-invalid={!!error}\n          />\n          <ComboboxPrimitive.Trigger className=\"absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground\">\n            <svg className=\"size-4\" viewBox=\"0 0 16 16\" fill=\"none\">\n              <path d=\"M4 6l4 4 4-4\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n            </svg>\n          </ComboboxPrimitive.Trigger>\n        </div>\n\n        <ComboboxPrimitive.Portal>\n          <ComboboxPrimitive.Positioner sideOffset={6}>\n            <ComboboxPrimitive.Popup className={cn(\n              \"z-50 w-[var(--anchor-width)] overflow-hidden rounded-lg border border-border bg-popover shadow-md\",\n              \"transition-all duration-150 origin-[var(--transform-origin)]\",\n              \"data-[open]:opacity-100 data-[open]:scale-100\",\n              \"data-[closed]:opacity-0 data-[closed]:scale-95\",\n              \"data-[starting-style]:opacity-0 data-[starting-style]:scale-95\",\n            )}>\n              <ComboboxPrimitive.List className=\"p-1 max-h-56 overflow-y-auto\">\n                {filtered.length === 0 ? (\n                  <ComboboxPrimitive.Empty className=\"py-4 text-center text-sm text-muted-foreground\">\n                    {emptyText}\n                  </ComboboxPrimitive.Empty>\n                ) : (\n                  filtered.map(opt => (\n                    <ComboboxPrimitive.Item\n                      key={opt.value}\n                      value={opt.value}\n                      disabled={opt.disabled}\n                      className={cn(\n                        \"relative flex w-full cursor-default select-none items-center rounded-md px-2 py-1.5 text-sm outline-none\",\n                        \"data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground\",\n                        \"data-[disabled]:pointer-events-none data-[disabled]:opacity-50\",\n                        \"data-[selected]:font-medium\"\n                      )}\n                    >\n                      {opt.label}\n                    </ComboboxPrimitive.Item>\n                  ))\n                )}\n              </ComboboxPrimitive.List>\n            </ComboboxPrimitive.Popup>\n          </ComboboxPrimitive.Positioner>\n        </ComboboxPrimitive.Portal>\n      </ComboboxPrimitive.Root>\n      {error && <p className=\"text-xs text-destructive\">{error}</p>}\n    </div>\n  )\n}\n", 
+      "path": "combobox.tsx", 
+      "type": "component"
+    }
+  ], 
+  "registryDependencies": [
+    "utils"
+  ], 
+  "version": "0.1.0", 
+  "name": "combobox", 
+  "dependencies": {
+    "peer": [], 
+    "required": [
+      "@base-ui/react", 
+      "clsx", 
+      "tailwind-merge"
+    ]
+  }, 
+  "tags": [
+    "form", 
+    "overlay", 
+    "interactive"
+  ], 
+  "docs": {
+    "usage": "", 
+    "notes": ""
+  }, 
+  "baseUIVersion": ">=1.3.0", 
+  "type": "component", 
+  "description": "Searchable combobox built on Base UI Combobox."
+}

@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Select as SelectPrimitive } from \"@base-ui/react/select\"\nimport { cn } from \"@/lib/utils\"\n\nconst Select = SelectPrimitive.Root\nconst SelectGroup = SelectPrimitive.Group\nconst SelectValue = SelectPrimitive.Value\n\nconst SelectTrigger = React.forwardRef<\n  React.ElementRef<typeof SelectPrimitive.Trigger>,\n  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {\n    placeholder?: string\n  }\n>(({ className, placeholder, ...props }, ref) => (\n  <SelectPrimitive.Trigger\n    ref={ref}\n    className={cn(\n      \"flex h-9 w-full items-center justify-between rounded-lg border border-input\",\n      \"bg-input/30 dark:bg-input/50 px-3 py-2 text-sm shadow-xs\",\n      \"placeholder:text-muted-foreground text-foreground\",\n      \"transition-[color,box-shadow]\",\n      \"focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3\",\n      \"disabled:cursor-not-allowed disabled:opacity-50\",\n      \"aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-invalid:ring-3\",\n      \"[&>span]:line-clamp-1\",\n      className,\n    )}\n    {...props}\n  >\n    <SelectPrimitive.Value placeholder={placeholder ?? \"Select an option\"} />\n    <SelectPrimitive.Icon>\n      <svg className=\"size-4 opacity-50\" viewBox=\"0 0 16 16\" fill=\"none\">\n        <path d=\"M4 6l4 4 4-4\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n      </svg>\n    </SelectPrimitive.Icon>\n  </SelectPrimitive.Trigger>\n))\nSelectTrigger.displayName = \"SelectTrigger\"\n\nconst SelectContent = React.forwardRef<\n  React.ElementRef<typeof SelectPrimitive.Popup>,\n  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Popup>\n>(({ className, children, ...props }, ref) => (\n  <SelectPrimitive.Portal>\n    <SelectPrimitive.Positioner sideOffset={6}>\n      <SelectPrimitive.Popup\n        ref={ref}\n        className={cn(\n          \"z-50 min-w-[var(--anchor-width)] overflow-hidden rounded-lg border border-border\",\n          \"bg-popover text-popover-foreground shadow-md outline-none\",\n          \"transition-all duration-150 origin-[var(--transform-origin)]\",\n          \"data-[open]:opacity-100 data-[open]:scale-100\",\n          \"data-[closed]:opacity-0 data-[closed]:scale-95\",\n          \"data-[starting-style]:opacity-0 data-[starting-style]:scale-95\",\n          className,\n        )}\n        {...props}\n      >\n        <SelectPrimitive.ScrollUpArrow className=\"flex cursor-default items-center justify-center py-1\">\n          <svg className=\"size-4\" viewBox=\"0 0 16 16\" fill=\"none\">\n            <path d=\"M4 10l4-4 4 4\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n          </svg>\n        </SelectPrimitive.ScrollUpArrow>\n        <SelectPrimitive.List className=\"p-1 max-h-56 overflow-auto\">\n          {children}\n        </SelectPrimitive.List>\n        <SelectPrimitive.ScrollDownArrow className=\"flex cursor-default items-center justify-center py-1\">\n          <svg className=\"size-4\" viewBox=\"0 0 16 16\" fill=\"none\">\n            <path d=\"M4 6l4 4 4-4\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n          </svg>\n        </SelectPrimitive.ScrollDownArrow>\n      </SelectPrimitive.Popup>\n    </SelectPrimitive.Positioner>\n  </SelectPrimitive.Portal>\n))\nSelectContent.displayName = \"SelectContent\"\n\nconst SelectLabel = React.forwardRef<\n  React.ElementRef<typeof SelectPrimitive.GroupLabel>,\n  React.ComponentPropsWithoutRef<typeof SelectPrimitive.GroupLabel>\n>(({ className, ...props }, ref) => (\n  <SelectPrimitive.GroupLabel\n    ref={ref}\n    className={cn(\"px-2 py-1.5 text-xs font-semibold text-muted-foreground\", className)}\n    {...props}\n  />\n))\nSelectLabel.displayName = \"SelectLabel\"\n\nconst SelectItem = React.forwardRef<\n  React.ElementRef<typeof SelectPrimitive.Item>,\n  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>\n>(({ className, children, ...props }, ref) => (\n  <SelectPrimitive.Item\n    ref={ref}\n    className={cn(\n      \"relative flex w-full cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-2 text-sm outline-none\",\n      \"data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground\",\n      \"data-[disabled]:pointer-events-none data-[disabled]:opacity-50\",\n      \"data-[selected]:font-medium\",\n      className,\n    )}\n    {...props}\n  >\n    <span className=\"absolute left-2 flex size-3.5 items-center justify-center\">\n      <SelectPrimitive.ItemIndicator>\n        <svg className=\"size-3\" viewBox=\"0 0 12 12\" fill=\"none\">\n          <path d=\"M2 6l3 3 5-5\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n        </svg>\n      </SelectPrimitive.ItemIndicator>\n    </span>\n    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>\n  </SelectPrimitive.Item>\n))\nSelectItem.displayName = \"SelectItem\"\n\nconst SelectSeparator = React.forwardRef<\n  React.ElementRef<typeof SelectPrimitive.Separator>,\n  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>\n>(({ className, ...props }, ref) => (\n  <SelectPrimitive.Separator\n    ref={ref}\n    className={cn(\"-mx-1 my-1 h-px bg-border\", className)}\n    {...props}\n  />\n))\nSelectSeparator.displayName = \"SelectSeparator\"\n\nexport { Select, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectLabel, SelectItem, SelectSeparator }\n", 
+      "path": "select.tsx", 
+      "type": "component"
+    }
+  ], 
+  "registryDependencies": [
+    "utils"
+  ], 
+  "version": "0.1.0", 
+  "name": "select", 
+  "dependencies": {
+    "peer": [], 
+    "required": [
+      "@base-ui/react", 
+      "clsx", 
+      "tailwind-merge"
+    ]
+  }, 
+  "tags": [
+    "form", 
+    "overlay", 
+    "interactive"
+  ], 
+  "docs": {
+    "usage": "", 
+    "notes": ""
+  }, 
+  "baseUIVersion": ">=1.3.0", 
+  "type": "component", 
+  "description": "Custom select built entirely on Base UI Select."
+}

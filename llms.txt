@@ -1,0 +1,241 @@
+# baseui-cn
+
+> A styled component registry built on Base UI primitives with a one-command install experience.
+> All components use @base-ui-components/react (v1.3.0+) as the exclusive primitive layer.
+> Tailwind CSS v4 for styling. No other UI library dependencies.
+
+## Related documentation
+
+For the full Base UI primitive API — props, data attributes, render prop pattern, composition,
+animation, and styling guides — see the official Base UI documentation:
+
+  https://base-ui.com/llms.txt
+
+Key Base UI concepts every agent must understand:
+
+- render prop (not asChild): https://base-ui.com/react/handbook/composition.md
+- Styling with data attributes: https://base-ui.com/react/handbook/styling.md
+- Animation with data-[open] / data-[closed]: https://base-ui.com/react/handbook/animation.md
+- TypeScript usage: https://base-ui.com/react/handbook/typescript.md
+
+## What baseui-cn is
+
+baseui-cn provides Tailwind-styled wrappers around Base UI primitives, delivered through
+a registry with a one-command install. Components are copied into your project — you own
+the code and can edit it freely.
+
+The registry is intentionally focused: one primitive library (Base UI), one styling system
+(Tailwind CSS v4), one command to install. No library mixing, no portal conflicts.
+
+## Critical: render prop pattern
+
+Base UI does NOT use the asChild pattern from Radix UI.
+Base UI uses a render prop on Trigger, Close, and similar sub-components.
+
+WRONG (Radix/shadcn pattern — do not use):
+  <DialogTrigger asChild>
+    <Button>Open</Button>
+  </DialogTrigger>
+
+CORRECT (Base UI pattern — always use this):
+  <DialogTrigger render={<Button variant="outline">Open</Button>} />
+
+This applies to ALL trigger and close sub-components:
+  DialogTrigger, DialogClose
+  DrawerTrigger, DrawerClose
+  PopoverTrigger, PopoverClose
+  TooltipTrigger
+  DropdownMenuTrigger
+  AlertDialogTrigger, AlertDialogClose
+
+The render prop passes all necessary ARIA attributes, event handlers, and refs
+to whatever element you provide. See: https://base-ui.com/react/handbook/composition.md
+
+## Install
+
+```bash
+npx baseui-cn init
+```
+
+Sets up: CSS custom properties · lib/utils.ts with cn() · installs
+@base-ui-components/react · clsx · tailwind-merge · class-variance-authority
+Creates baseui-cn.json config file.
+
+## Add components
+
+```bash
+npx baseui-cn add button
+npx baseui-cn add dialog drawer select combobox
+npx baseui-cn add --all
+npx baseui-cn add          # interactive picker
+```
+
+## Component import paths
+
+All components live in components/ui/ after install:
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from "@/components/ui/drawer"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectGroup, SelectLabel } from "@/components/ui/select"
+import { Combobox } from "@/components/ui/combobox"
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Switch } from "@/components/ui/switch"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Toast, ToastProvider, useToast } from "@/components/ui/toast"
+import { Command, CommandDialog } from "@/components/ui/command"
+import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Separator } from "@/components/ui/separator"
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table"
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext } from "@/components/ui/pagination"
+import { EmptyState } from "@/components/ui/blocks/empty-state"
+import { LoginBlock } from "@/components/ui/blocks/login"
+import { AppShell } from "@/components/ui/blocks/app-shell"
+```
+
+## Available components
+
+### Primitives (no Base UI primitive — native HTML)
+- button — cva variants: default · secondary · outline · ghost · destructive · link. Sizes: default · sm · lg · icon
+- input — label · helperText · error props. Handles aria-invalid automatically
+- textarea — label · helperText · error · autoResize props
+- label — required prop adds red asterisk
+- separator — orientation: "horizontal" | "vertical"
+- badge — variants: default · secondary · outline · destructive · success · warning
+- skeleton — animate-pulse placeholder, accepts className for sizing
+
+### Form (Base UI primitives)
+- checkbox — Base UI Checkbox. Props: label · description. Supports indeterminate state
+- switch — Base UI Switch. Props: label · description
+- radio-group — Base UI RadioGroup + Radio. Components: RadioGroup (label prop) + RadioGroupItem (label · description props)
+- select — Base UI Select. Components: Select · SelectTrigger (placeholder prop) · SelectContent · SelectItem · SelectGroup · SelectLabel · SelectSeparator
+- combobox — Base UI Select + filter state. Props: options · value · onValueChange · placeholder · searchPlaceholder · emptyText · disabled · label · error
+
+### Overlays (all Base UI — shared portal system, no z-index conflicts)
+- dialog — Base UI Dialog. Uses render prop on DialogTrigger and DialogClose
+- drawer — Base UI Drawer (stable v1.3.0). DrawerContent has side prop: "right" | "left" | "bottom" | "top". Uses render prop on DrawerTrigger and DrawerClose. Bottom/top drawers show drag handle automatically
+- popover — Base UI Popover. PopoverContent props: side · align · showArrow. Uses render prop on PopoverTrigger
+- tooltip — Base UI Tooltip. Wrap with TooltipProvider for instant switching. TooltipContent props: side · showArrow. Uses render prop on TooltipTrigger
+- dropdown-menu — Base UI Menu. DropdownMenuItem has destructive prop. Supports CheckboxItem and RadioItem. Uses render prop on DropdownMenuTrigger
+- toast — Base UI Toast. Wrap app with ToastProvider. Use useToast() hook, call add(). Toast props: title · description · variant (default · success · error · warning) · action
+- command — Custom implementation (no cmdk). Command props: items · placeholder · emptyText · onSelect. CommandDialog wraps in Base UI Dialog. Items have: id · label · description · icon · shortcut · group · onSelect · disabled
+
+### Navigation & Data (native HTML)
+- tabs — Base UI Tabs. Components: Tabs · TabsList · TabsTrigger · TabsContent
+- accordion — Base UI Accordion. Components: Accordion · AccordionItem · AccordionTrigger · AccordionContent
+- table — Native table. Components: Table · TableHeader · TableBody · TableFooter · TableHead · TableRow · TableCell · TableCaption
+- breadcrumb — Native nav. Components: Breadcrumb · BreadcrumbList · BreadcrumbItem · BreadcrumbLink · BreadcrumbPage · BreadcrumbSeparator · BreadcrumbEllipsis
+- pagination — Native nav. Components: Pagination · PaginationContent · PaginationItem · PaginationLink (isActive prop) · PaginationPrevious · PaginationNext · PaginationEllipsis
+
+### Blocks
+- empty-state — Props: title (required) · description · icon · action · size ("sm" | "md" | "lg"). Exports EmptyStateIcons: inbox · search · folder · users
+- login — LoginBlock props: onSubmit · onGoogleLogin · onGithubLogin · signUpHref · forgotPasswordHref · isLoading · error · title · description · showSocial
+- app-shell — AppShell props: nav (NavItem[]) · activeId · logo · header · defaultCollapsed · onNavClick. Mobile nav uses Base UI Drawer
+
+## Theming
+
+Uses CSS custom properties — same variable names as other registry-style systems.
+All values are HSL channels without hsl() wrapper so Tailwind can apply opacity modifiers.
+
+Required Tailwind v4 @theme block in globals.css:
+
+```css
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+}
+```
+
+## Data attributes used for styling
+
+Base UI applies these to components — use them in Tailwind for state-based styling:
+
+  data-[open]           — overlay/disclosure is open
+  data-[closed]         — overlay/disclosure is closed (use for exit animations)
+  data-[checked]        — checkbox/switch/radio is checked
+  data-[unchecked]      — checkbox/switch/radio is unchecked
+  data-[indeterminate]  — checkbox is indeterminate
+  data-[disabled]       — component is disabled
+  data-[selected]       — select item is selected
+  data-[highlighted]    — list item is highlighted/focused
+  data-[side=top|bottom|left|right] — floating element placement side
+
+Example:
+  className="data-[open]:opacity-100 data-[closed]:opacity-0 transition-opacity"
+
+## Base UI Tailwind note
+
+Base UI docs examples are written for Tailwind CSS v4.
+If your project uses Tailwind v3, convert v4-specific syntax manually.
+baseui-cn components are written for Tailwind v4.
+
+## For AI agents — rules
+
+1. ALWAYS use the render prop pattern on triggers and close buttons — never asChild
+2. ALWAYS import from @/components/ui/<component-name>
+3. Use cn() from @/lib/utils for conditional classNames
+4. All overlays share one Base UI portal — no z-index wrappers or fixes needed when composing
+5. Drawer side defaults to "right" — specify side="bottom" for mobile sheet pattern
+6. ToastProvider wraps the entire app once (in layout.tsx) — do not nest multiple providers
+7. TooltipProvider wraps groups of tooltips — one per page section is fine
+8. Do NOT add Vaul, @radix-ui/*, cmdk, or any other UI primitive library
+9. Do NOT use localStorage or sessionStorage inside components
+10. Components are "use client" — they cannot be used as React Server Components directly.
+    Wrap in a client boundary if needed inside a Server Component tree.
+
+## Future primitives available in Base UI (not yet in baseui-cn registry)
+
+These Base UI components exist and can be used directly if needed before registry wrappers exist:
+Autocomplete · Avatar · Calendar · Collapsible · Context Menu · Field · Fieldset · Form
+Menubar · Meter · Navigation Menu · Number Field · Preview Card · Progress
+Scroll Area · Slider · Toggle · Toggle Group · Toolbar · Alert Dialog
+
+Import directly from Base UI:
+  import { Collapsible } from "@base-ui-components/react/collapsible"
+  import { Field } from "@base-ui-components/react/field"
+
+## Config file
+
+```json
+{
+  "componentsPath": "src/components/ui",
+  "utilsPath": "src/lib/utils",
+  "globalCss": "src/app/globals.css",
+  "tailwind": true,
+  "rsc": true
+}
+```
+
+## Registry URLs
+
+Index:      https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/index.json
+Component:  https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/registry/<name>.json
+Docs:       https://baseui-cn.com
+GitHub:     https://github.com/baseui-cn/baseui-cn
+Base UI:    https://base-ui.com/llms.txt

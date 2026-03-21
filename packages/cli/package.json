@@ -1,0 +1,36 @@
+{
+  "name": "baseui-cn",
+  "version": "0.1.0",
+  "description": "Add Base UI components to your app — one command at a time.",
+  "keywords": ["base-ui", "components", "cli", "tailwind", "react"],
+  "license": "MIT",
+  "homepage": "https://baseui-cn.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baseui-cn/baseui-cn"
+  },
+  "bin": {
+    "baseui-cn": "./dist/index.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "execa": "^9.3.0",
+    "fs-extra": "^11.2.0",
+    "ora": "^8.0.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.14.9",
+    "@types/prompts": "^2.4.9",
+    "tsup": "^8.2.2",
+    "typescript": "^5.4.5"
+  }
+}
