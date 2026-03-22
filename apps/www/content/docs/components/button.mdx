@@ -1,0 +1,84 @@
+---
+title: Button
+description: A clickable element that triggers an action.
+component: true
+links:
+  doc: https://base-ui.com/react/components/button
+---
+
+<ComponentPreview name="button-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add button
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react class-variance-authority
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="button" title="components/ui/button.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button"
+```
+
+```tsx
+<Button variant="default">Click me</Button>
+```
+
+## Examples
+
+### Variants
+
+All available button variants.
+
+<ComponentPreview name="button-variants" />
+
+### Sizes
+
+From xs to lg, plus icon sizes.
+
+<ComponentPreview name="button-sizes" />
+
+### Loading
+
+Show a loading state while an action is in progress.
+
+<ComponentPreview name="button-loading" />
+
+### With icon
+
+Combine icons with button text.
+
+<ComponentPreview name="button-with-icon" />

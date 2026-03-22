@@ -1,0 +1,87 @@
+---
+title: Progress
+description: Displays an indicator showing the completion progress of a task.
+component: true
+links:
+  doc: https://base-ui.com/react/components/progress
+---
+
+<ComponentPreview name="progress-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add progress
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="progress" title="components/ui/progress.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Progress,
+  ProgressTrack,
+  ProgressIndicator,
+  ProgressLabel,
+  ProgressValue,
+} from "@/components/ui/progress"
+```
+
+```tsx
+<Progress value={65}>
+  <ProgressLabel>Uploading</ProgressLabel>
+  <ProgressValue />
+</Progress>
+```
+
+## Examples
+
+### Basic
+
+A simple progress bar.
+
+<ComponentPreview name="progress-basic" />
+
+### With label and value
+
+Show label and percentage.
+
+<ComponentPreview name="progress-with-label-and-value" />
+
+### Indeterminate
+
+Omit `value` for an indeterminate state.
+
+<ComponentPreview name="progress-indeterminate" />

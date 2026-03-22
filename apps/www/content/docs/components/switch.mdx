@@ -1,0 +1,84 @@
+---
+title: Switch
+description: A control that allows the user to toggle between checked and not checked.
+component: true
+links:
+  doc: https://base-ui.com/react/components/switch
+---
+
+<ComponentPreview name="switch-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add switch
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="switch" title="components/ui/switch.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Switch } from "@/components/ui/switch"
+```
+
+```tsx
+<Switch label="Email notifications" />
+```
+
+## Examples
+
+### Basic
+
+A simple switch.
+
+<ComponentPreview name="switch-basic" />
+
+### With label and description
+
+Descriptive switch.
+
+<ComponentPreview name="switch-with-label-and-description" />
+
+### Disabled
+
+A disabled switch.
+
+<ComponentPreview name="switch-disabled" />
+
+### Controlled
+
+A controlled switch.
+
+<ComponentPreview name="switch-controlled" />

@@ -185,6 +185,12 @@
       "tags": ["disclosure", "interactive"]
     },
     {
+      "name": "slider",
+      "type": "component",
+      "description": "An input where the user selects a value from within a given range.",
+      "tags": ["form", "interactive"]
+    },
+    {
       "name": "empty-state",
       "type": "block",
       "description": "Empty state block with icon, title, description, and action.",

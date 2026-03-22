@@ -1,0 +1,81 @@
+---
+title: Collapsible
+description: An interactive component which expands/collapses a panel.
+component: true
+links:
+  doc: https://base-ui.com/react/components/collapsible
+---
+
+<ComponentPreview name="collapsible-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add collapsible
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="collapsible" title="components/ui/collapsible.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible"
+```
+
+```tsx
+<Collapsible>
+  <CollapsibleTrigger>Toggle</CollapsibleTrigger>
+  <CollapsibleContent>Content here.</CollapsibleContent>
+</Collapsible>
+```
+
+> **Note:** Use Accordion for multiple collapsible panels with shared state. Collapsible is for a single standalone section.
+
+## Examples
+
+### Basic
+
+A simple collapsible.
+
+<ComponentPreview name="collapsible-basic" />
+
+### Controlled
+
+Control open state externally.
+
+<ComponentPreview name="collapsible-controlled" />

@@ -1,0 +1,112 @@
+---
+title: Dialog
+description: A window overlaid on either the primary window or another dialog window.
+component: true
+links:
+  doc: https://base-ui.com/react/components/dialog
+---
+
+<ComponentPreview name="dialog-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add dialog
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react lucide-react class-variance-authority
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="dialog" title="components/ui/dialog.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogBody,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog"
+```
+
+```tsx
+<Dialog>
+  <DialogTrigger>Open</DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Title</DialogTitle>
+      <DialogDescription>Description.</DialogDescription>
+    </DialogHeader>
+    <DialogBody>Content here.</DialogBody>
+    <DialogFooter showCloseButton>
+      <Button>Confirm</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+## Examples
+
+### Basic
+
+A standard dialog.
+
+<ComponentPreview name="dialog-basic" />
+
+### Sizes
+
+Dialog in xs through 8xl sizes.
+
+<ComponentPreview name="dialog-sizes" />
+
+### Fullscreen
+
+Use `variant="fullscreen"` for a full-screen dialog.
+
+<ComponentPreview name="dialog-fullscreen" />
+
+### No close button
+
+Use `showCloseButton={false}` to hide the X button.
+
+<ComponentPreview name="dialog-no-close-button" />
+
+### Scrollable
+
+A dialog with scrollable content.
+
+<ComponentPreview name="dialog-scrollable" />

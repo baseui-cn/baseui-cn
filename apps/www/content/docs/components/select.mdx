@@ -1,0 +1,110 @@
+---
+title: Select
+description: Displays a list of options for the user to pick from — triggered by a button.
+component: true
+links:
+  doc: https://base-ui.com/react/components/select
+---
+
+<ComponentPreview name="select-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add select
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react lucide-react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="select" title="components/ui/select.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} from "@/components/ui/select"
+```
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select a framework" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <SelectLabel>Frameworks</SelectLabel>
+      <SelectItem value="next">Next.js</SelectItem>
+      <SelectItem value="remix">Remix</SelectItem>
+    </SelectGroup>
+  </SelectContent>
+</Select>
+```
+
+## Examples
+
+### Basic
+
+A simple select.
+
+<ComponentPreview name="select-basic" />
+
+### Controlled
+
+A controlled select.
+
+<ComponentPreview name="select-controlled" />
+
+### With groups
+
+Group options with `SelectGroup`.
+
+<ComponentPreview name="select-with-groups" />
+
+### Sizes
+
+default and sm sizes.
+
+<ComponentPreview name="select-sizes" />
+
+### Disabled
+
+A disabled select and disabled items.
+
+<ComponentPreview name="select-disabled" />

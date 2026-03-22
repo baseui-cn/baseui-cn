@@ -35,6 +35,7 @@ export const components: ComponentMeta[] = [
   { name: "select", type: "component", description: "Custom select — no native element.", tags: ["form", "overlay", "interactive"], baseUIPrimitive: "Select" },
   { name: "combobox", type: "component", description: "Searchable select with filter. Works inside Drawer.", tags: ["form", "overlay", "interactive"], baseUIPrimitive: "Select" },
   { name: "autocomplete", type: "component", description: "Text input with filtered suggestions list. Type to search, select to fill.", tags: ["form", "overlay", "interactive"], baseUIPrimitive: "Combobox", badge: "New" },
+  { name: "slider", type: "component", description: "An input where the user selects a value from within a given range.", tags: ["form", "interactive"], baseUIPrimitive: "Slider" },
 
   // Overlays
   { name: "dialog", type: "component", description: "Modal dialog.", tags: ["overlay", "interactive"], baseUIPrimitive: "Dialog" },
@@ -94,6 +95,7 @@ export const navSections: NavSection[] = [
       { name: "select", href: "/docs/components/select", label: "Select" },
       { name: "combobox", href: "/docs/components/combobox", label: "Combobox" },
       { name: "autocomplete", href: "/docs/components/autocomplete", label: "Autocomplete", badge: "New" },
+      { name: "slider", href: "/docs/components/slider", label: "Slider" },
     ],
   },
   {

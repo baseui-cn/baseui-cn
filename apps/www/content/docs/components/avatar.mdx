@@ -1,0 +1,94 @@
+---
+title: Avatar
+description: An image element with a fallback for representing the user.
+component: true
+links:
+  doc: https://base-ui.com/react/components/avatar
+---
+
+<ComponentPreview name="avatar-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add avatar
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="avatar" title="components/ui/avatar.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  AvatarBadge,
+  AvatarGroup,
+  AvatarGroupCount,
+} from "@/components/ui/avatar"
+```
+
+```tsx
+<Avatar>
+  <AvatarImage src="/photo.jpg" alt="Aria Chen" />
+  <AvatarFallback>AC</AvatarFallback>
+</Avatar>
+```
+
+## Examples
+
+### Basic
+
+An avatar with image and fallback initials.
+
+<ComponentPreview name="avatar-basic" />
+
+### With badge
+
+Show online, busy, away, or offline status.
+
+<ComponentPreview name="avatar-with-badge" />
+
+### Group
+
+Stack multiple avatars with an overflow count.
+
+<ComponentPreview name="avatar-group" />
+
+### Sizes
+
+Avatars in sm, default, and lg sizes.
+
+<ComponentPreview name="avatar-sizes" />

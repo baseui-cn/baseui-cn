@@ -1,0 +1,88 @@
+---
+title: Radio Group
+description: A set of checkable buttons where no more than one can be checked at a time.
+component: true
+links:
+  doc: https://base-ui.com/react/components/radio
+---
+
+<ComponentPreview name="radio-group-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add radio-group
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="radio-group" title="components/ui/radio-group.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+```
+
+```tsx
+<RadioGroup defaultValue="default">
+  <RadioGroupItem value="default" />
+  <RadioGroupItem value="comfortable" />
+  <RadioGroupItem value="compact" />
+</RadioGroup>
+```
+
+## Examples
+
+### Basic
+
+A simple radio group.
+
+<ComponentPreview name="radio-group-basic" />
+
+### With labels
+
+Pair with Field and Label.
+
+<ComponentPreview name="radio-group-with-labels" />
+
+### Horizontal
+
+Horizontal layout.
+
+<ComponentPreview name="radio-group-horizontal" />
+
+### Disabled
+
+Disabled items.
+
+<ComponentPreview name="radio-group-disabled" />

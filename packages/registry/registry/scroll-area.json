@@ -1,20 +1,28 @@
 {
   "name": "scroll-area",
   "type": "component",
-  "description": "Custom scrollable area with styled scrollbars built on Base UI ScrollArea.",
+  "description": "Augments native scroll functionality for custom, cross-browser styling.",
   "version": "0.1.0",
   "baseUIVersion": ">=1.3.0",
-  "tags": ["display", "primitive"],
-  "registryDependencies": ["utils"],
-  "dependencies": {
-    "required": ["@base-ui/react", "clsx", "tailwind-merge"],
-    "peer": []
-  },
   "files": [
     {
       "path": "scroll-area.tsx",
       "type": "component",
-      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { ScrollArea as ScrollAreaPrimitive } from \"@base-ui/react/scroll-area\"\nimport { cn } from \"@/lib/utils\"\n\nconst ScrollArea = React.forwardRef<\n  React.ElementRef<typeof ScrollAreaPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>\n>(({ className, children, ...props }, ref) => (\n  <ScrollAreaPrimitive.Root\n    ref={ref}\n    data-slot=\"scroll-area\"\n    className={cn(\"relative overflow-hidden\", className)}\n    {...props}\n  >\n    <ScrollAreaPrimitive.Viewport\n      data-slot=\"scroll-area-viewport\"\n      className=\"size-full rounded-[inherit]\"\n    >\n      {children}\n    </ScrollAreaPrimitive.Viewport>\n    <ScrollAreaScrollbar orientation=\"vertical\" />\n    <ScrollAreaScrollbar orientation=\"horizontal\" />\n    <ScrollAreaPrimitive.Corner />\n  </ScrollAreaPrimitive.Root>\n))\nScrollArea.displayName = \"ScrollArea\"\n\nconst ScrollAreaScrollbar = React.forwardRef<\n  React.ElementRef<typeof ScrollAreaPrimitive.Scrollbar>,\n  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Scrollbar>\n>(({ className, orientation = \"vertical\", ...props }, ref) => (\n  <ScrollAreaPrimitive.Scrollbar\n    ref={ref}\n    orientation={orientation}\n    className={cn(\n      \"flex touch-none select-none transition-colors\",\n      orientation === \"vertical\" && \"h-full w-2.5 border-l border-l-transparent p-px\",\n      orientation === \"horizontal\" && \"h-2.5 flex-col border-t border-t-transparent p-px\",\n      className\n    )}\n    {...props}\n  >\n    <ScrollAreaPrimitive.Thumb\n      className=\"relative flex-1 rounded-full bg-border\"\n    />\n  </ScrollAreaPrimitive.Scrollbar>\n))\nScrollAreaScrollbar.displayName = \"ScrollAreaScrollbar\"\n\nexport { ScrollArea, ScrollAreaScrollbar }\n"
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\nimport { ScrollArea as ScrollAreaPrimitive } from \"@base-ui/react/scroll-area\"\n\nfunction ScrollArea({ className, children, ...props }: ScrollAreaPrimitive.Root.Props) {\n  return (\n    <ScrollAreaPrimitive.Root\n      data-slot=\"scroll-area\"\n      className={cn(\"relative\", className)}\n      {...props}\n    >\n      <ScrollAreaPrimitive.Viewport\n        data-slot=\"scroll-area-viewport\"\n        className=\"size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1\"\n      >\n        {children}\n      </ScrollAreaPrimitive.Viewport>\n      <ScrollBar />\n      <ScrollAreaPrimitive.Corner />\n    </ScrollAreaPrimitive.Root>\n  )\n}\n\nfunction ScrollBar({\n  className,\n  orientation = \"vertical\",\n  ...props\n}: ScrollAreaPrimitive.Scrollbar.Props) {\n  return (\n    <ScrollAreaPrimitive.Scrollbar\n      data-slot=\"scroll-area-scrollbar\"\n      data-orientation={orientation}\n      orientation={orientation}\n      className={cn(\n        \"flex touch-none p-px transition-colors select-none data-horizontal:h-2.5 data-horizontal:flex-col data-horizontal:border-t data-horizontal:border-t-transparent data-vertical:h-full data-vertical:w-2.5 data-vertical:border-l data-vertical:border-l-transparent\",\n        className\n      )}\n      {...props}\n    >\n      <ScrollAreaPrimitive.Thumb\n        data-slot=\"scroll-area-thumb\"\n        className=\"relative flex-1 rounded-full bg-border\"\n      />\n    </ScrollAreaPrimitive.Scrollbar>\n  )\n}\n\nexport { ScrollArea, ScrollBar }\n"
     }
-  ]
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react"
+    ],
+    "peer": []
+  },
+  "registryDependencies": [
+    "utils"
+  ],
+  "tags": [
+    "display",
+    "layout"
+  ],
+  "baseUIPrimitive": "ScrollArea"
 }

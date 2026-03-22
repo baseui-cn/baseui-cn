@@ -10,7 +10,7 @@ const DrawerClose = DrawerPrimitive.Close
 const DrawerPortal = DrawerPrimitive.Portal
 
 const DrawerBackdrop = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Backdrop>,
+  React.ComponentRef<typeof DrawerPrimitive.Backdrop>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Backdrop>
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Backdrop
@@ -18,8 +18,8 @@ const DrawerBackdrop = React.forwardRef<
     className={cn(
       "fixed inset-0 z-50 bg-black/50",
       "transition-opacity duration-300",
-      "data-[open]:opacity-100 data-[closed]:opacity-0 data-[starting-style]:opacity-0",
-      className,
+      "data-open:opacity-100 data-closed:opacity-0 data-starting-style:opacity-0",
+      className
     )}
     {...props}
   />
@@ -27,7 +27,7 @@ const DrawerBackdrop = React.forwardRef<
 DrawerBackdrop.displayName = "DrawerBackdrop"
 
 const DrawerContent = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Popup>,
+  React.ComponentRef<typeof DrawerPrimitive.Popup>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Popup> & {
     side?: "top" | "bottom" | "left" | "right"
   }
@@ -39,11 +39,15 @@ const DrawerContent = React.forwardRef<
       className={cn(
         "fixed z-50 flex flex-col bg-background shadow-xl outline-none",
         "transition-transform duration-300 ease-in-out",
-        side === "right"  && "inset-y-0 right-0 h-full w-3/4 max-w-sm data-[open]:translate-x-0 data-[closed]:translate-x-full data-[starting-style]:translate-x-full",
-        side === "left"   && "inset-y-0 left-0 h-full w-3/4 max-w-sm data-[open]:translate-x-0 data-[closed]:-translate-x-full data-[starting-style]:-translate-x-full",
-        side === "bottom" && "inset-x-0 bottom-0 h-auto max-h-[80vh] w-full rounded-t-xl data-[open]:translate-y-0 data-[closed]:translate-y-full data-[starting-style]:translate-y-full",
-        side === "top"    && "inset-x-0 top-0 h-auto max-h-[80vh] w-full rounded-b-xl data-[open]:translate-y-0 data-[closed]:-translate-y-full data-[starting-style]:-translate-y-full",
-        className,
+        side === "right" &&
+          "inset-y-0 right-0 h-full w-3/4 max-w-sm data-open:translate-x-0 data-closed:translate-x-full data-starting-style:translate-x-full",
+        side === "left" &&
+          "inset-y-0 left-0 h-full w-3/4 max-w-sm data-open:translate-x-0 data-closed:-translate-x-full data-starting-style:-translate-x-full",
+        side === "bottom" &&
+          "inset-x-0 bottom-0 h-auto max-h-[80vh] w-full rounded-t-xl data-open:translate-y-0 data-closed:translate-y-full data-starting-style:translate-y-full",
+        side === "top" &&
+          "inset-x-0 top-0 h-auto max-h-[80vh] w-full rounded-b-xl data-open:translate-y-0 data-closed:-translate-y-full data-starting-style:-translate-y-full",
+        className
       )}
       {...props}
     >
@@ -67,7 +71,7 @@ const DrawerFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
 DrawerFooter.displayName = "DrawerFooter"
 
 const DrawerTitle = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Title>,
+  React.ComponentRef<typeof DrawerPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
@@ -79,7 +83,7 @@ const DrawerTitle = React.forwardRef<
 DrawerTitle.displayName = "DrawerTitle"
 
 const DrawerDescription = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Description>,
+  React.ComponentRef<typeof DrawerPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description
@@ -91,6 +95,14 @@ const DrawerDescription = React.forwardRef<
 DrawerDescription.displayName = "DrawerDescription"
 
 export {
-  Drawer, DrawerTrigger, DrawerClose, DrawerPortal, DrawerBackdrop,
-  DrawerContent, DrawerHeader, DrawerFooter, DrawerTitle, DrawerDescription,
+  Drawer,
+  DrawerTrigger,
+  DrawerClose,
+  DrawerPortal,
+  DrawerBackdrop,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
 }

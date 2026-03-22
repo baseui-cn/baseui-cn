@@ -1,33 +1,28 @@
 {
+  "name": "tabs",
+  "type": "component",
+  "description": "A set of layered sections of content — known as tab panels — that are displayed one at a time.",
+  "version": "0.1.0",
+  "baseUIVersion": ">=1.3.0",
   "files": [
     {
-      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Tabs as TabsPrimitive } from \"@base-ui/react/tabs\"\nimport { cn } from \"@/lib/utils\"\n\nconst Tabs = TabsPrimitive.Root\n\nconst TabsList = React.forwardRef<\n  React.ElementRef<typeof TabsPrimitive.List>,\n  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>\n>(({ className, ...props }, ref) => (\n  <TabsPrimitive.List\n    ref={ref}\n    className={cn(\n      \"inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground\",\n      className\n    )}\n    {...props}\n  />\n))\nTabsList.displayName = \"TabsList\"\n\nconst TabsTrigger = React.forwardRef<\n  React.ElementRef<typeof TabsPrimitive.Tab>,\n  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Tab>\n>(({ className, ...props }, ref) => (\n  <TabsPrimitive.Tab\n    ref={ref}\n    className={cn(\n      \"inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium\",\n      \"ring-offset-background transition-all\",\n      \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2\",\n      \"disabled:pointer-events-none disabled:opacity-50\",\n      \"data-[selected]:bg-background data-[selected]:text-foreground data-[selected]:shadow\",\n      className\n    )}\n    {...props}\n  />\n))\nTabsTrigger.displayName = \"TabsTrigger\"\n\nconst TabsContent = React.forwardRef<\n  React.ElementRef<typeof TabsPrimitive.Panel>,\n  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Panel>\n>(({ className, ...props }, ref) => (\n  <TabsPrimitive.Panel\n    ref={ref}\n    className={cn(\n      \"mt-2 ring-offset-background\",\n      \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2\",\n      className\n    )}\n    {...props}\n  />\n))\nTabsContent.displayName = \"TabsContent\"\n\nexport { Tabs, TabsList, TabsTrigger, TabsContent }\n", 
-      "path": "tabs.tsx", 
-      "type": "component"
+      "path": "tabs.tsx",
+      "type": "component",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Tabs as TabsPrimitive } from \"@base-ui/react/tabs\"\nimport { cn } from \"@/lib/utils\"\n\nconst Tabs = TabsPrimitive.Root\n\nconst TabsList = React.forwardRef<\n  React.ComponentRef<typeof TabsPrimitive.List>,\n  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>\n>(({ className, ...props }, ref) => (\n  <TabsPrimitive.List\n    ref={ref}\n    className={cn(\n      \"inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground\",\n      className\n    )}\n    {...props}\n  />\n))\nTabsList.displayName = \"TabsList\"\n\nconst TabsTrigger = React.forwardRef<\n  React.ComponentRef<typeof TabsPrimitive.Tab>,\n  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Tab>\n>(({ className, ...props }, ref) => (\n  <TabsPrimitive.Tab\n    ref={ref}\n    className={cn(\n      \"inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium\",\n      \"ring-offset-background transition-all\",\n      \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2\",\n      \"disabled:pointer-events-none disabled:opacity-50\",\n      \"data-selected:bg-background data-selected:text-foreground data-selected:shadow\",\n      className\n    )}\n    {...props}\n  />\n))\nTabsTrigger.displayName = \"TabsTrigger\"\n\nconst TabsContent = React.forwardRef<\n  React.ComponentRef<typeof TabsPrimitive.Panel>,\n  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Panel>\n>(({ className, ...props }, ref) => (\n  <TabsPrimitive.Panel\n    ref={ref}\n    className={cn(\n      \"mt-2 ring-offset-background\",\n      \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2\",\n      className\n    )}\n    {...props}\n  />\n))\nTabsContent.displayName = \"TabsContent\"\n\nexport { Tabs, TabsList, TabsTrigger, TabsContent }\n"
     }
-  ], 
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react"
+    ],
+    "peer": []
+  },
   "registryDependencies": [
     "utils"
-  ], 
-  "version": "0.1.0", 
-  "name": "tabs", 
-  "dependencies": {
-    "peer": [], 
-    "required": [
-      "@base-ui/react", 
-      "clsx", 
-      "tailwind-merge"
-    ]
-  }, 
+  ],
   "tags": [
-    "navigation", 
+    "navigation",
     "interactive"
-  ], 
-  "docs": {
-    "usage": "", 
-    "notes": ""
-  }, 
-  "baseUIVersion": ">=1.3.0", 
-  "type": "component", 
-  "description": "Tab navigation built on Base UI Tabs."
+  ],
+  "baseUIPrimitive": "Tabs"
 }

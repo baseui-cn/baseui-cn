@@ -1,33 +1,28 @@
 {
+  "name": "tooltip",
+  "type": "component",
+  "description": "A popup that displays information related to an element when focused or hovered.",
+  "version": "0.1.0",
+  "baseUIVersion": ">=1.3.0",
   "files": [
     {
-      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Tooltip as TooltipPrimitive } from \"@base-ui/react/tooltip\"\nimport { cn } from \"@/lib/utils\"\n\nconst TooltipProvider = TooltipPrimitive.Provider\nconst Tooltip = TooltipPrimitive.Root\nconst TooltipTrigger = TooltipPrimitive.Trigger\nconst TooltipPortal = TooltipPrimitive.Portal\n\nconst TooltipContent = React.forwardRef<\n  React.ElementRef<typeof TooltipPrimitive.Popup>,\n  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Popup> & {\n    side?: \"top\" | \"bottom\" | \"left\" | \"right\"\n    sideOffset?: number\n    showArrow?: boolean\n  }\n>(({ className, children, side = \"top\", sideOffset = 6, showArrow = true, ...props }, ref) => (\n  <TooltipPortal>\n    <TooltipPrimitive.Positioner side={side} sideOffset={sideOffset}>\n      <TooltipPrimitive.Popup\n        ref={ref}\n        className={cn(\n          \"z-50 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground shadow-md\",\n          \"transition-all duration-150 origin-[var(--transform-origin)]\",\n          \"data-[open]:opacity-100 data-[open]:scale-100\",\n          \"data-[closed]:opacity-0 data-[closed]:scale-95\",\n          \"data-[starting-style]:opacity-0 data-[starting-style]:scale-95\",\n          className\n        )}\n        {...props}\n      >\n        {children}\n        {showArrow && (\n          <TooltipPrimitive.Arrow className=\"fill-primary data-[side=bottom]:-top-[5px] data-[side=top]:-bottom-[5px] data-[side=left]:-right-[5px] data-[side=right]:-left-[5px]\" />\n        )}\n      </TooltipPrimitive.Popup>\n    </TooltipPrimitive.Positioner>\n  </TooltipPortal>\n))\nTooltipContent.displayName = \"TooltipContent\"\n\nexport { TooltipProvider, Tooltip, TooltipTrigger, TooltipPortal, TooltipContent }\n", 
-      "path": "tooltip.tsx", 
-      "type": "component"
+      "path": "tooltip.tsx",
+      "type": "component",
+      "content": "\"use client\"\n\nimport { Tooltip as TooltipPrimitive } from \"@base-ui/react/tooltip\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction TooltipProvider({ delay = 0, ...props }: TooltipPrimitive.Provider.Props) {\n  return <TooltipPrimitive.Provider data-slot=\"tooltip-provider\" delay={delay} {...props} />\n}\n\nfunction Tooltip({ ...props }: TooltipPrimitive.Root.Props) {\n  return <TooltipPrimitive.Root data-slot=\"tooltip\" {...props} />\n}\n\nfunction TooltipTrigger({ ...props }: TooltipPrimitive.Trigger.Props) {\n  return <TooltipPrimitive.Trigger data-slot=\"tooltip-trigger\" {...props} />\n}\n\nfunction TooltipContent({\n  className,\n  side = \"top\",\n  sideOffset = 4,\n  align = \"center\",\n  alignOffset = 0,\n  children,\n  ...props\n}: TooltipPrimitive.Popup.Props &\n  Pick<TooltipPrimitive.Positioner.Props, \"align\" | \"alignOffset\" | \"side\" | \"sideOffset\">) {\n  return (\n    <TooltipPrimitive.Portal>\n      <TooltipPrimitive.Positioner\n        align={align}\n        alignOffset={alignOffset}\n        side={side}\n        sideOffset={sideOffset}\n        className=\"isolate z-50\"\n      >\n        <TooltipPrimitive.Popup\n          data-slot=\"tooltip-content\"\n          className={cn(\n            \"z-50 inline-flex w-fit max-w-xs origin-(--transform-origin) items-center gap-1.5 rounded-md bg-foreground px-3 py-1.5 text-xs text-background has-data-[slot=kbd]:pr-1.5 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95\",\n            className\n          )}\n          {...props}\n        >\n          {children}\n          <TooltipPrimitive.Arrow className=\"z-50 size-2.5 translate-y-[calc(-50%-2px)] rotate-45 rounded-xs bg-foreground fill-foreground data-[side=bottom]:top-1 data-[side=inline-end]:top-1/2! data-[side=inline-end]:-left-1 data-[side=inline-end]:-translate-y-1/2 data-[side=inline-start]:top-1/2! data-[side=inline-start]:-right-1 data-[side=inline-start]:-translate-y-1/2 data-[side=left]:top-1/2! data-[side=left]:-right-1 data-[side=left]:-translate-y-1/2 data-[side=right]:top-1/2! data-[side=right]:-left-1 data-[side=right]:-translate-y-1/2 data-[side=top]:-bottom-2.5\" />\n        </TooltipPrimitive.Popup>\n      </TooltipPrimitive.Positioner>\n    </TooltipPrimitive.Portal>\n  )\n}\n\nexport { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }\n"
     }
-  ], 
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react"
+    ],
+    "peer": []
+  },
   "registryDependencies": [
     "utils"
-  ], 
-  "version": "0.1.0", 
-  "name": "tooltip", 
-  "dependencies": {
-    "peer": [], 
-    "required": [
-      "@base-ui/react", 
-      "clsx", 
-      "tailwind-merge"
-    ]
-  }, 
+  ],
   "tags": [
-    "overlay", 
+    "overlay",
     "interactive"
-  ], 
-  "docs": {
-    "usage": "", 
-    "notes": ""
-  }, 
-  "baseUIVersion": ">=1.3.0", 
-  "type": "component", 
-  "description": "Tooltip built on Base UI Tooltip with delay group support."
+  ],
+  "baseUIPrimitive": "Tooltip"
 }

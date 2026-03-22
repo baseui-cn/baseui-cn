@@ -1,0 +1,97 @@
+---
+title: Field
+description: A form field layout component with label, description, and error support.
+component: true
+---
+
+<ComponentPreview name="field-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add field
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install class-variance-authority
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="field" title="components/ui/field.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldSet,
+  FieldLegend,
+  FieldContent,
+  FieldTitle,
+  FieldSeparator,
+} from "@/components/ui/field"
+```
+
+```tsx
+<Field>
+  <FieldLabel>Email</FieldLabel>
+  <Input type="email" placeholder="you@example.com" />
+  <FieldDescription>We'll never share your email.</FieldDescription>
+</Field>
+```
+
+## Examples
+
+### Vertical
+
+Default vertical layout.
+
+<ComponentPreview name="field-vertical" />
+
+### Horizontal
+
+Use `orientation="horizontal"` for inline layout.
+
+<ComponentPreview name="field-horizontal" />
+
+### With error
+
+Show validation errors with `FieldError`.
+
+<ComponentPreview name="field-with-error" />
+
+### Fieldset
+
+Group multiple fields with `FieldSet`.
+
+<ComponentPreview name="field-fieldset" />

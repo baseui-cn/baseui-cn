@@ -1,33 +1,29 @@
 {
+  "name": "toast",
+  "type": "component",
+  "description": "A succinct message that is displayed temporarily.",
+  "version": "0.1.0",
+  "baseUIVersion": ">=1.3.0",
   "files": [
     {
-      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Toast as ToastPrimitive } from \"@base-ui/react/toast\"\nimport { cn } from \"@/lib/utils\"\n\nfunction useToast() {\n  return ToastPrimitive.useToastManager()\n}\n\nfunction ToastList() {\n  const { toasts } = ToastPrimitive.useToastManager()\n  return (\n    <ToastPrimitive.Viewport\n      className=\"fixed bottom-4 right-4 z-[100] flex flex-col gap-2 w-full max-w-sm outline-none pointer-events-none\"\n    >\n      {toasts.map((toast) => (\n        <ToastPrimitive.Root\n          key={toast.id}\n          toast={toast}\n          className={cn(\n            \"group pointer-events-auto relative flex w-full items-start gap-3 overflow-hidden rounded-lg border p-4 shadow-lg\",\n            \"transition-all duration-300 ease-in-out\",\n            \"data-[open]:translate-x-0 data-[open]:opacity-100\",\n            \"data-[closed]:translate-x-full data-[closed]:opacity-0\",\n            \"data-[starting-style]:translate-x-full data-[starting-style]:opacity-0\",\n            toast.type === \"success\" ? \"bg-background border-green-500/30 text-foreground\" :\n            toast.type === \"error\" ? \"bg-background border-destructive/30 text-foreground\" :\n            toast.type === \"warning\" ? \"bg-background border-yellow-500/30 text-foreground\" :\n            \"bg-background border-border text-foreground\"\n          )}\n        >\n          <div className=\"flex flex-1 flex-col gap-0.5\">\n            {toast.title && (\n              <ToastPrimitive.Title className=\"text-sm font-semibold\">\n                {toast.title}\n              </ToastPrimitive.Title>\n            )}\n            {toast.description && (\n              <ToastPrimitive.Description className=\"text-xs text-muted-foreground\">\n                {toast.description}\n              </ToastPrimitive.Description>\n            )}\n          </div>\n          <ToastPrimitive.Close\n            className={cn(\n              \"shrink-0 rounded-md p-1 text-muted-foreground\",\n              \"opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100\",\n              \"hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring\"\n            )}\n            aria-label=\"Close\"\n          >\n            <svg className=\"size-4\" viewBox=\"0 0 16 16\" fill=\"none\">\n              <path d=\"M4 4l8 8M12 4l-8 8\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\" />\n            </svg>\n          </ToastPrimitive.Close>\n        </ToastPrimitive.Root>\n      ))}\n    </ToastPrimitive.Viewport>\n  )\n}\n\nfunction ToastProvider({ children }: { children: React.ReactNode }) {\n  return (\n    <ToastPrimitive.Provider>\n      {children}\n      <ToastList />\n    </ToastPrimitive.Provider>\n  )\n}\n\nexport { ToastProvider, useToast }\n", 
-      "path": "toast.tsx", 
-      "type": "component"
+      "path": "toast.tsx",
+      "type": "component",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Toast as ToastPrimitive } from \"@base-ui/react/toast\"\nimport { cn } from \"@/lib/utils\"\n\nfunction useToast() {\n  return ToastPrimitive.useToastManager()\n}\n\nfunction ToastList() {\n  const { toasts } = ToastPrimitive.useToastManager()\n  return (\n    <ToastPrimitive.Viewport className=\"fixed bottom-4 right-4 z-100 flex flex-col gap-2 w-full max-w-sm outline-none pointer-events-none\">\n      {toasts.map((toast) => (\n        <ToastPrimitive.Root\n          key={toast.id}\n          toast={toast}\n          className={cn(\n            \"group pointer-events-auto relative flex w-full items-start gap-3 overflow-hidden rounded-lg border p-4 shadow-lg\",\n            \"transition-all duration-300 ease-in-out\",\n            \"data-open:translate-x-0 data-open:opacity-100\",\n            \"data-closed:translate-x-full data-closed:opacity-0\",\n            \"data-starting-style:translate-x-full data-starting-style:opacity-0\",\n            toast.type === \"success\"\n              ? \"bg-background border-green-500/30 text-foreground\"\n              : toast.type === \"error\"\n                ? \"bg-background border-destructive/30 text-foreground\"\n                : toast.type === \"warning\"\n                  ? \"bg-background border-yellow-500/30 text-foreground\"\n                  : \"bg-background border-border text-foreground\"\n          )}\n        >\n          <div className=\"flex flex-1 flex-col gap-0.5\">\n            {toast.title && (\n              <ToastPrimitive.Title className=\"text-sm font-semibold\">\n                {toast.title}\n              </ToastPrimitive.Title>\n            )}\n            {toast.description && (\n              <ToastPrimitive.Description className=\"text-xs text-muted-foreground\">\n                {toast.description}\n              </ToastPrimitive.Description>\n            )}\n          </div>\n          <ToastPrimitive.Close\n            className={cn(\n              \"shrink-0 rounded-md p-1 text-muted-foreground\",\n              \"opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100\",\n              \"hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring\"\n            )}\n            aria-label=\"Close\"\n          >\n            <svg className=\"size-4\" viewBox=\"0 0 16 16\" fill=\"none\">\n              <path\n                d=\"M4 4l8 8M12 4l-8 8\"\n                stroke=\"currentColor\"\n                strokeWidth=\"1.5\"\n                strokeLinecap=\"round\"\n              />\n            </svg>\n          </ToastPrimitive.Close>\n        </ToastPrimitive.Root>\n      ))}\n    </ToastPrimitive.Viewport>\n  )\n}\n\nfunction ToastProvider({ children }: { children: React.ReactNode }) {\n  return (\n    <ToastPrimitive.Provider>\n      {children}\n      <ToastList />\n    </ToastPrimitive.Provider>\n  )\n}\n\nexport { ToastProvider, useToast }\n"
     }
-  ], 
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react",
+      "class-variance-authority"
+    ],
+    "peer": []
+  },
   "registryDependencies": [
     "utils"
-  ], 
-  "version": "0.1.0", 
-  "name": "toast", 
-  "dependencies": {
-    "peer": [], 
-    "required": [
-      "@base-ui/react", 
-      "clsx", 
-      "tailwind-merge"
-    ]
-  }, 
+  ],
   "tags": [
-    "overlay", 
+    "overlay",
     "feedback"
-  ], 
-  "docs": {
-    "usage": "", 
-    "notes": ""
-  }, 
-  "baseUIVersion": ">=1.3.0", 
-  "type": "component", 
-  "description": "Toast notifications via Base UI Toast."
+  ],
+  "baseUIPrimitive": "Toast"
 }

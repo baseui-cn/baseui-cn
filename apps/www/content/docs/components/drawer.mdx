@@ -1,0 +1,113 @@
+---
+title: Drawer
+description: A panel that slides in from the edge of the screen.
+component: true
+links:
+  doc: https://base-ui.com/react/components/drawer
+---
+
+<ComponentPreview name="drawer-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add drawer
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="drawer" title="components/ui/drawer.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from "@/components/ui/drawer"
+```
+
+```tsx
+<Drawer>
+  <DrawerTrigger>Open Drawer</DrawerTrigger>
+  <DrawerContent side="right">
+    <DrawerHeader>
+      <DrawerTitle>Settings</DrawerTitle>
+      <DrawerDescription>Manage your preferences.</DrawerDescription>
+    </DrawerHeader>
+    <div className="flex-1 p-6">Content here.</div>
+    <DrawerFooter>
+      <DrawerClose>Close</DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+```
+
+> **Note:** Built on Base UI Drawer (stable v1.3.0, March 2026). All other Base UI overlays — Select, Combobox, Tooltip — work correctly inside it, sharing the same portal system.
+
+## Examples
+
+### Right
+
+Default — slides in from the right.
+
+<ComponentPreview name="drawer-right" />
+
+### Bottom sheet
+
+Use `side="bottom"` for a mobile bottom sheet.
+
+<ComponentPreview name="drawer-bottom-sheet" />
+
+### Left
+
+Slides in from the left.
+
+<ComponentPreview name="drawer-left" />
+
+### With form
+
+A drawer containing a form.
+
+<ComponentPreview name="drawer-with-form" />
+
+### Nested Select
+
+Select inside a Drawer — no z-index issues.
+
+<ComponentPreview name="drawer-nested-select" />

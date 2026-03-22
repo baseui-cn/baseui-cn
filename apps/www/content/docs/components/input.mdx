@@ -1,0 +1,84 @@
+---
+title: Input
+description: A text input field.
+component: true
+links:
+  doc: https://base-ui.com/react/components/input
+---
+
+<ComponentPreview name="input-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add input
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="input" title="components/ui/input.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Input } from "@/components/ui/input"
+```
+
+```tsx
+<Input placeholder="Enter text..." />
+```
+
+## Examples
+
+### Basic
+
+A simple text input.
+
+<ComponentPreview name="input-basic" />
+
+### Sizes
+
+sm, md, and lg variants.
+
+<ComponentPreview name="input-sizes" />
+
+### Disabled
+
+A disabled input.
+
+<ComponentPreview name="input-disabled" />
+
+### With Field
+
+Combine with Field for a labeled input with error handling.
+
+<ComponentPreview name="input-with-field" />

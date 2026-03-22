@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 const Tabs = TabsPrimitive.Root
 
 const TabsList = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.List>,
+  React.ComponentRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.List
@@ -22,7 +22,7 @@ const TabsList = React.forwardRef<
 TabsList.displayName = "TabsList"
 
 const TabsTrigger = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Tab>,
+  React.ComponentRef<typeof TabsPrimitive.Tab>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Tab>
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.Tab
@@ -32,7 +32,7 @@ const TabsTrigger = React.forwardRef<
       "ring-offset-background transition-all",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       "disabled:pointer-events-none disabled:opacity-50",
-      "data-[selected]:bg-background data-[selected]:text-foreground data-[selected]:shadow",
+      "data-selected:bg-background data-selected:text-foreground data-selected:shadow",
       className
     )}
     {...props}
@@ -41,7 +41,7 @@ const TabsTrigger = React.forwardRef<
 TabsTrigger.displayName = "TabsTrigger"
 
 const TabsContent = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Panel>,
+  React.ComponentRef<typeof TabsPrimitive.Panel>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Panel>
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.Panel

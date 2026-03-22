@@ -1,0 +1,92 @@
+---
+title: Input Group
+description: A composite input with addons, icons, and action buttons.
+component: true
+---
+
+<ComponentPreview name="input-group-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add input-group
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+_No additional dependencies required._
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="input-group" title="components/ui/input-group.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupButton,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group"
+```
+
+```tsx
+<InputGroup>
+  <InputGroupAddon align="inline-start">
+    <InputGroupText>https://</InputGroupText>
+  </InputGroupAddon>
+  <InputGroupInput placeholder="example.com" />
+</InputGroup>
+```
+
+## Examples
+
+### With prefix
+
+Text or icon prefix.
+
+<ComponentPreview name="input-group-with-prefix" />
+
+### With suffix button
+
+Action button at the end.
+
+<ComponentPreview name="input-group-with-suffix-button" />
+
+### With both addons
+
+Prefix and suffix together.
+
+<ComponentPreview name="input-group-with-both-addons" />
+
+### Textarea
+
+Use `InputGroupTextarea` for multiline input.
+
+<ComponentPreview name="input-group-textarea" />

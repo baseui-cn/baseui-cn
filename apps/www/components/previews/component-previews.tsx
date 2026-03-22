@@ -5,6 +5,7 @@ import * as React from "react"
 // ── Real component imports ─────────────────────────────────────────────────
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Field, FieldLabel, FieldContent, FieldDescription } from "../ui/field"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -13,27 +14,125 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
-import { Progress } from "@/components/ui/progress"
-import { Avatar, AvatarFallback, AvatarBadge, AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar"
+import { Progress, ProgressLabel, ProgressValue } from "@/components/ui/progress"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarBadge,
+  AvatarGroup,
+  AvatarGroupCount,
+} from "@/components/ui/avatar"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectGroup, SelectLabel } from "@/components/ui/select"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
-import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from "@/components/ui/drawer"
-import { Popover, PopoverTrigger, PopoverContent, PopoverHeading, PopoverDescription } from "@/components/ui/popover"
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion"
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectGroup,
+  SelectLabel,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog"
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from "@/components/ui/drawer"
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTitle,
+} from "@/components/ui/popover"
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuLabel } from "@/components/ui/dropdown-menu"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+} from "@/components/ui/dropdown-menu"
 import { ToastProvider, useToast } from "@/components/ui/toast"
 import { Command } from "@/components/ui/command"
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible"
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from "@/components/ui/alert-dialog"
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table"
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext } from "@/components/ui/pagination"
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog"
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table"
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+} from "@/components/ui/pagination"
 import { EmptyState, EmptyStateIcons, LoginBlock } from "@/components/ui/blocks"
-import { Combobox } from "@/components/ui/combobox"
-import { Autocomplete } from "@/components/ui/autocomplete"
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxEmpty,
+  ComboboxItem,
+} from "@/components/ui/combobox"
+import {
+  Autocomplete,
+  AutocompleteContent,
+  AutocompleteEmpty,
+  AutocompleteInput,
+  AutocompleteItem,
+  AutocompleteList,
+} from "@/components/ui/autocomplete"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 // ─── Button ────────────────────────────────────────────────────────────────
 export function ButtonPreview() {
@@ -54,13 +153,20 @@ export function ButtonPreview() {
         <Button size="lg">Large</Button>
         <Button size="icon" variant="outline" aria-label="Add">
           <svg className="size-4" viewBox="0 0 16 16" fill="none">
-            <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            <path
+              d="M8 3v10M3 8h10"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
           </svg>
         </Button>
       </div>
       <div className="flex gap-2">
         <Button disabled>Disabled</Button>
-        <Button variant="outline" disabled>Disabled outline</Button>
+        <Button variant="outline" disabled>
+          Disabled outline
+        </Button>
       </div>
     </div>
   )
@@ -70,9 +176,24 @@ export function ButtonPreview() {
 export function InputPreview() {
   return (
     <div className="flex flex-col gap-4 w-full max-w-sm">
-      <Input label="Email" placeholder="you@example.com" type="email" />
-      <Input label="Username" placeholder="johndoe" helperText="Only letters and numbers." />
-      <Input label="Password" type="password" placeholder="••••••••" error="Password is required." />
+      <Field>
+        <FieldLabel>Email</FieldLabel>
+        <FieldContent>
+          <Input placeholder="you@example.com" type="email" />
+        </FieldContent>
+      </Field>
+      <Field>
+        <FieldLabel>Username</FieldLabel>
+        <FieldContent>
+          <Input placeholder="johndoe" />
+        </FieldContent>
+      </Field>
+      <Field>
+        <FieldLabel>Password</FieldLabel>
+        <FieldContent>
+          <Input type="password" placeholder="••••••••" />
+        </FieldContent>
+      </Field>
     </div>
   )
 }
@@ -81,8 +202,14 @@ export function InputPreview() {
 export function TextareaPreview() {
   return (
     <div className="flex flex-col gap-4 w-full max-w-sm">
-      <Textarea label="Message" placeholder="Write your message here..." helperText="Max 500 characters." />
-      <Textarea label="Notes" placeholder="Add notes..." error="This field is required." />
+      <Field>
+        <FieldLabel>Message</FieldLabel>
+        <Textarea placeholder="Write your message here..." />
+      </Field>
+      <Field>
+        <FieldLabel>Notes</FieldLabel>
+        <Textarea placeholder="Add notes..." />
+      </Field>
     </div>
   )
 }
@@ -96,7 +223,7 @@ export function LabelPreview() {
         <Input id="email-demo" placeholder="you@example.com" type="email" />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="company-demo" required>Company name</Label>
+        <Label htmlFor="company-demo">Company name</Label>
         <Input id="company-demo" placeholder="Acme Inc." />
       </div>
     </div>
@@ -107,9 +234,23 @@ export function LabelPreview() {
 export function CheckboxPreview() {
   return (
     <div className="flex flex-col gap-3">
-      <Checkbox label="Accept terms of service" />
-      <Checkbox label="Email notifications" description="Receive updates via email" defaultChecked />
-      <Checkbox label="Disabled option" disabled />
+      <Field orientation="horizontal" className="w-auto max-w-xs">
+        <Checkbox id="terms-2" defaultChecked />
+        <FieldContent>
+          <FieldLabel htmlFor="terms-2">Accept terms and conditions</FieldLabel>
+          <FieldDescription>
+            This checkbox is used to accept the terms and conditions.
+          </FieldDescription>
+        </FieldContent>
+      </Field>
+      <Field orientation="horizontal" className="w-auto">
+        <Checkbox id="terms" />
+        <FieldLabel htmlFor="terms">Basic checkbox</FieldLabel>
+      </Field>
+      <Field orientation="horizontal" className="w-auto">
+        <Checkbox id="terms-3" disabled />
+        <FieldLabel htmlFor="terms-3">Disabled</FieldLabel>
+      </Field>
     </div>
   )
 }
@@ -119,7 +260,11 @@ export function SwitchPreview() {
   return (
     <div className="flex flex-col gap-4">
       <Switch label="Email notifications" />
-      <Switch label="Push notifications" description="Receive alerts on your device" defaultChecked />
+      <Switch
+        label="Push notifications"
+        description="Receive alerts on your device"
+        defaultChecked
+      />
       <Switch label="Disabled" disabled />
     </div>
   )
@@ -128,10 +273,19 @@ export function SwitchPreview() {
 // ─── Radio Group ───────────────────────────────────────────────────────────
 export function RadioGroupPreview() {
   return (
-    <RadioGroup label="Select a plan" defaultValue="pro">
-      <RadioGroupItem value="free" label="Free" description="Up to 3 projects" />
-      <RadioGroupItem value="pro" label="Pro" description="Unlimited projects" />
-      <RadioGroupItem value="team" label="Team" description="Collaboration tools" />
+    <RadioGroup defaultValue="comfortable" className="w-fit">
+      <Field orientation="horizontal">
+        <RadioGroupItem value="default" id="r1" />
+        <FieldLabel htmlFor="r1">Default</FieldLabel>
+      </Field>
+      <Field orientation="horizontal">
+        <RadioGroupItem value="comfortable" id="r2" />
+        <FieldLabel htmlFor="r2">Comfortable</FieldLabel>
+      </Field>
+      <Field orientation="horizontal">
+        <RadioGroupItem value="compact" id="r3" />
+        <FieldLabel htmlFor="r3">Compact</FieldLabel>
+      </Field>
     </RadioGroup>
   )
 }
@@ -156,8 +310,12 @@ export function BadgePreview() {
       </div>
       <div className="flex flex-wrap gap-2">
         <Badge shape="pill">Pill</Badge>
-        <Badge shape="pill" variant="secondary">Secondary pill</Badge>
-        <Badge shape="pill" variant="success">Active</Badge>
+        <Badge shape="pill" variant="secondary">
+          Secondary pill
+        </Badge>
+        <Badge shape="pill" variant="success">
+          Active
+        </Badge>
       </div>
     </div>
   )
@@ -221,7 +379,9 @@ export function AvatarPreview() {
       <div className="flex items-end gap-4">
         {(["sm", "default", "lg"] as const).map((size) => (
           <div key={size} className="flex flex-col items-center gap-1.5">
-            <Avatar size={size}><AvatarFallback>AC</AvatarFallback></Avatar>
+            <Avatar size={size}>
+              <AvatarFallback>AC</AvatarFallback>
+            </Avatar>
             <span className="text-[10px] text-muted-foreground">{size}</span>
           </div>
         ))}
@@ -244,7 +404,9 @@ export function AvatarPreview() {
       </div>
       <AvatarGroup>
         {["AC", "MO", "PN", "JD"].map((initials) => (
-          <Avatar key={initials}><AvatarFallback>{initials}</AvatarFallback></Avatar>
+          <Avatar key={initials}>
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
         ))}
         <AvatarGroupCount>+4</AvatarGroupCount>
       </AvatarGroup>
@@ -255,16 +417,50 @@ export function AvatarPreview() {
 // ─── Progress ──────────────────────────────────────────────────────────────
 export function ProgressPreview() {
   const [value, setValue] = React.useState(40)
+
+  const [downloadProgress, setDownloadProgress] = useState(0)
+  // Get status message based on progress
+  const getStatusMessage = (progress: number) => {
+    if (progress < 5) return "Initializing download..."
+    if (progress < 15) return "Setting up environment..."
+    if (progress < 25) return "Connecting to server..."
+    if (progress < 35) return "Verifying permissions..."
+    if (progress < 50) return "Downloading core files..."
+    if (progress < 65) return "Downloading assets..."
+    if (progress < 80) return "Downloading dependencies..."
+    if (progress < 90) return "Extracting files..."
+    if (progress < 95) return "Validating integrity..."
+    if (progress < 100) return "Finalizing installation..."
+    return "Download complete!"
+  }
   React.useEffect(() => {
-    const t = setInterval(() => setValue((v) => (v >= 100 ? 0 : v + 1)), 80)
-    return () => clearInterval(t)
+    // Download simulation
+    const downloadTimer = setInterval(() => {
+      setDownloadProgress((prev) => {
+        if (prev >= 100) {
+          return 0 // Reset for continuous loop
+        }
+        return prev + Math.random() * 3 + 1 // Random increment 1-4
+      })
+    }, 150)
+    return () => {
+      clearInterval(downloadTimer)
+    }
   }, [])
+
   return (
     <div className="flex flex-col gap-5 w-full max-w-xs">
-      <Progress value={value} label="Uploading" showValue />
-      <Progress value={42} label="Storage" size="sm" />
-      <Progress value={78} label="Memory" size="lg" />
-      <Progress label="Processing..." />
+      <Progress value={56}>
+        <ProgressLabel>Uploading</ProgressLabel>
+        <ProgressValue />
+      </Progress>
+      <div className="w-full max-w-xs space-y-2">
+        <Progress value={downloadProgress}>
+          <ProgressLabel>Workspace Setup</ProgressLabel>
+          <ProgressValue />
+        </Progress>
+        <div className="text-muted-foreground text-xs">{getStatusMessage(downloadProgress)}</div>
+      </div>
     </div>
   )
 }
@@ -273,7 +469,9 @@ export function ProgressPreview() {
 export function SelectPreview() {
   return (
     <Select>
-      <SelectTrigger placeholder="Select a framework..." className="w-64" />
+      <SelectTrigger className="w-64">
+        <SelectValue placeholder="Select a framework..." />
+      </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Frameworks</SelectLabel>
@@ -289,51 +487,104 @@ export function SelectPreview() {
 
 // ─── Combobox ──────────────────────────────────────────────────────────────
 export function ComboboxPreview() {
-  const [value, setValue] = React.useState("")
+  const frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"]
+
   return (
-    <Combobox
-      options={[
-        { value: "next", label: "Next.js" },
-        { value: "remix", label: "Remix" },
-        { value: "astro", label: "Astro" },
-        { value: "nuxt", label: "Nuxt" },
-        { value: "sveltekit", label: "SvelteKit" },
-        { value: "gatsby", label: "Gatsby" },
-      ]}
-      value={value}
-      onValueChange={setValue}
-      placeholder="Select framework..."
-      searchPlaceholder="Search frameworks..."
-      className="w-72"
-    />
+    <Combobox items={frameworks} defaultValue={frameworks[0]}>
+      <ComboboxInput placeholder="Select a framework" showClear />
+      <ComboboxContent>
+        <ComboboxEmpty>No items found.</ComboboxEmpty>
+        <ComboboxList>
+          {(item) => (
+            <ComboboxItem key={item} value={item}>
+              {item}
+            </ComboboxItem>
+          )}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
   )
 }
 
-// ─── Autocomplete ──────────────────────────────────────────────────────────
 export function AutocompletePreview() {
-  const [value, setValue] = React.useState("")
+  const [value, setValue] = React.useState<string>("")
+
+  const filteredItems = items.filter((item) =>
+    item.value.toLowerCase().includes(value.toLowerCase())
+  )
+
   return (
-    <Autocomplete
-      options={[
-        "Afghanistan","Albania","Algeria","Argentina","Australia",
-        "Austria","Bangladesh","Belgium","Brazil","Canada",
-        "Chile","China","Colombia","Denmark","Egypt",
-        "Finland","France","Germany","Greece","India",
-        "Indonesia","Iran","Ireland","Italy","Japan",
-        "Kenya","Mexico","Netherlands","New Zealand","Nigeria",
-        "Norway","Pakistan","Philippines","Poland","Portugal",
-        "Romania","Russia","Saudi Arabia","South Africa","South Korea",
-        "Spain","Sweden","Switzerland","Thailand","Turkey",
-        "Ukraine","United Kingdom","United States","Vietnam",
-      ].map((c) => ({ value: c.toLowerCase().replace(/\s/g, "-"), label: c }))}
-      value={value}
-      onValueChange={setValue}
-      label="Country"
-      placeholder="Search countries..."
-      className="w-72"
-    />
+    <div className="w-full max-w-xs">
+      <Autocomplete
+        value={value}
+        onValueChange={setValue}
+        items={filteredItems}
+        itemToStringValue={(item: unknown) => (item as Item).value}
+      >
+        <AutocompleteInput placeholder="e.g. feature" showTrigger showClear />
+        <AutocompleteContent>
+          <AutocompleteEmpty>No items found.</AutocompleteEmpty>
+          <AutocompleteList>
+            {(item) => (
+              <AutocompleteItem key={item.id} value={item}>
+                {item.value}
+              </AutocompleteItem>
+            )}
+          </AutocompleteList>
+        </AutocompleteContent>
+      </Autocomplete>
+    </div>
   )
 }
+
+interface Item {
+  id: string
+  value: string
+}
+
+const items: Item[] = [
+  { id: "t1", value: "feature" },
+  { id: "t2", value: "fix" },
+  { id: "t3", value: "bug" },
+  { id: "t4", value: "docs" },
+  { id: "t5", value: "internal" },
+  { id: "t6", value: "mobile" },
+  { id: "c-accordion", value: "component: accordion" },
+  { id: "c-alert-dialog", value: "component: alert dialog" },
+  { id: "c-autocomplete", value: "component: autocomplete" },
+  { id: "c-avatar", value: "component: avatar" },
+  { id: "c-checkbox", value: "component: checkbox" },
+  { id: "c-checkbox-group", value: "component: checkbox group" },
+  { id: "c-collapsible", value: "component: collapsible" },
+  { id: "c-combobox", value: "component: combobox" },
+  { id: "c-context-menu", value: "component: context menu" },
+  { id: "c-dialog", value: "component: dialog" },
+  { id: "c-field", value: "component: field" },
+  { id: "c-fieldset", value: "component: fieldset" },
+  { id: "c-filterable-menu", value: "component: filterable menu" },
+  { id: "c-form", value: "component: form" },
+  { id: "c-input", value: "component: input" },
+  { id: "c-menu", value: "component: menu" },
+  { id: "c-menubar", value: "component: menubar" },
+  { id: "c-meter", value: "component: meter" },
+  { id: "c-navigation-menu", value: "component: navigation menu" },
+  { id: "c-number-field", value: "component: number field" },
+  { id: "c-popover", value: "component: popover" },
+  { id: "c-preview-card", value: "component: preview card" },
+  { id: "c-progress", value: "component: progress" },
+  { id: "c-radio", value: "component: radio" },
+  { id: "c-scroll-area", value: "component: scroll area" },
+  { id: "c-select", value: "component: select" },
+  { id: "c-separator", value: "component: separator" },
+  { id: "c-slider", value: "component: slider" },
+  { id: "c-switch", value: "component: switch" },
+  { id: "c-tabs", value: "component: tabs" },
+  { id: "c-toast", value: "component: toast" },
+  { id: "c-toggle", value: "component: toggle" },
+  { id: "c-toggle-group", value: "component: toggle group" },
+  { id: "c-toolbar", value: "component: toolbar" },
+  { id: "c-tooltip", value: "component: tooltip" },
+]
 
 // ─── Tabs ──────────────────────────────────────────────────────────────────
 export function TabsPreview() {
@@ -363,11 +614,15 @@ export function AccordionPreview() {
     <Accordion className="w-full max-w-sm">
       <AccordionItem value="q1">
         <AccordionTrigger>Is it accessible?</AccordionTrigger>
-        <AccordionContent>Yes. Full ARIA and keyboard support via Base UI Accordion.</AccordionContent>
+        <AccordionContent>
+          Yes. Full ARIA and keyboard support via Base UI Accordion.
+        </AccordionContent>
       </AccordionItem>
       <AccordionItem value="q2">
         <AccordionTrigger>Does it animate?</AccordionTrigger>
-        <AccordionContent>Yes — smooth height transitions using CSS custom properties.</AccordionContent>
+        <AccordionContent>
+          Yes — smooth height transitions using CSS custom properties.
+        </AccordionContent>
       </AccordionItem>
       <AccordionItem value="q3">
         <AccordionTrigger>Can I nest content?</AccordionTrigger>
@@ -409,22 +664,45 @@ export function DrawerPreview() {
           <DrawerDescription>Manage your preferences below.</DrawerDescription>
         </DrawerHeader>
         <div className="flex-1 px-6 space-y-4">
-          <Input label="Display name" defaultValue="Aria Chen" />
-          <Switch label="Email notifications" defaultChecked />
-          <Select>
-            <SelectTrigger placeholder="Select theme..." />
-            <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-              <SelectItem value="system">System</SelectItem>
-            </SelectContent>
-          </Select>
-          <p className="text-xs text-muted-foreground pt-1">
-            Select works inside this Drawer — same Base UI portal system.
-          </p>
+          <Field>
+            <FieldLabel>Display name</FieldLabel>
+            <FieldContent>
+              <Input defaultValue="Aria Chen" />
+            </FieldContent>
+          </Field>
+          <Field>
+            <FieldLabel>Email notifications</FieldLabel>
+            <FieldContent>
+              <Switch defaultChecked />
+            </FieldContent>
+          </Field>
+          <Field>
+            <FieldLabel>Theme</FieldLabel>
+            <FieldContent>
+              <Select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Theme" />
+                </SelectTrigger>
+                <SelectContent alignItemWithTrigger={false}>
+                  <SelectItem value="Light">Light</SelectItem>
+                  <SelectItem value="Dark">Dark</SelectItem>
+                  <SelectItem value="System">System</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground pt-1">
+                Select works inside this Drawer — same Base UI portal system.
+              </p>
+            </FieldContent>
+          </Field>
         </div>
         <DrawerFooter>
-          <DrawerClose render={<Button variant="outline" className="w-full">Close</Button>} />
+          <DrawerClose
+            render={
+              <Button variant="outline" className="w-full">
+                Close
+              </Button>
+            }
+          />
           <Button className="w-full">Save changes</Button>
         </DrawerFooter>
       </DrawerContent>
@@ -435,17 +713,24 @@ export function DrawerPreview() {
 // ─── Alert Dialog ──────────────────────────────────────────────────────────
 export function AlertDialogPreview() {
   const [deleted, setDeleted] = React.useState(false)
-  if (deleted) return (
-    <div className="flex flex-col items-center gap-3 text-center">
-      <div className="flex size-10 items-center justify-center rounded-full bg-destructive/10">
-        <svg className="size-5 text-destructive" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"/>
-        </svg>
+  if (deleted)
+    return (
+      <div className="flex flex-col items-center gap-3 text-center">
+        <div className="flex size-10 items-center justify-center rounded-full bg-destructive/10">
+          <svg className="size-5 text-destructive" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              fillRule="evenodd"
+              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
+        <p className="text-sm text-muted-foreground">Account deleted</p>
+        <Button variant="outline" size="sm" onClick={() => setDeleted(false)}>
+          Reset demo
+        </Button>
       </div>
-      <p className="text-sm text-muted-foreground">Account deleted</p>
-      <Button variant="outline" size="sm" onClick={() => setDeleted(false)}>Reset demo</Button>
-    </div>
-  )
+    )
   return (
     <AlertDialog>
       <AlertDialogTrigger render={<Button variant="destructive">Delete account</Button>} />
@@ -457,8 +742,10 @@ export function AlertDialogPreview() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogClose render={<Button variant="outline">Cancel</Button>} />
-          <Button variant="destructive" onClick={() => setDeleted(true)}>Delete account</Button>
+          <AlertDialogCancel render={<Button variant="outline">Cancel</Button>} />
+          <Button variant="destructive" onClick={() => setDeleted(true)}>
+            Delete account
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -471,11 +758,21 @@ export function PopoverPreview() {
     <Popover>
       <PopoverTrigger render={<Button variant="outline">Open Popover</Button>} />
       <PopoverContent side="bottom" align="start">
-        <PopoverHeading>Dimensions</PopoverHeading>
+        <PopoverTitle>Dimensions</PopoverTitle>
         <PopoverDescription className="mb-3">Set the layer dimensions.</PopoverDescription>
         <div className="flex flex-col gap-2">
-          <Input label="Width" defaultValue="100%" />
-          <Input label="Height" defaultValue="25px" />
+          <Field>
+            <FieldLabel>Width</FieldLabel>
+            <FieldContent>
+              <Input defaultValue="100%" />
+            </FieldContent>
+          </Field>
+          <Field>
+            <FieldLabel>Height</FieldLabel>
+            <FieldContent>
+              <Input defaultValue="25px" />
+            </FieldContent>
+          </Field>
         </div>
       </PopoverContent>
     </Popover>
@@ -493,7 +790,13 @@ export function TooltipPreview() {
           { label: "Delete", tip: "Delete permanently" },
         ].map(({ label, tip }) => (
           <Tooltip key={label}>
-            <TooltipTrigger render={<Button variant="outline" size="sm">{label}</Button>} />
+            <TooltipTrigger
+              render={
+                <Button variant="outline" size="sm">
+                  {label}
+                </Button>
+              }
+            />
             <TooltipContent>{tip}</TooltipContent>
           </Tooltip>
         ))}
@@ -508,18 +811,20 @@ export function DropdownMenuPreview() {
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="outline">Open Menu</Button>} />
       <DropdownMenuContent>
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem>
-          Edit <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          Duplicate <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Share</DropdownMenuItem>
-        <DropdownMenuItem>Export</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem destructive>Delete</DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Profile</DropdownMenuLabel>
+          <DropdownMenuItem>
+            Edit <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            Duplicate <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Share</DropdownMenuItem>
+          <DropdownMenuItem>Export</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -532,22 +837,26 @@ function ToastDemo() {
     <div className="flex gap-2">
       <Button
         variant="outline"
-        onClick={() => add({
-          title: "Changes saved",
-          description: "Your profile has been updated.",
-          timeout: 3000,
-        })}
+        onClick={() =>
+          add({
+            title: "Changes saved",
+            description: "Your profile has been updated.",
+            timeout: 3000,
+          })
+        }
       >
         Show toast
       </Button>
       <Button
         variant="outline"
-        onClick={() => add({
-          title: "Error",
-          description: "Something went wrong.",
-          type: "error",
-          timeout: 3000,
-        })}
+        onClick={() =>
+          add({
+            title: "Error",
+            description: "Something went wrong.",
+            type: "error",
+            timeout: 3000,
+          })
+        }
       >
         Error toast
       </Button>
@@ -569,11 +878,11 @@ export function CommandPreview() {
     <Command
       className="w-full max-w-sm rounded-lg border border-border shadow-lg"
       items={[
-        { id: "1", label: "New File",     shortcut: "⌘N", group: "File" },
-        { id: "2", label: "Open Folder",  shortcut: "⌘O", group: "File" },
-        { id: "3", label: "Save",         shortcut: "⌘S", group: "File" },
-        { id: "4", label: "Find in Files",shortcut: "⌘⇧F", group: "Edit" },
-        { id: "5", label: "Toggle Theme",               group: "View" },
+        { id: "1", label: "New File", shortcut: "⌘N", group: "File" },
+        { id: "2", label: "Open Folder", shortcut: "⌘O", group: "File" },
+        { id: "3", label: "Save", shortcut: "⌘S", group: "File" },
+        { id: "4", label: "Find in Files", shortcut: "⌘⇧F", group: "Edit" },
+        { id: "5", label: "Toggle Theme", group: "View" },
         { id: "6", label: "Command Palette", shortcut: "⌘⇧P", group: "View" },
       ]}
       placeholder="Type a command..."
@@ -588,8 +897,8 @@ export function CollapsiblePreview() {
       <CollapsibleTrigger>What is baseui-cn?</CollapsibleTrigger>
       <CollapsibleContent>
         <div className="pb-4">
-          A registry of Tailwind-styled components built exclusively on Base UI primitives.
-          Install with one command, own the code, style with Tailwind.
+          A registry of Tailwind-styled components built exclusively on Base UI primitives. Install
+          with one command, own the code, style with Tailwind.
         </div>
       </CollapsibleContent>
     </Collapsible>
@@ -599,9 +908,9 @@ export function CollapsiblePreview() {
 // ─── Table ─────────────────────────────────────────────────────────────────
 export function TablePreview() {
   const rows = [
-    { name: "Aria Chen",   email: "aria@example.com",   role: "Admin",  status: "Active" },
+    { name: "Aria Chen", email: "aria@example.com", role: "Admin", status: "Active" },
     { name: "Marcus Osei", email: "marcus@example.com", role: "Editor", status: "Active" },
-    { name: "Priya Nair",  email: "priya@example.com",  role: "Viewer", status: "Inactive" },
+    { name: "Priya Nair", email: "priya@example.com", role: "Viewer", status: "Inactive" },
   ]
   return (
     <div className="w-full overflow-auto rounded-lg border border-border">
@@ -622,10 +931,7 @@ export function TablePreview() {
               </TableCell>
               <TableCell className="text-muted-foreground">{row.role}</TableCell>
               <TableCell>
-                <Badge
-                  variant={row.status === "Active" ? "success" : "secondary"}
-                  shape="pill"
-                >
+                <Badge variant={row.status === "Active" ? "success" : "secondary"} shape="pill">
                   {row.status}
                 </Badge>
               </TableCell>
@@ -668,7 +974,10 @@ export function PaginationPreview() {
         <PaginationItem>
           <PaginationPrevious
             href="#"
-            onClick={(e) => { e.preventDefault(); setPage((p) => Math.max(1, p - 1)) }}
+            onClick={(e) => {
+              e.preventDefault()
+              setPage((p) => Math.max(1, p - 1))
+            }}
             aria-disabled={page === 1}
             className={page === 1 ? "pointer-events-none opacity-50" : ""}
           />
@@ -678,7 +987,10 @@ export function PaginationPreview() {
             <PaginationLink
               href="#"
               isActive={p === page}
-              onClick={(e) => { e.preventDefault(); setPage(p) }}
+              onClick={(e) => {
+                e.preventDefault()
+                setPage(p)
+              }}
             >
               {p}
             </PaginationLink>
@@ -687,7 +999,10 @@ export function PaginationPreview() {
         <PaginationItem>
           <PaginationNext
             href="#"
-            onClick={(e) => { e.preventDefault(); setPage((p) => Math.min(total, p + 1)) }}
+            onClick={(e) => {
+              e.preventDefault()
+              setPage((p) => Math.min(total, p + 1))
+            }}
             aria-disabled={page === total}
             className={page === total ? "pointer-events-none opacity-50" : ""}
           />
@@ -704,7 +1019,11 @@ export function EmptyStatePreview() {
       icon={EmptyStateIcons.inbox}
       title="No messages yet"
       description="When you receive messages, they'll appear here."
-      action={<Button size="sm" variant="outline">Compose message</Button>}
+      action={
+        <Button size="sm" variant="outline">
+          Compose message
+        </Button>
+      }
     />
   )
 }
@@ -726,9 +1045,9 @@ export function AppShellPreview() {
   const [active, setActive] = React.useState("dashboard")
   const nav = [
     { id: "dashboard", label: "Dashboard", href: "#" },
-    { id: "projects",  label: "Projects",  href: "#" },
-    { id: "team",      label: "Team",      href: "#" },
-    { id: "settings",  label: "Settings",  href: "#" },
+    { id: "projects", label: "Projects", href: "#" },
+    { id: "team", label: "Team", href: "#" },
+    { id: "settings", label: "Settings", href: "#" },
   ]
   return (
     <div className="w-full rounded-lg border border-border overflow-hidden h-64 flex">
@@ -776,37 +1095,37 @@ export function AppShellPreview() {
 
 // ─── Export map ────────────────────────────────────────────────────────────
 export const previewMap: Record<string, React.ComponentType> = {
-  button:         ButtonPreview,
-  input:          InputPreview,
-  textarea:       TextareaPreview,
-  label:          LabelPreview,
-  checkbox:       CheckboxPreview,
-  switch:         SwitchPreview,
-  "radio-group":  RadioGroupPreview,
-  badge:          BadgePreview,
-  skeleton:       SkeletonPreview,
-  "scroll-area":  ScrollAreaPreview,
-  separator:      SeparatorPreview,
-  avatar:         AvatarPreview,
-  progress:       ProgressPreview,
-  select:         SelectPreview,
-  combobox:       ComboboxPreview,
-  autocomplete:   AutocompletePreview,
-  dialog:         DialogPreview,
+  button: ButtonPreview,
+  input: InputPreview,
+  textarea: TextareaPreview,
+  label: LabelPreview,
+  checkbox: CheckboxPreview,
+  switch: SwitchPreview,
+  "radio-group": RadioGroupPreview,
+  badge: BadgePreview,
+  skeleton: SkeletonPreview,
+  "scroll-area": ScrollAreaPreview,
+  separator: SeparatorPreview,
+  avatar: AvatarPreview,
+  progress: ProgressPreview,
+  select: SelectPreview,
+  combobox: ComboboxPreview,
+  autocomplete: AutocompletePreview,
+  dialog: DialogPreview,
   "alert-dialog": AlertDialogPreview,
-  drawer:         DrawerPreview,
-  popover:        PopoverPreview,
-  tooltip:        TooltipPreview,
-  "dropdown-menu":DropdownMenuPreview,
-  toast:          ToastPreview,
-  command:        CommandPreview,
-  collapsible:    CollapsiblePreview,
-  tabs:           TabsPreview,
-  accordion:      AccordionPreview,
-  table:          TablePreview,
-  breadcrumb:     BreadcrumbPreview,
-  pagination:     PaginationPreview,
-  "empty-state":  EmptyStatePreview,
-  login:          LoginPreview,
-  "app-shell":    AppShellPreview,
+  drawer: DrawerPreview,
+  popover: PopoverPreview,
+  tooltip: TooltipPreview,
+  "dropdown-menu": DropdownMenuPreview,
+  toast: ToastPreview,
+  command: CommandPreview,
+  collapsible: CollapsiblePreview,
+  tabs: TabsPreview,
+  accordion: AccordionPreview,
+  table: TablePreview,
+  breadcrumb: BreadcrumbPreview,
+  pagination: PaginationPreview,
+  "empty-state": EmptyStatePreview,
+  login: LoginPreview,
+  "app-shell": AppShellPreview,
 }

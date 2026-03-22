@@ -1,0 +1,90 @@
+---
+title: Accordion
+description: A vertically stacked set of interactive headings that each reveal a section of content.
+component: true
+links:
+  doc: https://base-ui.com/react/components/accordion
+---
+
+<ComponentPreview name="accordion-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add accordion
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="accordion" title="components/ui/accordion.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion"
+```
+
+```tsx
+<Accordion defaultValue={["item-1"]}>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>
+      Yes. Built on Base UI with full ARIA and keyboard support.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+## Examples
+
+### Basic
+
+A single-open accordion. The first item is open by default.
+
+<ComponentPreview name="accordion-basic" />
+
+### Multiple
+
+Use the `multiple` prop to allow multiple items open at once.
+
+<ComponentPreview name="accordion-multiple" />
+
+### Disabled
+
+Use the `disabled` prop on `AccordionItem` to disable individual items.
+
+<ComponentPreview name="accordion-disabled" />

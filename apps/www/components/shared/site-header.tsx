@@ -5,28 +5,57 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/shared/theme-toggle"
 
+// import { useTheme } from "next-themes"
+
 function LogoMark({ size = 22 }: { size?: number }) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 32 32"
+      xmlns="http://www.w3.org/2000/svg"
       fill="none"
       className="text-foreground shrink-0"
     >
-      <rect x="7" y="7" width="22" height="22" rx="4"
-        stroke="currentColor" strokeWidth="1.75" />
-      <rect x="1" y="1" width="22" height="22" rx="4"
-        fill="hsl(var(--background))" stroke="currentColor" strokeWidth="1.75" />
+      <rect x="7" y="7" width="22" height="22" rx="4" stroke="currentColor" strokeWidth="1.75" />
+
+      <rect
+        x="1"
+        y="1"
+        width="22"
+        height="22"
+        rx="4"
+        fill="hsl(var(--background))"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
+
       <rect x="6" y="7" width="12" height="4" rx="1.25" fill="currentColor" />
       <rect x="6" y="14" width="8" height="4" rx="1.25" fill="currentColor" />
     </svg>
+
+    // <svg
+    //   width={size}
+    //   height={size}
+    //   viewBox="0 0 32 32"
+    //   fill="none"
+    //   className="text-foreground shrink-0"
+    // >
+    //   <rect x="7" y="7" width="22" height="22" rx="4"
+    //     stroke="currentColor" strokeWidth="1.75" />
+    //   <rect x="1" y="1" width="22" height="22" rx="4"
+    //     fill="hsl(var(--background))" stroke="currentColor" strokeWidth="1.75" />
+    //   <rect x="6" y="7" width="12" height="4" rx="1.25" fill="currentColor" />
+    //   <rect x="6" y="14" width="8" height="4" rx="1.25" fill="currentColor" />
+    // </svg>
   )
 }
 
 export function SiteHeader() {
   const pathname = usePathname()
   const isDocsActive = pathname?.startsWith("/docs")
+
+  // const activeTheme = useTheme().resolvedTheme === "system"
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">

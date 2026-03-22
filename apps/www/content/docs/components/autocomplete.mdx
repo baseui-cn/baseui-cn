@@ -1,0 +1,96 @@
+---
+title: Autocomplete
+description: An input with a list of filtered options that appear as the user types.
+component: true
+links:
+  doc: https://base-ui.com/react/components/autocomplete
+---
+
+<ComponentPreview name="autocomplete-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add autocomplete
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react lucide-react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="autocomplete" title="components/ui/autocomplete.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Autocomplete,
+  AutocompleteInput,
+  AutocompleteContent,
+  AutocompleteList,
+  AutocompleteItem,
+  AutocompleteEmpty,
+} from "@/components/ui/autocomplete"
+```
+
+```tsx
+<Autocomplete>
+  <AutocompleteInput placeholder="Search..." showTrigger showClear />
+  <AutocompleteContent>
+    <AutocompleteList>
+      <AutocompleteItem value="next">Next.js</AutocompleteItem>
+      <AutocompleteItem value="remix">Remix</AutocompleteItem>
+      <AutocompleteEmpty>No results.</AutocompleteEmpty>
+    </AutocompleteList>
+  </AutocompleteContent>
+</Autocomplete>
+```
+
+> **Note:** Autocomplete differs from Combobox: the input is always editable and typing filters the list. Built on Base UI's Autocomplete primitive.
+
+## Examples
+
+### Basic
+
+A simple autocomplete with static options.
+
+<ComponentPreview name="autocomplete-basic" />
+
+### With clear button
+
+Use `showClear` to show a clear button.
+
+<ComponentPreview name="autocomplete-with-clear-button" />
+
+### Async
+
+Fetch options dynamically as the user types.
+
+<ComponentPreview name="autocomplete-async" />

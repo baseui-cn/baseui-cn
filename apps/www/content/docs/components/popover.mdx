@@ -1,0 +1,93 @@
+---
+title: Popover
+description: Displays rich content in a portal, triggered by a button.
+component: true
+links:
+  doc: https://base-ui.com/react/components/popover
+---
+
+<ComponentPreview name="popover-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add popover
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="popover" title="components/ui/popover.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverDescription,
+} from "@/components/ui/popover"
+```
+
+```tsx
+<Popover>
+  <PopoverTrigger>Open</PopoverTrigger>
+  <PopoverContent>
+    <PopoverHeader>
+      <PopoverTitle>Settings</PopoverTitle>
+      <PopoverDescription>Adjust your preferences.</PopoverDescription>
+    </PopoverHeader>
+  </PopoverContent>
+</Popover>
+```
+
+## Examples
+
+### Basic
+
+A simple popover.
+
+<ComponentPreview name="popover-basic" />
+
+### With form
+
+A popover containing a form.
+
+<ComponentPreview name="popover-with-form" />
+
+### Placement
+
+Popover positioned on different sides.
+
+<ComponentPreview name="popover-placement" />

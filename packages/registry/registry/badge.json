@@ -1,33 +1,28 @@
 {
+  "name": "badge",
+  "type": "component",
+  "description": "A small status descriptor for UI elements.",
+  "version": "0.1.0",
+  "baseUIVersion": ">=1.3.0",
   "files": [
     {
-      "content": "import { mergeProps } from \"@base-ui/react/merge-props\"\nimport { useRender } from \"@base-ui/react/use-render\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { cn } from \"@/lib/utils\"\n\nconst badgeVariants = cva(\n  \"inline-flex items-center justify-center w-fit whitespace-nowrap shrink-0 gap-1 rounded-md border border-transparent px-2 py-0.5 text-xs font-medium transition-all overflow-hidden [&>svg]:size-3 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]\",\n  {\n    variants: {\n      variant: {\n        default:\n          \"bg-primary text-primary-foreground\",\n        secondary:\n          \"bg-secondary text-secondary-foreground\",\n        destructive:\n          \"bg-destructive text-destructive-foreground focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40\",\n        outline:\n          \"border-border text-foreground\",\n        ghost:\n          \"hover:bg-muted hover:text-muted-foreground\",\n        success:\n          \"bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400\",\n        warning:\n          \"bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400\",\n        info:\n          \"bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400\",\n      },\n      size: {\n        sm:      \"h-4 px-1 text-[0.7rem]\",\n        default: \"h-5 px-2 text-xs\",\n        lg:      \"h-6 px-2.5 text-xs\",\n      },\n      shape: {\n        default: \"rounded-md\",\n        pill:    \"rounded-full\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n      size: \"default\",\n      shape: \"default\",\n    },\n  }\n)\n\nfunction Badge({\n  className,\n  variant = \"default\",\n  size = \"default\",\n  shape = \"default\",\n  render,\n  ...props\n}: useRender.ComponentProps<\"span\"> & VariantProps<typeof badgeVariants>) {\n  return useRender({\n    defaultTagName: \"span\",\n    props: mergeProps<\"span\">(\n      { className: cn(badgeVariants({ variant, size, shape }), className) },\n      props\n    ),\n    render,\n    state: { slot: \"badge\", variant, size, shape },\n  })\n}\n\nexport { Badge, badgeVariants }\n", 
-      "path": "badge.tsx", 
-      "type": "component"
+      "path": "badge.tsx",
+      "type": "component",
+      "content": "import { mergeProps } from \"@base-ui/react/merge-props\"\nimport { useRender } from \"@base-ui/react/use-render\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { cn } from \"@/lib/utils\"\n\nconst badgeVariants = cva(\n  \"inline-flex items-center justify-center w-fit whitespace-nowrap shrink-0 gap-1 rounded-md border border-transparent px-2 py-0.5 text-xs font-medium transition-all overflow-hidden [&>svg]:size-3 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]\",\n  {\n    variants: {\n      variant: {\n        default:\n          \"bg-primary text-primary-foreground\",\n        secondary:\n          \"bg-secondary text-secondary-foreground\",\n        destructive:\n          \"bg-destructive text-destructive-foreground focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40\",\n        outline:\n          \"border-border text-foreground\",\n        ghost:\n          \"hover:bg-muted hover:text-muted-foreground\",\n        success:\n          \"bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400\",\n        warning:\n          \"bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400\",\n        info:\n          \"bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400\",\n      },\n      size: {\n        sm:      \"h-4 px-1 text-[0.7rem]\",\n        default: \"h-5 px-2 text-xs\",\n        lg:      \"h-6 px-2.5 text-xs\",\n      },\n      shape: {\n        default: \"rounded-md\",\n        pill:    \"rounded-full\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n      size: \"default\",\n      shape: \"default\",\n    },\n  }\n)\n\nfunction Badge({\n  className,\n  variant = \"default\",\n  size = \"default\",\n  shape = \"default\",\n  render,\n  ...props\n}: useRender.ComponentProps<\"span\"> & VariantProps<typeof badgeVariants>) {\n  return useRender({\n    defaultTagName: \"span\",\n    props: mergeProps<\"span\">(\n      { className: cn(badgeVariants({ variant, size, shape }), className) },\n      props\n    ),\n    render,\n    state: { slot: \"badge\", variant, size, shape },\n  })\n}\n\nexport { Badge, badgeVariants }\n"
     }
-  ], 
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react",
+      "class-variance-authority"
+    ],
+    "peer": []
+  },
   "registryDependencies": [
     "utils"
-  ], 
-  "version": "0.1.0", 
-  "name": "badge", 
-  "dependencies": {
-    "peer": [], 
-    "required": [
-      "class-variance-authority", 
-      "clsx", 
-      "tailwind-merge"
-    ]
-  }, 
+  ],
   "tags": [
-    "display", 
+    "display",
     "primitive"
-  ], 
-  "docs": {
-    "usage": "", 
-    "notes": ""
-  }, 
-  "baseUIVersion": ">=1.3.0", 
-  "type": "component", 
-  "description": "Status badge with variant support."
+  ]
 }

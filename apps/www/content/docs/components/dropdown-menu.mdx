@@ -1,0 +1,114 @@
+---
+title: Dropdown Menu
+description: Displays a menu to the user triggered by a button.
+component: true
+links:
+  doc: https://base-ui.com/react/components/menu
+---
+
+<ComponentPreview name="dropdown-menu-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add dropdown-menu
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react lucide-react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="dropdown-menu" title="components/ui/dropdown-menu.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuLabel,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+} from "@/components/ui/dropdown-menu"
+```
+
+```tsx
+<DropdownMenu>
+  <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Profile</DropdownMenuItem>
+    <DropdownMenuItem>Settings</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+## Examples
+
+### Basic
+
+A standard dropdown menu.
+
+<ComponentPreview name="dropdown-menu-basic" />
+
+### With shortcuts
+
+Show keyboard shortcuts with `DropdownMenuShortcut`.
+
+<ComponentPreview name="dropdown-menu-with-shortcuts" />
+
+### Checkboxes
+
+Use `DropdownMenuCheckboxItem` for toggleable items.
+
+<ComponentPreview name="dropdown-menu-checkboxes" />
+
+### Radio group
+
+Use `DropdownMenuRadioGroup` for single-select items.
+
+<ComponentPreview name="dropdown-menu-radio-group" />
+
+### Submenu
+
+Nested menus with `DropdownMenuSub`.
+
+<ComponentPreview name="dropdown-menu-submenu" />

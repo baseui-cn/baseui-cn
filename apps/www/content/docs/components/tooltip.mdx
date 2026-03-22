@@ -1,0 +1,96 @@
+---
+title: Tooltip
+description: A popup that displays information related to an element when focused or hovered.
+component: true
+links:
+  doc: https://base-ui.com/react/components/tooltip
+---
+
+<ComponentPreview name="tooltip-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add tooltip
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="tooltip" title="components/ui/tooltip.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
+```
+
+```tsx
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger>Hover me</TooltipTrigger>
+    <TooltipContent>Save document</TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+```
+
+> **Note:** Wrap multiple tooltips in one `TooltipProvider` for instant switching between them with no delay gap.
+
+## Examples
+
+### Basic
+
+A simple tooltip.
+
+<ComponentPreview name="tooltip-basic" />
+
+### Placement
+
+Tooltips on all four sides.
+
+<ComponentPreview name="tooltip-placement" />
+
+### With shortcut
+
+Include a keyboard shortcut.
+
+<ComponentPreview name="tooltip-with-shortcut" />
+
+### Delay group
+
+Multiple tooltips sharing one provider.
+
+<ComponentPreview name="tooltip-delay-group" />

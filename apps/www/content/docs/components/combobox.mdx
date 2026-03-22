@@ -1,0 +1,100 @@
+---
+title: Combobox
+description: An input combined with a listbox for selecting from a list of options.
+component: true
+links:
+  doc: https://base-ui.com/react/components/combobox
+---
+
+<ComponentPreview name="combobox-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add combobox
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react lucide-react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="combobox" title="components/ui/combobox.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  ComboboxEmpty,
+} from "@/components/ui/combobox"
+```
+
+```tsx
+<Combobox>
+  <ComboboxInput placeholder="Select framework..." showTrigger />
+  <ComboboxContent>
+    <ComboboxList>
+      <ComboboxItem value="next">Next.js</ComboboxItem>
+      <ComboboxItem value="remix">Remix</ComboboxItem>
+      <ComboboxEmpty>No results.</ComboboxEmpty>
+    </ComboboxList>
+  </ComboboxContent>
+</Combobox>
+```
+
+## Examples
+
+### Basic
+
+A simple combobox.
+
+<ComponentPreview name="combobox-basic" />
+
+### Multi-select with chips
+
+Use `ComboboxChips` for multi-select.
+
+<ComponentPreview name="combobox-multi-select-with-chips" />
+
+### With groups
+
+Group options with `ComboboxGroup`.
+
+<ComponentPreview name="combobox-with-groups" />
+
+### Async
+
+Load options asynchronously.
+
+<ComponentPreview name="combobox-async" />
