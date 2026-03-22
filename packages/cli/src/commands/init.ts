@@ -236,14 +236,18 @@ export async function init(options: {
     if (await fs.pathExists(cssPath)) {
       let cssContent = await fs.readFile(cssPath, "utf-8")
 
-      if (!cssContent.includes("--background")) {
-        // Tailwind v4: add after @import "tailwindcss" if present
+      const hasOurTheme = cssContent.includes("--color-background")
+      if (!hasOurTheme) {
+        // Tailwind v4: add @theme block after @import "tailwindcss" if present
         if (cssContent.includes('@import "tailwindcss"')) {
           cssContent = cssContent.replace(
             '@import "tailwindcss"',
             `@import "tailwindcss"\n${TAILWIND_THEME_BLOCK}`
           )
+        } else {
+          cssContent += TAILWIND_THEME_BLOCK
         }
+        // Always append the :root / .dark CSS layer block
         cssContent += BASE_CSS_VARIABLES
         await fs.writeFile(cssPath, cssContent)
         cssSpinner.succeed(`CSS variables added to ${chalk.cyan(config.globalCss)}`)
