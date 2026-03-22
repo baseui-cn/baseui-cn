@@ -1,7 +1,7 @@
 # baseui-cn
 
 > A styled component registry built on Base UI primitives with a one-command install experience.
-> All components use @base-ui-components/react (v1.3.0+) as the exclusive primitive layer.
+> All components use @base-ui/react (v1.3.0+) as the exclusive primitive layer.
 > Tailwind CSS v4 for styling. No other UI library dependencies.
 
 ## Related documentation
@@ -58,7 +58,7 @@ npx baseui-cn init
 ```
 
 Sets up: CSS custom properties · lib/utils.ts with cn() · installs
-@base-ui-components/react · clsx · tailwind-merge · class-variance-authority
+@base-ui/react · clsx · tailwind-merge · class-variance-authority
 Creates baseui-cn.json config file.
 
 ## Add components
@@ -217,8 +217,8 @@ Menubar · Meter · Navigation Menu · Number Field · Preview Card · Progress
 Scroll Area · Slider · Toggle · Toggle Group · Toolbar · Alert Dialog
 
 Import directly from Base UI:
-  import { Collapsible } from "@base-ui-components/react/collapsible"
-  import { Field } from "@base-ui-components/react/field"
+  import { Collapsible } from "@base-ui/react/collapsible"
+  import { Field } from "@base-ui/react/field"
 
 ## Config file
 

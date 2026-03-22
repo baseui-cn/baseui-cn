@@ -15,7 +15,7 @@ npx baseui-cn add drawer
 
 shadcn/ui mixes Radix UI, Vaul, and other libraries depending on the component. This works, but it creates friction: Select and Combobox come from Radix, Drawer comes from Vaul (now unmaintained), and floating elements from different systems can conflict with each other.
 
-baseui-cn uses **Base UI exclusively** — every interactive primitive is from `@base-ui-components/react`. This means:
+baseui-cn uses **Base UI exclusively** — every interactive primitive is from `@base-ui/react`. This means:
 
 - Select, Combobox, Tooltip, and Drawer all share one portal and overlay system
 - No z-index conflicts from mixing overlay libraries

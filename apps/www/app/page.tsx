@@ -165,7 +165,7 @@ export default function HomePage() {
                     <span className="text-zinc-200">npx baseui-cn init</span>
                   </div>
                   <div className="text-zinc-500 pl-6">Detecting project structure...</div>
-                  <div className="text-green-400 pl-6">✓ @base-ui-components/react installed</div>
+                  <div className="text-green-400 pl-6">✓ @base-ui/react installed</div>
                   <div className="text-green-400 pl-6">✓ CSS variables added to globals.css</div>
                   <div className="text-green-400 pl-6">✓ lib/utils.ts created</div>
                   <div className="mt-3 flex gap-3">
@@ -309,9 +309,32 @@ export default function HomePage() {
       <footer className="border-t border-border">
         <div className="mx-auto max-w-7xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-2 font-mono text-xs">
-            <svg width="20" height="20" viewBox="0 0 32 32" fill="none" className="text-foreground shrink-0">
-              <rect x="7" y="7" width="22" height="22" rx="4" stroke="currentColor" strokeWidth="1.75" />
-              <rect x="1" y="1" width="22" height="22" rx="4" fill="hsl(var(--background))" stroke="currentColor" strokeWidth="1.75" />
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 32 32"
+              fill="none"
+              className="text-foreground shrink-0"
+            >
+              <rect
+                x="7"
+                y="7"
+                width="22"
+                height="22"
+                rx="4"
+                stroke="currentColor"
+                strokeWidth="1.75"
+              />
+              <rect
+                x="1"
+                y="1"
+                width="22"
+                height="22"
+                rx="4"
+                fill="hsl(var(--background))"
+                stroke="currentColor"
+                strokeWidth="1.75"
+              />
               <rect x="6" y="7" width="12" height="4" rx="1.25" fill="currentColor" />
               <rect x="6" y="14" width="8" height="4" rx="1.25" fill="currentColor" />
             </svg>
