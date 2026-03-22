@@ -72,7 +72,7 @@ function Textarea({
             value={value}
             onChange={handleChange}
             className={cn(
-              "flex min-h-[80px] w-full rounded-lg border border-input bg-input/30 dark:bg-input/50 px-3 py-2 text-sm shadow-xs",
+              "flex min-h-20 w-full rounded-lg border border-input bg-input/30 dark:bg-input/50 px-3 py-2 text-sm shadow-xs",
               "placeholder:text-muted-foreground text-foreground",
               "transition-[color,box-shadow]",
               "focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3",
