@@ -1,6 +1,7 @@
 import { CodeBlock } from "@/components/docs/code-block"
 import type { Metadata } from "next"
 
+export const dynamic = "force-dynamic"
 export const metadata: Metadata = { title: "Installation" }
 
 export default function InstallationPage() {

@@ -7,7 +7,7 @@ export async function fetchRegistry() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     return res.json() as Promise<{
       version: string
-      components: Array<{ name: string; type: string; description: string }>
+      components: Array<{ name: string; type: string; description: string; tags?: string[] }>
     }>
   } catch {
     // Fallback to bundled registry for offline / dev
@@ -16,7 +16,7 @@ export async function fetchRegistry() {
     })
     return index as {
       version: string
-      components: Array<{ name: string; type: string; description: string }>
+      components: Array<{ name: string; type: string; description: string; tags?: string[] }>
     }
   }
 }

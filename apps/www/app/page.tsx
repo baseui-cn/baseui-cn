@@ -1,5 +1,7 @@
 import Link from "next/link"
 import { SiteHeader } from "@/components/shared/site-header"
+
+export const dynamic = "force-dynamic"
 import { CopyButton } from "@/components/shared/copy-button"
 import { components } from "@/lib/registry"
 

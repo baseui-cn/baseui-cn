@@ -1,6 +1,7 @@
 import { CodeBlock } from "@/components/docs/code-block"
 import type { Metadata } from "next"
 
+export const dynamic = "force-dynamic"
 export const metadata: Metadata = { title: "Theming" }
 
 export default function ThemingPage() {
@@ -207,9 +208,9 @@ export default function RootLayout({ children }) {
         </div>
         <CodeBlock
           code={`/* Use data attributes for state-based Tailwind classes */
-className="data-[open]:opacity-100 data-[closed]:opacity-0 transition-opacity"
-className="data-[checked]:bg-primary data-[checked]:border-primary"
-className="data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground"`}
+className="data-open:opacity-100 data-closed:opacity-0 transition-opacity"
+className="data-checked:bg-primary data-checked:border-primary"
+className="data-highlighted:bg-accent data-highlighted:text-accent-foreground"`}
         />
       </div>
 

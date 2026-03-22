@@ -143,6 +143,12 @@
       "tags": ["display", "primitive"]
     },
     {
+      "name": "scroll-area",
+      "type": "component",
+      "description": "Custom scrollable area with styled scrollbars built on Base UI ScrollArea.",
+      "tags": ["display", "primitive"]
+    },
+    {
       "name": "skeleton",
       "type": "component",
       "description": "Loading skeleton placeholder.",

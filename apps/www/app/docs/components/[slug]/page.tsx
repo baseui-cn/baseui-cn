@@ -242,6 +242,26 @@ export function Example() {
       { name: "decorative", type: "boolean", default: "true", description: "When true, hidden from accessibility tree" },
     ],
   },
+  "scroll-area": {
+    addCmd: "npx baseui-cn add scroll-area",
+    primitive: "Base UI ScrollArea",
+    usage: `import { ScrollArea } from "@/components/ui/scroll-area"
+
+export function Example() {
+  return (
+    <ScrollArea className="h-48 w-64 rounded-md border border-border p-4">
+      {Array.from({ length: 20 }, (_, i) => (
+        <p key={i} className="text-sm py-1 text-muted-foreground">
+          Item {i + 1}
+        </p>
+      ))}
+    </ScrollArea>
+  )
+}`,
+    props: [
+      { name: "className", type: "string", description: "Additional classes for the root element" },
+    ],
+  },
   avatar: {
     addCmd: "npx baseui-cn add avatar",
     usage: `import { Avatar, AvatarGroup } from "@/components/ui/avatar"
