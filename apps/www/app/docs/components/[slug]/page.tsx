@@ -1,3 +1,5 @@
+import fs from "fs"
+import path from "path"
 import { notFound } from "next/navigation"
 import { getComponent, components } from "@/lib/registry"
 import { CodeBlock } from "@/components/docs/code-block"
@@ -919,6 +921,17 @@ export default async function ComponentPage({
     usage: `import { } from "@/components/ui/${slug}"`,
   }
 
+  // Read actual component source for the Manual install tab
+  let componentSource = doc.usage
+  try {
+    componentSource = fs.readFileSync(
+      path.join(process.cwd(), "components/ui", `${slug}.tsx`),
+      "utf-8"
+    )
+  } catch {
+    // file not found — fall back to usage snippet
+  }
+
   const title = slug
     .replace(/-/g, " ")
     .replace(/\b\w/g, (l) => l.toUpperCase())
@@ -958,7 +971,7 @@ export default async function ComponentPage({
       {/* ── Installation ───────────────────────────────────────────────── */}
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">Installation</h2>
-        <InstallTabs addCmd={doc.addCmd} manualDeps={doc.manualDeps} manualCode={doc.usage} slug={slug} />
+        <InstallTabs addCmd={doc.addCmd} manualDeps={doc.manualDeps} manualCode={componentSource} slug={slug} />
       </div>
 
       {/* ── render prop note ───────────────────────────────────────────── */}
