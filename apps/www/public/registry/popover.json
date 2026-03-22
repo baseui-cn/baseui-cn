@@ -1,0 +1,33 @@
+{
+  "files": [
+    {
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Popover as PopoverPrimitive } from \"@base-ui/react/popover\"\nimport { cn } from \"@/lib/utils\"\n\nconst Popover = PopoverPrimitive.Root\nconst PopoverTrigger = PopoverPrimitive.Trigger\nconst PopoverClose = PopoverPrimitive.Close\nconst PopoverPortal = PopoverPrimitive.Portal\n\nconst PopoverContent = React.forwardRef<\n  React.ElementRef<typeof PopoverPrimitive.Popup>,\n  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Popup> & {\n    side?: \"top\" | \"bottom\" | \"left\" | \"right\"\n    align?: \"start\" | \"center\" | \"end\"\n    sideOffset?: number\n    showArrow?: boolean\n  }\n>(({ className, children, side = \"bottom\", align = \"center\", sideOffset = 8, showArrow = true, ...props }, ref) => (\n  <PopoverPortal>\n    <PopoverPrimitive.Positioner side={side} align={align} sideOffset={sideOffset}>\n      <PopoverPrimitive.Popup\n        ref={ref}\n        className={cn(\n          \"z-50 min-w-[220px] rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-md outline-none\",\n          \"transition-all duration-150 origin-[var(--transform-origin)]\",\n          \"data-[open]:opacity-100 data-[open]:scale-100\",\n          \"data-[closed]:opacity-0 data-[closed]:scale-95\",\n          \"data-[starting-style]:opacity-0 data-[starting-style]:scale-95\",\n          className\n        )}\n        {...props}\n      >\n        {showArrow && (\n          <PopoverPrimitive.Arrow className=\"fill-border [&>svg]:fill-popover\">\n            <svg width=\"10\" height=\"5\" viewBox=\"0 0 10 5\">\n              <path d=\"M0 5L5 0L10 5\" />\n            </svg>\n          </PopoverPrimitive.Arrow>\n        )}\n        {children}\n      </PopoverPrimitive.Popup>\n    </PopoverPrimitive.Positioner>\n  </PopoverPortal>\n))\nPopoverContent.displayName = \"PopoverContent\"\n\nconst PopoverHeading = React.forwardRef<\n  React.ElementRef<typeof PopoverPrimitive.Title>,\n  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Title>\n>(({ className, ...props }, ref) => (\n  <PopoverPrimitive.Title\n    ref={ref}\n    className={cn(\"mb-1.5 text-sm font-semibold\", className)}\n    {...props}\n  />\n))\nPopoverHeading.displayName = \"PopoverHeading\"\n\nconst PopoverDescription = React.forwardRef<\n  React.ElementRef<typeof PopoverPrimitive.Description>,\n  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Description>\n>(({ className, ...props }, ref) => (\n  <PopoverPrimitive.Description\n    ref={ref}\n    className={cn(\"text-sm text-muted-foreground\", className)}\n    {...props}\n  />\n))\nPopoverDescription.displayName = \"PopoverDescription\"\n\nexport {\n  Popover, PopoverTrigger, PopoverClose, PopoverPortal,\n  PopoverContent, PopoverHeading, PopoverDescription,\n}\n", 
+      "path": "popover.tsx", 
+      "type": "component"
+    }
+  ], 
+  "registryDependencies": [
+    "utils"
+  ], 
+  "version": "0.1.0", 
+  "name": "popover", 
+  "dependencies": {
+    "peer": [], 
+    "required": [
+      "@base-ui/react", 
+      "clsx", 
+      "tailwind-merge"
+    ]
+  }, 
+  "tags": [
+    "overlay", 
+    "interactive"
+  ], 
+  "docs": {
+    "usage": "", 
+    "notes": ""
+  }, 
+  "baseUIVersion": ">=1.3.0", 
+  "type": "component", 
+  "description": "Floating popover built on Base UI Popover."
+}

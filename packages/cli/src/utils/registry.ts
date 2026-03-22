@@ -1,5 +1,4 @@
-const REGISTRY_BASE =
-  "https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry"
+const REGISTRY_BASE = "https://baseui-cn.com/registry"
 
 export async function fetchRegistry() {
   try {
@@ -22,7 +21,7 @@ export async function fetchRegistry() {
 }
 
 export async function fetchComponent(name: string): Promise<ComponentEntry> {
-  const res = await fetch(`${REGISTRY_BASE}/registry/${name}.json`)
+  const res = await fetch(`${REGISTRY_BASE}/${name}.json`)
   if (!res.ok) {
     throw new Error(
       `Component "${name}" not found in registry.\nRun npx baseui-cn list to see all available components.`

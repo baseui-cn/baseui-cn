@@ -1,6 +1,6 @@
 {
   "name": "baseui-cn",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Add Base UI components to your app — one command at a time.",
   "keywords": ["base-ui", "components", "cli", "tailwind", "react"],
   "license": "MIT",
@@ -12,7 +12,7 @@
   "bin": {
     "baseui-cn": "./dist/index.js"
   },
-  "files": ["dist"],
+  "files": ["dist", "README.md"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

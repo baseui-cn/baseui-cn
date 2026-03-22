@@ -1,0 +1,206 @@
+{
+  "version": "0.1.0",
+  "homepage": "https://baseui-cn.com",
+  "registry": "https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/registry",
+  "baseUIVersion": ">=1.3.0",
+  "components": [
+    {
+      "name": "button",
+      "type": "component",
+      "description": "Accessible button with variants built on native HTML button.",
+      "tags": ["form", "interactive", "primitive"]
+    },
+    {
+      "name": "input",
+      "type": "component",
+      "description": "Text input field with label and error state support.",
+      "tags": ["form", "primitive"]
+    },
+    {
+      "name": "textarea",
+      "type": "component",
+      "description": "Multi-line text input with auto-resize support.",
+      "tags": ["form", "primitive"]
+    },
+    {
+      "name": "label",
+      "type": "component",
+      "description": "Accessible form label primitive.",
+      "tags": ["form", "primitive"]
+    },
+    {
+      "name": "checkbox",
+      "type": "component",
+      "description": "Base UI Checkbox with indeterminate state support.",
+      "tags": ["form", "interactive"]
+    },
+    {
+      "name": "switch",
+      "type": "component",
+      "description": "Toggle switch built on Base UI Switch primitive.",
+      "tags": ["form", "interactive"]
+    },
+    {
+      "name": "radio-group",
+      "type": "component",
+      "description": "Radio group with accessible keyboard navigation.",
+      "tags": ["form", "interactive"]
+    },
+    {
+      "name": "select",
+      "type": "component",
+      "description": "Custom select built entirely on Base UI Select — no native element.",
+      "tags": ["form", "overlay", "interactive"]
+    },
+    {
+      "name": "combobox",
+      "type": "component",
+      "description": "Searchable combobox built on Base UI Select with filter support.",
+      "tags": ["form", "overlay", "interactive"]
+    },
+    {
+      "name": "dialog",
+      "type": "component",
+      "description": "Modal dialog built on Base UI Dialog primitive.",
+      "tags": ["overlay", "interactive"]
+    },
+    {
+      "name": "drawer",
+      "type": "component",
+      "description": "Slide-in drawer built on Base UI Drawer (stable v1.3.0+). No Vaul.",
+      "tags": ["overlay", "interactive", "mobile"]
+    },
+    {
+      "name": "popover",
+      "type": "component",
+      "description": "Floating popover built on Base UI Popover.",
+      "tags": ["overlay", "interactive"]
+    },
+    {
+      "name": "tooltip",
+      "type": "component",
+      "description": "Tooltip built on Base UI Tooltip with delay group support.",
+      "tags": ["overlay", "interactive"]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "component",
+      "description": "Context/dropdown menu built on Base UI Menu primitive.",
+      "tags": ["overlay", "interactive", "navigation"]
+    },
+    {
+      "name": "command",
+      "type": "component",
+      "description": "Command palette with search, built on Base UI primitives.",
+      "tags": ["overlay", "interactive", "navigation"]
+    },
+    {
+      "name": "tabs",
+      "type": "component",
+      "description": "Tab navigation built on Base UI Tabs.",
+      "tags": ["navigation", "interactive"]
+    },
+    {
+      "name": "accordion",
+      "type": "component",
+      "description": "Collapsible accordion built on Base UI Accordion.",
+      "tags": ["disclosure", "interactive"]
+    },
+    {
+      "name": "table",
+      "type": "component",
+      "description": "Styled table primitives for data display.",
+      "tags": ["data", "display"]
+    },
+    {
+      "name": "badge",
+      "type": "component",
+      "description": "Status badge with variant support.",
+      "tags": ["display", "primitive"]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "component",
+      "description": "Breadcrumb navigation with separator support.",
+      "tags": ["navigation", "display"]
+    },
+    {
+      "name": "pagination",
+      "type": "component",
+      "description": "Page navigation component.",
+      "tags": ["navigation", "interactive"]
+    },
+    {
+      "name": "toast",
+      "type": "component",
+      "description": "Toast notifications via Base UI Toast (portal-based).",
+      "tags": ["overlay", "feedback"]
+    },
+    {
+      "name": "separator",
+      "type": "component",
+      "description": "Visual divider, horizontal or vertical.",
+      "tags": ["display", "primitive"]
+    },
+    {
+      "name": "scroll-area",
+      "type": "component",
+      "description": "Custom scrollable area with styled scrollbars built on Base UI ScrollArea.",
+      "tags": ["display", "primitive"]
+    },
+    {
+      "name": "skeleton",
+      "type": "component",
+      "description": "Loading skeleton placeholder.",
+      "tags": ["display", "feedback"]
+    },
+    {
+      "name": "avatar",
+      "type": "component",
+      "description": "User avatar with image, fallback initials, and optional status indicator.",
+      "tags": ["display", "primitive"]
+    },
+    {
+      "name": "progress",
+      "type": "component",
+      "description": "Progress bar with determinate and indeterminate states.",
+      "tags": ["display", "feedback"]
+    },
+    {
+      "name": "autocomplete",
+      "type": "component",
+      "description": "Text input with filtered suggestions list. Type to search, select to fill.",
+      "tags": ["form", "overlay", "interactive"]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "component",
+      "description": "Confirmation dialog that requires explicit user action. No backdrop dismiss.",
+      "tags": ["overlay", "interactive"]
+    },
+    {
+      "name": "collapsible",
+      "type": "component",
+      "description": "Single collapsible panel controlled by a trigger button.",
+      "tags": ["disclosure", "interactive"]
+    },
+    {
+      "name": "empty-state",
+      "type": "block",
+      "description": "Empty state block with icon, title, description, and action.",
+      "tags": ["block", "feedback"]
+    },
+    {
+      "name": "login",
+      "type": "block",
+      "description": "Login form block with email/password and social options.",
+      "tags": ["block", "form", "auth"]
+    },
+    {
+      "name": "app-shell",
+      "type": "block",
+      "description": "App shell with collapsible sidebar, header, and main content area.",
+      "tags": ["block", "layout", "navigation"]
+    }
+  ]
+}

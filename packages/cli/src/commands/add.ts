@@ -11,6 +11,7 @@ import {
   resolveComponentDependencies,
 } from "../utils/registry"
 import { detectPackageManager } from "../utils/package-manager"
+import { init } from "./init"
 
 export async function add(
   components: string[],
@@ -21,14 +22,15 @@ export async function add(
     path?: string
   }
 ) {
-  const config = await getConfig()
+  let config = await getConfig()
 
   if (!config) {
     console.log()
-    console.log(chalk.red("Error:") + " baseui-cn is not initialized.")
-    console.log(chalk.dim("  Run: npx baseui-cn init"))
+    console.log(chalk.dim("baseui-cn is not initialized. Running init first..."))
     console.log()
-    process.exit(1)
+    await init({ yes: false, defaults: false, skipTailwind: false })
+    config = await getConfig()
+    if (!config) return
   }
 
   // --all flag: grab every component from registry
