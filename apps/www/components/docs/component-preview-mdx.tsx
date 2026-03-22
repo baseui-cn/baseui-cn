@@ -30,8 +30,8 @@ function resolveRegistrySlug(name: string): string {
   return lastMatch || name
 }
 
-export function ComponentPreviewMdx({ name }: { name: string }) {
+export function ComponentPreviewMdx({ name, code }: { name: string; code?: string }) {
   const slug = resolvePreviewSlug(name)
   const registrySlug = resolveRegistrySlug(name)
-  return <ComponentPreviewWrapper slug={slug} registrySlug={registrySlug} code="" />
+  return <ComponentPreviewWrapper slug={slug} registrySlug={registrySlug} code={code ?? ""} />
 }

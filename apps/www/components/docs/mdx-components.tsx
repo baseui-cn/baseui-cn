@@ -135,7 +135,7 @@ const InlineCode = ({ className, ...props }: React.ComponentProps<"code">) => (
 const pre = ({ className, children, ...props }: React.ComponentProps<"pre">) => (
   <pre
     className={cn(
-      "relative my-4 overflow-x-auto rounded-lg border border-border bg-[#0a0a0a] p-4 text-sm",
+      "relative my-4 overflow-x-auto rounded-lg border border-border bg-[#0a0a0a] p-4 text-sm text-[#e4e4e7]",
       className
     )}
     {...props}

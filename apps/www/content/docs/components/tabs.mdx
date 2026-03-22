@@ -32,7 +32,7 @@ npx baseui-cn add tabs
 <Step>Install dependencies</Step>
 
 ```bash
-npm install @base-ui/react
+npm install @base-ui/react class-variance-authority
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
@@ -73,18 +73,42 @@ import {
 
 ### Basic
 
-Standard tab navigation.
+Standard tab navigation with the default pill variant.
 
 <ComponentPreview name="tabs-basic" />
 
+### Line variant
+
+Underline-style indicator for a minimal look.
+
+<ComponentPreview name="tabs-line" />
+
 ### Vertical
 
-Vertical tab orientation.
+Vertical tab orientation — tabs stack on the side.
 
 <ComponentPreview name="tabs-vertical" />
 
+### Vertical line
+
+Vertical orientation with the line variant — indicator on the side.
+
+<ComponentPreview name="tabs-vertical-line" />
+
 ### Pill style
 
-Tab triggers styled as pills.
+Tab triggers styled as rounded pills.
 
 <ComponentPreview name="tabs-pill-style" />
+
+### With icons
+
+Tabs with inline SVG icons alongside labels.
+
+<ComponentPreview name="tabs-with-icons" />
+
+### Disabled tab
+
+Individual tabs can be disabled.
+
+<ComponentPreview name="tabs-disabled" />

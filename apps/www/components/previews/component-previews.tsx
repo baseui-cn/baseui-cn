@@ -93,6 +93,7 @@ import {
   InputGroupPreview,
 } from "@/components/ui/input-group"
 import { ToastProvider, useToast } from "@/components/ui/toast"
+import type { ToastPosition } from "@/components/ui/toast"
 import { Command } from "@/components/ui/command"
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible"
 import {
@@ -850,7 +851,7 @@ export function DropdownMenuPreview() {
 function ToastDemo() {
   const { add } = useToast()
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-wrap gap-2">
       <Button
         variant="outline"
         onClick={() =>
@@ -861,7 +862,20 @@ function ToastDemo() {
           })
         }
       >
-        Show toast
+        Default
+      </Button>
+      <Button
+        variant="outline"
+        onClick={() =>
+          add({
+            title: "Success!",
+            description: "Your changes have been saved.",
+            type: "success",
+            timeout: 3000,
+          })
+        }
+      >
+        Success
       </Button>
       <Button
         variant="outline"
@@ -874,7 +888,20 @@ function ToastDemo() {
           })
         }
       >
-        Error toast
+        Error
+      </Button>
+      <Button
+        variant="outline"
+        onClick={() =>
+          add({
+            title: "Warning",
+            description: "Please review your settings.",
+            type: "warning",
+            timeout: 3000,
+          })
+        }
+      >
+        Warning
       </Button>
     </div>
   )
@@ -885,6 +912,231 @@ export function ToastPreview() {
     <ToastProvider>
       <ToastDemo />
     </ToastProvider>
+  )
+}
+
+function ToastWithActionDemo() {
+  const { add } = useToast()
+  return (
+    <Button
+      variant="outline"
+      onClick={() =>
+        add({
+          title: "Message sent",
+          description: "Your message has been delivered.",
+          timeout: 5000,
+          actionProps: {
+            children: "Undo",
+            onClick: () => { /* undo action */ },
+          },
+        })
+      }
+    >
+      Toast with action
+    </Button>
+  )
+}
+
+function ToastWithActionPreview() {
+  return (
+    <ToastProvider>
+      <ToastWithActionDemo />
+    </ToastProvider>
+  )
+}
+
+function ToastPromiseDemo() {
+  const toastManager = useToast()
+  return (
+    <Button
+      variant="outline"
+      onClick={() =>
+        toastManager.promise(
+          new Promise<string>((resolve, reject) => {
+            const shouldSucceed = Math.random() > 0.3
+            setTimeout(() => {
+              shouldSucceed ? resolve("Data loaded") : reject(new Error("Request failed"))
+            }, 2000)
+          }),
+          {
+            loading: "Loading data…",
+            success: (data: string) => `${data} successfully.`,
+            error: (err: Error) => `Error: ${err.message}`,
+          }
+        )
+      }
+    >
+      Run promise
+    </Button>
+  )
+}
+
+function ToastPromisePreview() {
+  return (
+    <ToastProvider>
+      <ToastPromiseDemo />
+    </ToastProvider>
+  )
+}
+
+function ToastCustomDemo() {
+  const toastManager = useToast()
+  return (
+    <Button
+      variant="outline"
+      onClick={() =>
+        toastManager.add({
+          title: "New follower",
+          description: "jane_doe started following you.",
+          data: { userId: "123" },
+        })
+      }
+    >
+      Custom data toast
+    </Button>
+  )
+}
+
+function ToastCustomPreview() {
+  return (
+    <ToastProvider>
+      <ToastCustomDemo />
+    </ToastProvider>
+  )
+}
+
+function ToastVariantsDemo() {
+  const { add } = useToast()
+  const variants = [
+    { type: undefined, label: "Default", title: "Info", desc: "This is a default toast." },
+    { type: "success" as const, label: "Success", title: "Success!", desc: "Operation completed." },
+    { type: "error" as const, label: "Error", title: "Error", desc: "Something went wrong." },
+    { type: "warning" as const, label: "Warning", title: "Warning", desc: "Please be careful." },
+  ]
+  return (
+    <div className="flex flex-wrap gap-2">
+      {variants.map((v) => (
+        <Button
+          key={v.label}
+          variant="outline"
+          onClick={() => add({ title: v.title, description: v.desc, type: v.type, timeout: 3000 })}
+        >
+          {v.label}
+        </Button>
+      ))}
+    </div>
+  )
+}
+
+function ToastVariantsPreview() {
+  return (
+    <ToastProvider>
+      <ToastVariantsDemo />
+    </ToastProvider>
+  )
+}
+
+function ToastPositionsDemo() {
+  const positions: { pos: ToastPosition; label: string }[] = [
+    { pos: "top-left", label: "Top Left" },
+    { pos: "top-center", label: "Top Center" },
+    { pos: "top-right", label: "Top Right" },
+    { pos: "bottom-left", label: "Bottom Left" },
+    { pos: "bottom-center", label: "Bottom Center" },
+    { pos: "bottom-right", label: "Bottom Right" },
+  ]
+  const [selected, setSelected] = React.useState<ToastPosition>("bottom-right")
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-3 gap-2">
+        {positions.map(({ pos, label }) => (
+          <Button
+            key={pos}
+            variant={selected === pos ? "default" : "outline"}
+            size="sm"
+            onClick={() => setSelected(pos)}
+          >
+            {label}
+          </Button>
+        ))}
+      </div>
+      <ToastProvider position={selected}>
+        <ToastPositionTrigger position={selected} />
+      </ToastProvider>
+    </div>
+  )
+}
+
+function ToastPositionTrigger({ position }: { position: ToastPosition }) {
+  const { add } = useToast()
+  return (
+    <Button
+      variant="outline"
+      onClick={() =>
+        add({
+          title: `Toast — ${position}`,
+          description: `This toast appears at the ${position.replace("-", " ")} of the screen.`,
+          timeout: 3000,
+        })
+      }
+    >
+      Show toast
+    </Button>
+  )
+}
+
+function ToastTopLeftPreview() {
+  return (
+    <ToastProvider position="top-left">
+      <ToastPositionButton position="top-left" />
+    </ToastProvider>
+  )
+}
+function ToastTopCenterPreview() {
+  return (
+    <ToastProvider position="top-center">
+      <ToastPositionButton position="top-center" />
+    </ToastProvider>
+  )
+}
+function ToastTopRightPreview() {
+  return (
+    <ToastProvider position="top-right">
+      <ToastPositionButton position="top-right" />
+    </ToastProvider>
+  )
+}
+function ToastBottomLeftPreview() {
+  return (
+    <ToastProvider position="bottom-left">
+      <ToastPositionButton position="bottom-left" />
+    </ToastProvider>
+  )
+}
+function ToastBottomCenterPreview() {
+  return (
+    <ToastProvider position="bottom-center">
+      <ToastPositionButton position="bottom-center" />
+    </ToastProvider>
+  )
+}
+
+function ToastPositionButton({ position }: { position: ToastPosition }) {
+  const { add } = useToast()
+  return (
+    <Button
+      variant="outline"
+      onClick={() =>
+        add({
+          title: `Toast — ${position}`,
+          description: `Appearing at ${position.replace("-", " ")}.`,
+          timeout: 3000,
+        })
+      }
+    >
+      {position.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+    </Button>
   )
 }
 
@@ -1965,19 +2217,45 @@ function TabsBasicPreview() {
     </Tabs>
   )
 }
+function TabsLinePreview() {
+  return (
+    <Tabs defaultValue="overview" className="w-full max-w-md">
+      <TabsList variant="line">
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        <TabsTrigger value="reports">Reports</TabsTrigger>
+      </TabsList>
+      <TabsContent value="overview" className="p-3 text-sm text-muted-foreground">Overview content with line-style indicator.</TabsContent>
+      <TabsContent value="analytics" className="p-3 text-sm text-muted-foreground">Analytics dashboard.</TabsContent>
+      <TabsContent value="reports" className="p-3 text-sm text-muted-foreground">Reports and summaries.</TabsContent>
+    </Tabs>
+  )
+}
 function TabsVerticalPreview() {
   return (
-    <Tabs defaultValue="profile" orientation="vertical" className="flex gap-4 w-full max-w-sm">
-      <TabsList className="flex-col h-auto w-32">
+    <Tabs defaultValue="profile" orientation="vertical" className="w-full max-w-md">
+      <TabsList>
         <TabsTrigger value="profile">Profile</TabsTrigger>
         <TabsTrigger value="account">Account</TabsTrigger>
         <TabsTrigger value="billing">Billing</TabsTrigger>
       </TabsList>
-      <div className="flex-1">
-        <TabsContent value="profile" className="text-sm text-muted-foreground">Profile settings</TabsContent>
-        <TabsContent value="account" className="text-sm text-muted-foreground">Account settings</TabsContent>
-        <TabsContent value="billing" className="text-sm text-muted-foreground">Billing details</TabsContent>
-      </div>
+      <TabsContent value="profile" className="p-3 text-sm text-muted-foreground">Profile settings</TabsContent>
+      <TabsContent value="account" className="p-3 text-sm text-muted-foreground">Account settings</TabsContent>
+      <TabsContent value="billing" className="p-3 text-sm text-muted-foreground">Billing details</TabsContent>
+    </Tabs>
+  )
+}
+function TabsVerticalLinePreview() {
+  return (
+    <Tabs defaultValue="general" orientation="vertical" className="w-full max-w-md">
+      <TabsList variant="line">
+        <TabsTrigger value="general">General</TabsTrigger>
+        <TabsTrigger value="security">Security</TabsTrigger>
+        <TabsTrigger value="notifications">Notifications</TabsTrigger>
+      </TabsList>
+      <TabsContent value="general" className="p-3 text-sm text-muted-foreground">General settings</TabsContent>
+      <TabsContent value="security" className="p-3 text-sm text-muted-foreground">Security options</TabsContent>
+      <TabsContent value="notifications" className="p-3 text-sm text-muted-foreground">Notification preferences</TabsContent>
     </Tabs>
   )
 }
@@ -1986,12 +2264,49 @@ function TabsPillStylePreview() {
     <Tabs defaultValue="all" className="w-full max-w-sm">
       <TabsList className="bg-transparent gap-1 p-0">
         {["all", "active", "archived"].map((v) => (
-          <TabsTrigger key={v} value={v} className="rounded-full border border-border data-selected:bg-foreground data-selected:text-background capitalize">{v}</TabsTrigger>
+          <TabsTrigger key={v} value={v} className="rounded-full border border-border data-active:bg-foreground data-active:text-background capitalize">{v}</TabsTrigger>
         ))}
       </TabsList>
       <TabsContent value="all" className="pt-3 text-sm text-muted-foreground">All items</TabsContent>
       <TabsContent value="active" className="pt-3 text-sm text-muted-foreground">Active items only</TabsContent>
       <TabsContent value="archived" className="pt-3 text-sm text-muted-foreground">Archived items</TabsContent>
+    </Tabs>
+  )
+}
+function TabsWithIconsPreview() {
+  return (
+    <Tabs defaultValue="profile" className="w-full max-w-md">
+      <TabsList>
+        <TabsTrigger value="profile">
+          <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
+        </TabsTrigger>
+        <TabsTrigger value="settings">
+          <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          Settings
+        </TabsTrigger>
+        <TabsTrigger value="notifications">
+          <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          Notifications
+        </TabsTrigger>
+      </TabsList>
+      <TabsContent value="profile" className="p-3 text-sm text-muted-foreground">Manage your profile.</TabsContent>
+      <TabsContent value="settings" className="p-3 text-sm text-muted-foreground">Adjust your preferences.</TabsContent>
+      <TabsContent value="notifications" className="p-3 text-sm text-muted-foreground">Configure notifications.</TabsContent>
+    </Tabs>
+  )
+}
+function TabsDisabledPreview() {
+  return (
+    <Tabs defaultValue="active" className="w-full max-w-sm">
+      <TabsList>
+        <TabsTrigger value="active">Active</TabsTrigger>
+        <TabsTrigger value="disabled" disabled>Disabled</TabsTrigger>
+        <TabsTrigger value="other">Other</TabsTrigger>
+      </TabsList>
+      <TabsContent value="active" className="p-3 text-sm text-muted-foreground">Active tab content.</TabsContent>
+      <TabsContent value="disabled" className="p-3 text-sm text-muted-foreground">This tab is disabled.</TabsContent>
+      <TabsContent value="other" className="p-3 text-sm text-muted-foreground">Other tab content.</TabsContent>
     </Tabs>
   )
 }
@@ -2247,6 +2562,17 @@ export const previewMap: Record<string, React.ComponentType> = {
   tooltip: TooltipPreview,
   "dropdown-menu": DropdownMenuPreview,
   toast: ToastPreview,
+  "toast-demo": ToastPreview,
+  "toast-with-action": ToastWithActionPreview,
+  "toast-promise": ToastPromisePreview,
+  "toast-custom-data": ToastCustomPreview,
+  "toast-variants": ToastVariantsPreview,
+  "toast-positions": ToastPositionsDemo,
+  "toast-top-left": ToastTopLeftPreview,
+  "toast-top-center": ToastTopCenterPreview,
+  "toast-top-right": ToastTopRightPreview,
+  "toast-bottom-left": ToastBottomLeftPreview,
+  "toast-bottom-center": ToastBottomCenterPreview,
   command: CommandPreview,
   collapsible: CollapsiblePreview,
   tabs: TabsPreview,
@@ -2355,8 +2681,12 @@ export const previewMap: Record<string, React.ComponentType> = {
   "collapsible-controlled": CollapsibleControlledPreview,
   "tabs-demo": TabsPreview,
   "tabs-basic": TabsBasicPreview,
+  "tabs-line": TabsLinePreview,
   "tabs-vertical": TabsVerticalPreview,
+  "tabs-vertical-line": TabsVerticalLinePreview,
   "tabs-pill-style": TabsPillStylePreview,
+  "tabs-with-icons": TabsWithIconsPreview,
+  "tabs-disabled": TabsDisabledPreview,
   "accordion-demo": AccordionPreview,
   "accordion-basic": AccordionBasicPreview,
   "accordion-multiple": AccordionMultiplePreview,

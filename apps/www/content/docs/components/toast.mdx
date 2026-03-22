@@ -1,33 +1,165 @@
 ---
 title: Toast
-description: Temporary notifications that appear in the bottom-right corner.
-primitive: "@base-ui/react/toast"
+description: A succinct message that is displayed temporarily, using stacking and swipe gestures.
+component: true
+links:
+  doc: https://base-ui.com/react/components/toast
 ---
 
-<Preview slug="toast" />
+<ComponentPreview name="toast-demo" />
 
 <Callout variant="info">
-  Wrap your app in ToastProvider once in layout.tsx, then call useToast() from any component.
+  Wrap your app in `ToastProvider` once in `layout.tsx`, then call `useToast()` from any component.
 </Callout>
 
 ## Installation
 
-<InstallTabs
-  addCmd="npx baseui-cn add toast"
-  manualDeps="npm install @base-ui/react"
-  slug="toast"
-/>
+<CodeTabs>
 
-## Props
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
 
-<PropsTable>
-  <PropRow name="title" type="string">
-    Toast heading
-  </PropRow>
-  <PropRow name="description" type="string">
-    Supporting text
-  </PropRow>
-  <PropRow name="variant" type=""default" | "success" | "error" | "warning"" defaultValue=""default"">
-    Color variant
-  </PropRow>
-</PropsTable>
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add toast
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="toast" title="components/ui/toast.tsx" />
+
+<Step>Add `ToastProvider` to your root layout.</Step>
+
+```tsx title="app/layout.tsx"
+import { ToastProvider } from "@/components/ui/toast"
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <ToastProvider>{children}</ToastProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { useToast } from "@/components/ui/toast"
+```
+
+```tsx
+function MyComponent() {
+  const { add } = useToast()
+
+  return (
+    <button
+      onClick={() =>
+        add({
+          title: "Saved",
+          description: "Your changes have been saved.",
+          timeout: 3000,
+        })
+      }
+    >
+      Save changes
+    </button>
+  )
+}
+```
+
+## Examples
+
+### Variants
+
+Use the `type` property to style toasts with semantic colors.
+
+<ComponentPreview name="toast-variants" />
+
+### With action
+
+Add an action button inside the toast using `actionProps`.
+
+<ComponentPreview name="toast-with-action" />
+
+### Promise
+
+Use `toastManager.promise()` to show loading, success, and error states for async operations.
+
+<ComponentPreview name="toast-promise" />
+
+### Custom data
+
+Pass custom data to toasts via the `data` property.
+
+<ComponentPreview name="toast-custom-data" />
+
+### Positions
+
+Control where toasts appear on screen using the `position` prop on `ToastProvider`. Supports six positions: `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center`, and `bottom-right`.
+
+<ComponentPreview name="toast-positions" />
+
+```tsx
+<ToastProvider position="top-center">
+  {children}
+</ToastProvider>
+```
+
+## API
+
+### ToastProvider
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `position` | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `"bottom-right"` | Where toasts appear on screen |
+
+### useToast
+
+Returns the toast manager instance from `Toast.useToastManager()`.
+
+```tsx
+const { add, promise, toasts } = useToast()
+```
+
+### add(options)
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `title` | `string` | Toast heading |
+| `description` | `string` | Supporting text |
+| `type` | `"success" \| "error" \| "warning" \| "info"` | Color variant |
+| `timeout` | `number` | Auto-dismiss timeout in ms |
+| `actionProps` | `object` | Props for the action button |
+| `data` | `object` | Custom data attached to the toast |
+
+### promise(promise, options)
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `loading` | `string` | Message shown while loading |
+| `success` | `string \| (data) => string` | Message on success |
+| `error` | `string \| (err) => string` | Message on error |

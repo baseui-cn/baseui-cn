@@ -9,6 +9,9 @@ import { ComponentPreviewWrapper } from "@/components/docs/component-preview-wra
 import { DocsToc } from "@/components/docs/docs-toc"
 import { DocsTocDropdown } from "@/components/docs/docs-toc"
 import { getComponent } from "@/lib/registry"
+import { getRegistryFileContent } from "@/lib/registry-server"
+import { ComponentPreviewMdx } from "@/components/docs/component-preview-mdx"
+import { ComponentSource } from "@/components/docs/component-source"
 import type { Metadata } from "next"
 
 const CONTENT_DIR = join(process.cwd(), "content/docs/components")
@@ -63,13 +66,21 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   const source = await readFile(mdxPath, "utf-8")
   const toc = extractToc(source)
   const comp = getComponent(slug)
+  const registryData = await getRegistryFileContent(slug)
+  const sourceCode = registryData?.code ?? ""
 
   // Derive display title from slug
   const title = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
 
   const components = {
     ...mdxComponents,
-    Preview: ({ slug: s }: { slug: string }) => <ComponentPreviewWrapper slug={s} code="" />,
+    Preview: ({ slug: s }: { slug: string }) => <ComponentPreviewWrapper slug={s} code={sourceCode} />,
+    ComponentPreview: ({ name }: { name: string }) => (
+      <ComponentPreviewMdx name={name} code={sourceCode} />
+    ),
+    ComponentSource: ({ name, title: t }: { name: string; title?: string }) => (
+      <ComponentSource name={name} title={t} code={sourceCode} />
+    ),
     InstallTabs: (props: React.ComponentProps<typeof InstallTabs>) => <InstallTabs {...props} />,
     Callout,
   }

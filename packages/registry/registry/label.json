@@ -1,33 +1,25 @@
 {
+  "name": "label",
+  "type": "component",
+  "description": "Accessible form label with required indicator.",
+  "version": "0.1.0",
+  "baseUIVersion": ">=1.3.0",
   "files": [
     {
-      "content": "import * as React from \"react\"\nimport { Field } from \"@base-ui/react/field\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface LabelProps extends React.ComponentPropsWithoutRef<typeof Field.Label> {\n  required?: boolean\n}\n\nconst Label = React.forwardRef<\n  React.ElementRef<typeof Field.Label>,\n  LabelProps\n>(({ className, children, required, ...props }, ref) => (\n  <Field.Label\n    ref={ref}\n    className={cn(\n      \"text-sm font-medium leading-none text-foreground\",\n      \"data-disabled:cursor-not-allowed data-disabled:opacity-70\",\n      className\n    )}\n    {...props}\n  >\n    {children}\n    {required && (\n      <span className=\"ml-1 text-destructive\" aria-hidden=\"true\">*</span>\n    )}\n  </Field.Label>\n))\nLabel.displayName = \"Label\"\n\nexport { Label }\n", 
-      "path": "label.tsx", 
-      "type": "component"
+      "path": "label.tsx",
+      "type": "component",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction Label({ className, ...props }: React.ComponentProps<\"label\">) {\n  return (\n    <label\n      data-slot=\"label\"\n      className={cn(\n        \"gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Label }\n"
     }
-  ], 
+  ],
+  "dependencies": {
+    "required": [],
+    "peer": []
+  },
   "registryDependencies": [
     "utils"
-  ], 
-  "version": "0.1.0", 
-  "name": "label", 
-  "dependencies": {
-    "peer": [], 
-    "required": [
-      "@base-ui/react", 
-      "clsx", 
-      "tailwind-merge"
-    ]
-  }, 
+  ],
   "tags": [
-    "form", 
+    "form",
     "primitive"
-  ], 
-  "docs": {
-    "usage": "", 
-    "notes": ""
-  }, 
-  "baseUIVersion": ">=1.3.0", 
-  "type": "component", 
-  "description": "Accessible form label primitive."
+  ]
 }

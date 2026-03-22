@@ -6,15 +6,17 @@ import { cn } from "@/lib/utils"
 interface ComponentSourceProps {
   name: string
   title?: string
+  code?: string
 }
 
-export function ComponentSource({ name, title }: ComponentSourceProps) {
-  const [source, setSource] = React.useState<string | null>(null)
-  const [loading, setLoading] = React.useState(true)
+export function ComponentSource({ name, title, code }: ComponentSourceProps) {
+  const [source, setSource] = React.useState<string | null>(code || null)
+  const [loading, setLoading] = React.useState(!code)
   const [expanded, setExpanded] = React.useState(false)
   const [copied, setCopied] = React.useState(false)
 
   React.useEffect(() => {
+    if (code) return
     const url = `https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/registry/${name}.json`
     fetch(url)
       .then((r) => r.json())
@@ -24,7 +26,7 @@ export function ComponentSource({ name, title }: ComponentSourceProps) {
       })
       .catch(() => setSource(null))
       .finally(() => setLoading(false))
-  }, [name])
+  }, [name, code])
 
   if (loading) {
     return <div className="h-32 rounded-lg border border-border bg-[#0a0a0a] animate-pulse" />

@@ -6,7 +6,9 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:watch": "node scripts/watch-registry.mjs"
   },
   "devDependencies": {
     "turbo": "latest",
