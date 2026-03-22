@@ -1,9 +1,0 @@
-<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="none">
-  <!-- Back square -->
-  <rect x="7" y="7" width="22" height="22" rx="4" stroke="currentColor" stroke-width="1.75"/>
-  <!-- Front square (filled knockout) -->
-  <rect x="1" y="1" width="22" height="22" rx="4" fill="white" stroke="currentColor" stroke-width="1.75"/>
-  <!-- Inner bars -->
-  <rect x="6" y="7"  width="12" height="4" rx="1.25" fill="currentColor"/>
-  <rect x="6" y="14" width="8"  height="4" rx="1.25" fill="currentColor"/>
-</svg>
