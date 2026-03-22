@@ -309,9 +309,12 @@ export default function HomePage() {
       <footer className="border-t border-border">
         <div className="mx-auto max-w-7xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="flex h-5 w-5 items-center justify-center rounded border border-border bg-foreground text-background text-[9px] font-bold">
-              B
-            </span>
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="none" className="text-foreground shrink-0">
+              <rect x="7" y="7" width="22" height="22" rx="4" stroke="currentColor" strokeWidth="1.75" />
+              <rect x="1" y="1" width="22" height="22" rx="4" fill="hsl(var(--background))" stroke="currentColor" strokeWidth="1.75" />
+              <rect x="6" y="7" width="12" height="4" rx="1.25" fill="currentColor" />
+              <rect x="6" y="14" width="8" height="4" rx="1.25" fill="currentColor" />
+            </svg>
             baseui-cn · MIT
           </div>
           <div className="flex items-center gap-4">
