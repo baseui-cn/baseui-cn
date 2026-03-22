@@ -7,7 +7,18 @@ import { execa } from "execa"
 import { detectPackageManager } from "../utils/package-manager"
 import { getConfig, writeConfig } from "../utils/config"
 
+// ── Markers we use to detect our injected CSS ─────────────────────────────
+// We check for the baseui-cn marker comment OR the oklch primary value.
+// This handles both fresh installs and re-runs.
+const BASEUI_CN_MARKER = "/* baseui-cn theme */"
+const DETECT_STRINGS = [
+  BASEUI_CN_MARKER,
+  "--background: oklch",
+  "--color-background: var(--background)",
+]
+
 const BASE_CSS_VARIABLES = `
+${BASEUI_CN_MARKER}
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0 0);
@@ -103,6 +114,14 @@ export function cn(...inputs: ClassValue[]) {
 }
 `
 
+function hasOurTheme(css: string): boolean {
+  return DETECT_STRINGS.some((s) => css.includes(s))
+}
+
+function hasThemeBlock(css: string): boolean {
+  return css.includes("--color-background: var(--background)")
+}
+
 export async function init(options: {
   yes: boolean
   defaults: boolean
@@ -141,7 +160,9 @@ export async function init(options: {
   )
 
   spinner.succeed(
-    `${isNextJs ? "Next.js" : "React"} project detected${hasSrcDir ? " · src/ dir" : ""}${hasAppDir ? " · App Router" : ""}`
+    `${isNextJs ? "Next.js" : "React"} project detected` +
+    (hasSrcDir ? " · src/ dir" : "") +
+    (hasAppDir ? " · App Router" : "")
   )
 
   // Build default config
@@ -149,12 +170,8 @@ export async function init(options: {
     componentsPath: hasSrcDir ? "src/components/ui" : "components/ui",
     utilsPath: hasSrcDir ? "src/lib/utils" : "lib/utils",
     globalCss: hasSrcDir
-      ? hasAppDir
-        ? "src/app/globals.css"
-        : "src/styles/globals.css"
-      : hasAppDir
-        ? "app/globals.css"
-        : "styles/globals.css",
+      ? hasAppDir ? "src/app/globals.css" : "src/styles/globals.css"
+      : hasAppDir ? "app/globals.css" : "styles/globals.css",
     tailwind: !options.skipTailwind,
     rsc: isNextJs && hasAppDir,
   }
@@ -220,40 +237,56 @@ export async function init(options: {
     await fs.writeFile(utilsFilePath, UTILS_CONTENT)
     utilsSpinner.succeed(`Utils created at ${chalk.cyan(config.utilsPath + ".ts")}`)
   } else {
-    utilsSpinner.info(`Utils already exists at ${chalk.cyan(config.utilsPath + ".ts")} — skipped`)
+    utilsSpinner.info(`Utils already exists — skipped`)
   }
 
   // Create components/ui directory
   await fs.ensureDir(path.resolve(config.componentsPath))
 
-  // Inject CSS into globals
+  // ── CSS injection ──────────────────────────────────────────────────────
   if (config.tailwind) {
     const cssSpinner = ora("Adding CSS variables...").start()
     const cssPath = path.resolve(config.globalCss)
 
     if (await fs.pathExists(cssPath)) {
-      let cssContent = await fs.readFile(cssPath, "utf-8")
+      let css = await fs.readFile(cssPath, "utf-8")
+      let changed = false
 
-      const hasOurTheme = cssContent.includes("--color-background")
-      if (!hasOurTheme) {
-        // Tailwind v4: add @theme block after @import "tailwindcss" if present
-        if (cssContent.includes('@import "tailwindcss"')) {
-          cssContent = cssContent.replace(
-            '@import "tailwindcss"',
-            `@import "tailwindcss"\n${TAILWIND_THEME_BLOCK}`
+      // 1. Inject @theme inline block if not present (Tailwind v4)
+      if (!hasThemeBlock(css)) {
+        if (css.includes('@import "tailwindcss"')) {
+          // Insert right after the tailwindcss import line
+          css = css.replace(
+            /(@import "tailwindcss";?\n?)/,
+            `$1\n${TAILWIND_THEME_BLOCK}`
+          )
+        } else if (css.includes("@tailwind base")) {
+          // Tailwind v3 — append theme block before @tailwind directives
+          css = css.replace(
+            /(@tailwind base)/,
+            `${TAILWIND_THEME_BLOCK}\n$1`
           )
         } else {
-          cssContent += TAILWIND_THEME_BLOCK
+          // No import found — prepend
+          css = TAILWIND_THEME_BLOCK + "\n" + css
         }
-        // Always append the :root / .dark CSS layer block
-        cssContent += BASE_CSS_VARIABLES
-        await fs.writeFile(cssPath, cssContent)
+        changed = true
+      }
+
+      // 2. Inject :root / .dark variables if not present
+      if (!hasOurTheme(css)) {
+        css = css + "\n" + BASE_CSS_VARIABLES
+        changed = true
+      }
+
+      if (changed) {
+        await fs.writeFile(cssPath, css)
         cssSpinner.succeed(`CSS variables added to ${chalk.cyan(config.globalCss)}`)
       } else {
         cssSpinner.info("CSS variables already present — skipped")
       }
     } else {
-      // Create globals.css from scratch (Tailwind v4)
+      // Create globals.css from scratch
       await fs.ensureDir(path.dirname(cssPath))
       await fs.writeFile(
         cssPath,
@@ -270,18 +303,10 @@ export async function init(options: {
   console.log(chalk.green("✓") + " baseui-cn initialized successfully.")
   console.log()
   console.log("  Next steps:")
-  console.log(
-    "  " + chalk.cyan("npx baseui-cn add button") + "          Add a component"
-  )
-  console.log(
-    "  " + chalk.cyan("npx baseui-cn add --all") + "           Add everything"
-  )
-  console.log(
-    "  " + chalk.cyan("npx baseui-cn list") + "                See all components"
-  )
+  console.log("  " + chalk.cyan("npx baseui-cn add button") + "          Add a component")
+  console.log("  " + chalk.cyan("npx baseui-cn add --all") + "           Add everything")
+  console.log("  " + chalk.cyan("npx baseui-cn list") + "                See all components")
   console.log()
-  console.log(
-    "  " + chalk.dim("Docs: https://baseui-cn.com")
-  )
+  console.log("  " + chalk.dim("Docs: https://baseui-cn.com"))
   console.log()
 }
