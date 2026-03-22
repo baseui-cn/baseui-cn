@@ -1,0 +1,35 @@
+---
+title: Command
+description: A searchable command palette with keyboard navigation.
+---
+
+<Preview slug="command" />
+
+<Callout variant="info">
+  No cmdk dependency. Built on Base UI Dialog + native React state. Arrow key navigation built in.
+</Callout>
+
+## Installation
+
+<InstallTabs
+  addCmd="npx baseui-cn add command"
+  manualDeps="npm install @base-ui/react"
+  slug="command"
+/>
+
+## Props
+
+<PropsTable>
+  <PropRow name="items" type="CommandItem[]" required>
+    Array of command items
+  </PropRow>
+  <PropRow name="placeholder" type="string">
+    Search input placeholder
+  </PropRow>
+  <PropRow name="emptyText" type="string">
+    Text when no results found
+  </PropRow>
+  <PropRow name="onSelect" type="(item: CommandItem) => void">
+    Called when item is selected
+  </PropRow>
+</PropsTable>

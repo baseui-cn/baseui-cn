@@ -74,7 +74,7 @@ export function ComponentPreview({ preview, code, className }: ComponentPreviewP
 
       {/* Preview pane */}
       {tab === "preview" && (
-        <div className="flex min-h-[220px] items-center justify-center p-8 bg-background">
+        <div className="flex min-h-55 items-center justify-center p-8 bg-background">
           {preview}
         </div>
       )}

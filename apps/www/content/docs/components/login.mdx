@@ -1,0 +1,34 @@
+---
+title: Login
+description: A ready-to-use sign-in form with validation and social login options.
+---
+
+<Preview slug="login" />
+
+## Installation
+
+<InstallTabs
+  addCmd="npx baseui-cn add login"
+  manualDeps="npm install @base-ui/react"
+  slug="login"
+/>
+
+## Props
+
+<PropsTable>
+  <PropRow name="onSubmit" type="(data: { email: string; password: string }) => void | Promise<void>">
+    Form submission handler
+  </PropRow>
+  <PropRow name="onGoogleLogin" type="() => void">
+    Shows Google button when provided
+  </PropRow>
+  <PropRow name="onGithubLogin" type="() => void">
+    Shows GitHub button when provided
+  </PropRow>
+  <PropRow name="isLoading" type="boolean" defaultValue="false">
+    Shows loading state
+  </PropRow>
+  <PropRow name="error" type="string">
+    Global error message above form
+  </PropRow>
+</PropsTable>

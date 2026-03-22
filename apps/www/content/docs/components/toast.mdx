@@ -1,0 +1,33 @@
+---
+title: Toast
+description: Temporary notifications that appear in the bottom-right corner.
+primitive: "@base-ui/react/toast"
+---
+
+<Preview slug="toast" />
+
+<Callout variant="info">
+  Wrap your app in ToastProvider once in layout.tsx, then call useToast() from any component.
+</Callout>
+
+## Installation
+
+<InstallTabs
+  addCmd="npx baseui-cn add toast"
+  manualDeps="npm install @base-ui/react"
+  slug="toast"
+/>
+
+## Props
+
+<PropsTable>
+  <PropRow name="title" type="string">
+    Toast heading
+  </PropRow>
+  <PropRow name="description" type="string">
+    Supporting text
+  </PropRow>
+  <PropRow name="variant" type=""default" | "success" | "error" | "warning"" defaultValue=""default"">
+    Color variant
+  </PropRow>
+</PropsTable>

@@ -16,7 +16,9 @@ const CONTENT_DIR = join(process.cwd(), "content/docs/components")
 export async function generateStaticParams() {
   try {
     const files = await readdir(CONTENT_DIR)
-    return files.filter((f) => f.endsWith(".mdx")).map((f) => ({ slug: f.replace(".mdx", "") }))
+    return files
+      .filter((f) => f.endsWith(".mdx"))
+      .map((f) => ({ slug: f.replace(".mdx", "") }))
   } catch {
     return []
   }
@@ -29,7 +31,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const comp = getComponent(slug)
-  const title = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+  const title = slug
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (l) => l.toUpperCase())
   return {
     title,
     description: comp?.description ?? `${title} component for Base UI.`,
@@ -54,7 +58,11 @@ function extractToc(source: string) {
   return toc
 }
 
-export default async function ComponentPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ComponentPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
   const { slug } = await params
   const mdxPath = join(CONTENT_DIR, `${slug}.mdx`)
 
@@ -64,58 +72,50 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   const toc = extractToc(source)
   const comp = getComponent(slug)
 
-  // Derive display title from slug
-  const title = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
-
+  // Inject our custom components for MDX
   const components = {
     ...mdxComponents,
-    Preview: ({ slug: s }: { slug: string }) => <ComponentPreviewWrapper slug={s} code="" />,
-    InstallTabs: (props: React.ComponentProps<typeof InstallTabs>) => <InstallTabs {...props} />,
+    // Make Preview / InstallTabs available in MDX without imports
+    Preview: ({ slug: s }: { slug: string }) => (
+      <ComponentPreviewWrapper slug={s} code="" />
+    ),
+    InstallTabs: (props: React.ComponentProps<typeof InstallTabs>) => (
+      <InstallTabs {...props} />
+    ),
     Callout,
   }
 
   return (
     <div className="flex gap-10">
       {/* MDX content */}
-      <article className="flex-1 min-w-0 max-w-none">
-        {/* Mobile TOC */}
+      <article className="flex-1 min-w-0 prose-sm max-w-none">
+        {/* Mobile TOC dropdown */}
         {toc.length > 0 && (
           <div className="mb-6 xl:hidden">
             <DocsTocDropdown toc={toc} />
           </div>
         )}
 
-        {/* Page header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight mb-2">{title}</h1>
-          {comp?.description && (
-            <p className="text-muted-foreground text-base">{comp.description}</p>
-          )}
-          {comp && (comp.badge || comp.tags?.length) && (
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              {comp.badge && (
-                <span className="text-[10px] font-semibold bg-foreground text-background rounded px-1.5 py-0.5">
-                  {comp.badge}
-                </span>
-              )}
-              {comp.tags?.map((tag) => (
-                <span
-                  key={tag}
-                  className="font-mono text-[11px] bg-muted px-2 py-0.5 rounded text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Metadata strip */}
+        {comp && (
+          <div className="mb-6 flex flex-wrap items-center gap-2">
+            {comp.badge && (
+              <span className="text-[10px] font-semibold bg-foreground text-background rounded px-1.5 py-0.5">
+                {comp.badge}
+              </span>
+            )}
+            {comp.tags?.map((tag) => (
+              <span
+                key={tag}
+                className="font-mono text-[11px] bg-muted px-2 py-0.5 rounded text-muted-foreground"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
 
-        {/* MDX body — frontmatter stripped via parseFrontmatter */}
-        <MDXRemote
-          source={source}
-          components={components}
-          options={{ parseFrontmatter: true }}
-        />
+        <MDXRemote source={source} components={components} />
       </article>
 
       {/* Desktop TOC */}

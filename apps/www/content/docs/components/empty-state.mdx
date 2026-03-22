@@ -1,0 +1,34 @@
+---
+title: Empty State
+description: A placeholder UI for when a section has no content.
+---
+
+<Preview slug="empty-state" />
+
+## Installation
+
+<InstallTabs
+  addCmd="npx baseui-cn add empty-state"
+  manualDeps="npm install @base-ui/react"
+  slug="empty-state"
+/>
+
+## Props
+
+<PropsTable>
+  <PropRow name="title" type="string" required>
+    Main heading
+  </PropRow>
+  <PropRow name="description" type="string">
+    Supporting text
+  </PropRow>
+  <PropRow name="icon" type="React.ReactNode">
+    Icon above the title
+  </PropRow>
+  <PropRow name="action" type="React.ReactNode">
+    CTA button or link
+  </PropRow>
+  <PropRow name="size" type=""sm" | "md" | "lg"" defaultValue=""md"">
+    Controls padding and text size
+  </PropRow>
+</PropsTable>
