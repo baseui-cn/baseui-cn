@@ -1,10 +1,19 @@
 import { ImageResponse } from "next/og"
 
+export const runtime = "edge"
 export const alt = "baseui-cn — Base UI components. One command install."
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
-export default function OGImage() {
+export default async function OGImage() {
+  const interSemiBold = fetch(
+    new URL("https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKv0E.woff2")
+  ).then((res) => res.arrayBuffer())
+
+  const interRegular = fetch(
+    new URL("https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp50SjIw2boKoduKv0E.woff2")
+  ).then((res) => res.arrayBuffer())
+
   return new ImageResponse(
     (
       <div
@@ -17,21 +26,18 @@ export default function OGImage() {
           alignItems: "flex-start",
           justifyContent: "center",
           padding: "80px 100px",
-          fontFamily: "monospace",
+          fontFamily: "Inter",
+          position: "relative",
         }}
       >
         {/* Logo mark */}
         <div style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 48 }}>
-          {/* Mark SVG inline */}
           <svg width="64" height="64" viewBox="0 0 32 32" fill="none">
-            <rect x="7" y="7" width="22" height="22" rx="4"
-              stroke="white" strokeWidth="1.75" />
-            <rect x="1" y="1" width="22" height="22" rx="4"
-              fill="#0a0a0a" stroke="white" strokeWidth="1.75" />
+            <rect x="7" y="7" width="22" height="22" rx="4" stroke="white" strokeWidth="1.75" />
+            <rect x="1" y="1" width="22" height="22" rx="4" fill="#0a0a0a" stroke="white" strokeWidth="1.75" />
             <rect x="6" y="7" width="12" height="4" rx="1.25" fill="white" />
             <rect x="6" y="14" width="8" height="4" rx="1.25" fill="white" />
           </svg>
-          {/* Wordmark */}
           <span style={{ fontSize: 52, fontWeight: 600, color: "white", letterSpacing: -1 }}>
             baseui-cn
           </span>
@@ -67,21 +73,24 @@ export default function OGImage() {
 
         {/* Stats row */}
         <div style={{ display: "flex", gap: 40, marginTop: 48 }}>
-          {[
-            ["40+", "components"],
-            ["1", "primitive library"],
-            ["MIT", "license"],
-          ].map(([value, label]) => (
-            <div key={label} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <span style={{ fontSize: 28, fontWeight: 600, color: "white" }}>{value}</span>
-              <span style={{ fontSize: 16, color: "rgba(255,255,255,0.4)" }}>{label}</span>
-            </div>
-          ))}
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <span style={{ fontSize: 28, fontWeight: 600, color: "white" }}>40+</span>
+            <span style={{ fontSize: 16, color: "rgba(255,255,255,0.4)" }}>components</span>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <span style={{ fontSize: 28, fontWeight: 600, color: "white" }}>1</span>
+            <span style={{ fontSize: 16, color: "rgba(255,255,255,0.4)" }}>primitive library</span>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <span style={{ fontSize: 28, fontWeight: 600, color: "white" }}>MIT</span>
+            <span style={{ fontSize: 16, color: "rgba(255,255,255,0.4)" }}>license</span>
+          </div>
         </div>
 
         {/* Domain */}
         <div
           style={{
+            display: "flex",
             position: "absolute",
             bottom: 48,
             right: 100,
@@ -93,6 +102,22 @@ export default function OGImage() {
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        {
+          name: "Inter",
+          data: await interRegular,
+          style: "normal",
+          weight: 400,
+        },
+        {
+          name: "Inter",
+          data: await interSemiBold,
+          style: "normal",
+          weight: 600,
+        },
+      ],
+    }
   )
 }
