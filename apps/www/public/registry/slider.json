@@ -1,0 +1,28 @@
+{
+  "name": "slider",
+  "type": "component",
+  "description": "An input where the user selects a value from within a given range.",
+  "version": "0.1.0",
+  "baseUIVersion": ">=1.3.0",
+  "files": [
+    {
+      "path": "slider.tsx",
+      "type": "component",
+      "content": "\"use client\"\r\n\r\nimport * as React from \"react\"\r\nimport { cn } from \"@/lib/utils\"\r\nimport { Slider as SliderPrimitive } from \"@base-ui/react/slider\"\r\n\r\nfunction Slider({\r\n  className,\r\n  defaultValue,\r\n  value,\r\n  min = 0,\r\n  max = 100,\r\n  ...props\r\n}: SliderPrimitive.Root.Props) {\r\n  const _values = React.useMemo(\r\n    () => (Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max]),\r\n    [value, defaultValue, min, max]\r\n  )\r\n\r\n  return (\r\n    <SliderPrimitive.Root\r\n      className={cn(\"data-horizontal:w-full data-vertical:h-full\", className)}\r\n      data-slot=\"slider\"\r\n      defaultValue={defaultValue}\r\n      value={value}\r\n      min={min}\r\n      max={max}\r\n      thumbAlignment=\"edge\"\r\n      {...props}\r\n    >\r\n      <SliderPrimitive.Control className=\"relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:min-h-40 data-vertical:w-auto data-vertical:flex-col\">\r\n        <SliderPrimitive.Track\r\n          data-slot=\"slider-track\"\r\n          className=\"relative grow overflow-hidden rounded-full bg-muted select-none data-horizontal:h-1 data-horizontal:w-full data-vertical:h-full data-vertical:w-1\"\r\n        >\r\n          <SliderPrimitive.Indicator\r\n            data-slot=\"slider-range\"\r\n            className=\"bg-primary select-none data-horizontal:h-full data-vertical:w-full\"\r\n          />\r\n        </SliderPrimitive.Track>\r\n        {Array.from({ length: _values.length }, (_, index) => (\r\n          <SliderPrimitive.Thumb\r\n            data-slot=\"slider-thumb\"\r\n            key={index}\r\n            className=\"relative block size-3 shrink-0 rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 disabled:pointer-events-none disabled:opacity-50\"\r\n          />\r\n        ))}\r\n      </SliderPrimitive.Control>\r\n    </SliderPrimitive.Root>\r\n  )\r\n}\r\n\r\nexport { Slider }\r\n"
+    }
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react"
+    ],
+    "peer": []
+  },
+  "registryDependencies": [
+    "utils"
+  ],
+  "tags": [
+    "form",
+    "interactive"
+  ],
+  "baseUIPrimitive": "Slider"
+}

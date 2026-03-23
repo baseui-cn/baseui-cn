@@ -16,7 +16,7 @@ export interface NavSection {
 }
 
 export const components: ComponentMeta[] = [
-  // Primitives
+  // Primitives — Display
   {
     name: "button",
     type: "component",
@@ -24,6 +24,79 @@ export const components: ComponentMeta[] = [
     tags: ["form", "primitive"],
     baseUIPrimitive: "native button",
   },
+  {
+    name: "badge",
+    type: "component",
+    description: "Status badge with variant support.",
+    tags: ["display", "primitive"],
+  },
+  {
+    name: "avatar",
+    type: "component",
+    description: "User avatar with image, fallback initials, and status indicator.",
+    tags: ["display", "primitive"],
+    baseUIPrimitive: "native img",
+  },
+  {
+    name: "card",
+    type: "component",
+    description: "A container for grouping related content and actions.",
+    tags: ["display", "layout"],
+  },
+  {
+    name: "item",
+    type: "component",
+    description: "A flexible list item component with media, content, actions, and variants.",
+    tags: ["display", "layout", "list"],
+  },
+  {
+    name: "separator",
+    type: "component",
+    description: "Visual divider, horizontal or vertical.",
+    tags: ["display", "primitive"],
+  },
+  {
+    name: "scroll-area",
+    type: "component",
+    description: "Custom scrollable area with styled scrollbars.",
+    tags: ["display", "primitive"],
+    baseUIPrimitive: "ScrollArea",
+  },
+  {
+    name: "skeleton",
+    type: "component",
+    description: "Loading placeholder with pulse animation.",
+    tags: ["display", "feedback"],
+  },
+  {
+    name: "spinner",
+    type: "component",
+    description: "An animated loading spinner indicator.",
+    tags: ["display", "feedback"],
+  },
+  {
+    name: "progress",
+    type: "component",
+    description: "Progress bar with determinate and indeterminate states.",
+    tags: ["display", "feedback"],
+    baseUIPrimitive: "Progress",
+  },
+  {
+    name: "toggle",
+    type: "component",
+    description: "A two-state button that can be toggled on or off.",
+    tags: ["form", "primitive", "interactive"],
+    baseUIPrimitive: "Toggle",
+  },
+  {
+    name: "toggle-group",
+    type: "component",
+    description: "A set of two-state buttons grouped together.",
+    tags: ["form", "primitive", "interactive"],
+    baseUIPrimitive: "ToggleGroup",
+  },
+
+  // Form
   {
     name: "input",
     type: "component",
@@ -45,66 +118,6 @@ export const components: ComponentMeta[] = [
     tags: ["form", "primitive"],
     baseUIPrimitive: "native label",
   },
-  {
-    name: "separator",
-    type: "component",
-    description: "Visual divider, horizontal or vertical.",
-    tags: ["display", "primitive"],
-  },
-  {
-    name: "scroll-area",
-    type: "component",
-    description: "Custom scrollable area with styled scrollbars.",
-    tags: ["display", "primitive"],
-    baseUIPrimitive: "ScrollArea",
-    badge: "New",
-  },
-  {
-    name: "badge",
-    type: "component",
-    description: "Status badge with variant support.",
-    tags: ["display", "primitive"],
-  },
-  {
-    name: "skeleton",
-    type: "component",
-    description: "Loading placeholder with pulse animation.",
-    tags: ["display", "feedback"],
-  },
-  {
-    name: "avatar",
-    type: "component",
-    description: "User avatar with image, fallback initials, and status indicator.",
-    tags: ["display", "primitive"],
-    baseUIPrimitive: "native img",
-  },
-  {
-    name: "progress",
-    type: "component",
-    description: "Progress bar with determinate and indeterminate states.",
-    tags: ["display", "feedback"],
-    baseUIPrimitive: "Progress",
-  },
-  {
-    name: "spinner",
-    type: "component",
-    description: "An animated loading spinner indicator.",
-    tags: ["display", "feedback"],
-  },
-  {
-    name: "card",
-    type: "component",
-    description: "A container for grouping related content and actions.",
-    tags: ["display", "layout"],
-  },
-  {
-    name: "item",
-    type: "component",
-    description: "A flexible list item component with media, content, actions, and variants.",
-    tags: ["display", "layout", "list"],
-  },
-
-  // Form
   {
     name: "checkbox",
     type: "component",
@@ -146,7 +159,6 @@ export const components: ComponentMeta[] = [
     description: "Text input with filtered suggestions list. Type to search, select to fill.",
     tags: ["form", "overlay", "interactive"],
     baseUIPrimitive: "Combobox",
-    badge: "New",
   },
   {
     name: "slider",
@@ -155,23 +167,12 @@ export const components: ComponentMeta[] = [
     tags: ["form", "interactive"],
     baseUIPrimitive: "Slider",
   },
-
-  // Navigation
   {
-    name: "menubar",
+    name: "number-field",
     type: "component",
-    description: "A visually persistent menu common in desktop applications.",
-    tags: ["navigation", "interactive", "overlay"],
-    baseUIPrimitive: "Menubar",
-    badge: "New",
-  },
-  {
-    name: "navigation-menu",
-    type: "component",
-    description: "A collection of navigation links with sub-menus that appear on hover.",
-    tags: ["navigation", "interactive", "overlay"],
-    baseUIPrimitive: "NavigationMenu",
-    badge: "New",
+    description: "A numeric input with increment and decrement buttons.",
+    tags: ["form", "primitive", "interactive"],
+    baseUIPrimitive: "NumberField",
   },
 
   // Overlays
@@ -188,7 +189,6 @@ export const components: ComponentMeta[] = [
     description: "Confirmation dialog that requires explicit user action. No backdrop dismiss.",
     tags: ["overlay", "interactive"],
     baseUIPrimitive: "AlertDialog",
-    badge: "New",
   },
   {
     name: "drawer",
@@ -196,7 +196,6 @@ export const components: ComponentMeta[] = [
     description: "Slide-in panel. Stable since Base UI v1.3.0.",
     tags: ["overlay", "interactive", "mobile"],
     baseUIPrimitive: "Drawer",
-    badge: "New",
   },
   {
     name: "popover",
@@ -213,6 +212,13 @@ export const components: ComponentMeta[] = [
     baseUIPrimitive: "Tooltip",
   },
   {
+    name: "preview-card",
+    type: "component",
+    description: "A card that appears on hover to preview linked content.",
+    tags: ["overlay", "display"],
+    baseUIPrimitive: "PreviewCard",
+  },
+  {
     name: "dropdown-menu",
     type: "component",
     description: "Dropdown menu with checkboxes and radio items.",
@@ -222,7 +228,7 @@ export const components: ComponentMeta[] = [
   {
     name: "toast",
     type: "component",
-    description: "Toast notifications. Portal-based, auto-dismiss.",
+    description: "Stacked toast notifications with swipe gestures.",
     tags: ["overlay", "feedback"],
     baseUIPrimitive: "Toast",
   },
@@ -232,13 +238,21 @@ export const components: ComponentMeta[] = [
     description: "Command palette. No cmdk dependency.",
     tags: ["overlay", "navigation"],
   },
+
+  // Disclosure & Layout
   {
     name: "collapsible",
     type: "component",
     description: "Single collapsible panel controlled by a trigger button.",
     tags: ["disclosure", "interactive"],
     baseUIPrimitive: "Collapsible",
-    badge: "New",
+  },
+  {
+    name: "accordion",
+    type: "component",
+    description: "Collapsible accordion.",
+    tags: ["disclosure", "interactive"],
+    baseUIPrimitive: "Accordion",
   },
 
   // Navigation & Data
@@ -248,13 +262,6 @@ export const components: ComponentMeta[] = [
     description: "Tab navigation.",
     tags: ["navigation", "interactive"],
     baseUIPrimitive: "Tabs",
-  },
-  {
-    name: "accordion",
-    type: "component",
-    description: "Collapsible accordion.",
-    tags: ["disclosure", "interactive"],
-    baseUIPrimitive: "Accordion",
   },
   {
     name: "table",
@@ -274,6 +281,20 @@ export const components: ComponentMeta[] = [
     description: "Page navigation.",
     tags: ["navigation", "interactive"],
   },
+  {
+    name: "menubar",
+    type: "component",
+    description: "A visually persistent menu common in desktop applications.",
+    tags: ["navigation", "interactive", "overlay"],
+    baseUIPrimitive: "Menubar",
+  },
+  {
+    name: "navigation-menu",
+    type: "component",
+    description: "A collection of navigation links with sub-menus that appear on hover.",
+    tags: ["navigation", "interactive", "overlay"],
+    baseUIPrimitive: "NavigationMenu",
+  },
 
   // Blocks
   {
@@ -281,18 +302,6 @@ export const components: ComponentMeta[] = [
     type: "block",
     description: "Empty state with icon, title, description, action.",
     tags: ["block", "feedback"],
-  },
-  {
-    name: "login",
-    type: "block",
-    description: "Login form with social auth buttons.",
-    tags: ["block", "form", "auth"],
-  },
-  {
-    name: "app-shell",
-    type: "block",
-    description: "App shell with collapsible sidebar. Mobile-responsive.",
-    tags: ["block", "layout"],
   },
 ]
 
@@ -307,26 +316,18 @@ export const navSections: NavSection[] = [
     ],
   },
   {
-    title: "Primitives",
+    title: "Display",
     items: [
       { name: "button", href: "/docs/components/button", label: "Button" },
-      { name: "input", href: "/docs/components/input", label: "Input" },
-      { name: "textarea", href: "/docs/components/textarea", label: "Textarea" },
-      { name: "label", href: "/docs/components/label", label: "Label" },
-      { name: "separator", href: "/docs/components/separator", label: "Separator" },
-      {
-        name: "scroll-area",
-        href: "/docs/components/scroll-area",
-        label: "Scroll Area",
-        badge: "New",
-      },
       { name: "badge", href: "/docs/components/badge", label: "Badge" },
+      { name: "avatar", href: "/docs/components/avatar", label: "Avatar" },
+      { name: "card", href: "/docs/components/card", label: "Card" },
+      { name: "item", href: "/docs/components/item", label: "Item" },
+      { name: "separator", href: "/docs/components/separator", label: "Separator" },
+      { name: "scroll-area", href: "/docs/components/scroll-area", label: "Scroll Area" },
       { name: "skeleton", href: "/docs/components/skeleton", label: "Skeleton" },
-      { name: "avatar", href: "/docs/components/avatar", label: "Avatar", badge: "New" },
-      { name: "progress", href: "/docs/components/progress", label: "Progress", badge: "New" },
-      { name: "spinner", href: "/docs/components/spinner", label: "Spinner", badge: "New" },
-      { name: "card", href: "/docs/components/card", label: "Card", badge: "New" },
-      { name: "item", href: "/docs/components/item", label: "Item", badge: "New" },
+      { name: "spinner", href: "/docs/components/spinner", label: "Spinner" },
+      { name: "progress", href: "/docs/components/progress", label: "Progress" },
       { name: "toggle", href: "/docs/components/toggle", label: "Toggle", badge: "New" },
       { name: "toggle-group", href: "/docs/components/toggle-group", label: "Toggle Group", badge: "New" },
     ],
@@ -334,17 +335,15 @@ export const navSections: NavSection[] = [
   {
     title: "Form",
     items: [
+      { name: "input", href: "/docs/components/input", label: "Input" },
+      { name: "textarea", href: "/docs/components/textarea", label: "Textarea" },
+      { name: "label", href: "/docs/components/label", label: "Label" },
       { name: "checkbox", href: "/docs/components/checkbox", label: "Checkbox" },
       { name: "switch", href: "/docs/components/switch", label: "Switch" },
       { name: "radio-group", href: "/docs/components/radio-group", label: "Radio Group" },
       { name: "select", href: "/docs/components/select", label: "Select" },
       { name: "combobox", href: "/docs/components/combobox", label: "Combobox" },
-      {
-        name: "autocomplete",
-        href: "/docs/components/autocomplete",
-        label: "Autocomplete",
-        badge: "New",
-      },
+      { name: "autocomplete", href: "/docs/components/autocomplete", label: "Autocomplete" },
       { name: "slider", href: "/docs/components/slider", label: "Slider" },
       { name: "number-field", href: "/docs/components/number-field", label: "Number Field", badge: "New" },
     ],
@@ -353,50 +352,38 @@ export const navSections: NavSection[] = [
     title: "Overlays",
     items: [
       { name: "dialog", href: "/docs/components/dialog", label: "Dialog" },
-      {
-        name: "alert-dialog",
-        href: "/docs/components/alert-dialog",
-        label: "Alert Dialog",
-        badge: "New",
-      },
-      { name: "drawer", href: "/docs/components/drawer", label: "Drawer", badge: "New" },
+      { name: "alert-dialog", href: "/docs/components/alert-dialog", label: "Alert Dialog" },
+      { name: "drawer", href: "/docs/components/drawer", label: "Drawer" },
       { name: "popover", href: "/docs/components/popover", label: "Popover" },
       { name: "tooltip", href: "/docs/components/tooltip", label: "Tooltip" },
       { name: "preview-card", href: "/docs/components/preview-card", label: "Preview Card", badge: "New" },
       { name: "dropdown-menu", href: "/docs/components/dropdown-menu", label: "Dropdown Menu" },
       { name: "toast", href: "/docs/components/toast", label: "Toast" },
       { name: "command", href: "/docs/components/command", label: "Command" },
-      {
-        name: "collapsible",
-        href: "/docs/components/collapsible",
-        label: "Collapsible",
-        badge: "New",
-      },
+    ],
+  },
+  {
+    title: "Layout",
+    items: [
+      { name: "collapsible", href: "/docs/components/collapsible", label: "Collapsible" },
+      { name: "accordion", href: "/docs/components/accordion", label: "Accordion" },
+      { name: "tabs", href: "/docs/components/tabs", label: "Tabs" },
     ],
   },
   {
     title: "Navigation & Data",
     items: [
-      { name: "tabs", href: "/docs/components/tabs", label: "Tabs" },
-      { name: "accordion", href: "/docs/components/accordion", label: "Accordion" },
       { name: "table", href: "/docs/components/table", label: "Table" },
       { name: "breadcrumb", href: "/docs/components/breadcrumb", label: "Breadcrumb" },
       { name: "pagination", href: "/docs/components/pagination", label: "Pagination" },
-      { name: "menubar", href: "/docs/components/menubar", label: "Menubar", badge: "New" },
-      {
-        name: "navigation-menu",
-        href: "/docs/components/navigation-menu",
-        label: "Navigation Menu",
-        badge: "New",
-      },
+      { name: "menubar", href: "/docs/components/menubar", label: "Menubar" },
+      { name: "navigation-menu", href: "/docs/components/navigation-menu", label: "Navigation Menu" },
     ],
   },
   {
     title: "Blocks",
     items: [
       { name: "empty-state", href: "/docs/components/empty-state", label: "Empty State" },
-      // { name: "login", href: "/docs/components/login", label: "Login" },
-      // { name: "app-shell", href: "/docs/components/app-shell", label: "App Shell" },
     ],
   },
 ]

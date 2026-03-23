@@ -1,33 +1,28 @@
 {
+  "name": "switch",
+  "type": "component",
+  "description": "A control that allows the user to toggle between checked and not checked.",
+  "version": "0.1.0",
+  "baseUIVersion": ">=1.3.0",
   "files": [
     {
-      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Switch as SwitchPrimitive } from \"@base-ui/react/switch\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface SwitchProps extends React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root> {\n  label?: string\n  description?: string\n}\n\nconst Switch = React.forwardRef<\n  React.ElementRef<typeof SwitchPrimitive.Root>,\n  SwitchProps\n>(({ className, label, description, id, ...props }, ref) => {\n  const switchId = id ?? React.useId()\n  return (\n    <div className=\"flex items-center gap-3\">\n      <SwitchPrimitive.Root\n        ref={ref}\n        id={switchId}\n        className={cn(\n          \"relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent\",\n          \"bg-input transition-colors duration-200\",\n          \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n          \"disabled:cursor-not-allowed disabled:opacity-50\",\n          \"data-[checked]:bg-primary\",\n          className\n        )}\n        {...props}\n      >\n        <SwitchPrimitive.Thumb\n          className={cn(\n            \"pointer-events-none block size-4 rounded-full bg-background shadow-lg ring-0\",\n            \"transition-transform duration-200\",\n            \"translate-x-0 data-[checked]:translate-x-4\"\n          )}\n        />\n      </SwitchPrimitive.Root>\n      {(label || description) && (\n        <div className=\"flex flex-col gap-0.5\">\n          {label && (\n            <label\n              htmlFor={switchId}\n              className=\"text-sm font-medium leading-none cursor-pointer\"\n            >\n              {label}\n            </label>\n          )}\n          {description && (\n            <p className=\"text-xs text-muted-foreground\">{description}</p>\n          )}\n        </div>\n      )}\n    </div>\n  )\n})\nSwitch.displayName = \"Switch\"\n\nexport { Switch }\n", 
-      "path": "switch.tsx", 
-      "type": "component"
+      "path": "switch.tsx",
+      "type": "component",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Switch as SwitchPrimitive } from \"@base-ui/react/switch\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface SwitchProps extends React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root> {\n  label?: string\n  description?: string\n}\n\nconst Switch = React.forwardRef<React.ComponentRef<typeof SwitchPrimitive.Root>, SwitchProps>(\n  ({ className, label, description, id, ...props }, ref) => {\n    return (\n      <div className=\"flex items-center gap-3\">\n        <SwitchPrimitive.Root\n          ref={ref}\n          id={id}\n          className={cn(\n            \"relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent\",\n            \"bg-input transition-colors duration-200\",\n            \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n            \"disabled:cursor-not-allowed disabled:opacity-50\",\n            \"data-checked:bg-primary\",\n            className\n          )}\n          {...props}\n        >\n          <SwitchPrimitive.Thumb\n            className={cn(\n              \"pointer-events-none block size-4 rounded-full bg-background shadow-lg ring-0\",\n              \"transition-transform duration-200\",\n              \"translate-x-0 data-checked:translate-x-4\"\n            )}\n          />\n        </SwitchPrimitive.Root>\n        {(label || description) && (\n          <div className=\"flex flex-col gap-0.5\">\n            {label && (\n              <label htmlFor={id} className=\"text-sm font-medium leading-none cursor-pointer\">\n                {label}\n              </label>\n            )}\n            {description && <p className=\"text-xs text-muted-foreground\">{description}</p>}\n          </div>\n        )}\n      </div>\n    )\n  }\n)\nSwitch.displayName = \"Switch\"\n\nexport { Switch }\n"
     }
-  ], 
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react"
+    ],
+    "peer": []
+  },
   "registryDependencies": [
     "utils"
-  ], 
-  "version": "0.1.0", 
-  "name": "switch", 
-  "dependencies": {
-    "peer": [], 
-    "required": [
-      "@base-ui/react", 
-      "clsx", 
-      "tailwind-merge"
-    ]
-  }, 
+  ],
   "tags": [
-    "form", 
+    "form",
     "interactive"
-  ], 
-  "docs": {
-    "usage": "", 
-    "notes": ""
-  }, 
-  "baseUIVersion": ">=1.3.0", 
-  "type": "component", 
-  "description": "Toggle switch built on Base UI Switch primitive."
+  ],
+  "baseUIPrimitive": "Switch"
 }

@@ -1,27 +1,28 @@
 {
   "name": "avatar",
   "type": "component",
-  "description": "User avatar with image, fallback initials, and optional status indicator.",
+  "description": "An image element with a fallback for representing the user.",
   "version": "0.1.0",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {
       "path": "avatar.tsx",
       "type": "component",
-      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface AvatarProps extends React.HTMLAttributes<HTMLSpanElement> {\n  src?: string\n  alt?: string\n  fallback?: string\n  size?: \"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"\n  status?: \"online\" | \"offline\" | \"busy\" | \"away\"\n}\n\nconst sizeClasses = {\n  xs: \"h-6 w-6 text-[10px]\",\n  sm: \"h-8 w-8 text-xs\",\n  md: \"h-10 w-10 text-sm\",\n  lg: \"h-12 w-12 text-base\",\n  xl: \"h-16 w-16 text-lg\",\n}\n\nconst statusClasses = {\n  online: \"bg-green-500\",\n  offline: \"bg-muted-foreground\",\n  busy: \"bg-destructive\",\n  away: \"bg-yellow-500\",\n}\n\nconst Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(\n  ({ className, src, alt, fallback, size = \"md\", status, ...props }, ref) => {\n    const [imgError, setImgError] = React.useState(false)\n\n    return (\n      <span\n        ref={ref}\n        className={cn(\n          \"relative inline-flex shrink-0 items-center justify-center rounded-full bg-muted overflow-hidden\",\n          sizeClasses[size],\n          className\n        )}\n        {...props}\n      >\n        {src && !imgError ? (\n          <img\n            src={src}\n            alt={alt ?? \"\"}\n            className=\"h-full w-full object-cover\"\n            onError={() => setImgError(true)}\n          />\n        ) : (\n          <span className=\"font-medium text-muted-foreground select-none\">\n            {fallback ?? alt?.slice(0, 2).toUpperCase() ?? \"??\"}\n          </span>\n        )}\n        {status && (\n          <span\n            className={cn(\n              \"absolute bottom-0 right-0 block rounded-full ring-2 ring-background\",\n              size === \"xs\" || size === \"sm\" ? \"h-2 w-2\" : \"h-2.5 w-2.5\",\n              statusClasses[status]\n            )}\n          />\n        )}\n      </span>\n    )\n  }\n)\nAvatar.displayName = \"Avatar\"\n\nconst AvatarGroup = React.forwardRef<\n  HTMLDivElement,\n  React.HTMLAttributes<HTMLDivElement> & { max?: number }\n>(({ className, children, max, ...props }, ref) => {\n  const childArray = React.Children.toArray(children)\n  const visible = max ? childArray.slice(0, max) : childArray\n  const overflow = max ? Math.max(0, childArray.length - max) : 0\n\n  return (\n    <div\n      ref={ref}\n      className={cn(\"flex items-center -space-x-2\", className)}\n      {...props}\n    >\n      {visible.map((child, i) => (\n        <span key={i} className=\"ring-2 ring-background rounded-full\">\n          {child}\n        </span>\n      ))}\n      {overflow > 0 && (\n        <span className=\"relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-muted ring-2 ring-background text-xs font-medium text-muted-foreground\">\n          +{overflow}\n        </span>\n      )}\n    </div>\n  )\n})\nAvatarGroup.displayName = \"AvatarGroup\"\n\nexport { Avatar, AvatarGroup }\n"
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Avatar as AvatarPrimitive } from \"@base-ui/react/avatar\"\nimport { cn } from \"@/lib/utils\"\n\nfunction Avatar({\n  className,\n  size = \"default\",\n  ...props\n}: AvatarPrimitive.Root.Props & {\n  size?: \"sm\" | \"default\" | \"lg\"\n}) {\n  return (\n    <AvatarPrimitive.Root\n      data-slot=\"avatar\"\n      data-size={size}\n      className={cn(\n        \"after:border-border group/avatar relative flex size-8 shrink-0 rounded-full select-none\",\n        \"after:absolute after:inset-0 after:rounded-full after:border after:mix-blend-darken dark:after:mix-blend-lighten\",\n        \"data-[size=sm]:size-6 data-[size=lg]:size-10\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {\n  return (\n    <AvatarPrimitive.Image\n      data-slot=\"avatar-image\"\n      className={cn(\"aspect-square size-full rounded-full object-cover\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction AvatarFallback({ className, ...props }: AvatarPrimitive.Fallback.Props) {\n  return (\n    <AvatarPrimitive.Fallback\n      data-slot=\"avatar-fallback\"\n      className={cn(\n        \"bg-muted text-muted-foreground flex size-full items-center justify-center rounded-full text-sm\",\n        \"group-data-[size=sm]/avatar:text-xs\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction AvatarBadge({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      data-slot=\"avatar-badge\"\n      className={cn(\n        \"bg-primary text-primary-foreground ring-background absolute right-0 bottom-0 z-10\",\n        \"inline-flex items-center justify-center rounded-full ring-2 select-none\",\n        \"group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden\",\n        \"group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2\",\n        \"group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction AvatarGroup({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"avatar-group\"\n      className={cn(\n        \"*:data-[slot=avatar]:ring-background group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction AvatarGroupCount({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"avatar-group-count\"\n      className={cn(\n        \"bg-muted text-muted-foreground ring-background relative flex size-8 shrink-0 items-center justify-center rounded-full text-sm ring-2\",\n        \"group-has-data-[size=sm]/avatar-group:size-6 group-has-data-[size=lg]/avatar-group:size-10\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Avatar, AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup, AvatarGroupCount }\n"
     }
   ],
-  "dependencies": { "required": ["clsx", "tailwind-merge"], "peer": [] },
-  "registryDependencies": ["utils"],
-  "docs": {
-    "usage": "<Avatar src=\"/photo.jpg\" alt=\"Aria Chen\" size=\"md\" status=\"online\" />\n\n<AvatarGroup max={3}>\n  <Avatar fallback=\"AC\" />\n  <Avatar fallback=\"MO\" />\n  <Avatar fallback=\"PN\" />\n  <Avatar fallback=\"+4\" />\n</AvatarGroup>",
-    "props": [
-      { "name": "src", "type": "string", "description": "Image URL" },
-      { "name": "alt", "type": "string", "description": "Alt text — first 2 chars used as fallback initials" },
-      { "name": "fallback", "type": "string", "description": "Explicit fallback text (overrides alt-derived initials)" },
-      { "name": "size", "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"", "default": "\"md\"", "description": "Avatar size" },
-      { "name": "status", "type": "\"online\" | \"offline\" | \"busy\" | \"away\"", "description": "Status indicator dot" }
-    ]
+  "dependencies": {
+    "required": [
+      "@base-ui/react"
+    ],
+    "peer": []
   },
-  "tags": ["display", "primitive"]
+  "registryDependencies": [
+    "utils"
+  ],
+  "tags": [
+    "display",
+    "primitive"
+  ],
+  "baseUIPrimitive": "Avatar"
 }

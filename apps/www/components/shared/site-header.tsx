@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { ThemeToggle } from "@/components/shared/theme-toggle"
+import { ThemeToggle } from "@/components/theme"
 import { LogoLight, LogoDark } from "@/components/shared/baseui-cn-logo"
 
 
