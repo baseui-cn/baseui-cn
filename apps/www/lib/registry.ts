@@ -327,9 +327,14 @@ export const navSections: NavSection[] = [
       { name: "scroll-area", href: "/docs/components/scroll-area", label: "Scroll Area" },
       { name: "skeleton", href: "/docs/components/skeleton", label: "Skeleton" },
       { name: "spinner", href: "/docs/components/spinner", label: "Spinner" },
-      { name: "progress", href: "/docs/components/progress", label: "Progress" },
+      { name: "progress", href: "/docs/components/progress", label: "Progress", badge: "New" },
       { name: "toggle", href: "/docs/components/toggle", label: "Toggle", badge: "New" },
-      { name: "toggle-group", href: "/docs/components/toggle-group", label: "Toggle Group", badge: "New" },
+      {
+        name: "toggle-group",
+        href: "/docs/components/toggle-group",
+        label: "Toggle Group",
+        badge: "New",
+      },
     ],
   },
   {
@@ -342,10 +347,20 @@ export const navSections: NavSection[] = [
       { name: "switch", href: "/docs/components/switch", label: "Switch" },
       { name: "radio-group", href: "/docs/components/radio-group", label: "Radio Group" },
       { name: "select", href: "/docs/components/select", label: "Select" },
-      { name: "combobox", href: "/docs/components/combobox", label: "Combobox" },
-      { name: "autocomplete", href: "/docs/components/autocomplete", label: "Autocomplete" },
-      { name: "slider", href: "/docs/components/slider", label: "Slider" },
-      { name: "number-field", href: "/docs/components/number-field", label: "Number Field", badge: "New" },
+      { name: "combobox", href: "/docs/components/combobox", label: "Combobox", badge: "New" },
+      {
+        name: "autocomplete",
+        href: "/docs/components/autocomplete",
+        label: "Autocomplete",
+        badge: "New",
+      },
+      { name: "slider", href: "/docs/components/slider", label: "Slider", badge: "New" },
+      {
+        name: "number-field",
+        href: "/docs/components/number-field",
+        label: "Number Field",
+        badge: "New",
+      },
     ],
   },
   {
@@ -353,13 +368,18 @@ export const navSections: NavSection[] = [
     items: [
       { name: "dialog", href: "/docs/components/dialog", label: "Dialog" },
       { name: "alert-dialog", href: "/docs/components/alert-dialog", label: "Alert Dialog" },
-      { name: "drawer", href: "/docs/components/drawer", label: "Drawer" },
+      { name: "drawer", href: "/docs/components/drawer", label: "Drawer", badge: "New" },
       { name: "popover", href: "/docs/components/popover", label: "Popover" },
       { name: "tooltip", href: "/docs/components/tooltip", label: "Tooltip" },
-      { name: "preview-card", href: "/docs/components/preview-card", label: "Preview Card", badge: "New" },
+      {
+        name: "preview-card",
+        href: "/docs/components/preview-card",
+        label: "Preview Card",
+        badge: "New",
+      },
       { name: "dropdown-menu", href: "/docs/components/dropdown-menu", label: "Dropdown Menu" },
-      { name: "toast", href: "/docs/components/toast", label: "Toast" },
-      { name: "command", href: "/docs/components/command", label: "Command" },
+      { name: "toast", href: "/docs/components/toast", label: "Toast", badge: "New" },
+      { name: "command", href: "/docs/components/command", label: "Command", badge: "New" },
     ],
   },
   {
@@ -377,14 +397,16 @@ export const navSections: NavSection[] = [
       { name: "breadcrumb", href: "/docs/components/breadcrumb", label: "Breadcrumb" },
       { name: "pagination", href: "/docs/components/pagination", label: "Pagination" },
       { name: "menubar", href: "/docs/components/menubar", label: "Menubar" },
-      { name: "navigation-menu", href: "/docs/components/navigation-menu", label: "Navigation Menu" },
+      {
+        name: "navigation-menu",
+        href: "/docs/components/navigation-menu",
+        label: "Navigation Menu",
+      },
     ],
   },
   {
     title: "Blocks",
-    items: [
-      { name: "empty-state", href: "/docs/components/empty-state", label: "Empty State" },
-    ],
+    items: [{ name: "empty-state", href: "/docs/components/empty-state", label: "Empty State" }],
   },
 ]
 
