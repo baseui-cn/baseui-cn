@@ -11,6 +11,7 @@ import {
   resolveComponentDependencies,
 } from "../utils/registry"
 import { detectPackageManager } from "../utils/package-manager"
+import { ensureThemeCSS } from "../utils/ensure-styles"
 import { init } from "./init"
 
 export async function add(
@@ -55,7 +56,6 @@ export async function add(
           title: c.name,
           description: c.description,
           value: c.name,
-          // Group by type visually
           ...(c.type === "block" ? { title: `[block] ${c.name}` } : {}),
         })
       ),
@@ -105,6 +105,9 @@ export async function add(
 
     if (!confirm) return
   }
+
+  // Ensure theme CSS is present before writing components
+  await ensureThemeCSS(config)
 
   // Collect npm deps across all components
   const allNpmDeps: string[] = []

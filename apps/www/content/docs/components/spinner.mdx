@@ -1,0 +1,70 @@
+---
+title: Spinner
+description: An animated loading spinner indicator.
+component: true
+---
+
+<ComponentPreview name="spinner-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add spinner
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install lucide-react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="spinner" title="components/ui/spinner.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Spinner } from "@/components/ui/spinner"
+```
+
+```tsx
+<Spinner />
+```
+
+## Examples
+
+### Sizes
+
+Adjust the spinner size with Tailwind classes.
+
+<ComponentPreview name="spinner-sizes" />
+
+### With button
+
+Show a spinner inside a button during loading state.
+
+<ComponentPreview name="spinner-with-button" />

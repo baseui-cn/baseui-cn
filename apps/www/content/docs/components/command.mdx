@@ -1,9 +1,10 @@
 ---
 title: Command
 description: A searchable command palette with keyboard navigation.
+component: true
 ---
 
-<Preview slug="command" />
+<ComponentPreview name="command-demo" />
 
 <Callout variant="info">
   No cmdk dependency. Built on Base UI Dialog + native React state. Arrow key navigation built in.
@@ -11,11 +12,42 @@ description: A searchable command palette with keyboard navigation.
 
 ## Installation
 
-<InstallTabs
-  addCmd="npx baseui-cn add command"
-  manualDeps="npm install @base-ui/react"
-  slug="command"
-/>
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add command
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="command" title="components/ui/command.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
 
 ## Props
 

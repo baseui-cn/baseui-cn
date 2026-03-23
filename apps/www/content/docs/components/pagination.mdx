@@ -1,14 +1,46 @@
 ---
 title: Pagination
 description: Controls for navigating between pages of content.
+component: true
 ---
 
-<Preview slug="pagination" />
+<ComponentPreview name="pagination-demo" />
 
 ## Installation
 
-<InstallTabs
-  addCmd="npx baseui-cn add pagination"
-  manualDeps="npm install @base-ui/react"
-  slug="pagination"
-/>
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add pagination
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="pagination" title="components/ui/pagination.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>

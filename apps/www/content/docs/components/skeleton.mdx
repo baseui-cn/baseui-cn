@@ -1,14 +1,46 @@
 ---
 title: Skeleton
 description: A placeholder to show while content is loading.
+component: true
 ---
 
-<Preview slug="skeleton" />
+<ComponentPreview name="skeleton-demo" />
 
 ## Installation
 
-<InstallTabs
-  addCmd="npx baseui-cn add skeleton"
-  manualDeps="npm install @base-ui/react"
-  slug="skeleton"
-/>
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add skeleton
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="skeleton" title="components/ui/skeleton.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>

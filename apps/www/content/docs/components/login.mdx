@@ -1,17 +1,49 @@
 ---
 title: Login
 description: A ready-to-use sign-in form with validation and social login options.
+component: true
 ---
 
-<Preview slug="login" />
+<ComponentPreview name="login-demo" />
 
 ## Installation
 
-<InstallTabs
-  addCmd="npx baseui-cn add login"
-  manualDeps="npm install @base-ui/react"
-  slug="login"
-/>
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add login
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="login" title="components/ui/login.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
 
 ## Props
 

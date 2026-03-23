@@ -4,8 +4,10 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/shared/theme-toggle"
+import { LogoLight, LogoDark } from "@/components/shared/baseui-cn-logo"
 
-// import { useTheme } from "next-themes"
+
+import { useTheme } from "next-themes"
 
 function LogoMark({ size = 22 }: { size?: number }) {
   return (
@@ -55,7 +57,7 @@ export function SiteHeader() {
   const pathname = usePathname()
   const isDocsActive = pathname?.startsWith("/docs")
 
-  // const activeTheme = useTheme().resolvedTheme === "system"
+  const activeTheme = useTheme().resolvedTheme
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -65,7 +67,7 @@ export function SiteHeader() {
           href="/"
           className="flex items-center gap-2.5 font-mono text-sm font-semibold tracking-tight hover:opacity-80 transition-opacity"
         >
-          <LogoMark size={22} />
+          {activeTheme === "light" ? <LogoLight /> : <LogoDark />}
           baseui-cn
         </Link>
 

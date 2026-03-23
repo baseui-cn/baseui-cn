@@ -1,0 +1,141 @@
+"use client"
+
+import * as React from "react"
+
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+function DialogPreview() {
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button variant="outline">Open Dialog</Button>} />
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete project</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. This will permanently delete your project.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose render={<Button variant="outline">Cancel</Button>} />
+          <Button variant="destructive">Delete project</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function DialogBasicPreview() {
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button variant="outline">Open</Button>} />
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Basic Dialog</DialogTitle>
+          <DialogDescription>This is a simple dialog example.</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose render={<Button variant="outline">Close</Button>} />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function DialogNoCloseButtonPreview() {
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button variant="outline">Open (no × button)</Button>} />
+      <DialogContent showCloseButton={false}>
+        <DialogHeader>
+          <DialogTitle>No close button</DialogTitle>
+          <DialogDescription>This dialog has no × in the corner.</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose render={<Button>Dismiss</Button>} />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function DialogScrollablePreview() {
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button variant="outline">Scrollable</Button>} />
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Long content</DialogTitle>
+          <DialogDescription>Scroll to see more content inside this dialog.</DialogDescription>
+        </DialogHeader>
+        <div className="space-y-3 max-h-48 overflow-y-auto pr-1">
+          {Array.from({ length: 10 }, (_, i) => (
+            <p key={i} className="text-sm text-muted-foreground">
+              Paragraph {i + 1}: Lorem ipsum dolor sit amet consectetur.
+            </p>
+          ))}
+        </div>
+        <DialogFooter>
+          <DialogClose render={<Button variant="outline">Close</Button>} />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function DialogFullscreenPreview() {
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button variant="outline">Fullscreen</Button>} />
+      <DialogContent className="max-w-full h-full rounded-none m-0">
+        <DialogHeader>
+          <DialogTitle>Fullscreen dialog</DialogTitle>
+          <DialogDescription>Takes up the full viewport.</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose render={<Button variant="outline">Close</Button>} />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function DialogSizesPreview() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {(["sm", "default", "lg"] as const).map((size) => (
+        <Dialog key={size}>
+          <DialogTrigger render={<Button variant="outline" size="sm">{size}</Button>} />
+          <DialogContent className={size === "sm" ? "max-w-sm" : size === "lg" ? "max-w-2xl" : ""}>
+            <DialogHeader>
+              <DialogTitle>{size.toUpperCase()} dialog</DialogTitle>
+              <DialogDescription>A {size} sized dialog window.</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose render={<Button variant="outline">Close</Button>} />
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      ))}
+    </div>
+  )
+}
+
+export const dialogPreviewMap: Record<string, React.ComponentType> = {
+  dialog: DialogPreview,
+  "dialog-demo": DialogPreview,
+  "dialog-basic": DialogBasicPreview,
+  "dialog-no-close-button": DialogNoCloseButtonPreview,
+  "dialog-scrollable": DialogScrollablePreview,
+  "dialog-fullscreen": DialogFullscreenPreview,
+  "dialog-sizes": DialogSizesPreview,
+}

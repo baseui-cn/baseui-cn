@@ -1,6 +1,6 @@
 "use client"
 
-import { previewMap } from "@/components/previews/component-previews"
+import { previewMap } from "@/components/previews/component-previews-map"
 import { ComponentPreviewWrapper } from "@/components/docs/component-preview-wrapper"
 
 // Resolve "button-demo" / "button-variants" → previewMap key
@@ -30,8 +30,8 @@ function resolveRegistrySlug(name: string): string {
   return lastMatch || name
 }
 
-export function ComponentPreviewMdx({ name, code }: { name: string; code?: string }) {
+export function ComponentPreviewMdx({ name, code, previewCode }: { name: string; code?: string; previewCode?: string }) {
   const slug = resolvePreviewSlug(name)
   const registrySlug = resolveRegistrySlug(name)
-  return <ComponentPreviewWrapper slug={slug} registrySlug={registrySlug} code={code ?? ""} />
+  return <ComponentPreviewWrapper slug={slug} registrySlug={registrySlug} code={code ?? ""} previewCode={previewCode ?? ""} />
 }

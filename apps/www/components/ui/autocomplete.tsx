@@ -138,7 +138,7 @@ function AutocompleteItem({
     <AutocompletePrimitive.Item
       data-slot="autocomplete-item"
       className={cn(
-        "text-primary-foreground data-highlighted:text-accordus-secondary-foreground data-highlighted:before:bg-accordus-secondary/50 gap-2",
+        "text-foreground data-highlighted:text-foreground data-highlighted:before:bg-muted gap-2",
         "rounded-sm px-2 py-1.5 text-sm data-highlighted:before:rounded-sm [&_svg:not([class*='size-'])]:size-4",
         "relative flex cursor-default items-center outline-hidden transition-colors select-none",
         "data-disabled:pointer-events-none data-disabled:opacity-50",

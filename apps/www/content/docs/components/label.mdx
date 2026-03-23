@@ -1,18 +1,50 @@
 ---
 title: Label
 description: An accessible label for form controls.
+component: true
 primitive: "@base-ui/react/field"
 ---
 
-<Preview slug="label" />
+<ComponentPreview name="label-demo" />
 
 ## Installation
 
-<InstallTabs
-  addCmd="npx baseui-cn add label"
-  manualDeps="npm install @base-ui/react"
-  slug="label"
-/>
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add label
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="label" title="components/ui/label.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
 
 ## Props
 

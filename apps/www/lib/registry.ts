@@ -27,6 +27,9 @@ export const components: ComponentMeta[] = [
   { name: "skeleton", type: "component", description: "Loading placeholder with pulse animation.", tags: ["display", "feedback"] },
   { name: "avatar", type: "component", description: "User avatar with image, fallback initials, and status indicator.", tags: ["display", "primitive"], baseUIPrimitive: "native img" },
   { name: "progress", type: "component", description: "Progress bar with determinate and indeterminate states.", tags: ["display", "feedback"], baseUIPrimitive: "Progress" },
+  { name: "spinner", type: "component", description: "An animated loading spinner indicator.", tags: ["display", "feedback"] },
+  { name: "card", type: "component", description: "A container for grouping related content and actions.", tags: ["display", "layout"] },
+  { name: "item", type: "component", description: "A flexible list item component with media, content, actions, and variants.", tags: ["display", "layout", "list"] },
 
   // Form
   { name: "checkbox", type: "component", description: "Checkbox with indeterminate state support.", tags: ["form", "interactive"], baseUIPrimitive: "Checkbox" },
@@ -36,6 +39,10 @@ export const components: ComponentMeta[] = [
   { name: "combobox", type: "component", description: "Searchable select with filter. Works inside Drawer.", tags: ["form", "overlay", "interactive"], baseUIPrimitive: "Select" },
   { name: "autocomplete", type: "component", description: "Text input with filtered suggestions list. Type to search, select to fill.", tags: ["form", "overlay", "interactive"], baseUIPrimitive: "Combobox", badge: "New" },
   { name: "slider", type: "component", description: "An input where the user selects a value from within a given range.", tags: ["form", "interactive"], baseUIPrimitive: "Slider" },
+
+  // Navigation
+  { name: "menubar", type: "component", description: "A visually persistent menu common in desktop applications.", tags: ["navigation", "interactive", "overlay"], baseUIPrimitive: "Menubar", badge: "New" },
+  { name: "navigation-menu", type: "component", description: "A collection of navigation links with sub-menus that appear on hover.", tags: ["navigation", "interactive", "overlay"], baseUIPrimitive: "NavigationMenu", badge: "New" },
 
   // Overlays
   { name: "dialog", type: "component", description: "Modal dialog.", tags: ["overlay", "interactive"], baseUIPrimitive: "Dialog" },
@@ -84,6 +91,9 @@ export const navSections: NavSection[] = [
       { name: "skeleton", href: "/docs/components/skeleton", label: "Skeleton" },
       { name: "avatar", href: "/docs/components/avatar", label: "Avatar", badge: "New" },
       { name: "progress", href: "/docs/components/progress", label: "Progress", badge: "New" },
+      { name: "spinner", href: "/docs/components/spinner", label: "Spinner", badge: "New" },
+      { name: "card", href: "/docs/components/card", label: "Card", badge: "New" },
+      { name: "item", href: "/docs/components/item", label: "Item", badge: "New" },
     ],
   },
   {
@@ -120,6 +130,8 @@ export const navSections: NavSection[] = [
       { name: "table", href: "/docs/components/table", label: "Table" },
       { name: "breadcrumb", href: "/docs/components/breadcrumb", label: "Breadcrumb" },
       { name: "pagination", href: "/docs/components/pagination", label: "Pagination" },
+      { name: "menubar", href: "/docs/components/menubar", label: "Menubar", badge: "New" },
+      { name: "navigation-menu", href: "/docs/components/navigation-menu", label: "Navigation Menu", badge: "New" },
     ],
   },
   {

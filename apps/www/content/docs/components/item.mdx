@@ -1,0 +1,115 @@
+---
+title: Item
+description: A flexible list item component with media, content, actions, and variants.
+component: true
+---
+
+<ComponentPreview name="item-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx baseui-cn add item
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react class-variance-authority
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="item" title="components/ui/item.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Item,
+  ItemMedia,
+  ItemContent,
+  ItemActions,
+  ItemGroup,
+  ItemTitle,
+  ItemDescription,
+} from "@/components/ui/item"
+```
+
+```tsx
+<ItemGroup>
+  <Item>
+    <ItemMedia variant="icon">
+      <FileIcon />
+    </ItemMedia>
+    <ItemContent>
+      <ItemTitle>File name</ItemTitle>
+      <ItemDescription>Description text</ItemDescription>
+    </ItemContent>
+    <ItemActions>
+      <Button size="sm">Action</Button>
+    </ItemActions>
+  </Item>
+</ItemGroup>
+```
+
+## Examples
+
+### Basic
+
+Simple items with title and description in a group.
+
+<ComponentPreview name="item-basic" />
+
+### With media
+
+Items with avatar icons and status indicators.
+
+<ComponentPreview name="item-with-media" />
+
+### With image
+
+Items featuring product images.
+
+<ComponentPreview name="item-with-image" />
+
+### Variants
+
+Default, outline, and muted item styles.
+
+<ComponentPreview name="item-variants" />
+
+### With header and footer
+
+Rich item layout with header actions and footer interactions.
+
+<ComponentPreview name="item-with-header-footer" />
+
+### Sizes
+
+Items in default, sm, and xs sizes.
+
+<ComponentPreview name="item-sizes" />

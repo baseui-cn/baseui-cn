@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Theming" }
 
 export default function ThemingPage() {
   return (
-    <div className="flex flex-col gap-10 animate-fade-in">
+    <div className="mx-auto w-full max-w-3xl flex flex-col gap-10 animate-fade-in">
       <div className="flex flex-col gap-3 pb-6 border-b border-border">
         <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
           Getting Started

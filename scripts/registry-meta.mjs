@@ -51,6 +51,12 @@ export const componentMeta = {
     deps: [],
     registryDeps: ["utils"],
   },
+  "card": {
+    description: "A container for grouping related content and actions.",
+    tags: ["display", "layout"],
+    deps: [],
+    registryDeps: ["utils"],
+  },
   "button": {
     description: "A clickable element that triggers an action.",
     tags: ["form", "primitive"],
@@ -125,6 +131,12 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   },
+  "item": {
+    description: "A flexible list item component with media, content, actions, and variants.",
+    tags: ["display", "layout", "list"],
+    deps: ["@base-ui/react", "class-variance-authority"],
+    registryDeps: ["utils", "separator"],
+  },
   "input-group": {
     description: "A composite input component with addons, icons, and buttons.",
     tags: ["form", "composite"],
@@ -135,6 +147,20 @@ export const componentMeta = {
     description: "Accessible form label with required indicator.",
     tags: ["form", "primitive"],
     deps: [],
+    registryDeps: ["utils"],
+  },
+  "menubar": {
+    description: "A visually persistent menu common in desktop applications providing quick access to commands.",
+    tags: ["navigation", "interactive", "overlay"],
+    baseUIPrimitive: "Menubar",
+    deps: ["@base-ui/react", "lucide-react"],
+    registryDeps: ["utils", "dropdown-menu"],
+  },
+  "navigation-menu": {
+    description: "A collection of navigation links with sub-menus that appear on hover.",
+    tags: ["navigation", "interactive", "overlay"],
+    baseUIPrimitive: "NavigationMenu",
+    deps: ["@base-ui/react", "class-variance-authority", "lucide-react"],
     registryDeps: ["utils"],
   },
   "login": {
@@ -195,6 +221,12 @@ export const componentMeta = {
     description: "Loading placeholder with pulse animation.",
     tags: ["display", "feedback"],
     deps: [],
+    registryDeps: ["utils"],
+  },
+  "spinner": {
+    description: "An animated loading spinner indicator.",
+    tags: ["display", "feedback"],
+    deps: ["lucide-react"],
     registryDeps: ["utils"],
   },
   "slider": {

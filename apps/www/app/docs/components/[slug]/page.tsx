@@ -14,6 +14,17 @@ import { ComponentPreviewMdx } from "@/components/docs/component-preview-mdx"
 import { ComponentSource } from "@/components/docs/component-source"
 import type { Metadata } from "next"
 
+const PREVIEW_SOURCES_PATH = join(process.cwd(), "lib/__generated__/preview-sources.json")
+
+async function loadPreviewSources(): Promise<Record<string, string>> {
+  try {
+    const raw = await readFile(PREVIEW_SOURCES_PATH, "utf-8")
+    return JSON.parse(raw)
+  } catch {
+    return {}
+  }
+}
+
 const CONTENT_DIR = join(process.cwd(), "content/docs/components")
 
 export async function generateStaticParams() {
@@ -66,17 +77,21 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   const source = await readFile(mdxPath, "utf-8")
   const toc = extractToc(source)
   const comp = getComponent(slug)
-  const registryData = await getRegistryFileContent(slug)
+  const [registryData, previewSources] = await Promise.all([
+    getRegistryFileContent(slug),
+    loadPreviewSources(),
+  ])
   const sourceCode = registryData?.code ?? ""
 
-  // Derive display title from slug
   const title = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
 
   const components = {
     ...mdxComponents,
-    Preview: ({ slug: s }: { slug: string }) => <ComponentPreviewWrapper slug={s} code={sourceCode} />,
+    Preview: ({ slug: s }: { slug: string }) => (
+      <ComponentPreviewWrapper slug={s} code={sourceCode} previewCode={previewSources[`${s}-demo`] ?? previewSources[s] ?? ""} />
+    ),
     ComponentPreview: ({ name }: { name: string }) => (
-      <ComponentPreviewMdx name={name} code={sourceCode} />
+      <ComponentPreviewMdx name={name} code={sourceCode} previewCode={previewSources[name] ?? ""} />
     ),
     ComponentSource: ({ name, title: t }: { name: string; title?: string }) => (
       <ComponentSource name={name} title={t} code={sourceCode} />
@@ -86,9 +101,9 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   }
 
   return (
-    <div className="flex gap-10">
+    <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_13rem] xl:gap-10">
       {/* MDX content */}
-      <article className="flex-1 min-w-0 max-w-none">
+      <article className="mx-auto w-full max-w-3xl min-w-0">
         {/* Mobile TOC */}
         {toc.length > 0 && (
           <div className="mb-6 xl:hidden">
@@ -131,7 +146,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
 
       {/* Desktop TOC */}
       {toc.length > 0 && (
-        <aside className="sticky top-20 hidden xl:block w-52 shrink-0 self-start">
+        <aside className="sticky top-20 hidden xl:block self-start">
           <DocsToc toc={toc} />
         </aside>
       )}
