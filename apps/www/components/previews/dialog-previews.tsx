@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  sizes,
 } from "@/components/ui/dialog"
 
 function DialogPreview() {
@@ -112,10 +113,10 @@ function DialogFullscreenPreview() {
 function DialogSizesPreview() {
   return (
     <div className="flex flex-wrap gap-2">
-      {(["sm", "default", "lg"] as const).map((size) => (
+      {Object.keys(sizes).map((size: string) => (
         <Dialog key={size}>
           <DialogTrigger render={<Button variant="outline" size="sm">{size}</Button>} />
-          <DialogContent className={size === "sm" ? "max-w-sm" : size === "lg" ? "max-w-2xl" : ""}>
+          <DialogContent size={size as keyof typeof sizes}>
             <DialogHeader>
               <DialogTitle>{size.toUpperCase()} dialog</DialogTitle>
               <DialogDescription>A {size} sized dialog window.</DialogDescription>

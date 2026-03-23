@@ -9,7 +9,7 @@ import { XIcon } from "lucide-react"
 import { cva } from "class-variance-authority"
 
 // sizes
-const sizes = {
+export const sizes = {
   xs: "sm:max-w-xs",
   sm: "sm:max-w-sm",
   md: "sm:max-w-md",
@@ -21,11 +21,10 @@ const sizes = {
   "5xl": "sm:max-w-5xl",
   "6xl": "sm:max-w-6xl",
   "7xl": "sm:max-w-7xl",
-  "8xl": "sm:max-w-[88rem]",
 }
 
 const dialogContentVariants = cva(
-  "flex flex-col fixed outline-0 z-50 border border-border bg-background p-6 shadow-lg shadow-black/5 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-xl sm:rounded-t-xl",
+  "flex flex-col fixed outline-0 z-50  bg-background p-6 shadow-lg shadow-black/5 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-xl sm:rounded-t-xl",
   {
     variants: {
       variant: {
