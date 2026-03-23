@@ -1,4 +1,5 @@
 import { CodeBlock } from "@/components/docs/code-block"
+import { PackageManagerTabs } from "@/components/docs/package-manager-tabs"
 import type { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
@@ -92,19 +93,19 @@ export default function DocsPage() {
             <p className="text-sm text-muted-foreground mb-2">
               1. Initialize baseui-cn in your project:
             </p>
-            <CodeBlock code="npx baseui-cn init" />
+            <PackageManagerTabs command="baseui-cn init" />
           </div>
           <div>
             <p className="text-sm text-muted-foreground mb-2">
               2. Add components:
             </p>
-            <CodeBlock code="npx baseui-cn add button drawer select" />
+            <PackageManagerTabs command="baseui-cn add button drawer select" />
           </div>
           <div>
             <p className="text-sm text-muted-foreground mb-2">
               3. Or add everything at once:
             </p>
-            <CodeBlock code="npx baseui-cn add --all" />
+            <PackageManagerTabs command="baseui-cn add --all" />
           </div>
           <div>
             <p className="text-sm text-muted-foreground mb-2">

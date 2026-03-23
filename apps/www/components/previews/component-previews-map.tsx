@@ -35,6 +35,11 @@ import { itemPreviewMap } from "@/components/previews/item-previews"
 import { menubarPreviewMap } from "@/components/previews/menubar-previews"
 import { navigationMenuPreviewMap } from "@/components/previews/navigation-menu-previews"
 import { spinnerPreviewMap } from "@/components/previews/spinner-previews"
+import { emptyStatePreviewMap } from "@/components/previews/empty-state-previews"
+import { togglePreviewMap } from "@/components/previews/toggle-previews"
+import { toggleGroupPreviewMap } from "@/components/previews/toggle-group-previews"
+import { previewCardPreviewMap } from "@/components/previews/preview-card-previews"
+import { numberFieldPreviewMap } from "@/components/previews/number-field-previews"
 
 export const previewMap: Record<string, ComponentType> = {
   ...buttonPreviewMap,
@@ -70,4 +75,9 @@ export const previewMap: Record<string, ComponentType> = {
   ...menubarPreviewMap,
   ...navigationMenuPreviewMap,
   ...spinnerPreviewMap,
+  ...emptyStatePreviewMap,
+  ...togglePreviewMap,
+  ...toggleGroupPreviewMap,
+  ...previewCardPreviewMap,
+  ...numberFieldPreviewMap,
 }

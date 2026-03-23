@@ -1,4 +1,5 @@
 import { CodeBlock } from "@/components/docs/code-block"
+import { PackageManagerTabs } from "@/components/docs/package-manager-tabs"
 import type { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
@@ -45,7 +46,7 @@ export default function InstallationPage() {
             Run this in your project root. It auto-detects your structure and sets everything up.
           </p>
         </div>
-        <CodeBlock code="npx baseui-cn init" />
+        <PackageManagerTabs command="baseui-cn init" />
         <div className="rounded-lg border border-border divide-y divide-border text-sm">
           {[
             ["Detects project", "Finds Next.js, src/ dir, App Router vs Pages Router automatically"],
@@ -70,17 +71,11 @@ export default function InstallationPage() {
             Each component is copied directly into your project. You own the code.
           </p>
         </div>
-        <CodeBlock code={`# Add one
-npx baseui-cn add button
-
-# Add several at once
-npx baseui-cn add dialog drawer select combobox
-
-# Interactive picker — choose what you want
-npx baseui-cn add
-
-# Add everything
-npx baseui-cn add --all`} />
+        <PackageManagerTabs command="baseui-cn add button" />
+        <p className="text-xs text-muted-foreground mt-2 mb-1">Add several at once:</p>
+        <PackageManagerTabs command="baseui-cn add dialog drawer select combobox" />
+        <p className="text-xs text-muted-foreground mt-2 mb-1">Or add everything:</p>
+        <PackageManagerTabs command="baseui-cn add --all" />
       </div>
 
       {/* Step 3 */}

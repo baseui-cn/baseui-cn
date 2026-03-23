@@ -24,11 +24,10 @@ export function DocsSidebar() {
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className={`flex items-center justify-between rounded-md px-3 py-1.5 text-sm transition-colors ${
-                          isActive
-                            ? "bg-accent text-foreground font-medium"
-                            : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                        }`}
+                        className={`flex items-center justify-between rounded-md px-3 py-1.5 text-sm transition-colors ${isActive
+                          ? "bg-accent text-foreground font-medium"
+                          : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                          }`}
                       >
                         {item.label}
                         {item.badge && (
@@ -40,9 +39,19 @@ export function DocsSidebar() {
                     </li>
                   )
                 })}
+
               </ul>
             </div>
           ))}
+          <div className="">
+            <Link
+              href="#"
+              className="flex items-center justify-between rounded-md px-3 py-1.5 text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-accent"
+            >
+              More coming soon...
+
+            </Link>
+          </div>
         </nav>
       </ScrollArea>
     </aside>

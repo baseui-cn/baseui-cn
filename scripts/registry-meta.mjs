@@ -115,8 +115,8 @@ export const componentMeta = {
   "empty-state": {
     description: "Empty state with icon, title, description, and action.",
     tags: ["block", "feedback"],
-    deps: [],
-    registryDeps: ["utils", "button"],
+    deps: ["class-variance-authority"],
+    registryDeps: ["utils"],
   },
   "field": {
     description: "A form field layout component with label, description, and error support.",
@@ -229,6 +229,34 @@ export const componentMeta = {
     deps: ["lucide-react"],
     registryDeps: ["utils"],
   },
+  "toggle": {
+    description: "A two-state button that can be toggled on or off.",
+    tags: ["form", "primitive", "interactive"],
+    baseUIPrimitive: "Toggle",
+    deps: ["@base-ui/react", "class-variance-authority"],
+    registryDeps: ["utils"],
+  },
+  "toggle-group": {
+    description: "A set of two-state buttons grouped together.",
+    tags: ["form", "primitive", "interactive"],
+    baseUIPrimitive: "ToggleGroup",
+    deps: ["@base-ui/react", "class-variance-authority"],
+    registryDeps: ["utils", "toggle"],
+  },
+  "preview-card": {
+    description: "A card that appears on hover to preview linked content.",
+    tags: ["overlay", "display"],
+    baseUIPrimitive: "PreviewCard",
+    deps: ["@base-ui/react"],
+    registryDeps: ["utils"],
+  },
+  "number-field": {
+    description: "A numeric input with increment and decrement buttons.",
+    tags: ["form", "primitive", "interactive"],
+    baseUIPrimitive: "NumberField",
+    deps: ["@base-ui/react", "class-variance-authority", "lucide-react"],
+    registryDeps: ["utils", "label"],
+  },
   "slider": {
     description: "An input where the user selects a value from within a given range.",
     tags: ["form", "interactive"],
@@ -266,7 +294,7 @@ export const componentMeta = {
     description: "A succinct message that is displayed temporarily.",
     tags: ["overlay", "feedback"],
     baseUIPrimitive: "Toast",
-    deps: ["@base-ui/react"],
+    deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils"],
   },
   "tooltip": {

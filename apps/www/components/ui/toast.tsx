@@ -3,6 +3,14 @@
 import * as React from "react"
 import { Toast as ToastPrimitive } from "@base-ui/react/toast"
 import { cn } from "@/lib/utils"
+import {
+  X,
+  CheckCircle2,
+  XCircle,
+  AlertTriangle,
+  Info,
+  Loader2,
+} from "lucide-react"
 
 type ToastPosition =
   | "top-left"
@@ -12,7 +20,13 @@ type ToastPosition =
   | "bottom-center"
   | "bottom-right"
 
-const ToastPositionContext = React.createContext<ToastPosition>("bottom-right")
+interface ToastContextValue {
+  position: ToastPosition
+}
+
+const ToastContext = React.createContext<ToastContextValue>({
+  position: "bottom-right",
+})
 
 function useToast() {
   return ToastPrimitive.useToastManager()
@@ -27,11 +41,19 @@ const viewportPositionStyles: Record<ToastPosition, string> = {
   "bottom-right": "bottom-4 right-4 sm:bottom-6 sm:right-6",
 }
 
+const typeIcon: Record<string, React.ReactNode> = {
+  success: <CheckCircle2 className="size-5 text-green-500 shrink-0" />,
+  error: <XCircle className="size-5 text-destructive shrink-0" />,
+  warning: <AlertTriangle className="size-5 text-yellow-500 shrink-0" />,
+  info: <Info className="size-5 text-blue-500 shrink-0" />,
+  loading: <Loader2 className="size-5 text-muted-foreground shrink-0 animate-spin" />,
+}
+
 function ToastViewport({
   className,
   ...props
 }: React.ComponentProps<typeof ToastPrimitive.Viewport>) {
-  const position = React.useContext(ToastPositionContext)
+  const { position } = React.useContext(ToastContext)
   return (
     <ToastPrimitive.Viewport
       className={cn(
@@ -44,12 +66,67 @@ function ToastViewport({
   )
 }
 
+const sharedRootClasses = [
+  "group",
+  "[--gap:0.75rem]",
+  "[--peek:0.75rem]",
+  "[--scale:calc(max(0,1-(var(--toast-index)*0.1)))]",
+  "[--shrink:calc(1-var(--scale))]",
+  "[--height:var(--toast-frontmost-height,var(--toast-height))]",
+  "absolute left-auto z-[calc(1000-var(--toast-index))] mr-0 w-full",
+  "h-[var(--height)]",
+  "rounded-lg border bg-background text-foreground shadow-lg select-none bg-clip-padding p-4",
+  "[transition:transform_0.5s_cubic-bezier(0.22,1,0.36,1),opacity_0.5s,height_0.15s]",
+  "data-[ending-style]:opacity-0",
+  "data-[limited]:opacity-0",
+  "data-[expanded]:h-[var(--toast-height)]",
+  "after:absolute after:left-0 after:h-[calc(var(--gap)+1px)] after:w-full after:content-['']",
+]
+
+const bottomClasses = [
+  ...sharedRootClasses,
+  "right-0 bottom-0 origin-bottom",
+  "after:top-full",
+  "[--offset-y:calc(var(--toast-offset-y)*-1+calc(var(--toast-index)*var(--gap)*-1)+var(--toast-swipe-movement-y))]",
+  "[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-(var(--toast-index)*var(--peek))-(var(--shrink)*var(--height))))_scale(var(--scale))]",
+  "data-[starting-style]:[transform:translateY(150%)]",
+  "[&[data-ending-style]:not([data-limited]):not([data-swipe-direction])]:[transform:translateY(150%)]",
+  "data-[expanded]:[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--offset-y)))]",
+  "data-[ending-style]:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))]",
+  "data-[expanded]:data-[ending-style]:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))]",
+  "data-[ending-style]:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))]",
+  "data-[expanded]:data-[ending-style]:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))]",
+  "data-[ending-style]:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))]",
+  "data-[expanded]:data-[ending-style]:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))]",
+  "data-[ending-style]:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))]",
+  "data-[expanded]:data-[ending-style]:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))]",
+]
+
+const topClasses = [
+  ...sharedRootClasses,
+  "right-0 top-0 origin-top",
+  "after:bottom-full",
+  "[--offset-y:calc(var(--toast-offset-y)+calc(var(--toast-index)*var(--gap))+var(--toast-swipe-movement-y))]",
+  "[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)+(var(--toast-index)*var(--peek))+(var(--shrink)*var(--height))))_scale(var(--scale))]",
+  "data-[starting-style]:[transform:translateY(-150%)]",
+  "[&[data-ending-style]:not([data-limited]):not([data-swipe-direction])]:[transform:translateY(-150%)]",
+  "data-[expanded]:[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--offset-y)))]",
+  "data-[ending-style]:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))]",
+  "data-[expanded]:data-[ending-style]:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))]",
+  "data-[ending-style]:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))]",
+  "data-[expanded]:data-[ending-style]:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))]",
+  "data-[ending-style]:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))]",
+  "data-[expanded]:data-[ending-style]:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))]",
+  "data-[ending-style]:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))]",
+  "data-[expanded]:data-[ending-style]:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))]",
+]
+
 function ToastRoot({
   toast,
   className,
   ...props
 }: ToastPrimitive.Root.Props) {
-  const position = React.useContext(ToastPositionContext)
+  const { position } = React.useContext(ToastContext)
   const isTop = position.startsWith("top")
 
   const typeStyles: Record<string, string> = {
@@ -67,49 +144,10 @@ function ToastRoot({
     <ToastPrimitive.Root
       toast={toast}
       className={cn(
-        "group",
-        "[--gap:0.5rem]",
-        "[--height:var(--toast-frontmost-height,var(--toast-height))]",
-        "[--scale:calc(max(0,1-(var(--toast-index)*0.05)))]",
-        "[--shrink:calc(1-var(--scale))]",
-        "absolute left-auto z-[calc(1000-var(--toast-index))] w-full",
-        isTop
-          ? "right-0 top-0 origin-top"
-          : "right-0 bottom-0 origin-bottom",
-        "h-(--height)",
-        "rounded-lg border bg-background text-foreground shadow-lg select-none",
+        isTop ? topClasses : bottomClasses,
         borderColor,
-        "[transition:transform_0.4s_cubic-bezier(0.22,1,0.36,1),opacity_0.4s,height_0.15s]",
-        isTop
-          ? "data-starting-style:transform-[translateY(-150%)]"
-          : "data-starting-style:transform-[translateY(150%)]",
-        "data-ending-style:opacity-0",
-        isTop
-          ? "[&[data-ending-style]:not([data-limited]):not([data-swipe-direction])]:transform-[translateY(-150%)]"
-          : "[&[data-ending-style]:not([data-limited]):not([data-swipe-direction])]:transform-[translateY(150%)]",
-        "data-limited:opacity-0",
-        "data-expanded:transform-[translateX(var(--toast-swipe-movement-x))_translateY(var(--offset-y))]",
-        "data-expanded:h-(--toast-height)",
-        "data-ending-style:data-[swipe-direction=right]:transform-[translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))]",
-        "data-ending-style:data-[swipe-direction=left]:transform-[translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))]",
-        "data-ending-style:data-[swipe-direction=down]:transform-[translateY(calc(var(--toast-swipe-movement-y)+150%))]",
-        "data-ending-style:data-[swipe-direction=up]:transform-[translateY(calc(var(--toast-swipe-movement-y)-150%))]",
-        "data-expanded:data-ending-style:data-[swipe-direction=right]:transform-[translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))]",
-        "data-expanded:data-ending-style:data-[swipe-direction=left]:transform-[translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))]",
-        "data-expanded:data-ending-style:data-[swipe-direction=down]:transform-[translateY(calc(var(--toast-swipe-movement-y)+150%))]",
-        "data-expanded:data-ending-style:data-[swipe-direction=up]:transform-[translateY(calc(var(--toast-swipe-movement-y)-150%))]",
-        "after:absolute after:left-0 after:h-[calc(var(--gap)+1px)] after:w-full after:content-['']",
-        isTop ? "after:bottom-full" : "after:top-full",
         className
       )}
-      style={{
-        ["--offset-y" as string]: isTop
-          ? "calc(var(--toast-offset-y) + var(--toast-index) * var(--gap) + var(--toast-swipe-movement-y))"
-          : "calc(var(--toast-offset-y) * -1 + var(--toast-index) * var(--gap) * -1 + var(--toast-swipe-movement-y))",
-        transform: isTop
-          ? "translateX(var(--toast-swipe-movement-x)) translateY(calc(var(--toast-swipe-movement-y) + var(--toast-index) * 0.5rem + var(--shrink) * var(--height))) scale(var(--scale))"
-          : "translateX(var(--toast-swipe-movement-x)) translateY(calc(var(--toast-swipe-movement-y) - var(--toast-index) * 0.5rem - var(--shrink) * var(--height))) scale(var(--scale))",
-      }}
       {...props}
     />
   )
@@ -122,10 +160,9 @@ function ToastContent({
   return (
     <ToastPrimitive.Content
       className={cn(
-        "flex items-start gap-3 overflow-hidden p-4",
-        "transition-opacity duration-250",
-        "data-behind:pointer-events-none data-behind:opacity-0",
-        "data-expanded:pointer-events-auto data-expanded:opacity-100",
+        "overflow-hidden transition-opacity [transition-duration:250ms]",
+        "data-[behind]:pointer-events-none data-[behind]:opacity-0",
+        "data-[expanded]:pointer-events-auto data-[expanded]:opacity-100",
         className
       )}
       {...props}
@@ -189,49 +226,63 @@ function ToastClose({
       aria-label="Close"
       {...props}
     >
-      {children ?? (
-        <svg
-          className="size-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M18 6 6 18" />
-          <path d="m6 6 12 12" />
-        </svg>
-      )}
+      {children ?? <X className="size-4" />}
     </ToastPrimitive.Close>
   )
 }
 
+function getToastIcon(toast: ToastPrimitive.Root.ToastObject): React.ReactNode {
+  if (toast.type && toast.type in typeIcon) {
+    return typeIcon[toast.type]
+  }
+  return null
+}
+
 function ToastList() {
   const { toasts } = ToastPrimitive.useToastManager()
-  return toasts.map((toast) => (
-    <ToastRoot key={toast.id} toast={toast}>
-      <ToastContent>
-        <div className="flex flex-1 flex-col gap-1">
-          <ToastTitle />
-          <ToastDescription />
-        </div>
-        <ToastClose />
-      </ToastContent>
-    </ToastRoot>
-  ))
+  return toasts.map((toast) => {
+    const icon = getToastIcon(toast)
+    return (
+      <ToastRoot key={toast.id} toast={toast}>
+        <ToastContent className="flex items-start gap-3">
+          {icon && <div className="mt-0.5">{icon}</div>}
+          <div className="flex flex-1 flex-col gap-1">
+            <ToastTitle />
+            <ToastDescription />
+            {toast.actionProps && (
+              <div className="mt-2">
+                <ToastAction />
+              </div>
+            )}
+          </div>
+          <ToastClose />
+        </ToastContent>
+      </ToastRoot>
+    )
+  })
+}
+
+interface ToastProviderProps {
+  children: React.ReactNode
+  position?: ToastPosition
+  limit?: number
+  toastManager?: ReturnType<typeof ToastPrimitive.createToastManager>
 }
 
 function ToastProvider({
   children,
   position = "bottom-right",
-}: {
-  children: React.ReactNode
-  position?: ToastPosition
-}) {
+  limit = 5,
+  toastManager,
+}: ToastProviderProps) {
+  const ctx = React.useMemo(() => ({ position }), [position])
+
   return (
-    <ToastPositionContext.Provider value={position}>
-      <ToastPrimitive.Provider>
+    <ToastContext.Provider value={ctx}>
+      <ToastPrimitive.Provider
+        limit={limit}
+        {...(toastManager ? { toastManager } : {})}
+      >
         {children}
         <ToastPrimitive.Portal>
           <ToastViewport>
@@ -239,9 +290,11 @@ function ToastProvider({
           </ToastViewport>
         </ToastPrimitive.Portal>
       </ToastPrimitive.Provider>
-    </ToastPositionContext.Provider>
+    </ToastContext.Provider>
   )
 }
+
+const createToastManager = ToastPrimitive.createToastManager
 
 export {
   ToastProvider,
@@ -252,6 +305,9 @@ export {
   ToastDescription,
   ToastAction,
   ToastClose,
+  ToastList,
   useToast,
+  createToastManager,
+  typeIcon,
 }
-export type { ToastPosition }
+export type { ToastPosition, ToastProviderProps }

@@ -5,6 +5,7 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
+  DialogBody,
   DialogClose,
   DialogContent,
   DialogDescription,
@@ -14,6 +15,8 @@ import {
   DialogTrigger,
   sizes,
 } from "@/components/ui/dialog"
+import { ScrollArea } from "../ui/scroll-area"
+import { ToastProvider, useToast } from "@/components/ui/toast"
 
 function DialogPreview() {
   return (
@@ -97,16 +100,24 @@ function DialogFullscreenPreview() {
   return (
     <Dialog>
       <DialogTrigger render={<Button variant="outline">Fullscreen</Button>} />
-      <DialogContent className="max-w-full h-full rounded-none m-0">
+      <DialogContent variant="fullscreen" noPadding>
         <DialogHeader>
           <DialogTitle>Fullscreen dialog</DialogTitle>
           <DialogDescription>Takes up the full viewport.</DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <DialogClose render={<Button variant="outline">Close</Button>} />
-        </DialogFooter>
+        <DialogBody className="p-0">
+          <ScrollArea className="h-[calc(100vh-10rem)]">
+            <div className="space-y-3 p-6">
+              {Array.from({ length: 100 }, (_, i) => (
+                <p key={i} className="text-sm text-muted-foreground">
+                  Paragraph {i + 1}: Lorem ipsum dolor sit amet consectetur.
+                </p>
+              ))}
+            </div>
+          </ScrollArea>
+        </DialogBody>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   )
 }
 
@@ -131,6 +142,51 @@ function DialogSizesPreview() {
   )
 }
 
+function DialogWithToastInner() {
+  const toastManager = useToast()
+
+  function handleConfirm() {
+    toastManager.add({
+      title: "Project deleted",
+      description: "The project has been permanently removed.",
+      type: "success",
+      timeout: 4000,
+    })
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button variant="outline">Delete project</Button>} />
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete project</DialogTitle>
+          <DialogDescription>
+            This will permanently delete the project. A toast will confirm the action.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose render={<Button variant="outline">Cancel</Button>} />
+          <DialogClose
+            render={
+              <Button variant="destructive" onClick={handleConfirm}>
+                Delete
+              </Button>
+            }
+          />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function DialogWithToastPreview() {
+  return (
+    <ToastProvider>
+      <DialogWithToastInner />
+    </ToastProvider>
+  )
+}
+
 export const dialogPreviewMap: Record<string, React.ComponentType> = {
   dialog: DialogPreview,
   "dialog-demo": DialogPreview,
@@ -139,4 +195,5 @@ export const dialogPreviewMap: Record<string, React.ComponentType> = {
   "dialog-scrollable": DialogScrollablePreview,
   "dialog-fullscreen": DialogFullscreenPreview,
   "dialog-sizes": DialogSizesPreview,
+  "dialog-with-toast": DialogWithToastPreview,
 }

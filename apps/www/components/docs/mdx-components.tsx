@@ -7,6 +7,7 @@ import { ComponentPreviewWrapper } from "@/components/docs/component-preview-wra
 import { CodeTabs } from "@/components/docs/code-tabs"
 import { ComponentSource } from "@/components/docs/component-source"
 import { ComponentPreviewMdx } from "@/components/docs/component-preview-mdx"
+import { PackageManagerTabs } from "@/components/docs/package-manager-tabs"
 import { TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 // ── Typography ─────────────────────────────────────────────────────────────
@@ -228,14 +229,7 @@ export function Steps({ className, children }: { className?: string; children: R
   return (
     <div
       className={cn(
-        "my-6 ml-3 border-l border-border pl-6 [counter-reset:step]",
-        "[&>h3]:before:[counter-increment:step]",
-        "[&>h3]:before:[content:counter(step)]",
-        "[&>h3]:before:absolute [&>h3]:before:-left-10.25",
-        "[&>h3]:before:flex [&>h3]:before:size-7 [&>h3]:before:items-center [&>h3]:before:justify-center",
-        "[&>h3]:before:rounded-full [&>h3]:before:border [&>h3]:before:border-border [&>h3]:before:bg-background",
-        "[&>h3]:before:text-xs [&>h3]:before:font-semibold [&>h3]:before:text-muted-foreground",
-        "[&>h3]:relative [&>h3]:mb-3 [&>h3]:mt-0",
+        "steps my-6 ml-3 border-l border-border pl-6 [counter-reset:step]",
         className
       )}
     >
@@ -244,12 +238,18 @@ export function Steps({ className, children }: { className?: string; children: R
   )
 }
 
-export function Step({ className, ...props }: React.ComponentProps<"h3">) {
+export function Step({ className, children, ...props }: React.ComponentProps<"div">) {
   return (
-    <h3
-      className={cn("font-semibold text-sm tracking-tight", className)}
+    <div
+      data-step
+      className={cn(
+        "step relative mb-3 mt-8 first:mt-0 font-semibold text-sm tracking-tight",
+        className
+      )}
       {...props}
-    />
+    >
+      {children}
+    </div>
   )
 }
 
@@ -353,6 +353,7 @@ export const mdxComponents = {
   Preview,
   InstallTabs,
   CodeBlock,
+  PackageManagerTabs,
   // CodeTabs pattern (used in existing hand-written MDX files)
   CodeTabs,
   TabsList,

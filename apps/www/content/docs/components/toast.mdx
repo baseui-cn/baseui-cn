@@ -23,9 +23,7 @@ links:
 
 <TabsContent value="cli">
 
-```bash
-npx baseui-cn add toast
-```
+<PackageManagerTabs command="baseui-cn add toast" />
 
 </TabsContent>
 
@@ -36,7 +34,7 @@ npx baseui-cn add toast
 <Step>Install dependencies</Step>
 
 ```bash
-npm install @base-ui/react
+npm install @base-ui/react lucide-react
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
@@ -95,19 +93,19 @@ function MyComponent() {
 
 ### Variants
 
-Use the `type` property to style toasts with semantic colors.
+Use the `type` property to show toasts with icons and semantic border colors. Supports `success`, `error`, `warning`, and `info`.
 
 <ComponentPreview name="toast-variants" />
 
-### With action
+### With action (undo)
 
-Add an action button inside the toast using `actionProps`.
+Add an action button using `actionProps`. The undo pattern closes the original toast and shows a confirmation.
 
 <ComponentPreview name="toast-with-action" />
 
 ### Promise
 
-Use `toastManager.promise()` to show loading, success, and error states for async operations.
+Use `toastManager.promise()` to show a loading spinner, then success or error states. The `loading` type displays a `Loader2` icon.
 
 <ComponentPreview name="toast-promise" />
 
@@ -116,6 +114,12 @@ Use `toastManager.promise()` to show loading, success, and error states for asyn
 Pass custom data to toasts via the `data` property.
 
 <ComponentPreview name="toast-custom-data" />
+
+### Toast from drawer
+
+Open a drawer, perform an action that triggers a toast. Closing the toast does **not** close the drawer — they use independent overlay systems.
+
+<ComponentPreview name="toast-from-drawer" />
 
 ### Positions
 
@@ -136,13 +140,15 @@ Control where toasts appear on screen using the `position` prop on `ToastProvide
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `position` | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `"bottom-right"` | Where toasts appear on screen |
+| `limit` | `number` | `5` | Max visible toasts. Excess toasts are stacked behind and animate out with `data-limited` |
+| `toastManager` | `ToastManager` | — | Optional external toast manager from `createToastManager()` |
 
 ### useToast
 
 Returns the toast manager instance from `Toast.useToastManager()`.
 
 ```tsx
-const { add, promise, toasts } = useToast()
+const { add, promise, close, toasts } = useToast()
 ```
 
 ### add(options)
@@ -151,15 +157,15 @@ const { add, promise, toasts } = useToast()
 |------|------|-------------|
 | `title` | `string` | Toast heading |
 | `description` | `string` | Supporting text |
-| `type` | `"success" \| "error" \| "warning" \| "info"` | Color variant |
+| `type` | `"success" \| "error" \| "warning" \| "info" \| "loading"` | Icon and color variant |
 | `timeout` | `number` | Auto-dismiss timeout in ms |
-| `actionProps` | `object` | Props for the action button |
+| `actionProps` | `object` | Props for the action button (e.g. `{ children: "Undo", onClick: fn }`) |
 | `data` | `object` | Custom data attached to the toast |
 
 ### promise(promise, options)
 
 | Prop | Type | Description |
 |------|------|-------------|
-| `loading` | `string` | Message shown while loading |
-| `success` | `string \| (data) => string` | Message on success |
-| `error` | `string \| (err) => string` | Message on error |
+| `loading` | `string \| object` | Message or `{ title, description, type }` shown while loading |
+| `success` | `string \| (data) => string \| object` | Message on success |
+| `error` | `string \| (err) => string \| object` | Message on error |

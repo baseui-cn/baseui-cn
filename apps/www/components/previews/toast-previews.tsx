@@ -1,10 +1,24 @@
 "use client"
 
 import * as React from "react"
+import { Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { ToastProvider, useToast } from "@/components/ui/toast"
 import type { ToastPosition } from "@/components/ui/toast"
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from "@/components/ui/drawer"
+import { Input } from "@/components/ui/input"
+
+/* ─── Default demo ─── */
 
 function ToastDemo() {
   const { add } = useToast()
@@ -73,26 +87,68 @@ function ToastPreview() {
   )
 }
 
-function ToastWithActionDemo() {
+/* ─── Variants ─── */
+
+function ToastVariantsDemo() {
   const { add } = useToast()
+  const variants = [
+    { type: undefined, label: "Default", title: "Info", desc: "This is a default toast." },
+    { type: "success" as const, label: "Success", title: "Success!", desc: "Operation completed." },
+    { type: "error" as const, label: "Error", title: "Error", desc: "Something went wrong." },
+    { type: "warning" as const, label: "Warning", title: "Warning", desc: "Please be careful." },
+    { type: "info" as const, label: "Info", title: "Heads up", desc: "Here is some information." },
+  ]
   return (
-    <Button
-      variant="outline"
-      onClick={() =>
-        add({
-          title: "Message sent",
-          description: "Your message has been delivered.",
-          timeout: 5000,
-          actionProps: {
-            children: "Undo",
-            onClick: () => {
-              /* undo action */
-            },
-          },
-        })
-      }
-    >
-      Toast with action
+    <div className="flex flex-wrap gap-2">
+      {variants.map((v) => (
+        <Button
+          key={v.label}
+          variant="outline"
+          onClick={() => add({ title: v.title, description: v.desc, type: v.type, timeout: 3000 })}
+        >
+          {v.label}
+        </Button>
+      ))}
+    </div>
+  )
+}
+
+function ToastVariantsPreview() {
+  return (
+    <ToastProvider>
+      <ToastVariantsDemo />
+    </ToastProvider>
+  )
+}
+
+/* ─── With action (undo) ─── */
+
+function ToastActionDemo() {
+  const toastManager = useToast()
+
+  function performAction() {
+    const id = toastManager.add({
+      title: "Item deleted",
+      description: "The item has been removed.",
+      type: "success",
+      timeout: 5000,
+      actionProps: {
+        children: "Undo",
+        onClick() {
+          toastManager.close(id)
+          toastManager.add({
+            title: "Restored",
+            description: "The item has been restored.",
+            timeout: 3000,
+          })
+        },
+      },
+    })
+  }
+
+  return (
+    <Button variant="outline" onClick={performAction}>
+      Delete item
     </Button>
   )
 }
@@ -100,10 +156,12 @@ function ToastWithActionDemo() {
 function ToastWithActionPreview() {
   return (
     <ToastProvider>
-      <ToastWithActionDemo />
+      <ToastActionDemo />
     </ToastProvider>
   )
 }
+
+/* ─── Promise with Loader2 ─── */
 
 function ToastPromiseDemo() {
   const toastManager = useToast()
@@ -120,13 +178,24 @@ function ToastPromiseDemo() {
             }, 2000)
           }),
           {
-            loading: "Loading data…",
-            success: (data: string) => `${data} successfully.`,
-            error: (err: Error) => `Error: ${err.message}`,
+            loading: {
+              title: "Loading...",
+              description: "Please wait while we fetch your data.",
+              type: "loading",
+            },
+            success: (data: string) => ({
+              title: "Done!",
+              description: `${data} successfully.`,
+            }),
+            error: (err: Error) => ({
+              title: "Error",
+              description: err.message,
+            }),
           }
         )
       }
     >
+      <Loader2 className="mr-2 size-4" />
       Run promise
     </Button>
   )
@@ -139,6 +208,8 @@ function ToastPromisePreview() {
     </ToastProvider>
   )
 }
+
+/* ─── Custom data ─── */
 
 function ToastCustomDemo() {
   const toastManager = useToast()
@@ -166,36 +237,62 @@ function ToastCustomPreview() {
   )
 }
 
-function ToastVariantsDemo() {
-  const { add } = useToast()
-  const variants = [
-    { type: undefined, label: "Default", title: "Info", desc: "This is a default toast." },
-    { type: "success" as const, label: "Success", title: "Success!", desc: "Operation completed." },
-    { type: "error" as const, label: "Error", title: "Error", desc: "Something went wrong." },
-    { type: "warning" as const, label: "Warning", title: "Warning", desc: "Please be careful." },
-  ]
+/* ─── Toast from Drawer ─── */
+
+function ToastFromDrawerDemo() {
+  const toastManager = useToast()
+  const [name, setName] = React.useState("Aria Chen")
+
+  function handleSave() {
+    toastManager.add({
+      title: "Profile updated",
+      description: `Name changed to "${name}".`,
+      type: "success",
+      timeout: 4000,
+    })
+  }
+
   return (
-    <div className="flex flex-wrap gap-2">
-      {variants.map((v) => (
-        <Button
-          key={v.label}
-          variant="outline"
-          onClick={() => add({ title: v.title, description: v.desc, type: v.type, timeout: 3000 })}
-        >
-          {v.label}
-        </Button>
-      ))}
-    </div>
+    <Drawer>
+      <DrawerTrigger render={<Button variant="outline">Open drawer</Button>} />
+      <DrawerContent side="right">
+        <DrawerHeader>
+          <DrawerTitle>Edit profile</DrawerTitle>
+          <DrawerDescription>
+            Update your name and save. Closing the toast won&apos;t close the drawer.
+          </DrawerDescription>
+        </DrawerHeader>
+        <div className="p-6 flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="drawer-name" className="text-sm font-medium">
+              Display name
+            </label>
+            <Input
+              id="drawer-name"
+              value={name}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+              placeholder="Enter your name"
+            />
+          </div>
+          <Button onClick={handleSave}>Save changes</Button>
+        </div>
+        <DrawerFooter>
+          <DrawerClose render={<Button variant="outline">Close drawer</Button>} />
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   )
 }
 
-function ToastVariantsPreview() {
+function ToastFromDrawerPreview() {
   return (
     <ToastProvider>
-      <ToastVariantsDemo />
+      <ToastFromDrawerDemo />
     </ToastProvider>
   )
 }
+
+/* ─── Positions ─── */
 
 function ToastPositionsDemo() {
   const positions: { pos: ToastPosition; label: string }[] = [
@@ -312,6 +409,7 @@ export const toastPreviewMap: Record<string, React.ComponentType> = {
   "toast-promise": ToastPromisePreview,
   "toast-custom-data": ToastCustomPreview,
   "toast-variants": ToastVariantsPreview,
+  "toast-from-drawer": ToastFromDrawerPreview,
   "toast-positions": ToastPositionsDemo,
   "toast-top-left": ToastTopLeftPreview,
   "toast-top-center": ToastTopCenterPreview,

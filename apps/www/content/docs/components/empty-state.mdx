@@ -17,9 +17,7 @@ component: true
 
 <TabsContent value="cli">
 
-```bash
-npx baseui-cn add empty-state
-```
+<PackageManagerTabs command="baseui-cn add empty-state" />
 
 </TabsContent>
 
@@ -30,7 +28,7 @@ npx baseui-cn add empty-state
 <Step>Install dependencies</Step>
 
 ```bash
-npm install @base-ui/react
+npm install class-variance-authority
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
@@ -45,22 +43,40 @@ npm install @base-ui/react
 
 </CodeTabs>
 
-## Props
+## Usage
 
-<PropsTable>
-  <PropRow name="title" type="string" required>
-    Main heading
-  </PropRow>
-  <PropRow name="description" type="string">
-    Supporting text
-  </PropRow>
-  <PropRow name="icon" type="React.ReactNode">
-    Icon above the title
-  </PropRow>
-  <PropRow name="action" type="React.ReactNode">
-    CTA button or link
-  </PropRow>
-  <PropRow name="size" type=""sm" | "md" | "lg"" defaultValue=""md"">
-    Controls padding and text size
-  </PropRow>
-</PropsTable>
+```tsx
+import {
+  EmptyState,
+  EmptyStateHeader,
+  EmptyStateMedia,
+  EmptyStateTitle,
+  EmptyStateDescription,
+  EmptyStateContent,
+} from "@/components/ui/empty-state"
+```
+
+```tsx
+<EmptyState>
+  <EmptyStateHeader>
+    <EmptyStateMedia variant="icon">
+      <FolderIcon />
+    </EmptyStateMedia>
+    <EmptyStateTitle>No projects yet</EmptyStateTitle>
+    <EmptyStateDescription>
+      Create your first project to get started.
+    </EmptyStateDescription>
+  </EmptyStateHeader>
+  <EmptyStateContent>
+    <Button>Create project</Button>
+  </EmptyStateContent>
+</EmptyState>
+```
+
+## Examples
+
+### With outline border
+
+Use `className="border border-dashed"` for a dashed container style.
+
+<ComponentPreview name="empty-state-outline" />

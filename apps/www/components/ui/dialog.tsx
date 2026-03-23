@@ -24,7 +24,7 @@ export const sizes = {
 }
 
 const dialogContentVariants = cva(
-  "flex flex-col fixed outline-0 z-50  bg-background p-6 shadow-lg shadow-black/5 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-xl sm:rounded-t-xl",
+  "flex flex-col fixed outline-0 z-50 border border-border bg-background p-6 shadow-lg shadow-black/5 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-xl sm:rounded-t-xl",
   {
     variants: {
       variant: {
@@ -72,10 +72,12 @@ function DialogContent({
   children,
   showCloseButton = true,
   noPadding = true,
+  variant = "default",
   size = "lg",
   ...props
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean
+  variant?: "default" | "fullscreen"
   size?: keyof typeof sizes
   noPadding?: boolean
 }) {
@@ -85,10 +87,10 @@ function DialogContent({
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(
-          dialogContentVariants({ variant: "default" }),
-          className,
-          sizes[size],
-          noPadding && "p-0"
+          dialogContentVariants({ variant }),
+          variant !== "fullscreen" && sizes[size],
+          noPadding && "p-0",
+          className
         )}
         {...props}
       >

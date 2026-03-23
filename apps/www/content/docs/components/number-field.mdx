@@ -1,0 +1,112 @@
+---
+title: Number Field
+description: A numeric input with increment and decrement buttons.
+component: true
+links:
+  doc: https://base-ui.com/react/components/number-field
+---
+
+<ComponentPreview name="number-field-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+<PackageManagerTabs command="baseui-cn add number-field" />
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react class-variance-authority lucide-react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="number-field" title="components/ui/number-field.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  NumberField,
+  NumberFieldGroup,
+  NumberFieldDecrement,
+  NumberFieldIncrement,
+  NumberFieldInput,
+  NumberFieldScrubArea,
+} from "@/components/ui/number-field"
+```
+
+```tsx
+<NumberField defaultValue={25} min={0} max={100}>
+  <NumberFieldScrubArea label="Amount" />
+  <NumberFieldGroup>
+    <NumberFieldDecrement />
+    <NumberFieldInput />
+    <NumberFieldIncrement />
+  </NumberFieldGroup>
+</NumberField>
+```
+
+## Examples
+
+### Basic
+
+A number field without a label or constraints.
+
+<ComponentPreview name="number-field-basic" />
+
+### Sizes
+
+Available in `sm`, `default`, and `lg` sizes.
+
+<ComponentPreview name="number-field-sizes" />
+
+### Min and max
+
+Use `min` and `max` to constrain the value range.
+
+<ComponentPreview name="number-field-min-max" />
+
+### Step
+
+Use `step` to control the increment amount. Fractional steps are supported.
+
+<ComponentPreview name="number-field-step" />
+
+### Currency format
+
+Use the `format` prop with `{ style: "currency", currency: "USD" }` for formatted display.
+
+<ComponentPreview name="number-field-format" />
+
+### Spinner buttons
+
+A compact variant with stacked chevron up/down buttons on the right side.
+
+<ComponentPreview name="number-field-with-spinner-buttons" />
+
+### Disabled
+
+<ComponentPreview name="number-field-disabled" />

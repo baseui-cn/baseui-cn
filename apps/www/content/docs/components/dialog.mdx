@@ -19,9 +19,7 @@ links:
 
 <TabsContent value="cli">
 
-```bash
-npx baseui-cn add dialog
-```
+<PackageManagerTabs command="baseui-cn add dialog" />
 
 </TabsContent>
 
@@ -89,7 +87,7 @@ A standard dialog.
 
 ### Sizes
 
-Dialog in xs through 8xl sizes.
+Dialog in xs through 7xl sizes.
 
 <ComponentPreview name="dialog-sizes" />
 
@@ -110,3 +108,9 @@ Use `showCloseButton={false}` to hide the X button.
 A dialog with scrollable content.
 
 <ComponentPreview name="dialog-scrollable" />
+
+### With toast
+
+Confirm an action in the dialog and show a toast notification. The dialog and toast use independent overlay systems, so they don't interfere with each other.
+
+<ComponentPreview name="dialog-with-toast" />

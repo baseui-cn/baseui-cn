@@ -17,6 +17,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Field, FieldContent, FieldLabel } from "../ui/field"
+import { ToastProvider, useToast } from "@/components/ui/toast"
 
 function DrawerPreview() {
   return (
@@ -140,6 +141,62 @@ function DrawerNestedSelectPreview() {
   )
 }
 
+function DrawerWithToastInner() {
+  const [name, setName] = React.useState("Aria Chen")
+  const toastManager = useToast()
+
+  function handleSave() {
+    toastManager.add({
+      title: "Profile updated",
+      description: `Display name changed to "${name}".`,
+      type: "success",
+      timeout: 4000,
+    })
+  }
+
+  return (
+    <Drawer>
+      <DrawerTrigger render={<Button variant="outline">Open drawer</Button>} />
+      <DrawerContent side="right">
+        <DrawerHeader>
+          <DrawerTitle>Edit profile</DrawerTitle>
+          <DrawerDescription>
+            Save to trigger a toast. Closing the toast won&apos;t close this drawer.
+          </DrawerDescription>
+        </DrawerHeader>
+        <div className="flex-1 px-6 space-y-4">
+          <Field>
+            <FieldLabel>Display name</FieldLabel>
+            <FieldContent>
+              <Input
+                value={name}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                placeholder="Enter your name"
+              />
+            </FieldContent>
+          </Field>
+          <Button onClick={handleSave} className="w-full">
+            Save changes
+          </Button>
+        </div>
+        <DrawerFooter>
+          <DrawerClose
+            render={<Button variant="outline" className="w-full">Close drawer</Button>}
+          />
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  )
+}
+
+function DrawerWithToastPreview() {
+  return (
+    <ToastProvider>
+      <DrawerWithToastInner />
+    </ToastProvider>
+  )
+}
+
 export const drawerPreviewMap: Record<string, React.ComponentType> = {
   drawer: DrawerPreview,
   "drawer-demo": DrawerPreview,
@@ -148,4 +205,5 @@ export const drawerPreviewMap: Record<string, React.ComponentType> = {
   "drawer-bottom-sheet": DrawerBottomSheetPreview,
   "drawer-with-form": DrawerWithFormPreview,
   "drawer-nested-select": DrawerNestedSelectPreview,
+  "drawer-with-toast": DrawerWithToastPreview,
 }

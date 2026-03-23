@@ -1,0 +1,82 @@
+---
+title: Toggle
+description: A two-state button that can be toggled on or off.
+component: true
+links:
+  doc: https://base-ui.com/react/components/toggle
+---
+
+<ComponentPreview name="toggle-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+<PackageManagerTabs command="baseui-cn add toggle" />
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react class-variance-authority
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="toggle" title="components/ui/toggle.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Toggle } from "@/components/ui/toggle"
+```
+
+```tsx
+<Toggle aria-label="Toggle bold">
+  <Bold className="size-4" />
+</Toggle>
+```
+
+## Examples
+
+### With text
+
+A toggle with an icon and text label.
+
+<ComponentPreview name="toggle-with-text" />
+
+### Outline
+
+Use `variant="outline"` for a bordered style.
+
+<ComponentPreview name="toggle-outline" />
+
+### Sizes
+
+Available in `sm`, `default`, and `lg` sizes.
+
+<ComponentPreview name="toggle-sizes" />
+
+### Disabled
+
+<ComponentPreview name="toggle-disabled" />

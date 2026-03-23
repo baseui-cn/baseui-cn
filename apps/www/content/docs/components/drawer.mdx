@@ -19,9 +19,7 @@ links:
 
 <TabsContent value="cli">
 
-```bash
-npx baseui-cn add drawer
-```
+<PackageManagerTabs command="baseui-cn add drawer" />
 
 </TabsContent>
 
@@ -111,3 +109,9 @@ A drawer containing a form.
 Select inside a Drawer — no z-index issues.
 
 <ComponentPreview name="drawer-nested-select" />
+
+### With toast
+
+Perform an action inside the drawer and show a toast. Because Base UI uses a shared portal system, closing the toast does **not** close the drawer.
+
+<ComponentPreview name="drawer-with-toast" />

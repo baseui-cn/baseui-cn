@@ -1,0 +1,28 @@
+{
+  "name": "preview-card",
+  "type": "component",
+  "description": "A card that appears on hover to preview linked content.",
+  "version": "0.1.0",
+  "baseUIVersion": ">=1.3.0",
+  "files": [
+    {
+      "path": "preview-card.tsx",
+      "type": "component",
+      "content": "\"use client\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\nimport { PreviewCard as PreviewCardPrimitive } from \"@base-ui/react/preview-card\"\r\n\r\nfunction PreviewCard({ ...props }: PreviewCardPrimitive.Root.Props) {\r\n    return <PreviewCardPrimitive.Root data-slot=\"hover-card\" {...props} />\r\n}\r\n\r\nfunction PreviewCardTrigger({ ...props }: PreviewCardPrimitive.Trigger.Props) {\r\n    return (\r\n        <PreviewCardPrimitive.Trigger data-slot=\"hover-card-trigger\" {...props} />\r\n    )\r\n}\r\n\r\nfunction PreviewCardContent({\r\n    className,\r\n    side = \"bottom\",\r\n    sideOffset = 4,\r\n    align = \"center\",\r\n    alignOffset = 4,\r\n    ...props\r\n}: PreviewCardPrimitive.Popup.Props &\r\n    Pick<\r\n        PreviewCardPrimitive.Positioner.Props,\r\n        \"align\" | \"alignOffset\" | \"side\" | \"sideOffset\"\r\n    >) {\r\n    return (\r\n        <PreviewCardPrimitive.Portal data-slot=\"hover-card-portal\">\r\n            <PreviewCardPrimitive.Positioner\r\n                align={align}\r\n                alignOffset={alignOffset}\r\n                side={side}\r\n                sideOffset={sideOffset}\r\n                className=\"isolate z-50\"\r\n            >\r\n                <PreviewCardPrimitive.Popup\r\n                    data-slot=\"hover-card-content\"\r\n                    className={cn(\r\n                        \"z-50 w-64 origin-(--transform-origin) rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95\",\r\n                        className\r\n                    )}\r\n                    {...props}\r\n                />\r\n            </PreviewCardPrimitive.Positioner>\r\n        </PreviewCardPrimitive.Portal>\r\n    )\r\n}\r\n\r\nexport { PreviewCard, PreviewCardTrigger, PreviewCardContent }\r\n"
+    }
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react"
+    ],
+    "peer": []
+  },
+  "registryDependencies": [
+    "utils"
+  ],
+  "tags": [
+    "overlay",
+    "display"
+  ],
+  "baseUIPrimitive": "PreviewCard"
+}
