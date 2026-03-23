@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { trackCopyCode } from "@/lib/events"
 
 interface ComponentPreviewProps {
   preview: React.ReactNode
@@ -17,6 +18,7 @@ export function ComponentPreview({ preview, code, className }: ComponentPreviewP
     navigator.clipboard.writeText(code)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+    trackCopyCode("preview")
   }
 
   return (

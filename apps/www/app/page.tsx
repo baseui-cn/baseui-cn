@@ -4,17 +4,17 @@ import { SiteHeader } from "@/components/shared/site-header"
 
 export const dynamic = "force-dynamic"
 import { CopyButton } from "@/components/shared/copy-button"
+import { ComponentsGrid } from "@/components/shared/components-grid"
+import { TrackCTALink } from "@/components/shared/track-page-view"
 import { components } from "@/lib/registry"
+import { siteConfig } from "@/lib/site-config"
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: "https://baseui-cn.com",
+    canonical: siteConfig.url,
   },
-  title: "baseui-cn — Base UI components. One command install.",
-  description:
-    "A Base UI-first open component registry. 36 components " +
-    "built exclusively on @base-ui/react. shadcn-style install. " +
-    "No Vaul. No Radix. Tailwind styled. You own the code.",
+  title: `${siteConfig.name} — Base UI components. One command install.`,
+  description: siteConfig.description,
 }
 
 const componentCount = components.filter((c) => c.type === "component").length
@@ -70,6 +70,17 @@ export default function HomePage() {
                     />
                   </svg>
                 </Link>
+                <TrackCTALink
+                  cta="star_github"
+                  href={siteConfig.github}
+                  external
+                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-3 text-sm font-medium hover:bg-accent transition-colors"
+                >
+                  <svg className="h-4 w-4" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                  </svg>
+                  Star on GitHub
+                </TrackCTALink>
               </div>
 
               {/* Stats */}
@@ -92,11 +103,89 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── No more broken interactions ─────────────────────── */}
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+            <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">
+              No more broken interactions
+            </h2>
+            <p className="text-2xl font-semibold text-foreground mb-2 max-w-2xl">
+              One overlay system. Everything composes.
+            </p>
+            <p className="text-muted-foreground mb-10 max-w-xl">
+              shadcn mixes Radix UI, Vaul, Sonner, and cmdk — different portal and focus systems that conflict when composed. baseui-cn uses Base UI exclusively, so overlays just work together.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Before */}
+              <div className="rounded-lg border border-border p-6">
+                <div className="mb-4 flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-destructive/10 text-destructive text-xs">
+                    <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none">
+                      <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                  <span className="text-sm font-medium text-muted-foreground">Mixed libraries (Radix + Vaul + Sonner)</span>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    "Select inside Drawer breaks focus",
+                    "Closing toast dismisses the Drawer",
+                    "Combobox portal renders behind overlay",
+                    "z-index hacks between libraries",
+                  ].map((text) => (
+                    <div key={text} className="flex items-start gap-2.5">
+                      <span className="mt-0.5 text-destructive/70 shrink-0">
+                        <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none">
+                          <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        </svg>
+                      </span>
+                      <span className="text-sm text-muted-foreground">{text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* After */}
+              <div className="rounded-lg border border-foreground/20 bg-foreground/2 p-6">
+                <div className="mb-4 flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-green-500/10 text-green-500 text-xs">
+                    <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none">
+                      <path d="M3 8.5l3.5 3.5L13 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="text-sm font-medium text-foreground">baseui-cn (Base UI only)</span>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    "Select inside Drawer works correctly",
+                    "Close toast — Drawer stays open",
+                    "Combobox inside any overlay, no workaround",
+                    "One portal system, zero z-index conflicts",
+                  ].map((text) => (
+                    <div key={text} className="flex items-start gap-2.5">
+                      <span className="mt-0.5 text-green-500 shrink-0">
+                        <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8.5l3.5 3.5L13 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </span>
+                      <span className="text-sm text-foreground">{text}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-5 text-xs font-medium text-muted-foreground">
+                  Built for real apps, not just demos.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── Component preview strip ──────────────────────────── */}
         <section className="border-b border-border overflow-hidden py-10 relative">
           {/* Fade edges */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-linear-to-r from-background to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-linear-to-l from-background to-transparent" />
 
           <div className="flex animate-marquee w-max">
             {[
@@ -383,17 +472,17 @@ export default function HomePage() {
               {[
                 {
                   title: "Single primitive layer",
-                  body: "Every interactive component — dialogs, drawers, selects, tooltips, menus — is built on Base UI. One library, one overlay system, one portal. No conflicts when composing.",
+                  body: "Every interactive component — dialogs, drawers, selects, tooltips, toasts, menus — is built on Base UI. One library, one overlay system, one portal. No conflicts when composing.",
                   icon: "⬡",
                 },
                 {
-                  title: "Stable Drawer built in",
-                  body: "Base UI's Drawer became stable in v1.3.0. It uses the same portal system as Select, Combobox, and Tooltip — so nesting floating components inside a Drawer just works.",
+                  title: "Drawer & Toast without workarounds",
+                  body: "Base UI Drawer (stable v1.3.0) and Toast share the same portal system as Select, Combobox, and Dialog. Nest them freely — no Vaul, no Sonner, no event conflicts.",
                   icon: "◫",
                 },
                 {
-                  title: "Your code, your rules",
-                  body: "Components are copied directly into your project. No runtime library to update, no breaking changes to absorb. Edit the source, change the styles, make it yours.",
+                  title: "Your code, fewer deps",
+                  body: "Components are copied directly into your project — one primitive library instead of four or five. No Radix, no Vaul, no Sonner, no cmdk. Lighter installs, smaller bundles, one API to learn.",
                   icon: "◻",
                 },
               ].map((item) => (
@@ -442,6 +531,19 @@ export default function HomePage() {
                     </div>
                   </div>
                 ))}
+
+                <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
+                  <span className="font-medium text-foreground/60">Works with</span>
+                  <span>Next.js</span>
+                  <span className="text-border">·</span>
+                  <span>Vite</span>
+                  <span className="text-border">·</span>
+                  <span>Remix</span>
+                  <span className="text-border">·</span>
+                  <span>Astro</span>
+                  <span className="text-border">·</span>
+                  <span>any React project</span>
+                </div>
               </div>
 
               {/* Terminal mockup */}
@@ -489,52 +591,10 @@ export default function HomePage() {
                 href="/docs/components/button"
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                View all →
+                View all docs →
               </Link>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-border">
-              {components.map((comp) => (
-                <Link
-                  key={comp.name}
-                  href={`/docs/components/${comp.name}`}
-                  className="group bg-background p-4 hover:bg-accent/50 transition-colors"
-                >
-                  {comp.name === "app-shell" && (
-                    <div className="mb-3 flex h-[80px] w-full overflow-hidden rounded border border-border">
-                      {/* Mini sidebar */}
-                      <div className="flex w-[22%] flex-col gap-1.5 border-r border-border bg-muted/60 p-1.5">
-                        <div className="h-2 w-full rounded-sm bg-muted-foreground/30" />
-                        <div className="h-1.5 w-full rounded-sm bg-muted-foreground/20" />
-                        <div className="h-1.5 w-full rounded-sm bg-muted-foreground/20" />
-                        <div className="h-1.5 w-3/4 rounded-sm bg-muted-foreground/20" />
-                      </div>
-                      {/* Main content */}
-                      <div className="flex flex-1 flex-col gap-1.5 p-2">
-                        <div className="h-2 w-2/3 rounded-sm bg-muted-foreground/25" />
-                        <div className="h-1.5 w-full rounded-sm bg-muted-foreground/15" />
-                        <div className="h-1.5 w-5/6 rounded-sm bg-muted-foreground/15" />
-                      </div>
-                    </div>
-                  )}
-                  <div className="flex items-start justify-between gap-2">
-                    <span className="font-mono text-sm text-foreground">{comp.name}</span>
-                    {comp.badge && (
-                      <span className="shrink-0 text-[9px] font-semibold bg-foreground text-background rounded px-1 py-0.5 leading-none">
-                        {comp.badge}
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                    {comp.description}
-                  </p>
-                  {comp.baseUIPrimitive && (
-                    <p className="mt-2 text-[10px] font-mono text-muted-foreground/40">
-                      {comp.baseUIPrimitive}
-                    </p>
-                  )}
-                </Link>
-              ))}
-            </div>
+            <ComponentsGrid components={components} />
           </div>
         </section>
 
@@ -660,7 +720,7 @@ export default function HomePage() {
               Base UI
             </a>
             <a
-              href="https://github.com/baseui-cn/baseui-cn"
+              href={siteConfig.github}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"

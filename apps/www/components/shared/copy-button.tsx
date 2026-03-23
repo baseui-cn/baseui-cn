@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { trackCopyCode } from "@/lib/events"
 
 export function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = React.useState(false)
@@ -9,6 +10,7 @@ export function CopyButton({ text }: { text: string }) {
     navigator.clipboard.writeText(text)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+    trackCopyCode("code_block")
   }
 
   return (

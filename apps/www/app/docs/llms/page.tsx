@@ -1,4 +1,5 @@
 import { CodeBlock } from "@/components/docs/code-block"
+import { siteConfig } from "@/lib/site-config"
 import type { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
@@ -109,7 +110,7 @@ Rules:
         <h2 className="text-base font-semibold">Manifest URLs</h2>
         <div className="rounded-lg border border-border divide-y divide-border text-sm">
           {[
-            ["baseui-cn manifest", "https://baseui-cn.com/llms.txt"],
+            ["baseui-cn manifest", `${siteConfig.url}/llms.txt`],
             ["Base UI manifest", "https://base-ui.com/llms.txt"],
           ].map(([label, url]) => (
             <div key={label} className="flex items-center gap-4 px-4 py-3">

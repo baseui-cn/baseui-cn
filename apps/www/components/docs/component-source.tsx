@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { trackCopyCode, trackComponentSourceExpand } from "@/lib/events"
 
 interface ComponentSourceProps {
   name: string
@@ -44,6 +45,7 @@ export function ComponentSource({ name, title, code }: ComponentSourceProps) {
     navigator.clipboard.writeText(source)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+    trackCopyCode("source", name)
   }
 
   return (
@@ -96,7 +98,12 @@ export function ComponentSource({ name, title, code }: ComponentSourceProps) {
         !expanded && "absolute inset-x-0 bottom-0"
       )}>
         <button
-          onClick={() => setExpanded((v) => !v)}
+          onClick={() => {
+            setExpanded((v) => {
+              if (!v) trackComponentSourceExpand(name)
+              return !v
+            })
+          }}
           className="flex items-center gap-1.5 rounded-md border border-white/10 bg-[#0a0a0a] px-3 py-1.5 text-xs font-medium text-zinc-300 hover:text-white hover:border-white/20 transition-colors"
         >
           {expanded ? (

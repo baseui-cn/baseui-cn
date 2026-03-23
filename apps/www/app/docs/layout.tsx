@@ -1,22 +1,23 @@
 import type { Metadata } from "next"
 import { SiteHeader } from "@/components/shared/site-header"
 import { DocsSidebar } from "@/components/docs/docs-sidebar"
+import { siteConfig } from "@/lib/site-config"
 
 export const metadata: Metadata = {
   title: {
     default: "Docs",
-    template: "%s — baseui-cn",
+    template: `%s — ${siteConfig.name}`,
   },
   description:
-    "Documentation for baseui-cn. Installation, theming, " +
-    "and component reference for all 36 Base UI components.",
+    `Documentation for ${siteConfig.name}. Installation, theming, ` +
+    "and component reference for all Base UI components.",
   openGraph: {
-    title: "Docs — baseui-cn",
+    title: `Docs — ${siteConfig.name}`,
     description: "Component docs, installation guide, and theming reference.",
-    url: "https://baseui-cn.com/docs",
+    url: `${siteConfig.url}/docs`,
   },
   alternates: {
-    canonical: "https://baseui-cn.com/docs",
+    canonical: `${siteConfig.url}/docs`,
   },
 }
 

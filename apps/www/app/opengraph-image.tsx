@@ -68,7 +68,7 @@ export default function OGImage() {
         {/* Stats row */}
         <div style={{ display: "flex", gap: 40, marginTop: 48 }}>
           {[
-            ["32", "components"],
+            ["40+", "components"],
             ["1", "primitive library"],
             ["MIT", "license"],
           ].map(([value, label]) => (

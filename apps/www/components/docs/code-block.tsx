@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { trackCopyCode } from "@/lib/events"
 
 interface CodeBlockProps {
   code: string
@@ -15,6 +16,7 @@ export function CodeBlock({ code, language: _, filename }: CodeBlockProps) {
     navigator.clipboard.writeText(code)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+    trackCopyCode("code_block")
   }
 
   return (

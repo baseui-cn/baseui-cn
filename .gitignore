@@ -32,15 +32,5 @@ pnpm-debug.log*
 .vscode
 .idea
 
-# Claude Code
+# AI / Agent artifacts
 .claude/
-
-# Dev artifacts
-claude-files/
-COMPONENT_PREVIEW_REFACTOR.md
-apps/www/more-updates-v1/
-apps/www/more-updates-v2/
-apps/www/latest-files/
-apps/www/app/more-updates-v1/
-apps/www/AGENTS.md
-apps/www/CLAUDE.md

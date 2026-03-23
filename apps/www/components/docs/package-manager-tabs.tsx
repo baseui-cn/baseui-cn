@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { trackCopyInstallCommand } from "@/lib/events"
 
 const MANAGERS = ["npx", "pnpm dlx", "yarn dlx", "bunx"] as const
 
@@ -19,6 +20,7 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
     navigator.clipboard.writeText(fullCommand)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+    trackCopyInstallCommand(command, active)
   }
 
   return (

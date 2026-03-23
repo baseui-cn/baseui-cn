@@ -13,6 +13,8 @@ import { getRegistryFileContent } from "@/lib/registry-server"
 import { ComponentPreviewMdx } from "@/components/docs/component-preview-mdx"
 import { ComponentSource } from "@/components/docs/component-source"
 import type { Metadata } from "next"
+import { siteConfig } from "@/lib/site-config"
+import { TrackComponentView } from "@/components/shared/track-page-view"
 
 const PREVIEW_SOURCES_PATH = join(process.cwd(), "lib/__generated__/preview-sources.json")
 
@@ -45,12 +47,12 @@ export async function generateMetadata({
   const comp = getComponent(slug)
   const title = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
   const description = comp?.description ?? `${title} component for Base UI.`
-  const url = `https://baseui-cn.com/docs/components/${slug}`
+  const url = `${siteConfig.url}/docs/components/${slug}`
   return {
     title,
     description,
     openGraph: {
-      title: `${title} — baseui-cn`,
+      title: `${title} — ${siteConfig.name}`,
       description,
       url,
     },
@@ -120,6 +122,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
     <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_13rem] xl:gap-10">
       {/* MDX content */}
       <article className="mx-auto w-full max-w-3xl min-w-0">
+        <TrackComponentView component={slug} />
         {/* Mobile TOC */}
         {toc.length > 0 && (
           <div className="mb-6 xl:hidden">
@@ -158,6 +161,24 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
           components={components}
           options={{ parseFrontmatter: true }}
         />
+
+        {comp?.baseUIPrimitive && !comp.baseUIPrimitive.startsWith("native") && (
+          <div className="mt-12 rounded-lg border border-border bg-muted/30 p-5">
+            <h2 className="text-sm font-semibold mb-1.5">API Reference</h2>
+            <p className="text-sm text-muted-foreground">
+              See the{" "}
+              <a
+                href={`https://base-ui.com/react/components/${slug}#api-reference`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-foreground underline underline-offset-4 hover:text-foreground/80"
+              >
+                Base UI {comp.baseUIPrimitive} documentation
+              </a>{" "}
+              for the full API reference, including all props, data attributes, and CSS classes.
+            </p>
+          </div>
+        )}
       </article>
 
       {/* Desktop TOC */}

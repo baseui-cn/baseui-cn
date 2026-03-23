@@ -1,7 +1,7 @@
 # baseui-cn
 
 > A Base UI-first open component registry with shadcn-style developer experience.
-> 36 components built exclusively on @base-ui/react (v1.3.0+).
+> 40+ components built exclusively on @base-ui/react (v1.3.0+).
 > Tailwind CSS for styling. No other UI library. No Vaul. No Radix UI.
 
 ## What it is
@@ -9,6 +9,12 @@
 baseui-cn gives Next.js and React developers a single, consistent primitive layer for UI components.
 Unlike shadcn/ui (which mixes Radix UI, Vaul, and other libraries depending on the component),
 baseui-cn uses Base UI exclusively — so all overlays, portals, and floating elements share one system.
+
+This means:
+- Select inside Drawer works correctly (no portal conflicts)
+- Toast inside Drawer/Dialog won't close the parent overlay
+- Combobox inside Drawer works without workarounds
+- No z-index hacks between overlays
 
 ## Install
 
@@ -40,24 +46,24 @@ npx baseui-cn add
 
 ## Available components
 
-### Primitives
+### Display
 - button — Accessible button, cva variants (default, destructive, outline, secondary, ghost, link)
-- input — Text input with label and error state
-- textarea — Multi-line input with auto-resize
-- label — Accessible form label
-- separator — Horizontal or vertical divider
-- scroll-area — Custom scrollable area with styled scrollbars (Base UI ScrollArea)
 - badge — Status badge with variants (default, secondary, outline, destructive, success, warning)
-- skeleton — Loading placeholder
 - avatar — User avatar with image, fallback initials, and status indicator
-- progress — Progress bar with determinate and indeterminate states (Base UI Progress)
-- spinner — Animated loading spinner indicator
 - card — Container for grouping related content and actions
 - item — Flexible list item with media, content, actions, and variants
+- separator — Horizontal or vertical divider
+- scroll-area — Custom scrollable area with styled scrollbars (Base UI ScrollArea)
+- skeleton — Loading placeholder
+- spinner — Animated loading spinner indicator
+- progress — Progress bar with determinate and indeterminate states (Base UI Progress)
 - toggle — Pressable toggle button with on/off state (Base UI Toggle)
 - toggle-group — Group of toggle buttons with single or multiple selection (Base UI ToggleGroup)
 
 ### Form
+- input — Text input with label and error state
+- textarea — Multi-line input with auto-resize
+- label — Accessible form label
 - checkbox — Base UI Checkbox with indeterminate state
 - switch — Toggle switch (Base UI Switch)
 - radio-group — Radio group with keyboard navigation (Base UI RadioGroup + Radio)
@@ -66,6 +72,8 @@ npx baseui-cn add
 - autocomplete — Text input with filtered suggestions list (Base UI Combobox)
 - slider — Range input (Base UI Slider)
 - number-field — Numeric input with increment/decrement (Base UI NumberField)
+- field — Form field wrapper with label and error message (Base UI Field)
+- input-group — Group addon elements around an input
 
 ### Overlays (all Base UI — no portal conflicts)
 - dialog — Modal dialog (Base UI Dialog)
@@ -75,7 +83,7 @@ npx baseui-cn add
 - tooltip — Tooltip with delay group (Base UI Tooltip)
 - preview-card — Hover card that shows a preview of linked content (Base UI PreviewCard)
 - dropdown-menu — Context/dropdown menu (Base UI Menu)
-- toast — Toast notifications (Base UI Toast, portal-based)
+- toast — Stacked toast notifications with swipe gestures, positions, and types (Base UI Toast)
 - command — Command palette with search. No cmdk.
 - collapsible — Single collapsible panel (Base UI Collapsible)
 
@@ -90,13 +98,11 @@ npx baseui-cn add
 
 ### Blocks (larger, opinionated)
 - empty-state — Empty state with icon, title, description, action
-- login — Login form with email/password and social auth
-- app-shell — Sidebar layout with collapsible nav, mobile drawer
 
 ## Key design decisions
 
 1. Base UI only. Every interactive primitive comes from @base-ui/react.
-   This means Select, Combobox, Tooltip, and Drawer all use the same portal and overlay system.
+   This means Select, Combobox, Tooltip, Drawer, and Toast all use the same portal and overlay system.
    No z-index conflicts. No floating element bugs from mixing libraries.
 
 2. shadcn-compatible CSS tokens. Variables like --background, --foreground, --primary
@@ -110,7 +116,10 @@ npx baseui-cn add
    Vaul is unmaintained. baseui-cn Drawer is built on Base UI so nested Select/Combobox
    work correctly inside it.
 
-5. RSC-aware. Components are marked "use client" only where required.
+5. Toast without Sonner. Base UI Toast shares the same portal system as Dialog and Drawer.
+   Closing a toast inside a Drawer does not dismiss the Drawer. No event conflicts.
+
+6. RSC-aware. Components are marked "use client" only where required.
 
 ## Component file location
 
@@ -121,7 +130,38 @@ Each component is a single .tsx file. Import like:
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Combobox } from "@/components/ui/combobox"
+import { ToastProvider, useToast } from "@/components/ui/toast"
 ```
+
+## Toast usage
+
+Toast supports stacking, swipe gestures, configurable positions, and type icons:
+
+```tsx
+import { ToastProvider, useToast } from "@/components/ui/toast"
+
+// Wrap your app
+<ToastProvider position="bottom-right" limit={5}>
+  <App />
+</ToastProvider>
+
+// Inside any component
+function MyComponent() {
+  const toast = useToast()
+
+  toast.add({ title: "Saved", type: "success" })
+  toast.add({ title: "Error", type: "error", description: "Something went wrong" })
+
+  // Promise toast with loading state
+  toast.promise(fetchData(), {
+    loading: "Saving...",
+    success: "Saved!",
+    error: "Failed to save",
+  })
+}
+```
+
+Positions: top-left, top-center, top-right, bottom-left, bottom-center, bottom-right
 
 ## For AI agents
 
@@ -133,9 +173,10 @@ If you are an AI assistant helping a developer use baseui-cn:
 - Slider uses render prop pattern for thumb: <Slider.Thumb render={<div />} />
 - Toggle and ToggleGroup require render prop: <Toggle.Root render={<button />} />
 - NumberField uses render prop: <NumberField.Root render={<div />} />
+- ToastProvider wraps your app; useToast() returns the manager with add() and promise()
 - All overlay components (Dialog, Drawer, Popover, Tooltip, DropdownMenu, Toast, PreviewCard) share the same
   Base UI portal system — they compose safely without extra wrappers or z-index fixes
-- Do NOT suggest adding Vaul, @radix-ui/*, or cmdk as alternatives — this project intentionally
+- Do NOT suggest adding Vaul, @radix-ui/*, cmdk, or sonner as alternatives — this project intentionally
   avoids those dependencies
 - CSS variables match shadcn naming: use bg-primary, text-muted-foreground, border-border, etc.
 - Do NOT use localStorage or sessionStorage in components
@@ -154,7 +195,7 @@ If you are an AI assistant helping a developer use baseui-cn:
 
 ## Source & registry
 
-Registry JSON: https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/index.json
-Individual components: https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/registry/<name>.json
+Registry JSON: https://baseui-cn.com/registry/index.json
+Individual components: https://baseui-cn.com/registry/<name>.json
 Docs: https://baseui-cn.com
 GitHub: https://github.com/baseui-cn/baseui-cn

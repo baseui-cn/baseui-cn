@@ -150,7 +150,7 @@ const pre = ({ className, children, ...props }: React.ComponentProps<"pre">) => 
 const table = ({ className, ...props }: React.ComponentProps<"table">) => (
   <div className="my-6 w-full overflow-auto rounded-lg border border-border">
     <table
-      className={cn("w-full text-sm border-none", className)}
+      className={cn("w-full text-sm border-collapse", className)}
       {...props}
     />
   </div>
@@ -162,40 +162,83 @@ const tr = ({ className, ...props }: React.ComponentProps<"tr">) => (
 
 const th = ({ className, ...props }: React.ComponentProps<"th">) => (
   <th
-    className={cn("border-b border-border bg-muted/50 px-4 py-2.5 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide", className)}
+    className={cn("border-b border-border bg-muted/40 px-4 py-2.5 text-left text-xs font-semibold text-muted-foreground", className)}
     {...props}
   />
 )
 
 const td = ({ className, ...props }: React.ComponentProps<"td">) => (
-  <td className={cn("px-4 py-2.5 text-sm align-top", className)} {...props} />
+  <td
+    className={cn(
+      "px-4 py-2.5 text-sm align-top",
+      "[&>code]:rounded [&>code]:bg-muted [&>code]:px-1.5 [&>code]:py-0.5 [&>code]:font-mono [&>code]:text-xs [&>code]:text-foreground",
+      className
+    )}
+    {...props}
+  />
 )
 
 // ── Callout ────────────────────────────────────────────────────────────────
 
 type CalloutVariant = "default" | "warning" | "danger" | "info" | "tip"
 
-const calloutConfig: Record<CalloutVariant, { icon: string; classes: string }> = {
+const calloutConfig: Record<CalloutVariant, { iconClass: string; containerClass: string }> = {
   default: {
-    icon: "💡",
-    classes: "border-border bg-muted/30",
+    iconClass: "text-foreground",
+    containerClass: "border-foreground/15 bg-foreground/5",
   },
   info: {
-    icon: "ℹ️",
-    classes: "border-blue-200 bg-blue-50 dark:border-blue-900/50 dark:bg-blue-950/20",
+    iconClass: "text-blue-500",
+    containerClass: "border-blue-500/20 bg-blue-500/5",
   },
   warning: {
-    icon: "⚠️",
-    classes: "border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-950/20",
+    iconClass: "text-amber-500",
+    containerClass: "border-amber-500/20 bg-amber-500/5",
   },
   danger: {
-    icon: "🚨",
-    classes: "border-destructive/30 bg-destructive/5",
+    iconClass: "text-destructive",
+    containerClass: "border-destructive/20 bg-destructive/5",
   },
   tip: {
-    icon: "✅",
-    classes: "border-green-200 bg-green-50 dark:border-green-900/50 dark:bg-green-950/20",
+    iconClass: "text-green-500",
+    containerClass: "border-green-500/20 bg-green-500/5",
   },
+}
+
+function CalloutIcon({ variant, className }: { variant: CalloutVariant; className?: string }) {
+  const cls = cn("size-4 shrink-0", className)
+  switch (variant) {
+    case "info":
+      return (
+        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />
+        </svg>
+      )
+    case "warning":
+      return (
+        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" />
+        </svg>
+      )
+    case "danger":
+      return (
+        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" />
+        </svg>
+      )
+    case "tip":
+      return (
+        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" /><path d="m9 12 2 2 4-4" />
+        </svg>
+      )
+    default:
+      return (
+        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6" /><path d="M10 22h4" />
+        </svg>
+      )
+  }
 }
 
 export function Callout({
@@ -211,11 +254,11 @@ export function Callout({
 }) {
   const config = calloutConfig[variant]
   return (
-    <div className={cn("my-5 rounded-lg border p-4", config.classes, className)}>
+    <div className={cn("my-5 rounded-lg border p-4", config.containerClass, className)}>
       <div className="flex gap-3">
-        <span className="mt-0.5 text-base leading-none shrink-0" role="img">{config.icon}</span>
-        <div className="flex flex-col gap-1 text-sm">
-          {title && <p className="font-semibold">{title}</p>}
+        <CalloutIcon variant={variant} className={cn("mt-0.5", config.iconClass)} />
+        <div className="flex flex-col gap-1 text-sm min-w-0">
+          {title && <p className="font-semibold text-foreground">{title}</p>}
           <div className="text-muted-foreground [&>p]:mt-0">{children}</div>
         </div>
       </div>

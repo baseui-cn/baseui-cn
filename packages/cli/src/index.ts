@@ -10,7 +10,7 @@ const program = new Command()
 program
   .name("baseui-cn")
   .description("Add Base UI components to your Next.js app — one command at a time.")
-  .version("0.1.0")
+  .version("1.0.0")
 
 program
   .command("init")

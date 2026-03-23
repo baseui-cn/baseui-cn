@@ -1,24 +1,23 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import { Analytics } from "@vercel/analytics/react"
 import { ToastProvider } from "@/components/ui/toast"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { ThemeProvider } from "@/components/theme"
+import { siteConfig } from "@/lib/site-config"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://baseui-cn.com"),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "baseui-cn",
-    template: "%s — baseui-cn",
+    default: siteConfig.name,
+    template: `%s — ${siteConfig.name}`,
   },
-  description:
-    "A Base UI-first component registry with shadcn-style DX. " +
-    "32 components built exclusively on @base-ui/react. " +
-    "One command install. You own the code.",
+  description: siteConfig.description,
   keywords: [
     "base ui",
     "base-ui",
@@ -31,25 +30,21 @@ export const metadata: Metadata = {
     "nextjs",
     "open source",
   ],
-  authors: [{ name: "baseui-cn", url: "https://baseui-cn.com" }],
-  creator: "baseui-cn",
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://baseui-cn.com",
-    title: "baseui-cn — Base UI components. One command install.",
-    description:
-      "32 components built exclusively on @base-ui/react. " +
-      "Tailwind styled. Copy into your project. No Vaul. No Radix mixing.",
-    siteName: "baseui-cn",
+    url: siteConfig.url,
+    title: `${siteConfig.name} — Base UI components. One command install.`,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "baseui-cn — Base UI components. One command install.",
-    description:
-      "32 components built on @base-ui/react. " +
-      "shadcn-style DX. Tailwind. You own the code.",
+    title: `${siteConfig.name} — Base UI components. One command install.`,
+    description: siteConfig.description,
     images: ["/opengraph-image"],
     creator: "@baseui_cn",
   },
@@ -65,7 +60,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://baseui-cn.com",
+    canonical: siteConfig.url,
   },
 }
 
@@ -83,10 +78,9 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              name: "baseui-cn",
-              description:
-                "A Base UI-first component registry with shadcn-style DX. 32 components built on @base-ui/react.",
-              url: "https://baseui-cn.com",
+              name: siteConfig.name,
+              description: siteConfig.description,
+              url: siteConfig.url,
               applicationCategory: "DeveloperApplication",
               operatingSystem: "Any",
               offers: {
@@ -96,8 +90,8 @@ export default function RootLayout({
               },
               author: {
                 "@type": "Organization",
-                name: "baseui-cn",
-                url: "https://baseui-cn.com",
+                name: siteConfig.name,
+                url: siteConfig.url,
               },
             }),
           }}
@@ -107,6 +101,7 @@ export default function RootLayout({
             <TooltipProvider>{children}</TooltipProvider>
           </ToastProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )

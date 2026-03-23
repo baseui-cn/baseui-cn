@@ -1,8 +1,9 @@
 import { components } from "@/lib/registry"
+import { siteConfig } from "@/lib/site-config"
 import type { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://baseui-cn.com"
+  const base = siteConfig.url
   const now = new Date()
 
   const staticPages = [

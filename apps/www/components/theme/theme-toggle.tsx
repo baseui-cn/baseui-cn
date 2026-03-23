@@ -3,6 +3,7 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { trackThemeChange } from "@/lib/events";
 
 import {
   Tooltip,
@@ -28,7 +29,9 @@ export function ThemeToggle() {
       return
     }
 
-    setTheme(resolvedTheme === "dark" ? "light" : "dark")
+    const next = resolvedTheme === "dark" ? "light" : "dark"
+    setTheme(next)
+    trackThemeChange(next)
   }
 
   const isDark = mounted && resolvedTheme === "dark"
