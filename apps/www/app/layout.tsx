@@ -42,6 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${siteConfig.name} — Base UI components. One command install.`,
     description: siteConfig.description,
+    images: ["/opengraph-image"],
     creator: "@baseui_cn",
   },
   robots: {
