@@ -39,12 +39,13 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} — Base UI components. One command install.`,
     description: siteConfig.description,
     siteName: siteConfig.name,
+    images: [{ url: "/baseui-cn-og.png", width: 1200, height: 630, alt: "baseui-cn — Base UI components. One command install." }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${siteConfig.name} — Base UI components. One command install.`,
     description: siteConfig.description,
-    images: ["/opengraph-image"],
+    images: ["/baseui-cn-og.png"],
     creator: "@baseui_cn",
   },
   robots: {
