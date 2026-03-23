@@ -44,9 +44,25 @@ export async function generateMetadata({
   const { slug } = await params
   const comp = getComponent(slug)
   const title = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+  const description = comp?.description ?? `${title} component for Base UI.`
+  const url = `https://baseui-cn.com/docs/components/${slug}`
   return {
     title,
-    description: comp?.description ?? `${title} component for Base UI.`,
+    description,
+    openGraph: {
+      title: `${title} — baseui-cn`,
+      description,
+      url,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} — baseui-cn`,
+      description,
+      images: ["/opengraph-image"],
+    },
+    alternates: {
+      canonical: url,
+    },
   }
 }
 

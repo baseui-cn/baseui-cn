@@ -1,9 +1,21 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { SiteHeader } from "@/components/shared/site-header"
 
 export const dynamic = "force-dynamic"
 import { CopyButton } from "@/components/shared/copy-button"
 import { components } from "@/lib/registry"
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://baseui-cn.com",
+  },
+  title: "baseui-cn — Base UI components. One command install.",
+  description:
+    "A Base UI-first open component registry. 36 components " +
+    "built exclusively on @base-ui/react. shadcn-style install. " +
+    "No Vaul. No Radix. Tailwind styled. You own the code.",
+}
 
 const componentCount = components.filter((c) => c.type === "component").length
 const blockCount = components.filter((c) => c.type === "block").length
@@ -77,6 +89,287 @@ export default function HomePage() {
                 <span>MIT license</span>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── Component preview strip ──────────────────────────── */}
+        <section className="border-b border-border overflow-hidden py-10 relative">
+          {/* Fade edges */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+
+          <div className="flex animate-marquee w-max">
+            {[
+              {
+                name: "Button",
+                preview: (
+                  <div className="flex flex-col gap-2">
+                    <div className="inline-flex items-center justify-center rounded-md bg-foreground px-3 py-1.5 text-xs font-medium text-background">
+                      Button
+                    </div>
+                    <div className="inline-flex items-center justify-center rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground">
+                      Outline
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                name: "Badge",
+                preview: (
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="inline-flex items-center rounded-full bg-foreground px-2 py-0.5 text-[10px] font-semibold text-background">
+                      Default
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-foreground">
+                      Secondary
+                    </span>
+                    <span className="inline-flex items-center rounded-full border border-border px-2 py-0.5 text-[10px] font-medium text-foreground">
+                      Outline
+                    </span>
+                  </div>
+                ),
+              },
+              {
+                name: "Input",
+                preview: (
+                  <div className="flex flex-col gap-1.5 w-36">
+                    <div className="text-[10px] font-medium text-foreground">Email</div>
+                    <div className="flex h-8 w-full items-center rounded-md border border-border bg-background px-2.5 text-[11px] text-muted-foreground">
+                      you@example.com
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                name: "Select",
+                preview: (
+                  <div className="flex flex-col gap-1.5 w-36">
+                    <div className="text-[10px] font-medium text-foreground">Framework</div>
+                    <div className="flex h-8 w-full items-center justify-between rounded-md border border-border bg-background px-2.5 text-[11px] text-muted-foreground">
+                      <span>Next.js</span>
+                      <svg className="h-3 w-3 opacity-50" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                name: "Avatar",
+                preview: (
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
+                      JD
+                    </div>
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground text-xs font-semibold text-background">
+                      AB
+                    </div>
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted/60 text-xs font-semibold text-muted-foreground">
+                      +3
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                name: "Checkbox",
+                preview: (
+                  <div className="flex flex-col gap-2.5">
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-4 w-4 items-center justify-center rounded-sm border border-border bg-background">
+                      </div>
+                      <span className="text-xs text-muted-foreground">Option A</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-foreground">
+                        <svg className="h-2.5 w-2.5 text-background" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8l4 4 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                      <span className="text-xs text-foreground">Option B</span>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                name: "Switch",
+                preview: (
+                  <div className="flex flex-col gap-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <div className="relative flex h-5 w-9 items-center rounded-full bg-muted px-0.5">
+                        <div className="h-4 w-4 rounded-full bg-background shadow-sm" />
+                      </div>
+                      <span className="text-xs text-muted-foreground">Off</span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <div className="relative flex h-5 w-9 items-center justify-end rounded-full bg-foreground px-0.5">
+                        <div className="h-4 w-4 rounded-full bg-background shadow-sm" />
+                      </div>
+                      <span className="text-xs text-foreground">On</span>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                name: "Progress",
+                preview: (
+                  <div className="flex flex-col gap-2 w-36">
+                    <div className="flex justify-between text-[10px] text-muted-foreground">
+                      <span>Loading…</span>
+                      <span>68%</span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                      <div className="h-full w-[68%] rounded-full bg-foreground" />
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                      <div className="h-full w-[32%] rounded-full bg-muted-foreground" />
+                    </div>
+                  </div>
+                ),
+              },
+            ]
+              .concat(
+                [
+                  {
+                    name: "Button",
+                    preview: (
+                      <div className="flex flex-col gap-2">
+                        <div className="inline-flex items-center justify-center rounded-md bg-foreground px-3 py-1.5 text-xs font-medium text-background">
+                          Button
+                        </div>
+                        <div className="inline-flex items-center justify-center rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground">
+                          Outline
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    name: "Badge",
+                    preview: (
+                      <div className="flex flex-wrap gap-1.5">
+                        <span className="inline-flex items-center rounded-full bg-foreground px-2 py-0.5 text-[10px] font-semibold text-background">
+                          Default
+                        </span>
+                        <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-foreground">
+                          Secondary
+                        </span>
+                        <span className="inline-flex items-center rounded-full border border-border px-2 py-0.5 text-[10px] font-medium text-foreground">
+                          Outline
+                        </span>
+                      </div>
+                    ),
+                  },
+                  {
+                    name: "Input",
+                    preview: (
+                      <div className="flex flex-col gap-1.5 w-36">
+                        <div className="text-[10px] font-medium text-foreground">Email</div>
+                        <div className="flex h-8 w-full items-center rounded-md border border-border bg-background px-2.5 text-[11px] text-muted-foreground">
+                          you@example.com
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    name: "Select",
+                    preview: (
+                      <div className="flex flex-col gap-1.5 w-36">
+                        <div className="text-[10px] font-medium text-foreground">Framework</div>
+                        <div className="flex h-8 w-full items-center justify-between rounded-md border border-border bg-background px-2.5 text-[11px] text-muted-foreground">
+                          <span>Next.js</span>
+                          <svg className="h-3 w-3 opacity-50" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    name: "Avatar",
+                    preview: (
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
+                          JD
+                        </div>
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground text-xs font-semibold text-background">
+                          AB
+                        </div>
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted/60 text-xs font-semibold text-muted-foreground">
+                          +3
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    name: "Checkbox",
+                    preview: (
+                      <div className="flex flex-col gap-2.5">
+                        <div className="flex items-center gap-2">
+                          <div className="flex h-4 w-4 items-center justify-center rounded-sm border border-border bg-background">
+                          </div>
+                          <span className="text-xs text-muted-foreground">Option A</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-foreground">
+                            <svg className="h-2.5 w-2.5 text-background" viewBox="0 0 16 16" fill="none">
+                              <path d="M3 8l4 4 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </div>
+                          <span className="text-xs text-foreground">Option B</span>
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    name: "Switch",
+                    preview: (
+                      <div className="flex flex-col gap-2.5">
+                        <div className="flex items-center gap-2.5">
+                          <div className="relative flex h-5 w-9 items-center rounded-full bg-muted px-0.5">
+                            <div className="h-4 w-4 rounded-full bg-background shadow-sm" />
+                          </div>
+                          <span className="text-xs text-muted-foreground">Off</span>
+                        </div>
+                        <div className="flex items-center gap-2.5">
+                          <div className="relative flex h-5 w-9 items-center justify-end rounded-full bg-foreground px-0.5">
+                            <div className="h-4 w-4 rounded-full bg-background shadow-sm" />
+                          </div>
+                          <span className="text-xs text-foreground">On</span>
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    name: "Progress",
+                    preview: (
+                      <div className="flex flex-col gap-2 w-36">
+                        <div className="flex justify-between text-[10px] text-muted-foreground">
+                          <span>Loading…</span>
+                          <span>68%</span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                          <div className="h-full w-[68%] rounded-full bg-foreground" />
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                          <div className="h-full w-[32%] rounded-full bg-muted-foreground" />
+                        </div>
+                      </div>
+                    ),
+                  },
+                ]
+              )
+              .map((item, i) => (
+                <div
+                  key={`${item.name}-${i}`}
+                  className="mx-3 flex w-[200px] shrink-0 flex-col gap-3 rounded-lg border border-border bg-background p-4"
+                >
+                  <div className="flex min-h-[80px] items-center justify-center">
+                    {item.preview}
+                  </div>
+                  <p className="text-center font-mono text-[11px] text-muted-foreground">
+                    {item.name}
+                  </p>
+                </div>
+              ))}
           </div>
         </section>
 
@@ -206,6 +499,23 @@ export default function HomePage() {
                   href={`/docs/components/${comp.name}`}
                   className="group bg-background p-4 hover:bg-accent/50 transition-colors"
                 >
+                  {comp.name === "app-shell" && (
+                    <div className="mb-3 flex h-[80px] w-full overflow-hidden rounded border border-border">
+                      {/* Mini sidebar */}
+                      <div className="flex w-[22%] flex-col gap-1.5 border-r border-border bg-muted/60 p-1.5">
+                        <div className="h-2 w-full rounded-sm bg-muted-foreground/30" />
+                        <div className="h-1.5 w-full rounded-sm bg-muted-foreground/20" />
+                        <div className="h-1.5 w-full rounded-sm bg-muted-foreground/20" />
+                        <div className="h-1.5 w-3/4 rounded-sm bg-muted-foreground/20" />
+                      </div>
+                      {/* Main content */}
+                      <div className="flex flex-1 flex-col gap-1.5 p-2">
+                        <div className="h-2 w-2/3 rounded-sm bg-muted-foreground/25" />
+                        <div className="h-1.5 w-full rounded-sm bg-muted-foreground/15" />
+                        <div className="h-1.5 w-5/6 rounded-sm bg-muted-foreground/15" />
+                      </div>
+                    </div>
+                  )}
                   <div className="flex items-start justify-between gap-2">
                     <span className="font-mono text-sm text-foreground">{comp.name}</span>
                     {comp.badge && (

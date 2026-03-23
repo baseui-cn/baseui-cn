@@ -1,7 +1,7 @@
 # baseui-cn
 
 > A Base UI-first open component registry with shadcn-style developer experience.
-> All components are built on @base-ui/react (v1.3.0+).
+> 36 components built exclusively on @base-ui/react (v1.3.0+).
 > Tailwind CSS for styling. No other UI library. No Vaul. No Radix UI.
 
 ## What it is
@@ -45,25 +45,39 @@ npx baseui-cn add
 - input — Text input with label and error state
 - textarea — Multi-line input with auto-resize
 - label — Accessible form label
-- checkbox — Base UI Checkbox with indeterminate state
-- switch — Toggle switch (Base UI Switch)
-- radio-group — Radio group with keyboard navigation
 - separator — Horizontal or vertical divider
+- scroll-area — Custom scrollable area with styled scrollbars (Base UI ScrollArea)
 - badge — Status badge with variants (default, secondary, outline, destructive, success, warning)
 - skeleton — Loading placeholder
+- avatar — User avatar with image, fallback initials, and status indicator
+- progress — Progress bar with determinate and indeterminate states (Base UI Progress)
+- spinner — Animated loading spinner indicator
+- card — Container for grouping related content and actions
+- item — Flexible list item with media, content, actions, and variants
+- toggle — Pressable toggle button with on/off state (Base UI Toggle)
+- toggle-group — Group of toggle buttons with single or multiple selection (Base UI ToggleGroup)
+
+### Form
+- checkbox — Base UI Checkbox with indeterminate state
+- switch — Toggle switch (Base UI Switch)
+- radio-group — Radio group with keyboard navigation (Base UI RadioGroup + Radio)
+- select — Custom select (Base UI Select, no native element)
+- combobox — Searchable select with filter. Works inside Drawer.
+- autocomplete — Text input with filtered suggestions list (Base UI Combobox)
+- slider — Range input (Base UI Slider)
+- number-field — Numeric input with increment/decrement (Base UI NumberField)
 
 ### Overlays (all Base UI — no portal conflicts)
 - dialog — Modal dialog (Base UI Dialog)
-- drawer — Slide-in panel, 4 sides, stable since Base UI v1.3.0. NOT Vaul.
+- alert-dialog — Confirmation dialog, no backdrop dismiss (Base UI AlertDialog)
+- drawer — Slide-in panel, 4 sides, stable since Base UI v1.3.0. NOT Vaul. (Base UI Drawer)
 - popover — Floating popover (Base UI Popover)
 - tooltip — Tooltip with delay group (Base UI Tooltip)
+- preview-card — Hover card that shows a preview of linked content (Base UI PreviewCard)
 - dropdown-menu — Context/dropdown menu (Base UI Menu)
 - toast — Toast notifications (Base UI Toast, portal-based)
 - command — Command palette with search. No cmdk.
-
-### Form
-- select — Custom select (Base UI Select, no native element)
-- combobox — Searchable select with filter
+- collapsible — Single collapsible panel (Base UI Collapsible)
 
 ### Navigation & Data
 - tabs — Tab navigation (Base UI Tabs)
@@ -71,6 +85,8 @@ npx baseui-cn add
 - table — Styled table primitives
 - breadcrumb — Breadcrumb with separator
 - pagination — Page navigation
+- menubar — Desktop-style persistent menu (Base UI Menubar)
+- navigation-menu — Navigation links with hover sub-menus (Base UI NavigationMenu)
 
 ### Blocks (larger, opinionated)
 - empty-state — Empty state with icon, title, description, action
@@ -114,7 +130,10 @@ If you are an AI assistant helping a developer use baseui-cn:
 - Always import from @/components/ui/<component-name>
 - Use cn() from @/lib/utils for conditional classes
 - Drawer side prop accepts: "right" | "left" | "bottom" | "top"
-- All overlay components (Dialog, Drawer, Popover, Tooltip, DropdownMenu, Toast) share the same
+- Slider uses render prop pattern for thumb: <Slider.Thumb render={<div />} />
+- Toggle and ToggleGroup require render prop: <Toggle.Root render={<button />} />
+- NumberField uses render prop: <NumberField.Root render={<div />} />
+- All overlay components (Dialog, Drawer, Popover, Tooltip, DropdownMenu, Toast, PreviewCard) share the same
   Base UI portal system — they compose safely without extra wrappers or z-index fixes
 - Do NOT suggest adding Vaul, @radix-ui/*, or cmdk as alternatives — this project intentionally
   avoids those dependencies

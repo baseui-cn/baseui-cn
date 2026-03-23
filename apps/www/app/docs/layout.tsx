@@ -1,5 +1,24 @@
+import type { Metadata } from "next"
 import { SiteHeader } from "@/components/shared/site-header"
 import { DocsSidebar } from "@/components/docs/docs-sidebar"
+
+export const metadata: Metadata = {
+  title: {
+    default: "Docs",
+    template: "%s — baseui-cn",
+  },
+  description:
+    "Documentation for baseui-cn. Installation, theming, " +
+    "and component reference for all 36 Base UI components.",
+  openGraph: {
+    title: "Docs — baseui-cn",
+    description: "Component docs, installation guide, and theming reference.",
+    url: "https://baseui-cn.com/docs",
+  },
+  alternates: {
+    canonical: "https://baseui-cn.com/docs",
+  },
+}
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
   return (
