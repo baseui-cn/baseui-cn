@@ -16,7 +16,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Field, FieldContent, FieldLabel } from "../ui/field"
+import { Label } from "@/components/ui/label"
 import { ToastProvider, useToast } from "@/components/ui/toast"
 
 function DrawerPreview() {
@@ -29,36 +29,30 @@ function DrawerPreview() {
           <DrawerDescription>Manage your preferences below.</DrawerDescription>
         </DrawerHeader>
         <div className="flex-1 px-6 space-y-4">
-          <Field>
-            <FieldLabel>Display name</FieldLabel>
-            <FieldContent>
-              <Input defaultValue="Aria Chen" />
-            </FieldContent>
-          </Field>
-          <Field>
-            <FieldLabel>Email notifications</FieldLabel>
-            <FieldContent>
-              <Switch defaultChecked />
-            </FieldContent>
-          </Field>
-          <Field>
-            <FieldLabel>Theme</FieldLabel>
-            <FieldContent>
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Theme" />
-                </SelectTrigger>
-                <SelectContent alignItemWithTrigger={false}>
-                  <SelectItem value="Light">Light</SelectItem>
-                  <SelectItem value="Dark">Dark</SelectItem>
-                  <SelectItem value="System">System</SelectItem>
-                </SelectContent>
-              </Select>
-              <p className="text-xs text-muted-foreground pt-1">
-                Select works inside this Drawer — same Base UI portal system.
-              </p>
-            </FieldContent>
-          </Field>
+          <div className="flex flex-col gap-1.5">
+            <Label>Display name</Label>
+            <Input defaultValue="Aria Chen" />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label>Email notifications</Label>
+            <Switch defaultChecked />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label>Theme</Label>
+            <Select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Theme" />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false}>
+                <SelectItem value="Light">Light</SelectItem>
+                <SelectItem value="Dark">Dark</SelectItem>
+                <SelectItem value="System">System</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Select works inside this Drawer — same Base UI portal system.
+            </p>
+          </div>
         </div>
         <DrawerFooter>
           <DrawerClose
@@ -124,7 +118,8 @@ function DrawerNestedSelectPreview() {
       <DrawerContent side="right">
         <DrawerHeader><DrawerTitle>Settings</DrawerTitle></DrawerHeader>
         <div className="flex-1 px-6 space-y-4">
-          <Field><FieldLabel>Theme</FieldLabel><FieldContent>
+          <div className="flex flex-col gap-1.5">
+            <Label>Theme</Label>
             <Select>
               <SelectTrigger className="w-full"><SelectValue placeholder="Select theme" /></SelectTrigger>
               <SelectContent alignItemWithTrigger={false}>
@@ -133,7 +128,7 @@ function DrawerNestedSelectPreview() {
                 <SelectItem value="system">System</SelectItem>
               </SelectContent>
             </Select>
-          </FieldContent></Field>
+          </div>
         </div>
         <DrawerFooter><DrawerClose render={<Button variant="outline" className="w-full">Close</Button>} /></DrawerFooter>
       </DrawerContent>
@@ -165,16 +160,14 @@ function DrawerWithToastInner() {
           </DrawerDescription>
         </DrawerHeader>
         <div className="flex-1 px-6 space-y-4">
-          <Field>
-            <FieldLabel>Display name</FieldLabel>
-            <FieldContent>
-              <Input
-                value={name}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                placeholder="Enter your name"
-              />
-            </FieldContent>
-          </Field>
+          <div className="flex flex-col gap-1.5">
+            <Label>Display name</Label>
+            <Input
+              value={name}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+              placeholder="Enter your name"
+            />
+          </div>
           <Button onClick={handleSave} className="w-full">
             Save changes
           </Button>

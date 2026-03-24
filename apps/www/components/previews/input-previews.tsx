@@ -2,30 +2,24 @@
 
 import * as React from "react"
 
-import { Field, FieldContent, FieldDescription, FieldLabel } from "../ui/field"
+import { Field, FieldLabel, FieldDescription } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
 function InputPreview() {
   return (
     <div className="flex flex-col gap-4 w-full max-w-sm">
-      <Field>
-        <FieldLabel>Email</FieldLabel>
-        <FieldContent>
-          <Input placeholder="you@example.com" type="email" />
-        </FieldContent>
-      </Field>
-      <Field>
-        <FieldLabel>Username</FieldLabel>
-        <FieldContent>
-          <Input placeholder="johndoe" />
-        </FieldContent>
-      </Field>
-      <Field>
-        <FieldLabel>Password</FieldLabel>
-        <FieldContent>
-          <Input type="password" placeholder="••••••••" />
-        </FieldContent>
-      </Field>
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium">Email</label>
+        <Input placeholder="you@example.com" type="email" />
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium">Username</label>
+        <Input placeholder="johndoe" />
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium">Password</label>
+        <Input type="password" placeholder="••••••••" />
+      </div>
     </div>
   )
 }
@@ -36,13 +30,11 @@ function InputBasicPreview() {
 
 function InputWithFieldPreview() {
   return (
-    <div className="flex flex-col gap-3 w-full max-w-xs">
-      <Field>
-        <FieldLabel>Email</FieldLabel>
-        <FieldContent><Input type="email" placeholder="you@example.com" /></FieldContent>
-        <FieldDescription>We&apos;ll never share your email.</FieldDescription>
-      </Field>
-    </div>
+    <Field className="w-full max-w-xs">
+      <FieldLabel>Email</FieldLabel>
+      <Input type="email" placeholder="you@example.com" />
+      <FieldDescription>We&apos;ll never share your email.</FieldDescription>
+    </Field>
   )
 }
 

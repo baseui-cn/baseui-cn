@@ -40,6 +40,7 @@ import { togglePreviewMap } from "@/components/previews/toggle-previews"
 import { toggleGroupPreviewMap } from "@/components/previews/toggle-group-previews"
 import { previewCardPreviewMap } from "@/components/previews/preview-card-previews"
 import { numberFieldPreviewMap } from "@/components/previews/number-field-previews"
+import { fieldPreviewMap } from "@/components/previews/field-previews"
 
 export const previewMap: Record<string, ComponentType> = {
   ...buttonPreviewMap,
@@ -80,4 +81,5 @@ export const previewMap: Record<string, ComponentType> = {
   ...toggleGroupPreviewMap,
   ...previewCardPreviewMap,
   ...numberFieldPreviewMap,
+  ...fieldPreviewMap,
 }

@@ -24,7 +24,7 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox"
-import { Field, FieldContent, FieldDescription, FieldLabel } from "../ui/field"
+import { Field, FieldLabel, FieldDescription } from "@/components/ui/field"
 import {
   InputGroup,
   InputGroupAddon,
@@ -192,14 +192,14 @@ function FieldPreview() {
     <div className="flex flex-col gap-4 w-full max-w-xs">
       <Field>
         <FieldLabel>Username</FieldLabel>
-        <FieldContent><Input placeholder="johndoe" /></FieldContent>
+        <Input placeholder="johndoe" />
         <FieldDescription>Your public display name.</FieldDescription>
       </Field>
       <Field>
         <FieldLabel>
           Email <span className="text-destructive">*</span>
         </FieldLabel>
-        <FieldContent><Input type="email" placeholder="you@example.com" /></FieldContent>
+        <Input type="email" placeholder="you@example.com" />
       </Field>
     </div>
   )
@@ -404,7 +404,7 @@ function FieldVerticalPreview() {
   return (
     <Field className="max-w-xs">
       <FieldLabel>Full name</FieldLabel>
-      <FieldContent><Input placeholder="Aria Chen" /></FieldContent>
+      <Input placeholder="Aria Chen" />
       <FieldDescription>As it appears on your ID.</FieldDescription>
     </Field>
   )
@@ -412,18 +412,18 @@ function FieldVerticalPreview() {
 
 function FieldHorizontalPreview() {
   return (
-    <Field orientation="horizontal" className="max-w-sm items-center">
-      <FieldLabel className="w-24 shrink-0">Name</FieldLabel>
-      <FieldContent><Input placeholder="Aria Chen" /></FieldContent>
-    </Field>
+    <div className="flex max-w-sm items-center gap-3">
+      <Label className="w-24 shrink-0">Name</Label>
+      <Input placeholder="Aria Chen" />
+    </div>
   )
 }
 
 function FieldWithErrorPreview() {
   return (
-    <Field className="max-w-xs" data-invalid="true">
+    <Field className="max-w-xs" invalid>
       <FieldLabel>Email</FieldLabel>
-      <FieldContent><Input type="email" defaultValue="not-an-email" /></FieldContent>
+      <Input type="email" defaultValue="not-an-email" aria-invalid="true" />
       <FieldDescription>Enter a valid email address.</FieldDescription>
     </Field>
   )
@@ -435,11 +435,11 @@ function FieldFieldsetPreview() {
       <legend className="px-1 text-sm font-medium -mt-7 bg-background">Contact</legend>
       <Field>
         <FieldLabel>Name</FieldLabel>
-        <FieldContent><Input placeholder="Your name" /></FieldContent>
+        <Input placeholder="Your name" />
       </Field>
       <Field>
         <FieldLabel>Email</FieldLabel>
-        <FieldContent><Input type="email" placeholder="you@example.com" /></FieldContent>
+        <Input type="email" placeholder="you@example.com" />
       </Field>
     </fieldset>
   )

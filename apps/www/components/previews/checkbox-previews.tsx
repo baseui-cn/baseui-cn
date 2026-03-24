@@ -3,28 +3,28 @@
 import * as React from "react"
 
 import { Checkbox } from "@/components/ui/checkbox"
-import { Field, FieldContent, FieldDescription, FieldLabel } from "../ui/field"
+import { Label } from "@/components/ui/label"
 
 function CheckboxPreview() {
   return (
     <div className="flex flex-col gap-3">
-      <Field orientation="horizontal" className="w-auto max-w-xs">
+      <div className="flex items-start gap-2">
         <Checkbox id="terms-2" defaultChecked />
-        <FieldContent>
-          <FieldLabel htmlFor="terms-2">Accept terms and conditions</FieldLabel>
-          <FieldDescription>
+        <div className="flex flex-col gap-1 leading-snug">
+          <Label htmlFor="terms-2">Accept terms and conditions</Label>
+          <p className="text-sm text-muted-foreground">
             This checkbox is used to accept the terms and conditions.
-          </FieldDescription>
-        </FieldContent>
-      </Field>
-      <Field orientation="horizontal" className="w-auto">
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
         <Checkbox id="terms" />
-        <FieldLabel htmlFor="terms">Basic checkbox</FieldLabel>
-      </Field>
-      <Field orientation="horizontal" className="w-auto">
+        <Label htmlFor="terms">Basic checkbox</Label>
+      </div>
+      <div className="flex items-center gap-2">
         <Checkbox id="terms-3" disabled />
-        <FieldLabel htmlFor="terms-3">Disabled</FieldLabel>
-      </Field>
+        <Label htmlFor="terms-3">Disabled</Label>
+      </div>
     </div>
   )
 }
@@ -36,14 +36,14 @@ function CheckboxBasicPreview() {
 function CheckboxWithLabelPreview() {
   return (
     <div className="flex flex-col gap-3">
-      <Field orientation="horizontal" className="w-auto">
+      <div className="flex items-center gap-2">
         <Checkbox id="cb-label-1" defaultChecked />
-        <FieldLabel htmlFor="cb-label-1">Accept terms</FieldLabel>
-      </Field>
-      <Field orientation="horizontal" className="w-auto">
+        <Label htmlFor="cb-label-1">Accept terms</Label>
+      </div>
+      <div className="flex items-center gap-2">
         <Checkbox id="cb-label-2" />
-        <FieldLabel htmlFor="cb-label-2">Subscribe to updates</FieldLabel>
-      </Field>
+        <Label htmlFor="cb-label-2">Subscribe to updates</Label>
+      </div>
     </div>
   )
 }
@@ -51,14 +51,14 @@ function CheckboxWithLabelPreview() {
 function CheckboxDisabledPreview() {
   return (
     <div className="flex flex-col gap-3">
-      <Field orientation="horizontal" className="w-auto">
+      <div className="flex items-center gap-2">
         <Checkbox id="cb-dis-1" disabled />
-        <FieldLabel htmlFor="cb-dis-1">Disabled unchecked</FieldLabel>
-      </Field>
-      <Field orientation="horizontal" className="w-auto">
+        <Label htmlFor="cb-dis-1">Disabled unchecked</Label>
+      </div>
+      <div className="flex items-center gap-2">
         <Checkbox id="cb-dis-2" disabled defaultChecked />
-        <FieldLabel htmlFor="cb-dis-2">Disabled checked</FieldLabel>
-      </Field>
+        <Label htmlFor="cb-dis-2">Disabled checked</Label>
+      </div>
     </div>
   )
 }
@@ -66,10 +66,10 @@ function CheckboxDisabledPreview() {
 function CheckboxIndeterminatePreview() {
   const [checked, setChecked] = React.useState(false)
   return (
-    <Field orientation="horizontal" className="w-auto">
+    <div className="flex items-center gap-2">
       <Checkbox id="cb-indet" indeterminate checked={checked} onCheckedChange={(v) => setChecked(v)} />
-      <FieldLabel htmlFor="cb-indet">Indeterminate (click to toggle)</FieldLabel>
-    </Field>
+      <Label htmlFor="cb-indet">Indeterminate (click to toggle)</Label>
+    </div>
   )
 }
 

@@ -1,19 +1,19 @@
 "use client"
 
-import { Field, FieldDescription, FieldLabel } from "../ui/field"
+import { Field, FieldLabel, FieldDescription } from "@/components/ui/field"
 import { Textarea } from "@/components/ui/textarea"
 
 function TextareaPreview() {
   return (
     <div className="flex flex-col gap-4 w-full max-w-sm">
-      <Field>
-        <FieldLabel>Message</FieldLabel>
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium">Message</label>
         <Textarea placeholder="Write your message here..." />
-      </Field>
-      <Field>
-        <FieldLabel>Notes</FieldLabel>
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium">Notes</label>
         <Textarea placeholder="Add notes..." />
-      </Field>
+      </div>
     </div>
   )
 }

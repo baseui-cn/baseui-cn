@@ -119,6 +119,13 @@ export const components: ComponentMeta[] = [
     baseUIPrimitive: "native label",
   },
   {
+    name: "field",
+    type: "component",
+    description: "A form field component that provides labeling, description, and validation for form controls.",
+    tags: ["form", "layout"],
+    baseUIPrimitive: "Field",
+  },
+  {
     name: "checkbox",
     type: "component",
     description: "Checkbox with indeterminate state support.",
@@ -343,6 +350,7 @@ export const navSections: NavSection[] = [
       { name: "input", href: "/docs/components/input", label: "Input" },
       { name: "textarea", href: "/docs/components/textarea", label: "Textarea" },
       { name: "label", href: "/docs/components/label", label: "Label" },
+      { name: "field", href: "/docs/components/field", label: "Field" },
       { name: "checkbox", href: "/docs/components/checkbox", label: "Checkbox" },
       { name: "switch", href: "/docs/components/switch", label: "Switch" },
       { name: "radio-group", href: "/docs/components/radio-group", label: "Radio Group" },

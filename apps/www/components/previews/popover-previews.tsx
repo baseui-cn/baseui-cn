@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Popover,
   PopoverContent,
@@ -11,7 +12,6 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Field, FieldContent, FieldLabel } from "../ui/field"
 
 function PopoverPreview() {
   return (
@@ -21,18 +21,14 @@ function PopoverPreview() {
         <PopoverTitle>Dimensions</PopoverTitle>
         <PopoverDescription className="mb-3">Set the layer dimensions.</PopoverDescription>
         <div className="flex flex-col gap-2">
-          <Field>
-            <FieldLabel>Width</FieldLabel>
-            <FieldContent>
-              <Input defaultValue="100%" />
-            </FieldContent>
-          </Field>
-          <Field>
-            <FieldLabel>Height</FieldLabel>
-            <FieldContent>
-              <Input defaultValue="25px" />
-            </FieldContent>
-          </Field>
+          <div className="flex flex-col gap-1.5">
+            <Label>Width</Label>
+            <Input defaultValue="100%" />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label>Height</Label>
+            <Input defaultValue="25px" />
+          </div>
         </div>
       </PopoverContent>
     </Popover>

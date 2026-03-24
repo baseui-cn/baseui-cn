@@ -2,24 +2,24 @@
 
 import * as React from "react"
 
-import { Field, FieldContent, FieldDescription, FieldLabel } from "../ui/field"
+import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 function RadioGroupPreview() {
   return (
     <RadioGroup defaultValue="comfortable" className="w-fit">
-      <Field orientation="horizontal">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="default" id="r1" />
-        <FieldLabel htmlFor="r1">Default</FieldLabel>
-      </Field>
-      <Field orientation="horizontal">
+        <Label htmlFor="r1">Default</Label>
+      </div>
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="comfortable" id="r2" />
-        <FieldLabel htmlFor="r2">Comfortable</FieldLabel>
-      </Field>
-      <Field orientation="horizontal">
+        <Label htmlFor="r2">Comfortable</Label>
+      </div>
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="compact" id="r3" />
-        <FieldLabel htmlFor="r3">Compact</FieldLabel>
-      </Field>
+        <Label htmlFor="r3">Compact</Label>
+      </div>
     </RadioGroup>
   )
 }
@@ -28,10 +28,10 @@ function RadioGroupBasicPreview() {
   return (
     <RadioGroup defaultValue="a" className="w-fit">
       {["a", "b", "c"].map((v) => (
-        <Field key={v} orientation="horizontal">
+        <div key={v} className="flex items-center gap-2">
           <RadioGroupItem value={v} id={`rg-basic-${v}`} />
-          <FieldLabel htmlFor={`rg-basic-${v}`}>Option {v.toUpperCase()}</FieldLabel>
-        </Field>
+          <Label htmlFor={`rg-basic-${v}`}>Option {v.toUpperCase()}</Label>
+        </div>
       ))}
     </RadioGroup>
   )
@@ -45,13 +45,13 @@ function RadioGroupWithLabelsPreview() {
         { v: "comfortable", label: "Comfortable", desc: "More breathing room" },
         { v: "compact", label: "Compact", desc: "Tight spacing" },
       ].map(({ v, label, desc }) => (
-        <Field key={v} orientation="horizontal">
+        <div key={v} className="flex items-center gap-2">
           <RadioGroupItem value={v} id={`rg-lbl-${v}`} />
-          <FieldContent>
-            <FieldLabel htmlFor={`rg-lbl-${v}`}>{label}</FieldLabel>
-            <FieldDescription>{desc}</FieldDescription>
-          </FieldContent>
-        </Field>
+          <div className="flex flex-col gap-0.5 leading-snug">
+            <Label htmlFor={`rg-lbl-${v}`}>{label}</Label>
+            <p className="text-sm text-muted-foreground">{desc}</p>
+          </div>
+        </div>
       ))}
     </RadioGroup>
   )
@@ -61,10 +61,10 @@ function RadioGroupHorizontalPreview() {
   return (
     <RadioGroup defaultValue="xs" className="flex flex-row gap-4">
       {["xs", "sm", "md", "lg"].map((v) => (
-        <Field key={v} orientation="horizontal">
+        <div key={v} className="flex items-center gap-2">
           <RadioGroupItem value={v} id={`rg-h-${v}`} />
-          <FieldLabel htmlFor={`rg-h-${v}`}>{v.toUpperCase()}</FieldLabel>
-        </Field>
+          <Label htmlFor={`rg-h-${v}`}>{v.toUpperCase()}</Label>
+        </div>
       ))}
     </RadioGroup>
   )
@@ -73,14 +73,14 @@ function RadioGroupHorizontalPreview() {
 function RadioGroupDisabledPreview() {
   return (
     <RadioGroup defaultValue="a" className="w-fit">
-      <Field orientation="horizontal">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="a" id="rg-d-a" />
-        <FieldLabel htmlFor="rg-d-a">Enabled</FieldLabel>
-      </Field>
-      <Field orientation="horizontal">
+        <Label htmlFor="rg-d-a">Enabled</Label>
+      </div>
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="b" id="rg-d-b" disabled />
-        <FieldLabel htmlFor="rg-d-b">Disabled</FieldLabel>
-      </Field>
+        <Label htmlFor="rg-d-b">Disabled</Label>
+      </div>
     </RadioGroup>
   )
 }

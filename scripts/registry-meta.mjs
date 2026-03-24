@@ -119,10 +119,11 @@ export const componentMeta = {
     registryDeps: ["utils"],
   },
   "field": {
-    description: "A form field layout component with label, description, and error support.",
+    description: "A form field component that provides labeling, description, and validation for form controls.",
     tags: ["form", "layout"],
-    deps: ["class-variance-authority"],
-    registryDeps: ["utils", "label", "separator"],
+    baseUIPrimitive: "Field",
+    deps: ["@base-ui/react"],
+    registryDeps: ["utils"],
   },
   "input": {
     description: "A text input field.",

@@ -1,7 +1,9 @@
 ---
 title: Field
-description: A form field layout component with label, description, and error support.
+description: A form field component that provides labeling, description, and validation for form controls.
 component: true
+links:
+  doc: https://base-ui.com/react/components/field
 ---
 
 <ComponentPreview name="field-demo" />
@@ -28,7 +30,7 @@ component: true
 <Step>Install dependencies</Step>
 
 ```bash
-npm install class-variance-authority
+npm install @base-ui/react
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
@@ -49,47 +51,91 @@ npm install class-variance-authority
 import {
   Field,
   FieldLabel,
+  FieldControl,
   FieldDescription,
   FieldError,
-  FieldGroup,
-  FieldSet,
-  FieldLegend,
-  FieldContent,
-  FieldTitle,
-  FieldSeparator,
 } from "@/components/ui/field"
 ```
 
 ```tsx
 <Field>
   <FieldLabel>Email</FieldLabel>
-  <Input type="email" placeholder="you@example.com" />
+  <FieldControl type="email" placeholder="you@example.com" />
   <FieldDescription>We'll never share your email.</FieldDescription>
 </Field>
 ```
 
 ## Examples
 
-### Vertical
+### With validation errors
 
-Default vertical layout.
-
-<ComponentPreview name="field-vertical" />
-
-### Horizontal
-
-Use `orientation="horizontal"` for inline layout.
-
-<ComponentPreview name="field-horizontal" />
-
-### With error
-
-Show validation errors with `FieldError`.
+Native HTML validation with `required`, `type`, and `pattern`. Errors appear on form submit.
 
 <ComponentPreview name="field-with-error" />
 
-### Fieldset
+### Pattern validation
 
-Group multiple fields with `FieldSet`.
+Validates username format using the `pattern` attribute.
 
-<ComponentPreview name="field-fieldset" />
+<ComponentPreview name="field-with-pattern" />
+
+### Custom validation
+
+Use the `validate` prop for custom async or sync validation logic. Combined with `validationMode="onChange"` and `validationDebounceTime` for real-time feedback.
+
+<ComponentPreview name="field-custom-validation" />
+
+### Disabled
+
+<ComponentPreview name="field-disabled" />
+
+### With textarea
+
+Use the `render` prop on `FieldControl` to render a `<textarea>` instead of an `<input>`.
+
+<ComponentPreview name="field-textarea" />
+
+## API
+
+### Field
+
+Wraps all field parts. Built on `Field.Root`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | — | Identifies the field when a form is submitted |
+| `disabled` | `boolean` | `false` | Disables the field and all its controls |
+| `invalid` | `boolean` | — | Marks the field as invalid externally |
+| `validate` | `(value) => string \| string[] \| null` | — | Custom validation function. Return error string(s) or `null` |
+| `validationMode` | `"onSubmit" \| "onBlur" \| "onChange"` | `"onSubmit"` | When to trigger validation |
+| `validationDebounceTime` | `number` | `0` | Debounce for `onChange` validation (ms) |
+
+### FieldLabel
+
+Accessible label auto-associated with the control. Built on `Field.Label`.
+
+### FieldControl
+
+The form control (renders `<input>` by default). Built on `Field.Control`. Use the `render` prop to replace with `<textarea>` or other elements.
+
+### FieldDescription
+
+Helper text below the control. Built on `Field.Description`.
+
+### FieldError
+
+Displays validation errors. Built on `Field.Error`. Use `match` to target specific validity states.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `match` | `"valueMissing" \| "typeMismatch" \| "patternMismatch" \| "tooLong" \| "tooShort" \| "rangeOverflow" \| "rangeUnderflow" \| "stepMismatch" \| "badInput" \| "customError" \| boolean` | Which validity state to match |
+
+### FieldValidity
+
+Render prop component for custom validity UI. Passes validity state to its child function.
+
+```tsx
+<FieldValidity>
+  {(state) => <div>{state.validity.valid ? "Valid" : "Invalid"}</div>}
+</FieldValidity>
+```
