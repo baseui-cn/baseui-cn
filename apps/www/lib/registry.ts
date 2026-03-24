@@ -78,7 +78,7 @@ export const components: ComponentMeta[] = [
     name: "progress",
     type: "component",
     description: "Progress bar with determinate and indeterminate states.",
-    tags: ["display", "feedback"],
+    tags: ["display", "primitive"],
     baseUIPrimitive: "Progress",
   },
   {
@@ -121,7 +121,8 @@ export const components: ComponentMeta[] = [
   {
     name: "field",
     type: "component",
-    description: "A form field component that provides labeling, description, and validation for form controls.",
+    description:
+      "A form field component that provides labeling, description, and validation for form controls.",
     tags: ["form", "layout"],
     baseUIPrimitive: "Field",
   },
@@ -158,14 +159,14 @@ export const components: ComponentMeta[] = [
     type: "component",
     description: "Searchable select with filter. Works inside Drawer.",
     tags: ["form", "overlay", "interactive"],
-    baseUIPrimitive: "Select",
+    baseUIPrimitive: "Combobox",
   },
   {
     name: "autocomplete",
     type: "component",
     description: "Text input with filtered suggestions list. Type to search, select to fill.",
     tags: ["form", "overlay", "interactive"],
-    baseUIPrimitive: "Combobox",
+    baseUIPrimitive: "Autocomplete",
   },
   {
     name: "slider",

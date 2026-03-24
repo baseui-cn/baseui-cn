@@ -49,12 +49,16 @@ function DropdownMenuBasicPreview() {
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="outline">Open menu</Button>} />
       <DropdownMenuContent>
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive">Sign out</DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem variant="destructive">Sign out</DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
-    </DropdownMenu>
+    </DropdownMenu >
   )
 }
 
@@ -63,10 +67,15 @@ function DropdownMenuWithShortcutsPreview() {
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="outline">Actions</Button>} />
       <DropdownMenuContent>
-        <DropdownMenuItem>New file <DropdownMenuShortcut>⌘N</DropdownMenuShortcut></DropdownMenuItem>
-        <DropdownMenuItem>Save <DropdownMenuShortcut>⌘S</DropdownMenuShortcut></DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem>New file <DropdownMenuShortcut>⌘N</DropdownMenuShortcut></DropdownMenuItem>
+          <DropdownMenuItem>Save <DropdownMenuShortcut>⌘S</DropdownMenuShortcut></DropdownMenuItem>
+          <DropdownMenuItem>Find <DropdownMenuShortcut>⌘F</DropdownMenuShortcut></DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Find <DropdownMenuShortcut>⌘F</DropdownMenuShortcut></DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -79,10 +88,14 @@ function DropdownMenuCheckboxesPreview() {
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="outline">View options</Button>} />
       <DropdownMenuContent>
-        <DropdownMenuLabel>Toggle panels</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Toggle panels</DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuCheckboxItem checked={toolbar} onCheckedChange={setToolbar}>Toolbar</DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem checked={statusBar} onCheckedChange={setStatusBar}>Status bar</DropdownMenuCheckboxItem>
+        <DropdownMenuGroup>
+          <DropdownMenuCheckboxItem checked={toolbar} onCheckedChange={setToolbar}>Toolbar</DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem checked={statusBar} onCheckedChange={setStatusBar}>Status bar</DropdownMenuCheckboxItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -94,13 +107,17 @@ function DropdownMenuRadioGroupPreview() {
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="outline">Position: {position}</Button>} />
       <DropdownMenuContent>
-        <DropdownMenuLabel>Panel position</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Panel position</DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-          <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
+        <DropdownMenuGroup>
+          <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+            <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -111,17 +128,24 @@ function DropdownMenuSubmenuPreview() {
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="outline">More options</Button>} />
       <DropdownMenuContent>
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Share</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuItem>Email</DropdownMenuItem>
-            <DropdownMenuItem>Slack</DropdownMenuItem>
-            <DropdownMenuItem>Copy link</DropdownMenuItem>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
+        <DropdownMenuGroup>
+          <DropdownMenuItem>Profile</DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Share</DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem>Email</DropdownMenuItem>
+              <DropdownMenuItem>Slack</DropdownMenuItem>
+              <DropdownMenuItem>Copy link</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
