@@ -1,0 +1,39 @@
+---
+title: Form
+description: A Base UI form wrapper for validation, submit handling, and consistent layout.
+component: true
+---
+
+<ComponentPreview name="form-demo" />
+
+## Installation
+
+<InstallTabs
+  slug="form"
+  addCmd="baseui-cn add form"
+/>
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { Field, FieldControl, FieldError, FieldLabel } from "@/components/ui/field"
+import { Form } from "@/components/ui/form"
+
+<Form
+  onFormSubmit={async (values) => {
+    console.log(values)
+  }}
+>
+  <Field name="email">
+    <FieldLabel>Email</FieldLabel>
+    <FieldControl type="email" placeholder="you@example.com" />
+    <FieldError />
+  </Field>
+  <Button type="submit">Submit</Button>
+</Form>
+```
+
+## Why Use This Wrapper
+
+This keeps the Base UI `Form` primitive on a project-local import path, gives the form a consistent layout shell, and makes dependent blocks like `login` and `signup` install everything they need through the registry.

@@ -13,9 +13,10 @@ export default function ThemingPage() {
         </p>
         <h1 className="text-3xl font-bold tracking-tight">Theming</h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          baseui-cn uses CSS custom properties for theming. Values are HSL channels
-          without the <code className="font-mono text-sm bg-muted px-1.5 py-0.5 rounded">hsl()</code> wrapper
-          so Tailwind can apply opacity modifiers like{" "}
+          baseui-cn uses CSS custom properties for theming. Tokens are defined as raw color values
+          and mapped into Tailwind utilities through{" "}
+          <code className="font-mono text-sm bg-muted px-1.5 py-0.5 rounded">@theme</code>, so
+          utility classes like{" "}
           <code className="font-mono text-sm bg-muted px-1.5 py-0.5 rounded">bg-primary/50</code>.
         </p>
       </div>
@@ -25,7 +26,7 @@ export default function ThemingPage() {
         <div>
           <h2 className="text-base font-semibold">CSS variables</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Added to your <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">globals.css</code> by{" "}
+            Added to your configured stylesheet, such as <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">app/globals.css</code> or <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">src/styles.css</code>, by{" "}
             <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">npx baseui-cn init</code>.
           </p>
         </div>
@@ -33,51 +34,68 @@ export default function ThemingPage() {
           filename="app/globals.css"
           code={`@layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.141 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.141 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.141 0 0);
+    --primary: oklch(0.21 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.967 0 0);
+    --secondary-foreground: oklch(0.21 0 0);
+    --muted: oklch(0.967 0 0);
+    --muted-foreground: oklch(0.552 0 0);
+    --accent: oklch(0.967 0 0);
+    --accent-foreground: oklch(0.21 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.985 0 0);
+    --success: oklch(0.627 0.154 144.33);
+    --success-foreground: oklch(0.985 0 0);
+    --warning: oklch(0.769 0.188 70.08);
+    --warning-foreground: oklch(0.21 0 0);
+    --info: oklch(0.623 0.188 259.81);
+    --info-foreground: oklch(0.985 0 0);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --background: oklch(0.141 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.141 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.141 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.985 0 0);
+    --primary-foreground: oklch(0.21 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.723);
+    --destructive-foreground: oklch(0.985 0 0);
+    --success: oklch(0.525 0.118 145.16);
+    --success-foreground: oklch(0.985 0 0);
+    --warning: oklch(0.645 0.149 69.84);
+    --warning-foreground: oklch(0.21 0 0);
+    --info: oklch(0.546 0.147 258.34);
+    --info-foreground: oklch(0.985 0 0);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.552 0 0);
   }
 }`}
         />
+        <div className="rounded-lg border border-border bg-muted/20 p-4 text-sm text-muted-foreground">
+          `destructive`, `success`, `warning`, and `info` are all first-class semantic tokens. Use
+          them for badges, toasts, alerts, and status-heavy surfaces instead of hard-coding raw
+          color values inside components.
+        </div>
       </div>
 
       {/* Tailwind v4 mapping */}
@@ -94,26 +112,32 @@ export default function ThemingPage() {
           filename="app/globals.css"
           code={`@import "tailwindcss";
 
-@theme {
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -147,6 +171,16 @@ export default function ThemingPage() {
 :root {
   --primary: 142.1 76.2% 36.3%;
   --primary-foreground: 355.7 100% 97.3%;
+}
+
+/* Custom status colors */
+:root {
+  --success: oklch(0.7 0.16 150);
+  --success-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.8 0.16 80);
+  --warning-foreground: oklch(0.21 0 0);
+  --info: oklch(0.68 0.14 250);
+  --info-foreground: oklch(0.985 0 0);
 }`}
         />
       </div>
@@ -219,7 +253,7 @@ className="data-highlighted:bg-accent data-highlighted:text-accent-foreground"`}
         <div>
           <h2 className="text-base font-semibold">Accordion & Collapsible animations</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Add these keyframes to your globals.css for smooth height transitions.
+            Add these keyframes to your main stylesheet for smooth height transitions.
           </p>
         </div>
         <CodeBlock

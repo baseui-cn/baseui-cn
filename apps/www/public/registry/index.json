@@ -1,40 +1,12 @@
 {
-  "version": "0.1.0",
+  "version": "1.0.0",
   "components": [
     {
-      "name": "accordion",
+      "name": "button",
       "type": "component",
-      "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
-      "tags": [
-        "disclosure",
-        "interactive"
-      ]
-    },
-    {
-      "name": "alert-dialog",
-      "type": "component",
-      "description": "A modal dialog that interrupts the user with important content and expects a response.",
-      "tags": [
-        "overlay",
-        "interactive"
-      ]
-    },
-    {
-      "name": "autocomplete",
-      "type": "component",
-      "description": "An input with a list of filtered options that appear as the user types.",
+      "description": "A clickable element that triggers an action.",
       "tags": [
         "form",
-        "overlay",
-        "interactive"
-      ]
-    },
-    {
-      "name": "avatar",
-      "type": "component",
-      "description": "An image element with a fallback for representing the user.",
-      "tags": [
-        "display",
         "primitive"
       ]
     },
@@ -48,20 +20,20 @@
       ]
     },
     {
-      "name": "breadcrumb",
+      "name": "alert",
       "type": "component",
-      "description": "Displays the path to the current resource using a hierarchy of links.",
+      "description": "A semantic feedback container for errors, warnings, and status messaging.",
       "tags": [
-        "navigation",
-        "display"
+        "display",
+        "feedback"
       ]
     },
     {
-      "name": "button",
+      "name": "avatar",
       "type": "component",
-      "description": "A clickable element that triggers an action.",
+      "description": "An image element with a fallback for representing the user.",
       "tags": [
-        "form",
+        "display",
         "primitive"
       ]
     },
@@ -75,6 +47,130 @@
       ]
     },
     {
+      "name": "item",
+      "type": "component",
+      "description": "A flexible list item component with media, content, actions, and variants.",
+      "tags": [
+        "display",
+        "layout",
+        "list"
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "component",
+      "description": "Visually or semantically separates content.",
+      "tags": [
+        "display",
+        "primitive"
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "component",
+      "description": "Augments native scroll functionality for custom, cross-browser styling.",
+      "tags": [
+        "display",
+        "layout"
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "component",
+      "description": "Loading placeholder with pulse animation.",
+      "tags": [
+        "display",
+        "feedback"
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "component",
+      "description": "An animated loading spinner indicator.",
+      "tags": [
+        "display",
+        "feedback"
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "component",
+      "description": "Displays an indicator showing the completion progress of a task.",
+      "tags": [
+        "display",
+        "feedback"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "toggle",
+      "type": "component",
+      "description": "A two-state button that can be toggled on or off.",
+      "tags": [
+        "form",
+        "primitive",
+        "interactive"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "toggle-group",
+      "type": "component",
+      "description": "A set of two-state buttons grouped together.",
+      "tags": [
+        "form",
+        "primitive",
+        "interactive"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "input",
+      "type": "component",
+      "description": "A text input field.",
+      "tags": [
+        "form",
+        "primitive"
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "component",
+      "description": "A multi-line text input field.",
+      "tags": [
+        "form",
+        "primitive"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "component",
+      "description": "Accessible form label with required indicator.",
+      "tags": [
+        "form",
+        "primitive"
+      ]
+    },
+    {
+      "name": "field",
+      "type": "component",
+      "description": "A form field component that provides labeling, description, and validation for form controls.",
+      "tags": [
+        "form",
+        "layout"
+      ]
+    },
+    {
+      "name": "form",
+      "type": "component",
+      "description": "A Base UI form wrapper for submission handling, validation wiring, and consistent layout.",
+      "tags": [
+        "form",
+        "layout",
+        "validation"
+      ]
+    },
+    {
       "name": "checkbox",
       "type": "component",
       "description": "A control that allows the user to toggle between checked and unchecked states.",
@@ -84,11 +180,30 @@
       ]
     },
     {
-      "name": "collapsible",
+      "name": "switch",
       "type": "component",
-      "description": "An interactive component which expands/collapses a panel.",
+      "description": "A control that allows the user to toggle between checked and not checked.",
       "tags": [
-        "disclosure",
+        "form",
+        "interactive"
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "component",
+      "description": "A set of checkable buttons where no more than one can be checked at a time.",
+      "tags": [
+        "form",
+        "interactive"
+      ]
+    },
+    {
+      "name": "select",
+      "type": "component",
+      "description": "Displays a list of options for the user to pick from, triggered by a button.",
+      "tags": [
+        "form",
+        "overlay",
         "interactive"
       ]
     },
@@ -100,21 +215,63 @@
         "form",
         "overlay",
         "interactive"
-      ]
+      ],
+      "badge": "New"
     },
     {
-      "name": "command",
+      "name": "autocomplete",
       "type": "component",
-      "description": "A command palette component for searching and executing actions.",
+      "description": "An input with a list of filtered options that appear as the user types.",
       "tags": [
+        "form",
         "overlay",
-        "navigation"
+        "interactive"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "slider",
+      "type": "component",
+      "description": "An input where the user selects a value from within a given range.",
+      "tags": [
+        "form",
+        "interactive"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "number-field",
+      "type": "component",
+      "description": "A numeric input with increment and decrement buttons.",
+      "tags": [
+        "form",
+        "primitive",
+        "interactive"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "input-group",
+      "type": "component",
+      "description": "A composite input component with addons, icons, and buttons.",
+      "tags": [
+        "form",
+        "composite"
       ]
     },
     {
       "name": "dialog",
       "type": "component",
       "description": "A window overlaid on either the primary window or another dialog window.",
+      "tags": [
+        "overlay",
+        "interactive"
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "component",
+      "description": "A modal dialog that interrupts the user with important content and expects a response.",
       "tags": [
         "overlay",
         "interactive"
@@ -128,12 +285,41 @@
         "overlay",
         "interactive",
         "mobile"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "popover",
+      "type": "component",
+      "description": "Displays rich content in a portal, triggered by a button.",
+      "tags": [
+        "overlay",
+        "interactive"
       ]
+    },
+    {
+      "name": "tooltip",
+      "type": "component",
+      "description": "A popup that displays information related to an element when focused or hovered.",
+      "tags": [
+        "overlay",
+        "interactive"
+      ]
+    },
+    {
+      "name": "preview-card",
+      "type": "component",
+      "description": "A card that appears on hover to preview linked content.",
+      "tags": [
+        "overlay",
+        "display"
+      ],
+      "badge": "New"
     },
     {
       "name": "dropdown-menu",
       "type": "component",
-      "description": "Displays a menu to the user — such as a set of actions or functions — triggered by a button.",
+      "description": "Displays a menu to the user, such as a set of actions or functions, triggered by a button.",
       "tags": [
         "overlay",
         "interactive",
@@ -141,58 +327,88 @@
       ]
     },
     {
-      "name": "empty-state",
+      "name": "toast",
       "type": "component",
-      "description": "Empty state with icon, title, description, and action.",
+      "description": "A succinct message that is displayed temporarily.",
       "tags": [
-        "block",
+        "overlay",
         "feedback"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "command",
+      "type": "component",
+      "description": "A command palette component for searching and executing actions.",
+      "tags": [
+        "overlay",
+        "navigation"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "collapsible",
+      "type": "component",
+      "description": "An interactive component which expands or collapses a panel.",
+      "tags": [
+        "disclosure",
+        "interactive"
       ]
     },
     {
-      "name": "field",
+      "name": "accordion",
       "type": "component",
-      "description": "A form field component that provides labeling, description, and validation for form controls.",
+      "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
       "tags": [
-        "form",
-        "layout"
+        "disclosure",
+        "interactive"
       ]
     },
     {
-      "name": "input",
+      "name": "tabs",
       "type": "component",
-      "description": "A text input field.",
+      "description": "A set of layered sections of content known as tab panels that are displayed one at a time.",
       "tags": [
-        "form",
-        "primitive"
+        "navigation",
+        "interactive"
       ]
     },
     {
-      "name": "input-group",
+      "name": "table",
       "type": "component",
-      "description": "A composite input component with addons, icons, and buttons.",
+      "description": "Semantic table primitives for displaying data.",
       "tags": [
-        "form",
-        "composite"
+        "data",
+        "display"
       ]
     },
     {
-      "name": "item",
+      "name": "data-grid",
       "type": "component",
-      "description": "A flexible list item component with media, content, actions, and variants.",
+      "description": "A composable TanStack data grid family with editing, virtualization, drag-and-drop, and Base UI-friendly controls.",
       "tags": [
-        "display",
-        "layout",
-        "list"
+        "data",
+        "table",
+        "interactive"
+      ],
+      "badge": "New"
+    },
+    {
+      "name": "breadcrumb",
+      "type": "component",
+      "description": "Displays the path to the current resource using a hierarchy of links.",
+      "tags": [
+        "navigation",
+        "display"
       ]
     },
     {
-      "name": "label",
+      "name": "pagination",
       "type": "component",
-      "description": "Accessible form label with required indicator.",
+      "description": "Page navigation with first, last, next, and previous buttons.",
       "tags": [
-        "form",
-        "primitive"
+        "navigation",
+        "interactive"
       ]
     },
     {
@@ -216,187 +432,32 @@
       ]
     },
     {
-      "name": "number-field",
-      "type": "component",
-      "description": "A numeric input with increment and decrement buttons.",
+      "name": "empty-state",
+      "type": "block",
+      "description": "Empty state with icon, title, description, and action.",
       "tags": [
-        "form",
-        "primitive",
-        "interactive"
-      ]
-    },
-    {
-      "name": "pagination",
-      "type": "component",
-      "description": "Page navigation with first, last, next, and previous buttons.",
-      "tags": [
-        "navigation",
-        "interactive"
-      ]
-    },
-    {
-      "name": "popover",
-      "type": "component",
-      "description": "Displays rich content in a portal, triggered by a button.",
-      "tags": [
-        "overlay",
-        "interactive"
-      ]
-    },
-    {
-      "name": "preview-card",
-      "type": "component",
-      "description": "A card that appears on hover to preview linked content.",
-      "tags": [
-        "overlay",
-        "display"
-      ]
-    },
-    {
-      "name": "progress",
-      "type": "component",
-      "description": "Displays an indicator showing the completion progress of a task.",
-      "tags": [
-        "display",
+        "block",
         "feedback"
       ]
     },
     {
-      "name": "radio-group",
-      "type": "component",
-      "description": "A set of checkable buttons where no more than one can be checked at a time.",
+      "name": "login",
+      "type": "block",
+      "description": "Card-based login form built with Base UI Form, alerts, and toast success states.",
       "tags": [
+        "block",
         "form",
-        "interactive"
+        "auth"
       ]
     },
     {
-      "name": "scroll-area",
-      "type": "component",
-      "description": "Augments native scroll functionality for custom, cross-browser styling.",
+      "name": "signup",
+      "type": "block",
+      "description": "Card-based signup form built with Base UI Form, password rules, alerts, and success toasts.",
       "tags": [
-        "display",
-        "layout"
-      ]
-    },
-    {
-      "name": "select",
-      "type": "component",
-      "description": "Displays a list of options for the user to pick from — triggered by a button.",
-      "tags": [
+        "block",
         "form",
-        "overlay",
-        "interactive"
-      ]
-    },
-    {
-      "name": "separator",
-      "type": "component",
-      "description": "Visually or semantically separates content.",
-      "tags": [
-        "display",
-        "primitive"
-      ]
-    },
-    {
-      "name": "skeleton",
-      "type": "component",
-      "description": "Loading placeholder with pulse animation.",
-      "tags": [
-        "display",
-        "feedback"
-      ]
-    },
-    {
-      "name": "slider",
-      "type": "component",
-      "description": "An input where the user selects a value from within a given range.",
-      "tags": [
-        "form",
-        "interactive"
-      ]
-    },
-    {
-      "name": "spinner",
-      "type": "component",
-      "description": "An animated loading spinner indicator.",
-      "tags": [
-        "display",
-        "feedback"
-      ]
-    },
-    {
-      "name": "switch",
-      "type": "component",
-      "description": "A control that allows the user to toggle between checked and not checked.",
-      "tags": [
-        "form",
-        "interactive"
-      ]
-    },
-    {
-      "name": "table",
-      "type": "component",
-      "description": "Semantic table primitives for displaying data.",
-      "tags": [
-        "data",
-        "display"
-      ]
-    },
-    {
-      "name": "tabs",
-      "type": "component",
-      "description": "A set of layered sections of content — known as tab panels — that are displayed one at a time.",
-      "tags": [
-        "navigation",
-        "interactive"
-      ]
-    },
-    {
-      "name": "textarea",
-      "type": "component",
-      "description": "A multi-line text input field.",
-      "tags": [
-        "form",
-        "primitive"
-      ]
-    },
-    {
-      "name": "toast",
-      "type": "component",
-      "description": "A succinct message that is displayed temporarily.",
-      "tags": [
-        "overlay",
-        "feedback"
-      ]
-    },
-    {
-      "name": "toggle",
-      "type": "component",
-      "description": "A two-state button that can be toggled on or off.",
-      "tags": [
-        "form",
-        "primitive",
-        "interactive"
-      ]
-    },
-    {
-      "name": "toggle-group",
-      "type": "component",
-      "description": "A set of two-state buttons grouped together.",
-      "tags": [
-        "form",
-        "primitive",
-        "interactive"
-      ]
-    },
-    {
-      "name": "tooltip",
-      "type": "component",
-      "description": "A popup that displays information related to an element when focused or hovered.",
-      "tags": [
-        "overlay",
-        "interactive"
+        "auth"
       ]
     }
   ]

@@ -53,7 +53,7 @@ Works with **Next.js**, **Vite**, **Remix**, **Astro**, and any React project.
 `tabs` · `accordion` · `table` · `breadcrumb` · `pagination` · `menubar` · `navigation-menu`
 
 ### Blocks
-`empty-state`
+`empty-state` · `login`
 
 All overlay components share the same Base UI portal system — they compose safely without extra wrappers or z-index fixes.
 

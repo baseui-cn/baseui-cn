@@ -7,6 +7,7 @@ import { execa } from "execa"
 import { detectPackageManager } from "../utils/package-manager"
 import { getConfig, writeConfig } from "../utils/config"
 import { ensureThemeCSS } from "../utils/ensure-styles"
+import { detectStyleFiles, promptForStyleFile } from "../utils/style-file"
 
 const UTILS_CONTENT = `import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -19,6 +20,7 @@ export function cn(...inputs: ClassValue[]) {
 export async function init(options: {
   yes: boolean
   defaults: boolean
+  css?: string
   skipTailwind: boolean
 }) {
   console.log()
@@ -57,12 +59,12 @@ export async function init(options: {
     (hasAppDir ? " · App Router" : "")
   )
 
+  const styleDetection = await detectStyleFiles({ hasSrcDir, hasAppDir })
+
   let config = {
     componentsPath: hasSrcDir ? "src/components/ui" : "components/ui",
     utilsPath: hasSrcDir ? "src/lib/utils" : "lib/utils",
-    globalCss: hasSrcDir
-      ? hasAppDir ? "src/app/globals.css" : "src/styles/globals.css"
-      : hasAppDir ? "app/globals.css" : "styles/globals.css",
+    globalCss: options.css ?? styleDetection.preferredPath,
     tailwind: !options.skipTailwind,
     rsc: isNextJs && hasAppDir,
   }
@@ -82,19 +84,20 @@ export async function init(options: {
         initial: config.utilsPath,
       },
       {
-        type: "text",
-        name: "globalCss",
-        message: "Where is your global CSS file?",
-        initial: config.globalCss,
-      },
-      {
         type: "confirm",
         name: "rsc",
         message: "Are you using React Server Components?",
         initial: config.rsc,
       },
     ])
-    config = { ...config, ...answers }
+    const globalCss = options.css
+      ? options.css
+      : await promptForStyleFile({
+        detection: styleDetection,
+        initialValue: config.globalCss,
+        message: "Which stylesheet should baseui-cn update with theme variables?",
+      })
+    config = { ...config, ...answers, globalCss }
   }
 
   const pm = await detectPackageManager()

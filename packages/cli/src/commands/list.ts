@@ -10,7 +10,7 @@ export async function list(options: { json: boolean }) {
   }
 
   console.log()
-  console.log(chalk.bold(`Available components (${registry.components.length})`))
+  console.log(chalk.bold(`Available installables (${registry.components.length})`))
   console.log()
 
   for (const component of registry.components) {

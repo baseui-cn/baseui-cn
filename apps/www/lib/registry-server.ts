@@ -7,6 +7,8 @@ const REGISTRY_DIR = join(process.cwd(), "../../packages/registry/registry")
 export async function getRegistryFileContent(name: string): Promise<{
   code: string
   dependencies: string[]
+  filePath: string
+  exportName?: string
 } | null> {
   const filePath = join(REGISTRY_DIR, `${name}.json`)
   if (!existsSync(filePath)) return null
@@ -15,6 +17,8 @@ export async function getRegistryFileContent(name: string): Promise<{
     return {
       code: data?.files?.[0]?.content ?? "",
       dependencies: data?.dependencies?.required ?? [],
+      filePath: data?.installedPath ?? data?.files?.[0]?.path ?? "",
+      exportName: data?.exportName,
     }
   } catch {
     return null

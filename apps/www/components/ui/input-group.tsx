@@ -133,12 +133,12 @@ function InputGroupPreview({ className, ...props }: React.ComponentProps<"div">)
 
 function InputGroupInput({
   className,
-  variant = "md",
+  inputSize = "default",
   ...props
-}: React.ComponentProps<"input"> & { variant?: "sm" | "md" | "lg" }) {
+}: React.ComponentProps<"input"> & { inputSize?: "sm" | "default" | "lg" | number }) {
   return (
     <Input
-      variant={variant}
+      size={inputSize}
       data-slot="input-group-control"
       className={cn(
         "flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent",

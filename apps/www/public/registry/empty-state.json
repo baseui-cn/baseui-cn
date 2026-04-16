@@ -1,20 +1,20 @@
 {
   "name": "empty-state",
-  "type": "component",
+  "type": "block",
+  "label": "Empty State",
+  "section": "Blocks",
   "description": "Empty state with icon, title, description, and action.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {
-      "path": "empty-state.tsx",
-      "type": "component",
-      "content": "'use client';\r\n\r\nimport { cn } from \"@/lib/utils\";\r\nimport { cva, type VariantProps } from \"class-variance-authority\";\r\n\r\nfunction EmptyState({ className, ...props }: React.ComponentProps<\"div\">) {\r\n    return (\r\n        <div\r\n            data-slot=\"empty\"\r\n            className={cn(\r\n                \"flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-xl border-dashed p-6 text-center text-balance\",\r\n                className,\r\n            )}\r\n            {...props}\r\n        />\r\n    );\r\n}\r\n\r\nfunction EmptyStateHeader({ className, ...props }: React.ComponentProps<\"div\">) {\r\n    return (\r\n        <div\r\n            data-slot=\"empty-header\"\r\n            className={cn(\"flex max-w-sm flex-col items-center gap-2\", className)}\r\n            {...props}\r\n        />\r\n    );\r\n}\r\n\r\nconst emptyMediaVariants = cva(\r\n    \"mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0\",\r\n    {\r\n        variants: {\r\n            variant: {\r\n                default: \"bg-transparent\",\r\n                icon: \"bg-muted text-foreground flex size-8 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-4\",\r\n            },\r\n        },\r\n        defaultVariants: {\r\n            variant: \"default\",\r\n        },\r\n    },\r\n);\r\n\r\nfunction EmptyStateMedia({\r\n    className,\r\n    variant = \"default\",\r\n    ...props\r\n}: React.ComponentProps<\"div\"> & VariantProps<typeof emptyMediaVariants>) {\r\n    return (\r\n        <div\r\n            data-slot=\"empty-icon\"\r\n            data-variant={variant}\r\n            className={cn(emptyMediaVariants({ variant, className }))}\r\n            {...props}\r\n        />\r\n    );\r\n}\r\n\r\nfunction EmptyStateTitle({ className, ...props }: React.ComponentProps<\"div\">) {\r\n    return (\r\n        <div\r\n            data-slot=\"empty-title\"\r\n            className={cn(\"text-sm font-medium tracking-tight\", className)}\r\n            {...props}\r\n        />\r\n    );\r\n}\r\n\r\nfunction EmptyStateDescription({ className, ...props }: React.ComponentProps<\"p\">) {\r\n    return (\r\n        <div\r\n            data-slot=\"empty-description\"\r\n            className={cn(\r\n                \"text-muted-foreground [&>a:hover]:text-primary text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4\",\r\n                className,\r\n            )}\r\n            {...props}\r\n        />\r\n    );\r\n}\r\n\r\nfunction EmptyStateContent({ className, ...props }: React.ComponentProps<\"div\">) {\r\n    return (\r\n        <div\r\n            data-slot=\"empty-content\"\r\n            className={cn(\r\n                \"flex w-full max-w-sm min-w-0 flex-col items-center gap-2.5 text-sm text-balance\",\r\n                className,\r\n            )}\r\n            {...props}\r\n        />\r\n    );\r\n}\r\n\r\nexport {\r\n    EmptyState,\r\n    EmptyStateHeader,\r\n    EmptyStateTitle,\r\n    EmptyStateDescription,\r\n    EmptyStateContent,\r\n    EmptyStateMedia,\r\n};\r\n"
+      "path": "blocks.tsx",
+      "type": "block",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface EmptyStateProps {\n  icon?: React.ReactNode\n  title: string\n  description?: string\n  action?: React.ReactNode\n  className?: string\n  size?: \"sm\" | \"md\" | \"lg\"\n}\n\nconst sizeConfig = {\n  sm: {\n    wrap: \"gap-2 px-4 py-8\",\n    icon: \"size-10\",\n    title: \"text-sm\",\n    desc: \"text-xs\",\n  },\n  md: {\n    wrap: \"gap-3 px-6 py-12\",\n    icon: \"size-12\",\n    title: \"text-base\",\n    desc: \"text-sm\",\n  },\n  lg: {\n    wrap: \"gap-4 px-8 py-20\",\n    icon: \"size-16\",\n    title: \"text-lg\",\n    desc: \"text-sm\",\n  },\n} as const\n\nfunction EmptyState({ icon, title, description, action, className, size = \"md\" }: EmptyStateProps) {\n  const s = sizeConfig[size]\n\n  return (\n    <div className={cn(\"flex flex-col items-center justify-center text-center\", s.wrap, className)}>\n      {icon && (\n        <div\n          className={cn(\n            \"flex items-center justify-center rounded-full bg-muted text-muted-foreground\",\n            s.icon\n          )}\n        >\n          {icon}\n        </div>\n      )}\n      <div className=\"flex flex-col gap-1\">\n        <h3 className={cn(\"font-semibold text-foreground\", s.title)}>{title}</h3>\n        {description && <p className={cn(\"text-muted-foreground\", s.desc)}>{description}</p>}\n      </div>\n      {action && <div className=\"mt-1\">{action}</div>}\n    </div>\n  )\n}\n\nconst EmptyStateIcons = {\n  inbox: (\n    <svg className=\"size-5\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"1.5\">\n      <path\n        d=\"M3 8l7-5 7 5v9a1 1 0 01-1 1H4a1 1 0 01-1-1V8z\"\n        strokeLinecap=\"round\"\n        strokeLinejoin=\"round\"\n      />\n      <path d=\"M7 18V10h6v8\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n    </svg>\n  ),\n  search: (\n    <svg className=\"size-5\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"1.5\">\n      <circle cx=\"8.5\" cy=\"8.5\" r=\"5\" />\n      <path d=\"M15 15l2.5 2.5\" strokeLinecap=\"round\" />\n    </svg>\n  ),\n  folder: (\n    <svg className=\"size-5\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"1.5\">\n      <path\n        d=\"M3 7a2 2 0 012-2h3l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V7z\"\n        strokeLinecap=\"round\"\n        strokeLinejoin=\"round\"\n      />\n    </svg>\n  ),\n  users: (\n    <svg className=\"size-5\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"1.5\">\n      <circle cx=\"7\" cy=\"7\" r=\"3\" />\n      <path d=\"M1 17c0-3.314 2.686-6 6-6\" strokeLinecap=\"round\" />\n      <circle cx=\"13\" cy=\"7\" r=\"3\" />\n      <path d=\"M13 11a6 6 0 016 6\" strokeLinecap=\"round\" />\n    </svg>\n  ),\n}\n\nexport { EmptyState, EmptyStateIcons }\n"
     }
   ],
   "dependencies": {
-    "required": [
-      "class-variance-authority"
-    ],
+    "required": [],
     "peer": []
   },
   "registryDependencies": [
@@ -23,5 +23,7 @@
   "tags": [
     "block",
     "feedback"
-  ]
+  ],
+  "exportName": "EmptyState",
+  "installedPath": "components/ui/blocks.tsx"
 }

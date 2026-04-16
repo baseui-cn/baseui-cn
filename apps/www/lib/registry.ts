@@ -1,12 +1,18 @@
-export type ComponentType = "component" | "block" | "util"
+import catalogJson from "@/lib/__generated__/catalog.json"
+
+export type ComponentType = "component" | "block"
 
 export interface ComponentMeta {
   name: string
   type: ComponentType
+  section: string
+  label: string
   description: string
   tags: string[]
+  exportName: string
+  installedPath: string
+  version: string
   baseUIPrimitive?: string
-  version?: string
   badge?: string
 }
 
@@ -15,303 +21,18 @@ export interface NavSection {
   items: { name: string; href: string; label: string; badge?: string }[]
 }
 
-export const components: ComponentMeta[] = [
-  // Primitives — Display
-  {
-    name: "button",
-    type: "component",
-    description: "Accessible button with size and variant support.",
-    tags: ["form", "primitive"],
-    baseUIPrimitive: "native button",
-  },
-  {
-    name: "badge",
-    type: "component",
-    description: "Status badge with variant support.",
-    tags: ["display", "primitive"],
-  },
-  {
-    name: "avatar",
-    type: "component",
-    description: "User avatar with image, fallback initials, and status indicator.",
-    tags: ["display", "primitive"],
-    baseUIPrimitive: "native img",
-  },
-  {
-    name: "card",
-    type: "component",
-    description: "A container for grouping related content and actions.",
-    tags: ["display", "layout"],
-  },
-  {
-    name: "item",
-    type: "component",
-    description: "A flexible list item component with media, content, actions, and variants.",
-    tags: ["display", "layout", "list"],
-  },
-  {
-    name: "separator",
-    type: "component",
-    description: "Visual divider, horizontal or vertical.",
-    tags: ["display", "primitive"],
-  },
-  {
-    name: "scroll-area",
-    type: "component",
-    description: "Custom scrollable area with styled scrollbars.",
-    tags: ["display", "primitive"],
-    baseUIPrimitive: "ScrollArea",
-  },
-  {
-    name: "skeleton",
-    type: "component",
-    description: "Loading placeholder with pulse animation.",
-    tags: ["display", "feedback"],
-  },
-  {
-    name: "spinner",
-    type: "component",
-    description: "An animated loading spinner indicator.",
-    tags: ["display", "feedback"],
-  },
-  {
-    name: "progress",
-    type: "component",
-    description: "Progress bar with determinate and indeterminate states.",
-    tags: ["display", "primitive"],
-    baseUIPrimitive: "Progress",
-  },
-  {
-    name: "toggle",
-    type: "component",
-    description: "A two-state button that can be toggled on or off.",
-    tags: ["form", "primitive", "interactive"],
-    baseUIPrimitive: "Toggle",
-  },
-  {
-    name: "toggle-group",
-    type: "component",
-    description: "A set of two-state buttons grouped together.",
-    tags: ["form", "primitive", "interactive"],
-    baseUIPrimitive: "ToggleGroup",
-  },
+interface GeneratedCatalog {
+  version: string
+  components: ComponentMeta[]
+  sections: {
+    title: string
+    items: { name: string; label: string; badge?: string }[]
+  }[]
+}
 
-  // Form
-  {
-    name: "input",
-    type: "component",
-    description: "Text input with label, helper text, and error state.",
-    tags: ["form", "primitive"],
-    baseUIPrimitive: "native input",
-  },
-  {
-    name: "textarea",
-    type: "component",
-    description: "Multi-line input with optional auto-resize.",
-    tags: ["form", "primitive"],
-    baseUIPrimitive: "native textarea",
-  },
-  {
-    name: "label",
-    type: "component",
-    description: "Accessible form label with required indicator.",
-    tags: ["form", "primitive"],
-    baseUIPrimitive: "native label",
-  },
-  {
-    name: "field",
-    type: "component",
-    description:
-      "A form field component that provides labeling, description, and validation for form controls.",
-    tags: ["form", "layout"],
-    baseUIPrimitive: "Field",
-  },
-  {
-    name: "checkbox",
-    type: "component",
-    description: "Checkbox with indeterminate state support.",
-    tags: ["form", "interactive"],
-    baseUIPrimitive: "Checkbox",
-  },
-  {
-    name: "switch",
-    type: "component",
-    description: "Toggle switch.",
-    tags: ["form", "interactive"],
-    baseUIPrimitive: "Switch",
-  },
-  {
-    name: "radio-group",
-    type: "component",
-    description: "Radio group with keyboard navigation.",
-    tags: ["form", "interactive"],
-    baseUIPrimitive: "RadioGroup + Radio",
-  },
-  {
-    name: "select",
-    type: "component",
-    description: "Custom select — no native element.",
-    tags: ["form", "overlay", "interactive"],
-    baseUIPrimitive: "Select",
-  },
-  {
-    name: "combobox",
-    type: "component",
-    description: "Searchable select with filter. Works inside Drawer.",
-    tags: ["form", "overlay", "interactive"],
-    baseUIPrimitive: "Combobox",
-  },
-  {
-    name: "autocomplete",
-    type: "component",
-    description: "Text input with filtered suggestions list. Type to search, select to fill.",
-    tags: ["form", "overlay", "interactive"],
-    baseUIPrimitive: "Autocomplete",
-  },
-  {
-    name: "slider",
-    type: "component",
-    description: "An input where the user selects a value from within a given range.",
-    tags: ["form", "interactive"],
-    baseUIPrimitive: "Slider",
-  },
-  {
-    name: "number-field",
-    type: "component",
-    description: "A numeric input with increment and decrement buttons.",
-    tags: ["form", "primitive", "interactive"],
-    baseUIPrimitive: "NumberField",
-  },
+const catalog = catalogJson as GeneratedCatalog
 
-  // Overlays
-  {
-    name: "dialog",
-    type: "component",
-    description: "Modal dialog.",
-    tags: ["overlay", "interactive"],
-    baseUIPrimitive: "Dialog",
-  },
-  {
-    name: "alert-dialog",
-    type: "component",
-    description: "Confirmation dialog that requires explicit user action. No backdrop dismiss.",
-    tags: ["overlay", "interactive"],
-    baseUIPrimitive: "AlertDialog",
-  },
-  {
-    name: "drawer",
-    type: "component",
-    description: "Slide-in panel. Stable since Base UI v1.3.0.",
-    tags: ["overlay", "interactive", "mobile"],
-    baseUIPrimitive: "Drawer",
-  },
-  {
-    name: "popover",
-    type: "component",
-    description: "Floating popover with arrow support.",
-    tags: ["overlay", "interactive"],
-    baseUIPrimitive: "Popover",
-  },
-  {
-    name: "tooltip",
-    type: "component",
-    description: "Tooltip with delay group support.",
-    tags: ["overlay", "interactive"],
-    baseUIPrimitive: "Tooltip",
-  },
-  {
-    name: "preview-card",
-    type: "component",
-    description: "A card that appears on hover to preview linked content.",
-    tags: ["overlay", "display"],
-    baseUIPrimitive: "PreviewCard",
-  },
-  {
-    name: "dropdown-menu",
-    type: "component",
-    description: "Dropdown menu with checkboxes and radio items.",
-    tags: ["overlay", "interactive"],
-    baseUIPrimitive: "Menu",
-  },
-  {
-    name: "toast",
-    type: "component",
-    description: "Stacked toast notifications with swipe gestures.",
-    tags: ["overlay", "feedback"],
-    baseUIPrimitive: "Toast",
-  },
-  {
-    name: "command",
-    type: "component",
-    description: "Command palette. No cmdk dependency.",
-    tags: ["overlay", "navigation"],
-  },
-
-  // Disclosure & Layout
-  {
-    name: "collapsible",
-    type: "component",
-    description: "Single collapsible panel controlled by a trigger button.",
-    tags: ["disclosure", "interactive"],
-    baseUIPrimitive: "Collapsible",
-  },
-  {
-    name: "accordion",
-    type: "component",
-    description: "Collapsible accordion.",
-    tags: ["disclosure", "interactive"],
-    baseUIPrimitive: "Accordion",
-  },
-
-  // Navigation & Data
-  {
-    name: "tabs",
-    type: "component",
-    description: "Tab navigation.",
-    tags: ["navigation", "interactive"],
-    baseUIPrimitive: "Tabs",
-  },
-  {
-    name: "table",
-    type: "component",
-    description: "Semantic table primitives.",
-    tags: ["data", "display"],
-  },
-  {
-    name: "breadcrumb",
-    type: "component",
-    description: "Breadcrumb navigation with ellipsis.",
-    tags: ["navigation", "display"],
-  },
-  {
-    name: "pagination",
-    type: "component",
-    description: "Page navigation.",
-    tags: ["navigation", "interactive"],
-  },
-  {
-    name: "menubar",
-    type: "component",
-    description: "A visually persistent menu common in desktop applications.",
-    tags: ["navigation", "interactive", "overlay"],
-    baseUIPrimitive: "Menubar",
-  },
-  {
-    name: "navigation-menu",
-    type: "component",
-    description: "A collection of navigation links with sub-menus that appear on hover.",
-    tags: ["navigation", "interactive", "overlay"],
-    baseUIPrimitive: "NavigationMenu",
-  },
-
-  // Blocks
-  {
-    name: "empty-state",
-    type: "block",
-    description: "Empty state with icon, title, description, action.",
-    tags: ["block", "feedback"],
-  },
-]
+export const components = catalog.components
 
 export const navSections: NavSection[] = [
   {
@@ -323,102 +44,17 @@ export const navSections: NavSection[] = [
       { name: "llms", href: "/docs/llms", label: "LLM Usage" },
     ],
   },
-  {
-    title: "Display",
-    items: [
-      { name: "button", href: "/docs/components/button", label: "Button" },
-      { name: "badge", href: "/docs/components/badge", label: "Badge" },
-      { name: "avatar", href: "/docs/components/avatar", label: "Avatar" },
-      { name: "card", href: "/docs/components/card", label: "Card" },
-      { name: "item", href: "/docs/components/item", label: "Item" },
-      { name: "separator", href: "/docs/components/separator", label: "Separator" },
-      { name: "scroll-area", href: "/docs/components/scroll-area", label: "Scroll Area" },
-      { name: "skeleton", href: "/docs/components/skeleton", label: "Skeleton" },
-      { name: "spinner", href: "/docs/components/spinner", label: "Spinner" },
-      { name: "progress", href: "/docs/components/progress", label: "Progress", badge: "New" },
-      { name: "toggle", href: "/docs/components/toggle", label: "Toggle", badge: "New" },
-      {
-        name: "toggle-group",
-        href: "/docs/components/toggle-group",
-        label: "Toggle Group",
-        badge: "New",
-      },
-    ],
-  },
-  {
-    title: "Form",
-    items: [
-      { name: "input", href: "/docs/components/input", label: "Input" },
-      { name: "textarea", href: "/docs/components/textarea", label: "Textarea" },
-      { name: "label", href: "/docs/components/label", label: "Label" },
-      { name: "field", href: "/docs/components/field", label: "Field" },
-      { name: "checkbox", href: "/docs/components/checkbox", label: "Checkbox" },
-      { name: "switch", href: "/docs/components/switch", label: "Switch" },
-      { name: "radio-group", href: "/docs/components/radio-group", label: "Radio Group" },
-      { name: "select", href: "/docs/components/select", label: "Select" },
-      { name: "combobox", href: "/docs/components/combobox", label: "Combobox", badge: "New" },
-      {
-        name: "autocomplete",
-        href: "/docs/components/autocomplete",
-        label: "Autocomplete",
-        badge: "New",
-      },
-      { name: "slider", href: "/docs/components/slider", label: "Slider", badge: "New" },
-      {
-        name: "number-field",
-        href: "/docs/components/number-field",
-        label: "Number Field",
-        badge: "New",
-      },
-    ],
-  },
-  {
-    title: "Overlays",
-    items: [
-      { name: "dialog", href: "/docs/components/dialog", label: "Dialog" },
-      { name: "alert-dialog", href: "/docs/components/alert-dialog", label: "Alert Dialog" },
-      { name: "drawer", href: "/docs/components/drawer", label: "Drawer", badge: "New" },
-      { name: "popover", href: "/docs/components/popover", label: "Popover" },
-      { name: "tooltip", href: "/docs/components/tooltip", label: "Tooltip" },
-      {
-        name: "preview-card",
-        href: "/docs/components/preview-card",
-        label: "Preview Card",
-        badge: "New",
-      },
-      { name: "dropdown-menu", href: "/docs/components/dropdown-menu", label: "Dropdown Menu" },
-      { name: "toast", href: "/docs/components/toast", label: "Toast", badge: "New" },
-      { name: "command", href: "/docs/components/command", label: "Command", badge: "New" },
-    ],
-  },
-  {
-    title: "Layout",
-    items: [
-      { name: "collapsible", href: "/docs/components/collapsible", label: "Collapsible" },
-      { name: "accordion", href: "/docs/components/accordion", label: "Accordion" },
-      { name: "tabs", href: "/docs/components/tabs", label: "Tabs" },
-    ],
-  },
-  {
-    title: "Navigation & Data",
-    items: [
-      { name: "table", href: "/docs/components/table", label: "Table" },
-      { name: "breadcrumb", href: "/docs/components/breadcrumb", label: "Breadcrumb" },
-      { name: "pagination", href: "/docs/components/pagination", label: "Pagination" },
-      { name: "menubar", href: "/docs/components/menubar", label: "Menubar" },
-      {
-        name: "navigation-menu",
-        href: "/docs/components/navigation-menu",
-        label: "Navigation Menu",
-      },
-    ],
-  },
-  {
-    title: "Blocks",
-    items: [{ name: "empty-state", href: "/docs/components/empty-state", label: "Empty State" }],
-  },
+  ...catalog.sections.map((section) => ({
+    title: section.title,
+    items: section.items.map((item) => ({
+      name: item.name,
+      href: `/docs/components/${item.name}`,
+      label: item.label,
+      ...(item.badge ? { badge: item.badge } : {}),
+    })),
+  })),
 ]
 
 export function getComponent(name: string): ComponentMeta | undefined {
-  return components.find((c) => c.name === name)
+  return components.find((component) => component.name === name)
 }

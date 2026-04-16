@@ -1,0 +1,82 @@
+---
+title: Sign Up
+description: Card-based signup with Base UI Form, password rules, alert errors, toast success states, and overlay-ready behavior.
+component: true
+---
+
+<ComponentPreview name="signup-demo" />
+
+## Installation
+
+<InstallTabs
+  slug="signup"
+  addCmd="baseui-cn add signup"
+  manualDeps="npm install zod"
+/>
+
+`baseui-cn add signup` also installs `components/ui/auth.tsx` and exports `SignupBlock`. The success state uses `ToastProvider`, so keep the toast provider mounted once in your root layout.
+
+## Usage
+
+```tsx
+import { SignupBlock } from "@/components/ui/auth"
+
+<SignupBlock
+  termsHref="/terms"
+  privacyHref="/privacy"
+  onSubmit={async ({ email }) => {
+    if (email.endsWith("@taken.dev")) {
+      return {
+        status: "error",
+        message: "That email is already in use.",
+        fieldErrors: {
+          email: "Try another email address.",
+        },
+      }
+    }
+
+    return {
+      status: "success",
+      message: "Your account is ready.",
+    }
+  }}
+/>
+```
+
+## Success Toast
+
+<ComponentPreview name="signup-success-demo" />
+
+The default demo submit is intentionally production-shaped: it behaves asynchronously and dispatches a toast while keeping all validation inside Base UI primitives.
+
+## Props
+
+<PropsTable>
+  <PropRow name="onSubmit" type="(values: SignupValues) => Promise<AuthSubmitResult<SignupFieldName> | void> | AuthSubmitResult<SignupFieldName> | void">
+    Optional submit handler. Without it, the block runs a built-in async demo success flow.
+  </PropRow>
+  <PropRow name="termsHref" type="string" defaultValue="'/terms'">
+    Link used in the terms acknowledgment row.
+  </PropRow>
+  <PropRow name="privacyHref" type="string" defaultValue="'/privacy'">
+    Link used in the privacy policy reference.
+  </PropRow>
+  <PropRow name="signInHref" type="string" defaultValue="'/login'">
+    Link used in the footer prompt below the signup card.
+  </PropRow>
+  <PropRow name="showSocial" type="boolean" defaultValue="true">
+    Shows built-in social buttons when provider callbacks are supplied.
+  </PropRow>
+  <PropRow name="variant" type="'default' | 'bordered' | 'elevated' | 'minimal'" defaultValue="'default'">
+    Controls the card presentation.
+  </PropRow>
+  <PropRow name="size" type="'sm' | 'md' | 'lg'" defaultValue="'md'">
+    Controls spacing, typography, and form control sizing.
+  </PropRow>
+  <PropRow name="animation" type="'none' | 'fade' | 'slide-up' | 'scale'" defaultValue="'fade'">
+    Controls entry motion for the block.
+  </PropRow>
+  <PropRow name="successToast" type="{ title?: string; description?: string; timeout?: number }">
+    Overrides the success toast content used after a successful submit.
+  </PropRow>
+</PropsTable>

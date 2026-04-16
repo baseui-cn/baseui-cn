@@ -1,8 +1,10 @@
 {
   "name": "toggle",
   "type": "component",
+  "label": "Toggle",
+  "section": "Display",
   "description": "A two-state button that can be toggled on or off.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {
@@ -26,5 +28,8 @@
     "primitive",
     "interactive"
   ],
+  "exportName": "Toggle",
+  "installedPath": "components/ui/toggle.tsx",
+  "badge": "New",
   "baseUIPrimitive": "Toggle"
 }

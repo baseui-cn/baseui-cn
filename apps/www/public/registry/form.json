@@ -1,0 +1,33 @@
+{
+  "name": "form",
+  "type": "component",
+  "label": "Form",
+  "section": "Form",
+  "description": "A Base UI form wrapper for submission handling, validation wiring, and consistent layout.",
+  "version": "1.0.0",
+  "baseUIVersion": ">=1.3.0",
+  "files": [
+    {
+      "path": "form.tsx",
+      "type": "component",
+      "content": "\"use client\"\n\nimport { Form as FormPrimitive } from \"@base-ui/react/form\"\nimport type React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport function Form<TValues extends object = object>({\n  className,\n  ...props\n}: FormPrimitive.Props<TValues>): React.ReactElement {\n  return (\n    <FormPrimitive\n      className={cn(\"flex w-full flex-col gap-4\", className)}\n      data-slot=\"form\"\n      {...props}\n    />\r\n  )\r\n}\r\n\r\nexport { FormPrimitive }\r\n"
+    }
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react"
+    ],
+    "peer": []
+  },
+  "registryDependencies": [
+    "utils"
+  ],
+  "tags": [
+    "form",
+    "layout",
+    "validation"
+  ],
+  "exportName": "Form",
+  "installedPath": "components/ui/form.tsx",
+  "baseUIPrimitive": "Form"
+}

@@ -20,12 +20,13 @@
   },
   "files": [
     "dist",
+    "registry",
     "README.md"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "node ../../scripts/build-registry.mjs && tsup",
     "dev": "tsup --watch",
-    "clean": "rm -rf dist"
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\""
   },
   "dependencies": {
     "chalk": "^5.3.0",

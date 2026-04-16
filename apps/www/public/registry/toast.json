@@ -1,8 +1,10 @@
 {
   "name": "toast",
   "type": "component",
+  "label": "Toast",
+  "section": "Overlays",
   "description": "A succinct message that is displayed temporarily.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {
@@ -25,5 +27,8 @@
     "overlay",
     "feedback"
   ],
+  "exportName": "Toast",
+  "installedPath": "components/ui/toast.tsx",
+  "badge": "New",
   "baseUIPrimitive": "Toast"
 }

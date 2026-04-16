@@ -25,6 +25,12 @@ const REQUIRED_THEME_INLINE: Record<string, string> = {
   "--color-accent-foreground": "var(--accent-foreground)",
   "--color-destructive": "var(--destructive)",
   "--color-destructive-foreground": "var(--destructive-foreground)",
+  "--color-success": "var(--success)",
+  "--color-success-foreground": "var(--success-foreground)",
+  "--color-warning": "var(--warning)",
+  "--color-warning-foreground": "var(--warning-foreground)",
+  "--color-info": "var(--info)",
+  "--color-info-foreground": "var(--info-foreground)",
   "--color-border": "var(--border)",
   "--color-input": "var(--input)",
   "--color-ring": "var(--ring)",
@@ -51,6 +57,12 @@ const REQUIRED_ROOT_VARS: Record<string, string> = {
   "--accent-foreground": "oklch(0.21 0 0)",
   "--destructive": "oklch(0.577 0.245 27.325)",
   "--destructive-foreground": "oklch(0.985 0 0)",
+  "--success": "oklch(0.627 0.154 144.33)",
+  "--success-foreground": "oklch(0.985 0 0)",
+  "--warning": "oklch(0.769 0.188 70.08)",
+  "--warning-foreground": "oklch(0.21 0 0)",
+  "--info": "oklch(0.623 0.188 259.81)",
+  "--info-foreground": "oklch(0.985 0 0)",
   "--border": "oklch(0.922 0 0)",
   "--input": "oklch(0.922 0 0)",
   "--ring": "oklch(0.708 0 0)",
@@ -74,6 +86,12 @@ const REQUIRED_DARK_VARS: Record<string, string> = {
   "--accent-foreground": "oklch(0.985 0 0)",
   "--destructive": "oklch(0.396 0.141 25.723)",
   "--destructive-foreground": "oklch(0.985 0 0)",
+  "--success": "oklch(0.525 0.118 145.16)",
+  "--success-foreground": "oklch(0.985 0 0)",
+  "--warning": "oklch(0.645 0.149 69.84)",
+  "--warning-foreground": "oklch(0.21 0 0)",
+  "--info": "oklch(0.546 0.147 258.34)",
+  "--info-foreground": "oklch(0.985 0 0)",
   "--border": "oklch(1 0 0 / 10%)",
   "--input": "oklch(1 0 0 / 15%)",
   "--ring": "oklch(0.552 0 0)",
@@ -106,7 +124,9 @@ function extractVarNames(blockContent: string): Set<string> {
   const regex = /(--[\w-]+)\s*:/g
   let m: RegExpExecArray | null
   while ((m = regex.exec(blockContent)) !== null) {
-    vars.add(m[1])
+    if (m[1]) {
+      vars.add(m[1])
+    }
   }
   return vars
 }
@@ -134,7 +154,7 @@ function mergeVarsIntoBlock(
   if (!match) return { css, changed: false }
 
   const [fullMatch, content] = match
-  const existing = extractVarNames(content)
+  const existing = extractVarNames(content ?? "")
   const missing = Object.entries(required).filter(([n]) => !existing.has(n))
 
   if (!missing.length) return { css, changed: false }

@@ -1,0 +1,58 @@
+---
+title: Data Grid
+description: A composable TanStack data grid family with editing, virtualization, drag-and-drop, and Base UI-friendly controls.
+component: true
+---
+
+<ComponentPreview name="data-grid-demo" />
+
+<Callout variant="info">
+  Use `data-grid` when you need filtering, editing, sticky headers, virtualization, or row and column movement. If you only need semantic table markup, keep using `table`.
+</Callout>
+
+## Installation
+
+<InstallTabs
+  slug="data-grid"
+  addCmd="baseui-cn add data-grid"
+  manualDeps="npm install @tanstack/react-table @tanstack/react-virtual @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities class-variance-authority lucide-react"
+/>
+
+## Usage
+
+```tsx
+import { DataGrid } from "@/components/data-grid/data-grid"
+import { DataGridColumnHeader } from "@/components/data-grid/data-grid-column-header"
+import { DataGridPagination } from "@/components/data-grid/data-grid-pagination"
+import { DataGridScrollArea } from "@/components/data-grid/data-grid-scroll-area"
+import { DataGridTable } from "@/components/data-grid/data-grid-table"
+import { useEditableDataGrid } from "@/hooks/use-editable-data-grid"
+```
+
+The installable includes the reusable family files, the editable-grid hook, and the supporting `Rating` primitive used by the generated editors.
+
+## Examples
+
+### Basic Directory Grid
+
+<ComponentPreview name="data-grid-basic" />
+
+This is the lightweight entry point: sortable columns, structured cells, sticky pagination, and the composable container pieces you reuse across the family.
+
+### Inline Editing And Generated Dialog
+
+<ComponentPreview name="data-grid-editing" />
+
+This example shows the shared editing metadata model. The same column definitions power inline cells and the generated edit dialog.
+
+### Async Editing With Optimistic Rollback
+
+<ComponentPreview name="data-grid-async-editing" />
+
+This variant layers in pending states, optimistic updates, and rollback messaging while keeping the same grid primitives and edit flow.
+
+## Included Pieces
+
+- `DataGrid`, `DataGridTable`, `DataGridScrollArea`, and `DataGridPagination` for the base shell.
+- `DataGridColumnHeader`, filter, visibility, virtual, and drag-and-drop helpers for richer table behavior.
+- `DataGridEditableCell`, `DataGridEditDialog`, and `useEditableDataGrid` for inline and dialog editing flows.

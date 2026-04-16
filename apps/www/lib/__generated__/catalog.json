@@ -1,0 +1,971 @@
+{
+  "version": "1.0.0",
+  "components": [
+    {
+      "name": "button",
+      "type": "component",
+      "section": "Display",
+      "label": "Button",
+      "description": "A clickable element that triggers an action.",
+      "tags": [
+        "form",
+        "primitive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Button",
+      "installedPath": "components/ui/button.tsx",
+      "baseUIPrimitive": "Button"
+    },
+    {
+      "name": "badge",
+      "type": "component",
+      "section": "Display",
+      "label": "Badge",
+      "description": "A small status descriptor for UI elements.",
+      "tags": [
+        "display",
+        "primitive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Badge",
+      "installedPath": "components/ui/badge.tsx"
+    },
+    {
+      "name": "alert",
+      "type": "component",
+      "section": "Display",
+      "label": "Alert",
+      "description": "A semantic feedback container for errors, warnings, and status messaging.",
+      "tags": [
+        "display",
+        "feedback"
+      ],
+      "version": "1.0.0",
+      "exportName": "Alert",
+      "installedPath": "components/ui/alert.tsx"
+    },
+    {
+      "name": "avatar",
+      "type": "component",
+      "section": "Display",
+      "label": "Avatar",
+      "description": "An image element with a fallback for representing the user.",
+      "tags": [
+        "display",
+        "primitive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Avatar",
+      "installedPath": "components/ui/avatar.tsx",
+      "baseUIPrimitive": "Avatar"
+    },
+    {
+      "name": "card",
+      "type": "component",
+      "section": "Display",
+      "label": "Card",
+      "description": "A container for grouping related content and actions.",
+      "tags": [
+        "display",
+        "layout"
+      ],
+      "version": "1.0.0",
+      "exportName": "Card",
+      "installedPath": "components/ui/card.tsx"
+    },
+    {
+      "name": "item",
+      "type": "component",
+      "section": "Display",
+      "label": "Item",
+      "description": "A flexible list item component with media, content, actions, and variants.",
+      "tags": [
+        "display",
+        "layout",
+        "list"
+      ],
+      "version": "1.0.0",
+      "exportName": "Item",
+      "installedPath": "components/ui/item.tsx"
+    },
+    {
+      "name": "separator",
+      "type": "component",
+      "section": "Display",
+      "label": "Separator",
+      "description": "Visually or semantically separates content.",
+      "tags": [
+        "display",
+        "primitive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Separator",
+      "installedPath": "components/ui/separator.tsx",
+      "baseUIPrimitive": "Separator"
+    },
+    {
+      "name": "scroll-area",
+      "type": "component",
+      "section": "Display",
+      "label": "Scroll Area",
+      "description": "Augments native scroll functionality for custom, cross-browser styling.",
+      "tags": [
+        "display",
+        "layout"
+      ],
+      "version": "1.0.0",
+      "exportName": "ScrollArea",
+      "installedPath": "components/ui/scroll-area.tsx",
+      "baseUIPrimitive": "ScrollArea"
+    },
+    {
+      "name": "skeleton",
+      "type": "component",
+      "section": "Display",
+      "label": "Skeleton",
+      "description": "Loading placeholder with pulse animation.",
+      "tags": [
+        "display",
+        "feedback"
+      ],
+      "version": "1.0.0",
+      "exportName": "Skeleton",
+      "installedPath": "components/ui/skeleton.tsx"
+    },
+    {
+      "name": "spinner",
+      "type": "component",
+      "section": "Display",
+      "label": "Spinner",
+      "description": "An animated loading spinner indicator.",
+      "tags": [
+        "display",
+        "feedback"
+      ],
+      "version": "1.0.0",
+      "exportName": "Spinner",
+      "installedPath": "components/ui/spinner.tsx"
+    },
+    {
+      "name": "progress",
+      "type": "component",
+      "section": "Display",
+      "label": "Progress",
+      "description": "Displays an indicator showing the completion progress of a task.",
+      "tags": [
+        "display",
+        "feedback"
+      ],
+      "version": "1.0.0",
+      "exportName": "Progress",
+      "installedPath": "components/ui/progress.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "Progress"
+    },
+    {
+      "name": "toggle",
+      "type": "component",
+      "section": "Display",
+      "label": "Toggle",
+      "description": "A two-state button that can be toggled on or off.",
+      "tags": [
+        "form",
+        "primitive",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Toggle",
+      "installedPath": "components/ui/toggle.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "Toggle"
+    },
+    {
+      "name": "toggle-group",
+      "type": "component",
+      "section": "Display",
+      "label": "Toggle Group",
+      "description": "A set of two-state buttons grouped together.",
+      "tags": [
+        "form",
+        "primitive",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "ToggleGroup",
+      "installedPath": "components/ui/toggle-group.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "ToggleGroup"
+    },
+    {
+      "name": "input",
+      "type": "component",
+      "section": "Form",
+      "label": "Input",
+      "description": "A text input field.",
+      "tags": [
+        "form",
+        "primitive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Input",
+      "installedPath": "components/ui/input.tsx",
+      "baseUIPrimitive": "Input"
+    },
+    {
+      "name": "textarea",
+      "type": "component",
+      "section": "Form",
+      "label": "Textarea",
+      "description": "A multi-line text input field.",
+      "tags": [
+        "form",
+        "primitive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Textarea",
+      "installedPath": "components/ui/textarea.tsx"
+    },
+    {
+      "name": "label",
+      "type": "component",
+      "section": "Form",
+      "label": "Label",
+      "description": "Accessible form label with required indicator.",
+      "tags": [
+        "form",
+        "primitive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Label",
+      "installedPath": "components/ui/label.tsx"
+    },
+    {
+      "name": "field",
+      "type": "component",
+      "section": "Form",
+      "label": "Field",
+      "description": "A form field component that provides labeling, description, and validation for form controls.",
+      "tags": [
+        "form",
+        "layout"
+      ],
+      "version": "1.0.0",
+      "exportName": "Field",
+      "installedPath": "components/ui/field.tsx",
+      "baseUIPrimitive": "Field"
+    },
+    {
+      "name": "form",
+      "type": "component",
+      "section": "Form",
+      "label": "Form",
+      "description": "A Base UI form wrapper for submission handling, validation wiring, and consistent layout.",
+      "tags": [
+        "form",
+        "layout",
+        "validation"
+      ],
+      "version": "1.0.0",
+      "exportName": "Form",
+      "installedPath": "components/ui/form.tsx",
+      "baseUIPrimitive": "Form"
+    },
+    {
+      "name": "checkbox",
+      "type": "component",
+      "section": "Form",
+      "label": "Checkbox",
+      "description": "A control that allows the user to toggle between checked and unchecked states.",
+      "tags": [
+        "form",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Checkbox",
+      "installedPath": "components/ui/checkbox.tsx",
+      "baseUIPrimitive": "Checkbox"
+    },
+    {
+      "name": "switch",
+      "type": "component",
+      "section": "Form",
+      "label": "Switch",
+      "description": "A control that allows the user to toggle between checked and not checked.",
+      "tags": [
+        "form",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Switch",
+      "installedPath": "components/ui/switch.tsx",
+      "baseUIPrimitive": "Switch"
+    },
+    {
+      "name": "radio-group",
+      "type": "component",
+      "section": "Form",
+      "label": "Radio Group",
+      "description": "A set of checkable buttons where no more than one can be checked at a time.",
+      "tags": [
+        "form",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "RadioGroup",
+      "installedPath": "components/ui/radio-group.tsx",
+      "baseUIPrimitive": "RadioGroup + Radio"
+    },
+    {
+      "name": "select",
+      "type": "component",
+      "section": "Form",
+      "label": "Select",
+      "description": "Displays a list of options for the user to pick from, triggered by a button.",
+      "tags": [
+        "form",
+        "overlay",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Select",
+      "installedPath": "components/ui/select.tsx",
+      "baseUIPrimitive": "Select"
+    },
+    {
+      "name": "combobox",
+      "type": "component",
+      "section": "Form",
+      "label": "Combobox",
+      "description": "An input combined with a listbox for selecting from a list of options.",
+      "tags": [
+        "form",
+        "overlay",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Combobox",
+      "installedPath": "components/ui/combobox.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "Combobox"
+    },
+    {
+      "name": "autocomplete",
+      "type": "component",
+      "section": "Form",
+      "label": "Autocomplete",
+      "description": "An input with a list of filtered options that appear as the user types.",
+      "tags": [
+        "form",
+        "overlay",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Autocomplete",
+      "installedPath": "components/ui/autocomplete.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "Autocomplete"
+    },
+    {
+      "name": "slider",
+      "type": "component",
+      "section": "Form",
+      "label": "Slider",
+      "description": "An input where the user selects a value from within a given range.",
+      "tags": [
+        "form",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Slider",
+      "installedPath": "components/ui/slider.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "Slider"
+    },
+    {
+      "name": "number-field",
+      "type": "component",
+      "section": "Form",
+      "label": "Number Field",
+      "description": "A numeric input with increment and decrement buttons.",
+      "tags": [
+        "form",
+        "primitive",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "NumberField",
+      "installedPath": "components/ui/number-field.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "NumberField"
+    },
+    {
+      "name": "input-group",
+      "type": "component",
+      "section": "Form",
+      "label": "Input Group",
+      "description": "A composite input component with addons, icons, and buttons.",
+      "tags": [
+        "form",
+        "composite"
+      ],
+      "version": "1.0.0",
+      "exportName": "InputGroup",
+      "installedPath": "components/ui/input-group.tsx"
+    },
+    {
+      "name": "dialog",
+      "type": "component",
+      "section": "Overlays",
+      "label": "Dialog",
+      "description": "A window overlaid on either the primary window or another dialog window.",
+      "tags": [
+        "overlay",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Dialog",
+      "installedPath": "components/ui/dialog.tsx",
+      "baseUIPrimitive": "Dialog"
+    },
+    {
+      "name": "alert-dialog",
+      "type": "component",
+      "section": "Overlays",
+      "label": "Alert Dialog",
+      "description": "A modal dialog that interrupts the user with important content and expects a response.",
+      "tags": [
+        "overlay",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "AlertDialog",
+      "installedPath": "components/ui/alert-dialog.tsx",
+      "baseUIPrimitive": "AlertDialog"
+    },
+    {
+      "name": "drawer",
+      "type": "component",
+      "section": "Overlays",
+      "label": "Drawer",
+      "description": "A panel that slides in from the edge of the screen.",
+      "tags": [
+        "overlay",
+        "interactive",
+        "mobile"
+      ],
+      "version": "1.0.0",
+      "exportName": "Drawer",
+      "installedPath": "components/ui/drawer.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "Drawer"
+    },
+    {
+      "name": "popover",
+      "type": "component",
+      "section": "Overlays",
+      "label": "Popover",
+      "description": "Displays rich content in a portal, triggered by a button.",
+      "tags": [
+        "overlay",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Popover",
+      "installedPath": "components/ui/popover.tsx",
+      "baseUIPrimitive": "Popover"
+    },
+    {
+      "name": "tooltip",
+      "type": "component",
+      "section": "Overlays",
+      "label": "Tooltip",
+      "description": "A popup that displays information related to an element when focused or hovered.",
+      "tags": [
+        "overlay",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Tooltip",
+      "installedPath": "components/ui/tooltip.tsx",
+      "baseUIPrimitive": "Tooltip"
+    },
+    {
+      "name": "preview-card",
+      "type": "component",
+      "section": "Overlays",
+      "label": "Preview Card",
+      "description": "A card that appears on hover to preview linked content.",
+      "tags": [
+        "overlay",
+        "display"
+      ],
+      "version": "1.0.0",
+      "exportName": "PreviewCard",
+      "installedPath": "components/ui/preview-card.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "PreviewCard"
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "component",
+      "section": "Overlays",
+      "label": "Dropdown Menu",
+      "description": "Displays a menu to the user, such as a set of actions or functions, triggered by a button.",
+      "tags": [
+        "overlay",
+        "interactive",
+        "navigation"
+      ],
+      "version": "1.0.0",
+      "exportName": "DropdownMenu",
+      "installedPath": "components/ui/dropdown-menu.tsx",
+      "baseUIPrimitive": "Menu"
+    },
+    {
+      "name": "toast",
+      "type": "component",
+      "section": "Overlays",
+      "label": "Toast",
+      "description": "A succinct message that is displayed temporarily.",
+      "tags": [
+        "overlay",
+        "feedback"
+      ],
+      "version": "1.0.0",
+      "exportName": "Toast",
+      "installedPath": "components/ui/toast.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "Toast"
+    },
+    {
+      "name": "command",
+      "type": "component",
+      "section": "Overlays",
+      "label": "Command",
+      "description": "A command palette component for searching and executing actions.",
+      "tags": [
+        "overlay",
+        "navigation"
+      ],
+      "version": "1.0.0",
+      "exportName": "Command",
+      "installedPath": "components/ui/command.tsx",
+      "badge": "New"
+    },
+    {
+      "name": "collapsible",
+      "type": "component",
+      "section": "Layout",
+      "label": "Collapsible",
+      "description": "An interactive component which expands or collapses a panel.",
+      "tags": [
+        "disclosure",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Collapsible",
+      "installedPath": "components/ui/collapsible.tsx",
+      "baseUIPrimitive": "Collapsible"
+    },
+    {
+      "name": "accordion",
+      "type": "component",
+      "section": "Layout",
+      "label": "Accordion",
+      "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
+      "tags": [
+        "disclosure",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Accordion",
+      "installedPath": "components/ui/accordion.tsx",
+      "baseUIPrimitive": "Accordion"
+    },
+    {
+      "name": "tabs",
+      "type": "component",
+      "section": "Layout",
+      "label": "Tabs",
+      "description": "A set of layered sections of content known as tab panels that are displayed one at a time.",
+      "tags": [
+        "navigation",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Tabs",
+      "installedPath": "components/ui/tabs.tsx",
+      "baseUIPrimitive": "Tabs"
+    },
+    {
+      "name": "table",
+      "type": "component",
+      "section": "Navigation & Data",
+      "label": "Table",
+      "description": "Semantic table primitives for displaying data.",
+      "tags": [
+        "data",
+        "display"
+      ],
+      "version": "1.0.0",
+      "exportName": "Table",
+      "installedPath": "components/ui/table.tsx"
+    },
+    {
+      "name": "data-grid",
+      "type": "component",
+      "section": "Navigation & Data",
+      "label": "Data Grid",
+      "description": "A composable TanStack data grid family with editing, virtualization, drag-and-drop, and Base UI-friendly controls.",
+      "tags": [
+        "data",
+        "table",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "DataGrid",
+      "installedPath": "components/data-grid/*",
+      "badge": "New"
+    },
+    {
+      "name": "breadcrumb",
+      "type": "component",
+      "section": "Navigation & Data",
+      "label": "Breadcrumb",
+      "description": "Displays the path to the current resource using a hierarchy of links.",
+      "tags": [
+        "navigation",
+        "display"
+      ],
+      "version": "1.0.0",
+      "exportName": "Breadcrumb",
+      "installedPath": "components/ui/breadcrumb.tsx"
+    },
+    {
+      "name": "pagination",
+      "type": "component",
+      "section": "Navigation & Data",
+      "label": "Pagination",
+      "description": "Page navigation with first, last, next, and previous buttons.",
+      "tags": [
+        "navigation",
+        "interactive"
+      ],
+      "version": "1.0.0",
+      "exportName": "Pagination",
+      "installedPath": "components/ui/pagination.tsx"
+    },
+    {
+      "name": "menubar",
+      "type": "component",
+      "section": "Navigation & Data",
+      "label": "Menubar",
+      "description": "A visually persistent menu common in desktop applications providing quick access to commands.",
+      "tags": [
+        "navigation",
+        "interactive",
+        "overlay"
+      ],
+      "version": "1.0.0",
+      "exportName": "Menubar",
+      "installedPath": "components/ui/menubar.tsx",
+      "baseUIPrimitive": "Menubar"
+    },
+    {
+      "name": "navigation-menu",
+      "type": "component",
+      "section": "Navigation & Data",
+      "label": "Navigation Menu",
+      "description": "A collection of navigation links with sub-menus that appear on hover.",
+      "tags": [
+        "navigation",
+        "interactive",
+        "overlay"
+      ],
+      "version": "1.0.0",
+      "exportName": "NavigationMenu",
+      "installedPath": "components/ui/navigation-menu.tsx",
+      "baseUIPrimitive": "NavigationMenu"
+    },
+    {
+      "name": "empty-state",
+      "type": "block",
+      "section": "Blocks",
+      "label": "Empty State",
+      "description": "Empty state with icon, title, description, and action.",
+      "tags": [
+        "block",
+        "feedback"
+      ],
+      "version": "1.0.0",
+      "exportName": "EmptyState",
+      "installedPath": "components/ui/blocks.tsx"
+    },
+    {
+      "name": "login",
+      "type": "block",
+      "section": "Blocks",
+      "label": "Login",
+      "description": "Card-based login form built with Base UI Form, alerts, and toast success states.",
+      "tags": [
+        "block",
+        "form",
+        "auth"
+      ],
+      "version": "1.0.0",
+      "exportName": "LoginBlock",
+      "installedPath": "components/ui/auth.tsx"
+    },
+    {
+      "name": "signup",
+      "type": "block",
+      "section": "Blocks",
+      "label": "Sign Up",
+      "description": "Card-based signup form built with Base UI Form, password rules, alerts, and success toasts.",
+      "tags": [
+        "block",
+        "form",
+        "auth"
+      ],
+      "version": "1.0.0",
+      "exportName": "SignupBlock",
+      "installedPath": "components/ui/auth.tsx"
+    }
+  ],
+  "sections": [
+    {
+      "title": "Display",
+      "items": [
+        {
+          "name": "button",
+          "label": "Button"
+        },
+        {
+          "name": "badge",
+          "label": "Badge"
+        },
+        {
+          "name": "alert",
+          "label": "Alert"
+        },
+        {
+          "name": "avatar",
+          "label": "Avatar"
+        },
+        {
+          "name": "card",
+          "label": "Card"
+        },
+        {
+          "name": "item",
+          "label": "Item"
+        },
+        {
+          "name": "separator",
+          "label": "Separator"
+        },
+        {
+          "name": "scroll-area",
+          "label": "Scroll Area"
+        },
+        {
+          "name": "skeleton",
+          "label": "Skeleton"
+        },
+        {
+          "name": "spinner",
+          "label": "Spinner"
+        },
+        {
+          "name": "progress",
+          "label": "Progress",
+          "badge": "New"
+        },
+        {
+          "name": "toggle",
+          "label": "Toggle",
+          "badge": "New"
+        },
+        {
+          "name": "toggle-group",
+          "label": "Toggle Group",
+          "badge": "New"
+        }
+      ]
+    },
+    {
+      "title": "Form",
+      "items": [
+        {
+          "name": "input",
+          "label": "Input"
+        },
+        {
+          "name": "textarea",
+          "label": "Textarea"
+        },
+        {
+          "name": "label",
+          "label": "Label"
+        },
+        {
+          "name": "field",
+          "label": "Field"
+        },
+        {
+          "name": "form",
+          "label": "Form"
+        },
+        {
+          "name": "checkbox",
+          "label": "Checkbox"
+        },
+        {
+          "name": "switch",
+          "label": "Switch"
+        },
+        {
+          "name": "radio-group",
+          "label": "Radio Group"
+        },
+        {
+          "name": "select",
+          "label": "Select"
+        },
+        {
+          "name": "combobox",
+          "label": "Combobox",
+          "badge": "New"
+        },
+        {
+          "name": "autocomplete",
+          "label": "Autocomplete",
+          "badge": "New"
+        },
+        {
+          "name": "slider",
+          "label": "Slider",
+          "badge": "New"
+        },
+        {
+          "name": "number-field",
+          "label": "Number Field",
+          "badge": "New"
+        },
+        {
+          "name": "input-group",
+          "label": "Input Group"
+        }
+      ]
+    },
+    {
+      "title": "Overlays",
+      "items": [
+        {
+          "name": "dialog",
+          "label": "Dialog"
+        },
+        {
+          "name": "alert-dialog",
+          "label": "Alert Dialog"
+        },
+        {
+          "name": "drawer",
+          "label": "Drawer",
+          "badge": "New"
+        },
+        {
+          "name": "popover",
+          "label": "Popover"
+        },
+        {
+          "name": "tooltip",
+          "label": "Tooltip"
+        },
+        {
+          "name": "preview-card",
+          "label": "Preview Card",
+          "badge": "New"
+        },
+        {
+          "name": "dropdown-menu",
+          "label": "Dropdown Menu"
+        },
+        {
+          "name": "toast",
+          "label": "Toast",
+          "badge": "New"
+        },
+        {
+          "name": "command",
+          "label": "Command",
+          "badge": "New"
+        }
+      ]
+    },
+    {
+      "title": "Layout",
+      "items": [
+        {
+          "name": "collapsible",
+          "label": "Collapsible"
+        },
+        {
+          "name": "accordion",
+          "label": "Accordion"
+        },
+        {
+          "name": "tabs",
+          "label": "Tabs"
+        }
+      ]
+    },
+    {
+      "title": "Navigation & Data",
+      "items": [
+        {
+          "name": "table",
+          "label": "Table"
+        },
+        {
+          "name": "data-grid",
+          "label": "Data Grid",
+          "badge": "New"
+        },
+        {
+          "name": "breadcrumb",
+          "label": "Breadcrumb"
+        },
+        {
+          "name": "pagination",
+          "label": "Pagination"
+        },
+        {
+          "name": "menubar",
+          "label": "Menubar"
+        },
+        {
+          "name": "navigation-menu",
+          "label": "Navigation Menu"
+        }
+      ]
+    },
+    {
+      "title": "Blocks",
+      "items": [
+        {
+          "name": "empty-state",
+          "label": "Empty State"
+        },
+        {
+          "name": "login",
+          "label": "Login"
+        },
+        {
+          "name": "signup",
+          "label": "Sign Up"
+        }
+      ]
+    }
+  ]
+}

@@ -1,8 +1,10 @@
 {
   "name": "skeleton",
   "type": "component",
+  "label": "Skeleton",
+  "section": "Display",
   "description": "Loading placeholder with pulse animation.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {
@@ -21,5 +23,7 @@
   "tags": [
     "display",
     "feedback"
-  ]
+  ],
+  "exportName": "Skeleton",
+  "installedPath": "components/ui/skeleton.tsx"
 }

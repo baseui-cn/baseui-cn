@@ -3,6 +3,7 @@
 import type { ComponentType } from "react"
 
 import { accordionPreviewMap } from "@/components/previews/accordion-previews"
+import { alertPreviewMap } from "@/components/previews/alert-previews"
 import { alertDialogPreviewMap } from "@/components/previews/alert-dialog-previews"
 import { autocompletePreviewMap } from "@/components/previews/autocomplete-previews"
 import { avatarPreviewMap } from "@/components/previews/avatar-previews"
@@ -15,11 +16,13 @@ import { checkboxPreviewMap } from "@/components/previews/checkbox-previews"
 import { collapsiblePreviewMap } from "@/components/previews/collapsible-previews"
 import { comboboxPreviewMap } from "@/components/previews/combobox-previews"
 import { commandPreviewMap } from "@/components/previews/command-previews"
+import { dataGridPreviewMap } from "@/components/previews/data-grid-previews"
 import { dialogPreviewMap } from "@/components/previews/dialog-previews"
 import { drawerPreviewMap } from "@/components/previews/drawer-previews"
 import { dropdownMenuPreviewMap } from "@/components/previews/dropdown-menu-previews"
 import { emptyStatePreviewMap } from "@/components/previews/empty-state-previews"
 import { fieldPreviewMap } from "@/components/previews/field-previews"
+import { formPreviewMap } from "@/components/previews/form-previews"
 import { inputPreviewMap } from "@/components/previews/input-previews"
 import { inputGroupPreviewMap } from "@/components/previews/input-group-previews"
 import { itemPreviewMap } from "@/components/previews/item-previews"
@@ -49,6 +52,7 @@ import { tooltipPreviewMap } from "@/components/previews/tooltip-previews"
 
 export const previewMap: Record<string, ComponentType> = {
   // Display
+  ...alertPreviewMap,
   ...avatarPreviewMap,
   ...badgePreviewMap,
   ...cardPreviewMap,
@@ -66,6 +70,7 @@ export const previewMap: Record<string, ComponentType> = {
   ...checkboxPreviewMap,
   ...comboboxPreviewMap,
   ...fieldPreviewMap,
+  ...formPreviewMap,
   ...inputPreviewMap,
   ...inputGroupPreviewMap,
   ...labelPreviewMap,
@@ -92,6 +97,7 @@ export const previewMap: Record<string, ComponentType> = {
   ...breadcrumbPreviewMap,
   ...collapsiblePreviewMap,
   ...commandPreviewMap,
+  ...dataGridPreviewMap,
   ...menubarPreviewMap,
   ...navigationMenuPreviewMap,
   ...paginationPreviewMap,

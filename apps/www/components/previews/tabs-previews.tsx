@@ -43,7 +43,7 @@ function TabsBasicPreview() {
 function TabsLinePreview() {
   return (
     <Tabs defaultValue="overview" className="w-full max-w-md">
-      <TabsList variant="line">
+      <TabsList variant="underline">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="analytics">Analytics</TabsTrigger>
         <TabsTrigger value="reports">Reports</TabsTrigger>
@@ -73,7 +73,7 @@ function TabsVerticalPreview() {
 function TabsVerticalLinePreview() {
   return (
     <Tabs defaultValue="general" orientation="vertical" className="w-full max-w-md">
-      <TabsList variant="line">
+      <TabsList variant="underline">
         <TabsTrigger value="general">General</TabsTrigger>
         <TabsTrigger value="security">Security</TabsTrigger>
         <TabsTrigger value="notifications">Notifications</TabsTrigger>

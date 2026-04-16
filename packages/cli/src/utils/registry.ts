@@ -1,33 +1,71 @@
-const REGISTRY_BASE = "https://baseui-cn.com/registry"
+import path from "path"
+import fs from "fs-extra"
 
-export async function fetchRegistry() {
+const REGISTRY_BASE = "https://baseui-cn.com/registry"
+const BUNDLED_REGISTRY_DIR = path.resolve(__dirname, "../registry")
+
+export interface RegistryListEntry {
+  name: string
+  type: string
+  description: string
+  tags?: string[]
+  badge?: string
+}
+
+export interface RegistryIndex {
+  version: string
+  components: RegistryListEntry[]
+}
+
+export interface ComponentEntry {
+  name: string
+  type: string
+  description: string
+  version: string
+  label?: string
+  section?: string
+  exportName?: string
+  installedPath?: string
+  files: Array<{
+    path: string
+    content: string
+    type: string
+  }>
+  dependencies: {
+    required: string[]
+    peer: string[]
+  }
+  registryDependencies: string[]
+}
+
+async function loadBundledJson<T>(fileName: string): Promise<T> {
+  return fs.readJson(path.join(BUNDLED_REGISTRY_DIR, fileName)) as Promise<T>
+}
+
+export async function fetchRegistry(): Promise<RegistryIndex> {
   try {
     const res = await fetch(`${REGISTRY_BASE}/index.json`)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    return res.json() as Promise<{
-      version: string
-      components: Array<{ name: string; type: string; description: string; tags?: string[] }>
-    }>
+    return res.json() as Promise<RegistryIndex>
   } catch {
-    // Fallback to bundled registry for offline / dev
-    const { default: index } = await import("../../../registry/index.json", {
-      assert: { type: "json" },
-    })
-    return index as {
-      version: string
-      components: Array<{ name: string; type: string; description: string; tags?: string[] }>
-    }
+    return loadBundledJson<RegistryIndex>("index.json")
   }
 }
 
 export async function fetchComponent(name: string): Promise<ComponentEntry> {
-  const res = await fetch(`${REGISTRY_BASE}/${name}.json`)
-  if (!res.ok) {
-    throw new Error(
-      `Component "${name}" not found in registry.\nRun npx baseui-cn list to see all available components.`
-    )
+  try {
+    const res = await fetch(`${REGISTRY_BASE}/${name}.json`)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    return res.json() as Promise<ComponentEntry>
+  } catch {
+    try {
+      return await loadBundledJson<ComponentEntry>(`${name}.json`)
+    } catch {
+      throw new Error(
+        `Component "${name}" not found in registry.\nRun npx baseui-cn list to see all available components.`
+      )
+    }
   }
-  return res.json() as Promise<ComponentEntry>
 }
 
 export async function resolveComponentDependencies(
@@ -50,26 +88,9 @@ export async function resolveComponentDependencies(
         }
       }
     } catch {
-      // Not a registry component — skip dependency resolution
+      // Not a registry component, skip dependency resolution.
     }
   }
 
   return [...resolved]
-}
-
-interface ComponentEntry {
-  name: string
-  type: string
-  description: string
-  version: string
-  files: Array<{
-    path: string
-    content: string
-    type: string
-  }>
-  dependencies: {
-    required: string[]
-    peer: string[]
-  }
-  registryDependencies: string[]
 }

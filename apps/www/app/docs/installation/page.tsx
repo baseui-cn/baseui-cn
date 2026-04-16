@@ -47,11 +47,14 @@ export default function InstallationPage() {
           </p>
         </div>
         <PackageManagerTabs command="baseui-cn init" />
+        <p className="text-xs text-muted-foreground mt-2">
+          Prefer a specific stylesheet? Pass <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">--css src/styles.css</code> and baseui-cn will use that path instead of guessing.
+        </p>
         <div className="rounded-lg border border-border divide-y divide-border text-sm">
           {[
             ["Detects project", "Finds Next.js, src/ dir, App Router vs Pages Router automatically"],
             ["Installs deps", "@base-ui/react · clsx · tailwind-merge · class-variance-authority"],
-            ["CSS variables", "Injects HSL design tokens into globals.css"],
+            ["CSS variables", "Prompts for your stylesheet and injects theme tokens, including destructive, success, warning, and info"],
             ["Utils", "Creates lib/utils.ts with the cn() helper"],
             ["Config", "Writes baseui-cn.json with your resolved paths"],
           ].map(([label, desc]) => (
@@ -117,7 +120,7 @@ export default function Page() {
           <h2 className="text-base font-semibold">baseui-cn.json</h2>
           <p className="text-sm text-muted-foreground mt-1">
             Created at your project root by <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">init</code>.
-            Edit to change where components and utils are placed.
+            Edit to change where components, utils, and theme styles are placed.
           </p>
         </div>
         <CodeBlock
@@ -146,7 +149,7 @@ export default function Page() {
           <a href="/docs/theming" className="underline underline-offset-4 hover:text-foreground">
             Theming page
           </a>{" "}
-          to your globals.css and create{" "}
+          to your main stylesheet and create{" "}
           <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">lib/utils.ts</code>:
         </p>
         <CodeBlock
@@ -167,7 +170,7 @@ export function cn(...inputs: ClassValue[]) {
           If you already have{" "}
           <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">--background</code>,{" "}
           <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">--primary</code>, etc.
-          in your globals.css, components will pick them up automatically.
+          in your stylesheet, components will pick them up automatically.
         </p>
       </div>
 

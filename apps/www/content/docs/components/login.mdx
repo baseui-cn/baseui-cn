@@ -1,6 +1,6 @@
 ---
 title: Login
-description: A ready-to-use sign-in form with validation and social login options.
+description: Card-based login with Base UI Form validation, alert errors, toast success states, and overlay-ready behavior.
 component: true
 ---
 
@@ -8,57 +8,81 @@ component: true
 
 ## Installation
 
-<CodeTabs>
+<InstallTabs
+  slug="login"
+  addCmd="baseui-cn add login"
+  manualDeps="npm install zod"
+/>
 
-<TabsList>
-  <TabsTrigger value="cli">Command</TabsTrigger>
-  <TabsTrigger value="manual">Manual</TabsTrigger>
-</TabsList>
+`baseui-cn add login` installs `components/ui/auth.tsx` and exports `LoginBlock`. Because the block uses success toasts, make sure your app is wrapped once in `ToastProvider`, as shown in the toast docs.
 
-<TabsContent value="cli">
+## Usage
 
-<PackageManagerTabs command="baseui-cn add login" />
+```tsx
+import { LoginBlock } from "@/components/ui/auth"
 
-</TabsContent>
+<LoginBlock
+  onGoogleLogin={() => {}}
+  onGithubLogin={() => {}}
+  onSubmit={async ({ email, password }) => {
+    const isValidDemo = email === "demo@baseui-cn.com" && password === "BaseUI123!"
 
-<TabsContent value="manual">
+    if (!isValidDemo) {
+      return {
+        status: "error",
+        message: "Invalid credentials",
+        fieldErrors: {
+          email: "Try demo@baseui-cn.com",
+          password: "Try BaseUI123!",
+        },
+      }
+    }
 
-<Steps>
-
-<Step>Install dependencies</Step>
-
-```bash
-npm install @base-ui/react
+    return {
+      status: "success",
+      message: "Logged in successfully",
+    }
+  }}
+/>
 ```
 
-<Step>Copy and paste the following code into your project.</Step>
+## Error State
 
-<ComponentSource name="login" title="components/ui/login.tsx" />
+<ComponentPreview name="login-error-demo" />
 
-<Step>Update the import paths to match your project setup.</Step>
+Use the returned `AuthSubmitResult` to map server failures into Base UI form errors and a form-level alert without pulling in another form library.
 
-</Steps>
+## In A Dialog
 
-</TabsContent>
+<ComponentPreview name="login-dialog-demo" />
 
-</CodeTabs>
+This is one of the main `baseui-cn` advantages: the same auth block works inside layered overlays without swapping form or feedback primitives.
 
 ## Props
 
 <PropsTable>
-  <PropRow name="onSubmit" type="(data: { email: string; password: string }) => void | Promise<void>">
-    Form submission handler
+  <PropRow name="onSubmit" type="(values: LoginValues) => Promise<AuthSubmitResult<LoginFieldName> | void> | AuthSubmitResult<LoginFieldName> | void">
+    Optional submit handler. Without it, the block runs a built-in async demo success flow.
   </PropRow>
-  <PropRow name="onGoogleLogin" type="() => void">
-    Shows Google button when provided
+  <PropRow name="variant" type="'default' | 'bordered' | 'elevated' | 'minimal'" defaultValue="'default'">
+    Controls the card presentation.
   </PropRow>
-  <PropRow name="onGithubLogin" type="() => void">
-    Shows GitHub button when provided
+  <PropRow name="size" type="'sm' | 'md' | 'lg'" defaultValue="'md'">
+    Controls spacing, typography, and form control sizing.
   </PropRow>
-  <PropRow name="isLoading" type="boolean" defaultValue="false">
-    Shows loading state
+  <PropRow name="animation" type="'none' | 'fade' | 'slide-up' | 'scale'" defaultValue="'fade'">
+    Controls entry motion for the block.
   </PropRow>
-  <PropRow name="error" type="string">
-    Global error message above form
+  <PropRow name="showSocial" type="boolean" defaultValue="true">
+    Shows built-in social buttons when provider callbacks are supplied.
+  </PropRow>
+  <PropRow name="signUpHref" type="string" defaultValue="'/sign-up'">
+    Link used in the footer prompt below the login card.
+  </PropRow>
+  <PropRow name="forgotPasswordHref" type="string" defaultValue="'/forgot-password'">
+    Optional recovery link shown beside the password label.
+  </PropRow>
+  <PropRow name="successToast" type="{ title?: string; description?: string; timeout?: number }">
+    Overrides the success toast content used after a successful submit.
   </PropRow>
 </PropsTable>

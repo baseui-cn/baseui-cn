@@ -1,57 +1,143 @@
 #!/usr/bin/env node
 /**
- * Reads component source files from apps/www/components/ui/
- * and writes registry JSON entries to:
- *   1. packages/registry/registry/   (source of truth for the CLI package)
- *   2. apps/www/public/registry/     (served at baseui-cn.com/registry/ for live fetches)
- * 
- * Run from repo root: node scripts/build-registry.mjs
- * Or via:              pnpm registry:build
+ * Builds the installable registry from scripts/registry-meta.mjs and writes:
+ *   1. packages/registry/registry/   - source registry JSON
+ *   2. apps/www/public/registry/     - live docs registry
+ *   3. packages/cli/registry/        - bundled CLI fallback registry
+ *   4. packages/registry/index.json  - package manifest index
+ *   5. apps/www/lib/__generated__/catalog.json - docs catalog metadata
  */
-import { readFile, writeFile, readdir, mkdir } from "fs/promises"
-import { join } from "path"
-import { componentMeta, buildEntry, UI_DIR, REGISTRY_DIR } from "./registry-meta.mjs"
+import { mkdir, readFile, readdir, rm, writeFile } from "fs/promises"
+import { basename, dirname, join } from "path"
+import {
+  CLI_PACKAGE_FILE,
+  CLI_REGISTRY_DIR,
+  PUBLIC_REGISTRY_DIR,
+  REPO_ROOT,
+  REGISTRY_DIR,
+  REGISTRY_PACKAGE_INDEX,
+  SITE_CATALOG_FILE,
+  UI_DIR,
+  buildCatalog,
+  buildEntry,
+  componentMeta,
+} from "./registry-meta.mjs"
 
-const PUBLIC_REGISTRY_DIR = join("apps", "www", "public", "registry")
-await mkdir(PUBLIC_REGISTRY_DIR, { recursive: true })
+const OUTPUT_DIRS = [REGISTRY_DIR, PUBLIC_REGISTRY_DIR, CLI_REGISTRY_DIR]
+const REGISTRY_URL = "https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/registry"
 
-const files = await readdir(UI_DIR)
-let built = 0
-const indexEntries = []
+async function readCliVersion() {
+  const pkg = JSON.parse(await readFile(CLI_PACKAGE_FILE, "utf-8"))
+  return pkg.version
+}
 
-for (const file of files) {
-  if (!file.endsWith(".tsx") || file.startsWith("_")) continue
-  const name = file.replace(".tsx", "")
-  const meta = componentMeta[name]
-  if (!meta) {
-    console.log(`⚠ No metadata for ${name} — skipping`)
-    continue
+async function ensureCleanOutput(dir, allowedFiles) {
+  await mkdir(dir, { recursive: true })
+  const existing = await readdir(dir)
+  await Promise.all(
+    existing
+      .filter(
+        (file) =>
+          ((file.endsWith(".json") && !allowedFiles.has(file)) || file.endsWith(".bak"))
+      )
+      .map((file) => rm(join(dir, file), { force: true }).catch(() => null))
+  )
+}
+
+async function removeBackupVariants(filePath) {
+  const parentDir = dirname(filePath)
+  const targetName = basename(filePath)
+  const existing = await readdir(parentDir)
+
+  await Promise.all(
+    existing
+      .filter((file) => file === `${targetName}.bak` || file.startsWith(`${targetName}.`))
+      .filter((file) => file.endsWith(".bak"))
+      .map((file) => rm(join(parentDir, file), { force: true }).catch(() => null))
+  )
+}
+
+async function writeOutputFile(filePath, content) {
+  await rm(filePath, { force: true })
+  await writeFile(filePath, content)
+}
+
+function resolveSourceFilePath(sourcePath) {
+  const normalizedPath = sourcePath.replaceAll("\\", "/")
+
+  if (
+    normalizedPath.startsWith("apps/") ||
+    normalizedPath.startsWith("packages/") ||
+    normalizedPath.startsWith("scripts/")
+  ) {
+    return join(REPO_ROOT, ...normalizedPath.split("/"))
   }
 
-  const content = await readFile(join(UI_DIR, file), "utf-8")
-  const entry = buildEntry(name, content, meta)
+  return join(UI_DIR, sourcePath)
+}
+
+const version = await readCliVersion()
+const catalog = buildCatalog(version)
+const indexEntries = []
+const fileNames = new Set(["index.json"])
+
+for (const meta of Object.values(componentMeta)) {
+  const files = await Promise.all(
+    meta.files.map(async (file) => ({
+      path: file.targetPath,
+      type: file.type,
+      content: await readFile(resolveSourceFilePath(file.sourcePath), "utf-8"),
+    }))
+  )
+  const entry = buildEntry(meta.name, files, meta, version)
   const json = JSON.stringify(entry, null, 2)
+  const fileName = `${meta.name}.json`
 
-  await writeFile(join(REGISTRY_DIR, `${name}.json`), json)
-  await writeFile(join(PUBLIC_REGISTRY_DIR, `${name}.json`), json)
-
+  fileNames.add(fileName)
   indexEntries.push({
     name: entry.name,
     type: entry.type,
     description: entry.description,
     tags: entry.tags ?? [],
+    ...(entry.badge ? { badge: entry.badge } : {}),
   })
 
-  built++
-  console.log(`✓ ${name}`)
+  await Promise.all(
+    OUTPUT_DIRS.map(async (dir) => {
+      await mkdir(dir, { recursive: true })
+      await writeOutputFile(join(dir, fileName), json)
+    })
+  )
+
+  console.log(`ok ${meta.name} -> ${basename(meta.sourcePath)}`)
 }
 
-const index = {
-  version: "0.1.0",
-  components: indexEntries.sort((a, b) => a.name.localeCompare(b.name)),
+for (const dir of OUTPUT_DIRS) {
+  await ensureCleanOutput(dir, fileNames)
 }
-const indexJson = JSON.stringify(index, null, 2)
-await writeFile(join(REGISTRY_DIR, "index.json"), indexJson)
-await writeFile(join(PUBLIC_REGISTRY_DIR, "index.json"), indexJson)
 
-console.log(`\nBuilt ${built} registry entries.`)
+const registryIndex = {
+  version,
+  components: indexEntries,
+}
+const registryIndexJson = JSON.stringify(registryIndex, null, 2)
+
+await Promise.all(
+  OUTPUT_DIRS.map((dir) => writeOutputFile(join(dir, "index.json"), registryIndexJson))
+)
+
+const packageIndex = {
+  version,
+  homepage: "https://baseui-cn.com",
+  registry: REGISTRY_URL,
+  baseUIVersion: ">=1.3.0",
+  components: indexEntries,
+}
+await writeOutputFile(REGISTRY_PACKAGE_INDEX, JSON.stringify(packageIndex, null, 2))
+await removeBackupVariants(REGISTRY_PACKAGE_INDEX)
+
+await mkdir(dirname(SITE_CATALOG_FILE), { recursive: true })
+await writeOutputFile(SITE_CATALOG_FILE, JSON.stringify(catalog, null, 2))
+await removeBackupVariants(SITE_CATALOG_FILE)
+
+console.log(`\nBuilt ${indexEntries.length} registry entries.`)

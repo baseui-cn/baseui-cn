@@ -1,65 +1,83 @@
 ---
 title: Command
-description: A searchable command palette with keyboard navigation.
+description: A command palette built from Base UI dialog and autocomplete primitives.
 component: true
 ---
 
 <ComponentPreview name="command-demo" />
 
 <Callout variant="info">
-  No cmdk dependency. Built on Base UI Dialog + native React state. Arrow key navigation built in.
+  `command` stays a single installable. The richer workspace and AI-assisted demos below are both built from the same exported primitives in [`components/ui/command.tsx`](/d:/Projects/baseui-cn-main/baseui-cn/apps/www/components/ui/command.tsx).
 </Callout>
 
 ## Installation
 
-<CodeTabs>
+<InstallTabs
+  slug="command"
+  addCmd="baseui-cn add command"
+  manualDeps="npm install @base-ui/react lucide-react"
+/>
 
-<TabsList>
-  <TabsTrigger value="cli">Command</TabsTrigger>
-  <TabsTrigger value="manual">Manual</TabsTrigger>
-</TabsList>
+## Usage
 
-<TabsContent value="cli">
+```tsx
+import {
+  Command,
+  CommandCollection,
+  CommandDialog,
+  CommandDialogPopup,
+  CommandEmpty,
+  CommandGroup,
+  CommandGroupLabel,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandPanel,
+} from "@/components/ui/command"
 
-<PackageManagerTabs command="baseui-cn add command" />
-
-</TabsContent>
-
-<TabsContent value="manual">
-
-<Steps>
-
-<Step>Install dependencies</Step>
-
-```bash
-npm install @base-ui/react
+<CommandDialog open={open} onOpenChange={setOpen}>
+  <CommandDialogPopup>
+    <Command items={groups}>
+      <CommandInput placeholder="Search actions..." />
+      <CommandPanel>
+        <CommandEmpty>No matches found.</CommandEmpty>
+        <CommandList>
+          {(group) => (
+            <CommandGroup key={group.value} items={group.items}>
+              <CommandGroupLabel>{group.value}</CommandGroupLabel>
+              <CommandCollection>
+                {(item) => (
+                  <CommandItem key={item.value} value={item.value}>
+                    {item.label}
+                  </CommandItem>
+                )}
+              </CommandCollection>
+            </CommandGroup>
+          )}
+        </CommandList>
+      </CommandPanel>
+    </Command>
+  </CommandDialogPopup>
+</CommandDialog>
 ```
 
-<Step>Copy and paste the following code into your project.</Step>
+## Examples
 
-<ComponentSource name="command" title="components/ui/command.tsx" />
+### Workspace Palette
 
-<Step>Update the import paths to match your project setup.</Step>
+<ComponentPreview name="command-demo" />
 
-</Steps>
+This is the main polished command palette surface: grouped actions, shortcuts, footer hints, and the dialog shell working together as one installable.
 
-</TabsContent>
+### AI-Assisted Variant
 
-</CodeTabs>
+<ComponentPreview name="command-ai-demo" />
 
-## Props
+This variant shows how far the same primitives can stretch: inline search, an AI mode, loading states, and empty-state handling without switching away from the Base UI-first command structure.
 
-<PropsTable>
-  <PropRow name="items" type="CommandItem[]" required>
-    Array of command items
-  </PropRow>
-  <PropRow name="placeholder" type="string">
-    Search input placeholder
-  </PropRow>
-  <PropRow name="emptyText" type="string">
-    Text when no results found
-  </PropRow>
-  <PropRow name="onSelect" type="(item: CommandItem) => void">
-    Called when item is selected
-  </PropRow>
-</PropsTable>
+## Exports
+
+- `Command` renders the open inline palette surface.
+- `CommandDialog`, `CommandDialogPopup`, and `CommandDialogTrigger` handle the overlay shell.
+- `CommandInput`, `CommandList`, `CommandGroup`, `CommandCollection`, and `CommandItem` compose the searchable list.
+- `CommandEmpty`, `CommandSeparator`, `CommandFooter`, and `CommandShortcut` round out the interaction details.

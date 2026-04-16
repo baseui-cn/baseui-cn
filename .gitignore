@@ -34,3 +34,10 @@ pnpm-debug.log*
 
 # AI / Agent artifacts
 .claude/
+
+# Generated registry backup artifacts left behind by Windows file locks
+apps/www/public/registry/*.bak
+apps/www/lib/__generated__/*.bak
+packages/registry/*.bak
+packages/registry/registry/*.bak
+packages/cli/registry/*.bak

@@ -561,7 +561,7 @@ export default function HomePage() {
                   </div>
                   <div className="text-zinc-500 pl-6">Detecting project structure...</div>
                   <div className="text-green-400 pl-6">✓ @base-ui/react installed</div>
-                  <div className="text-green-400 pl-6">✓ CSS variables added to globals.css</div>
+                  <div className="text-green-400 pl-6">✓ CSS variables added to your selected stylesheet</div>
                   <div className="text-green-400 pl-6">✓ lib/utils.ts created</div>
                   <div className="mt-3 flex gap-3">
                     <span className="text-white/30">$</span>

@@ -1,0 +1,39 @@
+---
+title: Alert
+description: A semantic feedback container for inline errors, warnings, and status messaging.
+component: true
+---
+
+<ComponentPreview name="alert-demo" />
+
+## Installation
+
+<InstallTabs
+  slug="alert"
+  addCmd="baseui-cn add alert"
+/>
+
+## Usage
+
+```tsx
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Info } from "lucide-react"
+
+<Alert>
+  <Info className="size-4 text-info" />
+  <AlertTitle>Heads up</AlertTitle>
+  <AlertDescription>
+    This alert stays inline with your form or settings surface.
+  </AlertDescription>
+</Alert>
+```
+
+## Variants
+
+<ComponentPreview name="alert-variants" />
+
+## Auth And Settings
+
+Use `Alert` when the message should stay visible until the user fixes something. That makes it a good fit for auth failures, validation summaries, permissions messaging, and configuration warnings.
+
+<ComponentPreview name="alert-with-action" />

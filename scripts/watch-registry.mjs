@@ -1,53 +1,54 @@
 #!/usr/bin/env node
 /**
- * Watches apps/www/components/ui/ for changes and auto-syncs
- * the corresponding registry JSON in packages/registry/registry/
- *
- * Run from repo root: node scripts/watch-registry.mjs
- * Or via:              pnpm registry:watch
+ * Watches apps/www/components/ui/ for changes and rebuilds the generated registry outputs.
  */
 import { watch } from "fs"
-import { readFile, writeFile } from "fs/promises"
-import { join } from "path"
-import { componentMeta, buildEntry, UI_DIR, REGISTRY_DIR } from "./registry-meta.mjs"
+import { spawn } from "child_process"
+import { REPO_ROOT, UI_DIR } from "./registry-meta.mjs"
 
-async function syncFile(fileName) {
-  if (!fileName.endsWith(".tsx") || fileName.startsWith("_")) return
+let activeBuild = null
+let queuedBuild = false
 
-  const name = fileName.replace(".tsx", "")
-  const meta = componentMeta[name]
-  if (!meta) {
-    console.log(`⚠ No metadata for ${name} — skipping`)
+async function runBuild() {
+  if (activeBuild) {
+    queuedBuild = true
     return
   }
 
-  const content = await readFile(join(UI_DIR, fileName), "utf-8")
-  const entry = buildEntry(name, content, meta)
-  const outPath = join(REGISTRY_DIR, `${name}.json`)
+  activeBuild = new Promise((resolve, reject) => {
+    const child = spawn("node", ["scripts/build-registry.mjs"], {
+      cwd: REPO_ROOT,
+      stdio: "inherit",
+    })
 
-  await writeFile(outPath, JSON.stringify(entry, null, 2))
-  console.log(`✓ Synced ${name}`)
+    child.on("exit", (code) => {
+      if (code === 0) {
+        resolve()
+      } else {
+        reject(new Error(`build-registry exited with code ${code}`))
+      }
+    })
+
+    child.on("error", reject)
+  })
+
+  try {
+    await activeBuild
+  } catch (error) {
+    console.error("x Registry build failed:", error)
+  } finally {
+    activeBuild = null
+    if (queuedBuild) {
+      queuedBuild = false
+      await runBuild()
+    }
+  }
 }
 
-console.log(`Loaded metadata for ${Object.keys(componentMeta).length} components`)
-console.log(`Watching ${UI_DIR} for changes…\n`)
+console.log("Watching registry sources...")
+console.log(`${UI_DIR}\n`)
 
-const debounceMap = new Map()
-
-watch(UI_DIR, { recursive: false }, (eventType, fileName) => {
+watch(UI_DIR, { recursive: false }, (_eventType, fileName) => {
   if (!fileName || !fileName.endsWith(".tsx")) return
-
-  if (debounceMap.has(fileName)) clearTimeout(debounceMap.get(fileName))
-
-  debounceMap.set(
-    fileName,
-    setTimeout(async () => {
-      debounceMap.delete(fileName)
-      try {
-        await syncFile(fileName)
-      } catch (err) {
-        console.error(`✗ Error syncing ${fileName}:`, err.message)
-      }
-    }, 200)
-  )
+  void runBuild()
 })

@@ -9,12 +9,19 @@ function BadgePreview() {
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap gap-2">
         <Badge variant="default">Default</Badge>
+        <Badge variant="primary">Primary</Badge>
+        <Badge variant="primary-outline">Primary outline</Badge>
         <Badge variant="secondary">Secondary</Badge>
         <Badge variant="outline">Outline</Badge>
         <Badge variant="destructive">Destructive</Badge>
         <Badge variant="success">Success</Badge>
         <Badge variant="warning">Warning</Badge>
         <Badge variant="info">Info</Badge>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Badge variant="success-outline">Success outline</Badge>
+        <Badge variant="warning-outline">Warning outline</Badge>
+        <Badge variant="info-outline">Info outline</Badge>
       </div>
       <div className="flex flex-wrap gap-2">
         <Badge size="sm">Small</Badge>
@@ -36,14 +43,23 @@ function BadgePreview() {
 
 function BadgeVariantsPreview() {
   return (
-    <div className="flex flex-wrap gap-2">
-      <Badge variant="default">Default</Badge>
-      <Badge variant="secondary">Secondary</Badge>
-      <Badge variant="outline">Outline</Badge>
-      <Badge variant="destructive">Destructive</Badge>
-      <Badge variant="success">Success</Badge>
-      <Badge variant="warning">Warning</Badge>
-      <Badge variant="info">Info</Badge>
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap gap-2">
+        <Badge variant="default">Default</Badge>
+        <Badge variant="primary">Primary</Badge>
+        <Badge variant="primary-outline">Primary outline</Badge>
+        <Badge variant="secondary">Secondary</Badge>
+        <Badge variant="outline">Outline</Badge>
+        <Badge variant="destructive">Destructive</Badge>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Badge variant="success">Success</Badge>
+        <Badge variant="success-outline">Success outline</Badge>
+        <Badge variant="warning">Warning</Badge>
+        <Badge variant="warning-outline">Warning outline</Badge>
+        <Badge variant="info">Info</Badge>
+        <Badge variant="info-outline">Info outline</Badge>
+      </div>
     </div>
   )
 }

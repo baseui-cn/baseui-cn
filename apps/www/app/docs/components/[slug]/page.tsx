@@ -45,7 +45,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const comp = getComponent(slug)
-  const title = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+  const title = comp?.label ?? slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
   const description = comp?.description ?? `${title} component for Base UI.`
   const url = `${siteConfig.url}/docs/components/${slug}`
   return {
@@ -101,7 +101,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   ])
   const sourceCode = registryData?.code ?? ""
 
-  const title = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+  const title = comp?.label ?? slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
 
   const components = {
     ...mdxComponents,
@@ -112,9 +112,18 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
       <ComponentPreviewMdx name={name} code={sourceCode} previewCode={previewSources[name] ?? ""} />
     ),
     ComponentSource: ({ name, title: t }: { name: string; title?: string }) => (
-      <ComponentSource name={name} title={t} code={sourceCode} />
+      <ComponentSource
+        name={name}
+        title={getComponent(name)?.installedPath ?? t}
+        code={sourceCode}
+      />
     ),
-    InstallTabs: (props: React.ComponentProps<typeof InstallTabs>) => <InstallTabs {...props} />,
+    InstallTabs: (props: React.ComponentProps<typeof InstallTabs>) => (
+      <InstallTabs
+        {...props}
+        installedPath={getComponent(props.slug)?.installedPath}
+      />
+    ),
     Callout,
   }
 
@@ -135,6 +144,17 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
           <h1 className="text-3xl font-bold tracking-tight mb-2">{title}</h1>
           {comp?.description && (
             <p className="text-muted-foreground text-base">{comp.description}</p>
+          )}
+          {comp?.type === "block" && (
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              <span className="rounded bg-muted px-2 py-1 font-mono">
+                {comp.installedPath}
+              </span>
+              <span>export</span>
+              <span className="rounded bg-muted px-2 py-1 font-mono">
+                {registryData?.exportName ?? comp.exportName}
+              </span>
+            </div>
           )}
           {comp && (comp.badge || comp.tags?.length) && (
             <div className="mt-3 flex flex-wrap items-center gap-2">

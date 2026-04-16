@@ -1,29 +1,51 @@
 "use client"
 
-import { buttonPreviewMap } from "@/components/previews/button-previews"
-import { checkboxPreviewMap } from "@/components/previews/checkbox-previews"
-import { switchPreviewMap } from "@/components/previews/switch-previews"
-import { radioGroupPreviewMap } from "@/components/previews/radio-group-previews"
-import { inputPreviewMap } from "@/components/previews/input-previews"
-import { textareaPreviewMap } from "@/components/previews/textarea-previews"
-import { labelPreviewMap } from "@/components/previews/label-previews"
-import { selectPreviewMap } from "@/components/previews/select-previews"
-import { comboboxPreviewMap } from "@/components/previews/combobox-previews"
-import { autocompletePreviewMap } from "@/components/previews/autocomplete-previews"
-import { sliderPreviewMap } from "@/components/previews/slider-previews"
-import { inputGroupPreviewMap } from "@/components/previews/input-group-previews"
+import * as React from "react"
+import { z } from "zod"
+
+import { Button } from "@/components/ui/button"
+import { Field, FieldControl, FieldError, FieldLabel } from "@/components/ui/field"
+import { Form } from "@/components/ui/form"
+
+const profileSchema = z.object({
+  email: z.string().trim().min(1, "Email is required").email("Enter a valid email address"),
+})
+
+function FormPreview() {
+  const [errors, setErrors] = React.useState<Record<string, string | string[]>>({})
+  const [saved, setSaved] = React.useState(false)
+
+  return (
+    <Form
+      className="max-w-sm"
+      errors={errors}
+      onFormSubmit={async (formValues) => {
+        setSaved(false)
+        const result = profileSchema.safeParse(formValues)
+
+        if (!result.success) {
+          setErrors(z.flattenError(result.error).fieldErrors)
+          return
+        }
+
+        setErrors({})
+        setSaved(true)
+      }}
+    >
+      <Field name="email">
+        <FieldLabel>Email</FieldLabel>
+        <FieldControl type="email" placeholder="you@example.com" />
+        <FieldError />
+      </Field>
+      <Button type="submit" className="w-full">
+        Save profile
+      </Button>
+      {saved ? <p className="text-sm text-success">Saved with Base UI Form.</p> : null}
+    </Form>
+  )
+}
 
 export const formPreviewMap: Record<string, React.ComponentType> = {
-  ...buttonPreviewMap,
-  ...checkboxPreviewMap,
-  ...switchPreviewMap,
-  ...radioGroupPreviewMap,
-  ...inputPreviewMap,
-  ...textareaPreviewMap,
-  ...labelPreviewMap,
-  ...selectPreviewMap,
-  ...comboboxPreviewMap,
-  ...autocompletePreviewMap,
-  ...sliderPreviewMap,
-  ...inputGroupPreviewMap,
+  form: FormPreview,
+  "form-demo": FormPreview,
 }

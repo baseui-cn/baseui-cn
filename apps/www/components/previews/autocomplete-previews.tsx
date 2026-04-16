@@ -3,11 +3,11 @@
 import * as React from "react"
 import {
   Autocomplete,
-  AutocompleteContent,
   AutocompleteEmpty,
   AutocompleteInput,
   AutocompleteItem,
   AutocompleteList,
+  AutocompletePopup,
 } from "@/components/ui/autocomplete"
 
 interface Item {
@@ -74,7 +74,7 @@ function AutocompletePreview() {
         itemToStringValue={(item: unknown) => (item as Item).value}
       >
         <AutocompleteInput placeholder="e.g. feature" showTrigger showClear />
-        <AutocompleteContent>
+        <AutocompletePopup>
           <AutocompleteEmpty>No items found.</AutocompleteEmpty>
           <AutocompleteList>
             {(item) => (
@@ -83,7 +83,7 @@ function AutocompletePreview() {
               </AutocompleteItem>
             )}
           </AutocompleteList>
-        </AutocompleteContent>
+        </AutocompletePopup>
       </Autocomplete>
     </div>
   )
@@ -103,7 +103,7 @@ function AutocompleteBasicPreview() {
         itemToStringValue={(i: unknown) => (i as Item).value}
       >
         <AutocompleteInput placeholder="Type to search..." />
-        <AutocompleteContent>
+        <AutocompletePopup>
           <AutocompleteEmpty>No results.</AutocompleteEmpty>
           <AutocompleteList>
             {(item) => (
@@ -112,7 +112,7 @@ function AutocompleteBasicPreview() {
               </AutocompleteItem>
             )}
           </AutocompleteList>
-        </AutocompleteContent>
+        </AutocompletePopup>
       </Autocomplete>
     </div>
   )
@@ -132,7 +132,7 @@ function AutocompleteWithClearButtonPreview() {
         itemToStringValue={(i: unknown) => (i as Item).value}
       >
         <AutocompleteInput placeholder="Search..." showTrigger showClear />
-        <AutocompleteContent>
+        <AutocompletePopup>
           <AutocompleteEmpty>No results.</AutocompleteEmpty>
           <AutocompleteList>
             {(item) => (
@@ -141,7 +141,7 @@ function AutocompleteWithClearButtonPreview() {
               </AutocompleteItem>
             )}
           </AutocompleteList>
-        </AutocompleteContent>
+        </AutocompletePopup>
       </Autocomplete>
     </div>
   )

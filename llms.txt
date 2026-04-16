@@ -92,14 +92,15 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Toast, ToastProvider, useToast } from "@/components/ui/toast"
 import { Command, CommandDialog } from "@/components/ui/command"
 import { Badge } from "@/components/ui/badge"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Form } from "@/components/ui/form"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table"
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext } from "@/components/ui/pagination"
 import { EmptyState } from "@/components/ui/blocks/empty-state"
-import { LoginBlock } from "@/components/ui/blocks/login"
-import { AppShell } from "@/components/ui/blocks/app-shell"
+import { LoginBlock, SignupBlock } from "@/components/ui/auth"
 ```
 
 ## Available components
@@ -110,13 +111,15 @@ import { AppShell } from "@/components/ui/blocks/app-shell"
 - textarea — label · helperText · error · autoResize props
 - label — required prop adds red asterisk
 - separator — orientation: "horizontal" | "vertical"
-- badge — variants: default · secondary · outline · destructive · success · warning
+- badge — variants: default · primary · primary-outline · secondary · outline · ghost · destructive · success · success-outline · warning · warning-outline · info · info-outline
+- alert — semantic inline feedback container with default and destructive variants
 - skeleton — animate-pulse placeholder, accepts className for sizing
 
 ### Form (Base UI primitives)
 - checkbox — Base UI Checkbox. Props: label · description. Supports indeterminate state
 - switch — Base UI Switch. Props: label · description
 - radio-group — Base UI RadioGroup + Radio. Components: RadioGroup (label prop) + RadioGroupItem (label · description props)
+- form — Base UI Form wrapper. Use with Field and Button for submit handling and validation wiring
 - select — Base UI Select. Components: Select · SelectTrigger (placeholder prop) · SelectContent · SelectItem · SelectGroup · SelectLabel · SelectSeparator
 - combobox — Base UI Select + filter state. Props: options · value · onValueChange · placeholder · searchPlaceholder · emptyText · disabled · label · error
 
@@ -138,8 +141,8 @@ import { AppShell } from "@/components/ui/blocks/app-shell"
 
 ### Blocks
 - empty-state — Props: title (required) · description · icon · action · size ("sm" | "md" | "lg"). Exports EmptyStateIcons: inbox · search · folder · users
-- login — LoginBlock props: onSubmit · onGoogleLogin · onGithubLogin · signUpHref · forgotPasswordHref · isLoading · error · title · description · showSocial
-- app-shell — AppShell props: nav (NavItem[]) · activeId · logo · header · defaultCollapsed · onNavClick. Mobile nav uses Base UI Drawer
+- login — LoginBlock props: onSubmit · onGoogleLogin · onGithubLogin · signUpHref · forgotPasswordHref · title · description · variant · size · animation · showSocial · successToast
+- signup — SignupBlock props: onSubmit · onGoogleLogin · onGithubLogin · signInHref · termsHref · privacyHref · title · description · variant · size · animation · showSocial · successToast
 
 ## Theming
 
