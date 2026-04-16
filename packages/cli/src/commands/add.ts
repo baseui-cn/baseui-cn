@@ -16,6 +16,17 @@ import { ensureThemeCSS } from "../utils/ensure-styles"
 import { detectStyleFiles, promptForStyleFile } from "../utils/style-file"
 import { init } from "./init"
 
+type InstallMode = "add" | "update"
+
+interface InstallOptions {
+  yes: boolean
+  overwrite: boolean
+  all: boolean
+  css?: string
+  path?: string
+  mode: InstallMode
+}
+
 function resolveInstallFilePath(
   filePath: string,
   defaultComponentsPath: string,
@@ -41,6 +52,13 @@ export async function add(
     css?: string
     path?: string
   }
+) {
+  return installComponents(components, { ...options, mode: "add" })
+}
+
+export async function installComponents(
+  components: string[],
+  options: InstallOptions
 ) {
   let config = await getConfig()
 
@@ -88,7 +106,11 @@ export async function add(
     const registry = await fetchRegistry()
     components = registry.components.map((component) => component.name)
     console.log()
-    console.log(chalk.bold(`Adding all ${components.length} components...`))
+    console.log(
+      chalk.bold(
+        `${options.mode === "update" ? "Updating" : "Adding"} all ${components.length} components...`
+      )
+    )
     console.log()
   }
 
@@ -98,7 +120,10 @@ export async function add(
     const { selected } = await prompts({
       type: "multiselect",
       name: "selected",
-      message: "Which components would you like to add?",
+      message:
+        options.mode === "update"
+          ? "Which components would you like to update?"
+          : "Which components would you like to add?",
       choices: registry.components.map((component) => ({
         title: component.type === "block" ? `[block] ${component.name}` : component.name,
         description: component.description,
@@ -108,7 +133,7 @@ export async function add(
     })
 
     if (!selected?.length) {
-      console.log(chalk.dim("No components selected."))
+      console.log(chalk.dim(`No components selected${options.mode === "update" ? " for update" : ""}.`))
       return
     }
 
@@ -123,9 +148,18 @@ export async function add(
     componentEntries.set(name, await fetchComponent(name))
   }
 
-  const toInstall = options.overwrite
-    ? allComponents
-    : await filterExisting(allComponents, componentEntries, config, options.path)
+  const installState = await partitionInstallState(
+    allComponents,
+    componentEntries,
+    config,
+    options.path
+  )
+  const toInstall = await resolveInstallTargets(
+    installState,
+    componentEntries,
+    config,
+    options
+  )
 
   resolveSpinner.succeed(
     `${allComponents.length} component${allComponents.length !== 1 ? "s" : ""} resolved`
@@ -133,20 +167,26 @@ export async function add(
 
   if (!toInstall.length) {
     console.log()
-    console.log(chalk.dim("All selected components already exist. Use --overwrite to replace."))
+    console.log(
+      chalk.dim(
+        options.mode === "update"
+          ? "No components selected for update."
+          : "All selected components already exist. Use --overwrite or update to replace."
+      )
+    )
     return
   }
 
   if (!options.yes) {
     console.log()
-    console.log("Components to add:")
+    console.log(`Components to ${options.mode === "update" ? "update" : "add"}:`)
     toInstall.forEach((component) => console.log(chalk.cyan(`  + ${component}`)))
     console.log()
 
     const { confirm } = await prompts({
       type: "confirm",
       name: "confirm",
-      message: `Add ${toInstall.length} component${toInstall.length !== 1 ? "s" : ""}?`,
+      message: `${options.mode === "update" ? "Update" : "Add"} ${toInstall.length} component${toInstall.length !== 1 ? "s" : ""}?`,
       initial: true,
     })
 
@@ -158,7 +198,9 @@ export async function add(
   const allNpmDeps: string[] = []
 
   for (const componentName of toInstall) {
-    const spinner = ora(`Adding ${componentName}...`).start()
+    const spinner = ora(
+      `${options.mode === "update" ? "Updating" : "Adding"} ${componentName}...`
+    ).start()
 
     try {
       const component = componentEntries.get(componentName)
@@ -180,7 +222,9 @@ export async function add(
         `${componentName} ${chalk.dim(`-> ${describeInstallTarget(component, config.componentsPath, options.path)}`)}`
       )
     } catch (err) {
-      spinner.fail(`Failed to add ${componentName}`)
+      spinner.fail(
+        `Failed to ${options.mode === "update" ? "update" : "add"} ${componentName}`
+      )
       console.log(chalk.dim(`  ${err}`))
     }
   }
@@ -201,16 +245,22 @@ export async function add(
   }
 
   console.log()
-  console.log(`${chalk.green("✓")} Done. Components are yours - edit freely.`)
+  console.log(
+    `${chalk.green("✓")} ${
+      options.mode === "update"
+        ? "Done. Components refreshed successfully."
+        : "Done. Components are yours - edit freely."
+    }`
+  )
   console.log()
 }
 
-async function filterExisting(
+async function partitionInstallState(
   components: string[],
   componentEntries: Map<string, ComponentEntry>,
   config: { componentsPath: string },
   customPath?: string
-): Promise<string[]> {
+): Promise<{ existing: string[]; missing: string[] }> {
   const existing: string[] = []
   const missing: string[] = []
 
@@ -234,13 +284,52 @@ async function filterExisting(
     }
   }
 
-  if (existing.length) {
-    console.log()
-    console.log(chalk.dim("Already installed (skipping):"))
-    existing.forEach((component) => console.log(chalk.dim(`  · ${component}`)))
+  return { existing, missing }
+}
+
+async function resolveInstallTargets(
+  installState: { existing: string[]; missing: string[] },
+  componentEntries: Map<string, ComponentEntry>,
+  config: { componentsPath: string },
+  options: InstallOptions
+): Promise<string[]> {
+  const { existing, missing } = installState
+
+  if (options.mode === "update" || options.overwrite) {
+    return [...existing, ...missing]
   }
 
-  return missing
+  if (!existing.length || options.yes) {
+    if (existing.length && options.yes) {
+      console.log()
+      console.log(chalk.dim("Already installed (skipping):"))
+      existing.forEach((component) => console.log(chalk.dim(`  - ${component}`)))
+    }
+    return missing
+  }
+
+  console.log()
+  console.log(chalk.bold("Already installed:"))
+  existing.forEach((componentName) => {
+    const component = componentEntries.get(componentName)
+    if (!component) return
+
+    console.log(
+      chalk.dim(
+        `  - ${componentName} -> ${describeInstallTarget(component, config.componentsPath, options.path)}`
+      )
+    )
+  })
+  console.log()
+
+  const { replaceExisting } = await prompts({
+    type: "confirm",
+    name: "replaceExisting",
+    message: `Replace ${existing.length} already installed component${existing.length !== 1 ? "s" : ""}?`,
+    initial: true,
+  })
+
+  return replaceExisting ? [...missing, ...existing] : missing
 }
 
 function describeInstallTarget(

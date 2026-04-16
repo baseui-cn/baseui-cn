@@ -4,13 +4,14 @@ import { Command } from "commander"
 import { init } from "./commands/init"
 import { add } from "./commands/add"
 import { list } from "./commands/list"
+import { update } from "./commands/update"
 
 const program = new Command()
 
 program
   .name("baseui-cn")
   .description("Add Base UI components to your React app - one command at a time.")
-  .version("1.0.0")
+  .version("1.0.1")
 
 program
   .command("init")
@@ -36,5 +37,14 @@ program
   .description("List all available installables in the registry.")
   .option("--json", "Output as JSON")
   .action(list)
+
+program
+  .command("update [components...]")
+  .description("Replace existing installed components with the latest registry versions.")
+  .option("-y, --yes", "Skip confirmation prompts", false)
+  .option("-a, --all", "Update all available components", false)
+  .option("--css <path>", "Stylesheet file to update with theme variables")
+  .option("-p, --path <path>", "Custom path to update components in")
+  .action(update)
 
 program.parse()

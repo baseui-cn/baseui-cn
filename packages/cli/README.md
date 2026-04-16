@@ -24,13 +24,24 @@ npx baseui-cn init --css src/styles.css
 
 ### `add`
 
-Add one or more installables. If the project is not initialized yet, `add` will run `init` first.
+Add one or more installables. If the project is not initialized yet, `add` will run `init` first. When a component already exists, baseui-cn can replace it interactively or you can force replacement with `--overwrite`.
 
 ```bash
 npx baseui-cn add button
 npx baseui-cn add button --css src/styles.css
 npx baseui-cn add button input select
+npx baseui-cn add button --overwrite
 npx baseui-cn add --all
+```
+
+### `update`
+
+Refresh existing installed components to the latest registry versions.
+
+```bash
+npx baseui-cn update button
+npx baseui-cn update data-grid command
+npx baseui-cn update --all
 ```
 
 ### `list`
