@@ -502,13 +502,13 @@ export function PatternEdit1() {
         <CardHeader className="flex items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="text-foreground text-sm font-medium">Team Editing Sandbox</span>
-            <Badge variant="outline" size="sm">
+            <Badge variant="info-outline" size="sm">
               Inline + Dialog
             </Badge>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleResetAll}>
-              <RotateCcwIcon className="size-4" />
+            <Button variant="destructive-outline" size="xs" onClick={handleResetAll}>
+              <RotateCcwIcon className="size-3" />
               Reset all
             </Button>
           </div>

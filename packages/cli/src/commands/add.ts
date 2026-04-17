@@ -260,57 +260,57 @@ async function partitionInstallState(
   componentEntries: Map<string, ComponentEntry>,
   config: { componentsPath: string },
   customPath?: string
-): Promise<{ existing: string[]; missing: string[] }> {
-  const existing: string[] = []
-  const missing: string[] = []
+): Promise<{ colliding: string[]; fresh: string[] }> {
+  const colliding: string[] = []
+  const fresh: string[] = []
 
   for (const name of components) {
     const component = componentEntries.get(name)
     if (!component) {
-      missing.push(name)
+      fresh.push(name)
       continue
     }
 
-    const allFilesExist = await Promise.all(
+    const existingFiles = await Promise.all(
       component.files.map((file) =>
         fs.pathExists(resolveInstallFilePath(file.path, config.componentsPath, customPath))
       )
     )
 
-    if (allFilesExist.every(Boolean)) {
-      existing.push(name)
+    if (existingFiles.some(Boolean)) {
+      colliding.push(name)
     } else {
-      missing.push(name)
+      fresh.push(name)
     }
   }
 
-  return { existing, missing }
+  return { colliding, fresh }
 }
 
 async function resolveInstallTargets(
-  installState: { existing: string[]; missing: string[] },
+  installState: { colliding: string[]; fresh: string[] },
   componentEntries: Map<string, ComponentEntry>,
   config: { componentsPath: string },
   options: InstallOptions
 ): Promise<string[]> {
-  const { existing, missing } = installState
+  const { colliding, fresh } = installState
 
   if (options.mode === "update" || options.overwrite) {
-    return [...existing, ...missing]
+    return [...fresh, ...colliding]
   }
 
-  if (!existing.length || options.yes) {
-    if (existing.length && options.yes) {
+  if (!colliding.length || options.yes) {
+    if (colliding.length && options.yes) {
       console.log()
-      console.log(chalk.dim("Already installed (skipping):"))
-      existing.forEach((component) => console.log(chalk.dim(`  - ${component}`)))
+      console.log(chalk.dim("Existing target files detected (skipping without --overwrite):"))
+      colliding.forEach((component) => console.log(chalk.dim(`  - ${component}`)))
     }
-    return missing
+    return fresh
   }
 
   console.log()
-  console.log(chalk.bold("Already installed:"))
-  existing.forEach((componentName) => {
+  console.log(chalk.bold("Existing target files:"))
+  colliding.forEach((componentName) => {
     const component = componentEntries.get(componentName)
     if (!component) return
 
@@ -325,11 +325,11 @@ async function resolveInstallTargets(
   const { replaceExisting } = await prompts({
     type: "confirm",
     name: "replaceExisting",
-    message: `Replace ${existing.length} already installed component${existing.length !== 1 ? "s" : ""}?`,
+    message: `Replace ${colliding.length} component${colliding.length !== 1 ? "s" : ""} with existing target files?`,
     initial: true,
   })
 
-  return replaceExisting ? [...missing, ...existing] : missing
+  return replaceExisting ? [...fresh, ...colliding] : fresh
 }
 
 function describeInstallTarget(

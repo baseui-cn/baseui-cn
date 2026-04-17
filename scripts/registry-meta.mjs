@@ -532,8 +532,18 @@ export const componentMeta = {
     description: "Card-based login form built with Base UI Form, alerts, and toast success states.",
     tags: ["block", "form", "auth"],
     deps: ["lucide-react", "zod"],
-    sourcePath: "auth.tsx",
-    targetPath: "auth.tsx",
+    files: [
+      {
+        sourcePath: "auth.tsx",
+        targetPath: "auth.tsx",
+        type: "block",
+      },
+      {
+        sourcePath: "apps/www/components/shared/icons.tsx",
+        targetPath: "components/shared/icons.tsx",
+        type: "component",
+      },
+    ],
     installedPath: "components/ui/auth.tsx",
     exportName: "LoginBlock",
     registryDeps: ["utils", "alert", "button", "card", "checkbox", "field", "form", "input", "toast"],
@@ -545,8 +555,18 @@ export const componentMeta = {
     description: "Card-based signup form built with Base UI Form, password rules, alerts, and success toasts.",
     tags: ["block", "form", "auth"],
     deps: ["lucide-react", "zod"],
-    sourcePath: "auth.tsx",
-    targetPath: "auth.tsx",
+    files: [
+      {
+        sourcePath: "auth.tsx",
+        targetPath: "auth.tsx",
+        type: "block",
+      },
+      {
+        sourcePath: "apps/www/components/shared/icons.tsx",
+        targetPath: "components/shared/icons.tsx",
+        type: "component",
+      },
+    ],
     installedPath: "components/ui/auth.tsx",
     exportName: "SignupBlock",
     registryDeps: ["utils", "alert", "button", "card", "checkbox", "field", "form", "input", "toast"],

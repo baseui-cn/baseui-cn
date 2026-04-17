@@ -4,7 +4,7 @@
   "label": "Autocomplete",
   "section": "Form",
   "description": "An input with a list of filtered options that appear as the user types.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {

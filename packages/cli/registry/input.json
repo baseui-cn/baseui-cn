@@ -4,7 +4,7 @@
   "label": "Input",
   "section": "Form",
   "description": "A text input field.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {

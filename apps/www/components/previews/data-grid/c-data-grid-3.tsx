@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
 import { MoreHorizontalIcon, RotateCcwIcon, TriangleAlertIcon } from "lucide-react"
+import { Spinner } from "@/components/ui/spinner"
 
 type Role = "Product Designer" | "Frontend Engineer" | "Engineering Manager"
 type WorkMode = "Onsite" | "Hybrid" | "Remote"
@@ -507,22 +508,27 @@ export function PatternEdit2() {
         <CardHeader className="flex items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="text-foreground text-sm font-medium">Async Editing Sandbox</span>
-            <Badge variant="outline">Optimistic API</Badge>
-            {isGridPending ? <Badge variant="outline">Saving row</Badge> : null}
+            <Badge variant="info-outline">Optimistic API</Badge>
+            {isGridPending ? (
+              <Badge variant="outline">
+                <Spinner className="size-3" />
+                Saving row
+              </Badge>
+            ) : null}
             {failNextSave ? <Badge variant="destructive">Fail next save</Badge> : null}
           </div>
           <div className="flex items-center gap-2">
             <Button
               variant={failNextSave ? "destructive" : "outline"}
-              size="sm"
+              size="xs"
               onClick={() => setFailNextSave((currentValue) => !currentValue)}
               disabled={isGridPending}
             >
-              <TriangleAlertIcon className="size-4" />
+              <TriangleAlertIcon className="size-3" />
               {failNextSave ? "Failure armed" : "Fail next save"}
             </Button>
-            <Button variant="outline" size="sm" onClick={handleResetAll} disabled={isGridPending}>
-              <RotateCcwIcon className="size-4" />
+            <Button variant="outline" size="xs" onClick={handleResetAll} disabled={isGridPending}>
+              <RotateCcwIcon className="size-3" />
               Reset demo
             </Button>
           </div>

@@ -1,9 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { AlertTriangle, Check, Circle, Eye, EyeOff, Github, Sparkles } from "lucide-react"
+import { AlertTriangle, Check, Circle, Eye, EyeOff, Sparkles } from "lucide-react"
 import { z } from "zod"
 
+import { Icons } from "@/components/shared/icons"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import {
@@ -320,7 +321,7 @@ function SocialActions({
             onClick={onGithubLogin}
             disabled={loading}
           >
-            <Github className="size-4" />
+            <Icons.github className="size-4" />
             {config.socialLabel} GitHub
           </Button>
         ) : null}

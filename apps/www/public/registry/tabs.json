@@ -4,7 +4,7 @@
   "label": "Tabs",
   "section": "Layout",
   "description": "A set of layered sections of content known as tab panels that are displayed one at a time.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {

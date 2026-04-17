@@ -355,7 +355,7 @@ export function Pattern() {
         <CardHeader className="flex items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="text-foreground text-sm font-medium">Basic Data Grid</span>
-            <Badge variant="primary-outline" size="sm">
+            <Badge variant="info-outline" size="sm">
               Sorting, pagination, resizable columns, and drag-and-drop rows
             </Badge>
           </div>

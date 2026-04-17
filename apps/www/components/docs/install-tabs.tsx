@@ -3,6 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { CodeBlock } from "@/components/docs/code-block"
+import { PackageManagerTabs } from "@/components/docs/package-manager-tabs"
 
 interface InstallTabsProps {
   addCmd: string
@@ -52,7 +53,7 @@ export function InstallTabs({
           <p className="text-sm text-muted-foreground">
             Run the following command to add the component to your project:
           </p>
-          <CodeBlock code={addCmd} />
+          <PackageManagerTabs command={addCmd} />
         </div>
       )}
 

@@ -4,7 +4,7 @@
   "label": "Drawer",
   "section": "Overlays",
   "description": "A panel that slides in from the edge of the screen.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {
