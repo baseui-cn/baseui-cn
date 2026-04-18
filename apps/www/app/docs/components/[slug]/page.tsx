@@ -11,7 +11,6 @@ import { getComponent } from "@/lib/registry"
 import { getRegistryFileContent } from "@/lib/registry-server"
 import { ComponentPreviewMdx } from "@/components/docs/component-preview-mdx"
 import { ComponentSource } from "@/components/docs/component-source"
-import { DocsActionsMenu } from "@/components/docs/docs-actions-menu"
 import type { Metadata } from "next"
 import { siteConfig } from "@/lib/site-config"
 import { TrackComponentView } from "@/components/shared/track-page-view"
@@ -23,7 +22,6 @@ type TocItem = { title: string; url: string; depth: number; items?: TocItem[] }
 type DocsPageData = {
   title?: string
   description?: string
-  content?: string
   toc?: unknown
   body: React.ComponentType<{ components?: Record<string, unknown> }>
 }
@@ -152,8 +150,6 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
     comp?.label ??
     slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
   const description = docsPage.data.description ?? comp?.description
-  const markdown = docsPage.data.content ?? ""
-  const pageUrl = `${siteConfig.url}/docs/components/${slug}`
   const toc = normalizeToc(docsPage.data.toc)
   const MDX = docsPage.data.body
 
@@ -203,7 +199,6 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
               <h1 className="mb-2 text-3xl font-bold tracking-tight">{title}</h1>
               {description ? <p className="text-base text-muted-foreground">{description}</p> : null}
             </div>
-            {markdown ? <DocsActionsMenu markdown={markdown} pageUrl={pageUrl} title={title} /> : null}
           </div>
           {comp?.type === "block" && (
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
