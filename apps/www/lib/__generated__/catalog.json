@@ -271,6 +271,23 @@
       "baseUIPrimitive": "Form"
     },
     {
+      "name": "fieldset",
+      "type": "component",
+      "section": "Form",
+      "label": "Fieldset",
+      "description": "A semantic form section wrapper with a legend for grouped inputs.",
+      "tags": [
+        "form",
+        "layout",
+        "semantic"
+      ],
+      "version": "1.0.3",
+      "exportName": "Fieldset",
+      "installedPath": "components/ui/fieldset.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "Fieldset"
+    },
+    {
       "name": "checkbox",
       "type": "component",
       "section": "Form",
@@ -600,6 +617,21 @@
       "baseUIPrimitive": "Accordion"
     },
     {
+      "name": "frame",
+      "type": "component",
+      "section": "Layout",
+      "label": "Frame",
+      "description": "A layered panel shell for grouping sections, headers, and supporting content.",
+      "tags": [
+        "layout",
+        "display"
+      ],
+      "version": "1.0.3",
+      "exportName": "Frame",
+      "installedPath": "components/ui/frame.tsx",
+      "badge": "New"
+    },
+    {
       "name": "tabs",
       "type": "component",
       "section": "Layout",
@@ -834,6 +866,11 @@
           "label": "Form"
         },
         {
+          "name": "fieldset",
+          "label": "Fieldset",
+          "badge": "New"
+        },
+        {
           "name": "checkbox",
           "label": "Checkbox"
         },
@@ -935,6 +972,11 @@
         {
           "name": "accordion",
           "label": "Accordion"
+        },
+        {
+          "name": "frame",
+          "label": "Frame",
+          "badge": "New"
         },
         {
           "name": "tabs",

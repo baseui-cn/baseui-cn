@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { SiteHeader } from "@/components/shared/site-header"
 // import { AppHeader } from "@/components/shared/app-header"
 import { DocsSidebar } from "@/components/docs/docs-sidebar"
+import { DocsContentTransition } from "@/components/docs/docs-content-transition"
 import { siteConfig } from "@/lib/site-config"
 
 export const metadata: Metadata = {
@@ -30,7 +31,9 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
         <div className="flex">
           <DocsSidebar />
           <main className="flex-1 min-w-0 border-l border-border">
-            <div className="px-6 py-10 md:px-10 md:py-12">{children}</div>
+            <div className="px-6 py-10 md:px-10 md:py-12">
+              <DocsContentTransition>{children}</DocsContentTransition>
+            </div>
           </main>
         </div>
       </div>

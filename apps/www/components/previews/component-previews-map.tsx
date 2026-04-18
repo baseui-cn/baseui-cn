@@ -22,6 +22,8 @@ import { drawerPreviewMap } from "@/components/previews/drawer-previews"
 import { dropdownMenuPreviewMap } from "@/components/previews/dropdown-menu-previews"
 import { emptyStatePreviewMap } from "@/components/previews/empty-state-previews"
 import { fieldPreviewMap } from "@/components/previews/field-previews"
+import { fieldsetPreviewMap } from "@/components/previews/fieldset-previews"
+import { framePreviewMap } from "@/components/previews/frame-previews"
 import { formPreviewMap } from "@/components/previews/form-previews"
 import { inputPreviewMap } from "@/components/previews/input-previews"
 import { inputGroupPreviewMap } from "@/components/previews/input-group-previews"
@@ -71,6 +73,7 @@ export const previewMap: Record<string, ComponentType> = {
   ...checkboxPreviewMap,
   ...comboboxPreviewMap,
   ...fieldPreviewMap,
+  ...fieldsetPreviewMap,
   ...formPreviewMap,
   ...inputPreviewMap,
   ...inputGroupPreviewMap,
@@ -100,6 +103,7 @@ export const previewMap: Record<string, ComponentType> = {
   ...collapsiblePreviewMap,
   ...commandPreviewMap,
   ...dataGridPreviewMap,
+  ...framePreviewMap,
   ...menubarPreviewMap,
   ...navigationMenuPreviewMap,
   ...paginationPreviewMap,

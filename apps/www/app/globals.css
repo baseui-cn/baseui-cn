@@ -33,6 +33,15 @@
 }
 
 :root {
+  font-size: 14px; /* 90% of 16px = 14.4px */
+  /* --radius: 0.625rem; */
+  --text-lg: 1.2rem;
+  --text-base: 1.1rem;
+  --text-sm: 0.98rem;
+  --text-xs: 0.86rem;
+  --spacing: 0.25rem; /* 3.5px - quarter of base font size */
+  --radius: 0.625rem;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0 0);
   --card: oklch(1 0 0);
@@ -95,6 +104,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     border-color: var(--border);
   }
@@ -203,6 +216,16 @@
       transform: translateX(0);
     }
   }
+  @keyframes docs-route-enter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   .animate-accordion-down {
     animation: accordion-down 0.2s ease-out;
@@ -212,5 +235,31 @@
   }
   .animate-fade-in {
     animation: fade-in 0.3s ease-out both;
+  }
+  .animate-docs-route-enter {
+    animation: docs-route-enter 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-docs-route-enter {
+    animation: none;
+  }
+
+  .animate-fade-in {
+    animation: none;
   }
 }

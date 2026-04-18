@@ -1,54 +1,40 @@
 "use client"
 
-import * as React from "react"
 import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible"
+import type React from "react"
 import { cn } from "@/lib/utils"
 
-function Collapsible({ className, ...props }: CollapsiblePrimitive.Root.Props) {
-  return (
-    <CollapsiblePrimitive.Root
-      data-slot="collapsible"
-      className={cn("w-full", className)}
-      {...props}
-    />
-  )
+export function Collapsible({ ...props }: CollapsiblePrimitive.Root.Props): React.ReactElement {
+  return <CollapsiblePrimitive.Root data-slot="collapsible" {...props} />
 }
 
-function CollapsibleTrigger({
+export function CollapsibleTrigger({
   className,
   ...props
-}: CollapsiblePrimitive.Trigger.Props) {
+}: CollapsiblePrimitive.Trigger.Props): React.ReactElement {
   return (
     <CollapsiblePrimitive.Trigger
+      className={cn("cursor-pointer", className)}
       data-slot="collapsible-trigger"
-      className={cn(
-        "flex w-full items-center justify-between py-3 text-sm font-medium",
-        "transition-colors hover:text-foreground/80",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm",
-        "[&[data-panel-open]>svg]:rotate-180",
-        className
-      )}
       {...props}
     />
   )
 }
 
-function CollapsibleContent({
+export function CollapsiblePanel({
   className,
   ...props
-}: CollapsiblePrimitive.Panel.Props) {
+}: CollapsiblePrimitive.Panel.Props): React.ReactElement {
   return (
     <CollapsiblePrimitive.Panel
-      data-slot="collapsible-content"
       className={cn(
-        "overflow-hidden text-sm",
-        "data-ending-style:h-0 data-starting-style:h-0",
-        "transition-all duration-200 ease-out",
+        "h-(--collapsible-panel-height) overflow-hidden transition-[height] duration-200 data-ending-style:h-0 data-starting-style:h-0",
         className
       )}
+      data-slot="collapsible-panel"
       {...props}
     />
   )
 }
 
-export { Collapsible, CollapsibleTrigger, CollapsibleContent }
+export { CollapsiblePrimitive, CollapsiblePanel as CollapsibleContent }

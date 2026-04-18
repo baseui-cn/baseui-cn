@@ -3,14 +3,7 @@
 import * as React from "react"
 import { Toast as ToastPrimitive } from "@base-ui/react/toast"
 import { cn } from "@/lib/utils"
-import {
-  X,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  Info,
-  Loader2,
-} from "lucide-react"
+import { X, CheckCircle2, XCircle, AlertTriangle, Info, Loader2 } from "lucide-react"
 
 type ToastPosition =
   | "top-left"
@@ -121,11 +114,7 @@ const topClasses = [
   "data-[expanded]:data-[ending-style]:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))]",
 ]
 
-function ToastRoot({
-  toast,
-  className,
-  ...props
-}: ToastPrimitive.Root.Props) {
+function ToastRoot({ toast, className, ...props }: ToastPrimitive.Root.Props) {
   const { position } = React.useContext(ToastContext)
   const isTop = position.startsWith("top")
 
@@ -136,18 +125,12 @@ function ToastRoot({
     info: "border-blue-500/30",
   }
   const borderColor =
-    toast.type && toast.type in typeStyles
-      ? typeStyles[toast.type]
-      : "border-border"
+    toast.type && toast.type in typeStyles ? typeStyles[toast.type] : "border-border"
 
   return (
     <ToastPrimitive.Root
       toast={toast}
-      className={cn(
-        isTop ? topClasses : bottomClasses,
-        borderColor,
-        className
-      )}
+      className={cn(isTop ? topClasses : bottomClasses, borderColor, className)}
       {...props}
     />
   )
@@ -170,15 +153,9 @@ function ToastContent({
   )
 }
 
-function ToastTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof ToastPrimitive.Title>) {
+function ToastTitle({ className, ...props }: React.ComponentProps<typeof ToastPrimitive.Title>) {
   return (
-    <ToastPrimitive.Title
-      className={cn("text-sm font-semibold leading-5", className)}
-      {...props}
-    />
+    <ToastPrimitive.Title className={cn("text-sm font-semibold leading-5", className)} {...props} />
   )
 }
 
@@ -194,10 +171,7 @@ function ToastDescription({
   )
 }
 
-function ToastAction({
-  className,
-  ...props
-}: React.ComponentProps<typeof ToastPrimitive.Action>) {
+function ToastAction({ className, ...props }: React.ComponentProps<typeof ToastPrimitive.Action>) {
   return (
     <ToastPrimitive.Action
       className={cn(
@@ -279,10 +253,7 @@ function ToastProvider({
 
   return (
     <ToastContext.Provider value={ctx}>
-      <ToastPrimitive.Provider
-        limit={limit}
-        {...(toastManager ? { toastManager } : {})}
-      >
+      <ToastPrimitive.Provider limit={limit} {...(toastManager ? { toastManager } : {})}>
         {children}
         <ToastPrimitive.Portal>
           <ToastViewport>

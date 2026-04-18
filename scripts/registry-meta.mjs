@@ -207,6 +207,15 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
+  "fieldset": defineEntry("fieldset", {
+    section: "Form",
+    description: "A semantic form section wrapper with a legend for grouped inputs.",
+    tags: ["form", "layout", "semantic"],
+    badge: COMPONENT_BADGE,
+    baseUIPrimitive: "Fieldset",
+    deps: ["@base-ui/react"],
+    registryDeps: ["utils"],
+  }),
   "checkbox": defineEntry("checkbox", {
     section: "Form",
     description: "A control that allows the user to toggle between checked and unchecked states.",
@@ -381,7 +390,14 @@ export const componentMeta = {
     description: "A vertically stacked set of interactive headings that each reveal a section of content.",
     tags: ["disclosure", "interactive"],
     baseUIPrimitive: "Accordion",
-    deps: ["@base-ui/react"],
+    deps: ["@base-ui/react", "lucide-react"],
+    registryDeps: ["utils"],
+  }),
+  "frame": defineEntry("frame", {
+    section: "Layout",
+    description: "A layered panel shell for grouping sections, headers, and supporting content.",
+    tags: ["layout", "display"],
+    badge: COMPONENT_BADGE,
     registryDeps: ["utils"],
   }),
   "tabs": defineEntry("tabs", {
@@ -498,6 +514,7 @@ export const componentMeta = {
     section: "Navigation & Data",
     description: "Displays the path to the current resource using a hierarchy of links.",
     tags: ["navigation", "display"],
+    deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils"],
   }),
   "pagination": defineEntry("pagination", {

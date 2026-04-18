@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "collections": ["./.source/index.ts"],
+      "collections/*": ["./.source/*"]
     }
   },
   "include": [

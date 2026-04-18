@@ -19,6 +19,8 @@
     "@vercel/analytics": "^2.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "fumadocs-core": "^15.6.1",
+    "fumadocs-mdx": "^11.7.0",
     "lucide-react": "^0.577.0",
     "next": "16.1.7",
     "next-mdx-remote": "^6.0.0",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/mdx": "^2.0.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

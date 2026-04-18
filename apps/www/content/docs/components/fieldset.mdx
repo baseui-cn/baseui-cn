@@ -1,0 +1,67 @@
+---
+title: Fieldset
+description: A semantic wrapper for related form controls with a shared legend.
+component: true
+links:
+  doc: https://base-ui.com/react/components/fieldset
+---
+
+<ComponentPreview name="fieldset-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+<PackageManagerTabs command="baseui-cn add fieldset" />
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="fieldset" title="components/ui/fieldset.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Fieldset, FieldsetLegend } from "@/components/ui/fieldset"
+```
+
+```tsx
+<Fieldset className="space-y-4">
+  <FieldsetLegend>Billing details</FieldsetLegend>
+  {/* related fields */}
+</Fieldset>
+```
+
+## Examples
+
+### With helper content
+
+Compose `Fieldset` with your existing `Field` primitives for grouped forms that stay semantic and readable.
+
+<ComponentPreview name="fieldset-helper" />

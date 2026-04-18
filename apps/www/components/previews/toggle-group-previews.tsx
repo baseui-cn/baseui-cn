@@ -116,7 +116,7 @@ function ToggleGroupVerticalPreview() {
 
 function ToggleGroupWithTextPreview() {
   return (
-    <ToggleGroup variant="outline" spacing={1}>
+    <ToggleGroup variant="outline">
       <ToggleGroupItem value="list" aria-label="List view">
         <LayoutList className="size-4" /> List
       </ToggleGroupItem>

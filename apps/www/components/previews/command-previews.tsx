@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import type * as React from "react"
 import CommandPalettePreview from "@/components/previews/command/p-command-1"
 import { CCommand1 as CommandAiPreview } from "@/components/previews/command/p-command-2"
 

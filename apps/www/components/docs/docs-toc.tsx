@@ -50,6 +50,16 @@ function flattenToc(items: TocItem[]): TocItem[] {
   return items.flatMap((item) => [item, ...(item.items ? flattenToc(item.items) : [])])
 }
 
+function scrollToAnchor(href: string) {
+  const id = href.replace("#", "")
+  const target = document.getElementById(id)
+
+  if (!target) return
+
+  target.scrollIntoView({ behavior: "smooth", block: "start" })
+  window.history.replaceState(null, "", href)
+}
+
 // ── Sidebar list variant (desktop right column) ────────────────────────────
 export function DocsToc({
   toc,
@@ -73,9 +83,13 @@ export function DocsToc({
         <a
           key={item.url}
           href={item.url}
+          onClick={(event) => {
+            event.preventDefault()
+            scrollToAnchor(item.url)
+          }}
           data-active={`#${activeId}` === item.url}
           className={cn(
-            "text-sm text-muted-foreground hover:text-foreground transition-colors no-underline",
+            "text-sm text-muted-foreground hover:text-foreground transition-[color,transform] no-underline hover:translate-x-0.5",
             "data-[active=true]:text-foreground data-[active=true]:font-medium",
             item.depth === 3 && "pl-4",
             item.depth === 4 && "pl-6"
@@ -118,7 +132,14 @@ export function DocsTocDropdown({
             key={item.url}
             className={cn(item.depth === 3 && "pl-6", item.depth === 4 && "pl-8")}
           >
-            <a href={item.url} className="w-full">
+            <a
+              href={item.url}
+              className="w-full"
+              onClick={(event) => {
+                event.preventDefault()
+                scrollToAnchor(item.url)
+              }}
+            >
               {item.title}
             </a>
           </DropdownMenuItem>

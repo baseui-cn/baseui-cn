@@ -7,6 +7,7 @@ dist
 .next
 out
 build
+apps/www/.source
 
 # Turbo
 .turbo
@@ -41,3 +42,5 @@ apps/www/lib/__generated__/*.bak
 packages/registry/*.bak
 packages/registry/registry/*.bak
 packages/cli/registry/*.bak
+apps/www/.source
+apps/www/repo-structure.txt

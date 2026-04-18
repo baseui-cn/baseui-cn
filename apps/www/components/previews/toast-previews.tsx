@@ -173,7 +173,6 @@ function ToastPromiseDemo() {
           new Promise<string>((resolve, reject) => {
             const shouldSucceed = Math.random() > 0.3
             setTimeout(() => {
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
               shouldSucceed ? resolve("Data loaded") : reject(new Error("Request failed"))
             }, 2000)
           }),

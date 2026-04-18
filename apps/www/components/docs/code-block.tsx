@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { trackCopyCode } from "@/lib/events"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface CodeBlockProps {
   code: string
@@ -28,7 +29,7 @@ export function CodeBlock({ code, language: _, filename }: CodeBlockProps) {
       )}
       <button
         onClick={handleCopy}
-        className="absolute right-3 top-3 flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs text-zinc-400 hover:text-zinc-200 hover:bg-white/10 transition-colors"
+        className="absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs text-zinc-400 hover:text-zinc-200 hover:bg-white/10 transition-colors"
         aria-label={copied ? "Copied" : "Copy"}
       >
         {copied ? (
@@ -48,9 +49,13 @@ export function CodeBlock({ code, language: _, filename }: CodeBlockProps) {
           </>
         )}
       </button>
-      <pre className="overflow-x-auto p-5 pt-10 text-[13px] leading-relaxed">
-        <code className="font-mono text-[#e4e4e7] whitespace-pre">{code}</code>
-      </pre>
+      <ScrollArea className="w-full" scrollbarGutter>
+        <pre className="min-w-max p-5 pt-10 text-[13px] leading-relaxed">
+          <code className="font-mono whitespace-pre text-[#e4e4e7]">{code}</code>
+        </pre>
+      </ScrollArea>
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-0 w-6 bg-linear-to-r from-[#0a0a0a] to-transparent opacity-0 transition-opacity md:opacity-100" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-0 w-10 bg-linear-to-l from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent md:opacity-100" />
     </div>
   )
 }

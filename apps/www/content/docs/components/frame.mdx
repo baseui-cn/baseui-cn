@@ -1,0 +1,68 @@
+---
+title: Frame
+description: A layered panel shell for grouped content, headers, and compact surfaces.
+component: true
+---
+
+<ComponentPreview name="frame-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+<PackageManagerTabs command="baseui-cn add frame" />
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="frame" title="components/ui/frame.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Frame,
+  FrameDescription,
+  FrameHeader,
+  FramePanel,
+  FrameTitle,
+} from "@/components/ui/frame"
+```
+
+```tsx
+<Frame>
+  <FrameHeader>
+    <FrameTitle>Project overview</FrameTitle>
+    <FrameDescription>Grouped context for related content.</FrameDescription>
+  </FrameHeader>
+  <FramePanel>Panel content</FramePanel>
+</Frame>
+```
+
+## Examples
+
+### Stacked panels
+
+Use multiple `FramePanel` sections when a grouped surface needs clear internal separation without turning into a dense card wall.
+
+<ComponentPreview name="frame-stacked" />

@@ -84,9 +84,11 @@ export function ComponentPreview({ preview, code, className }: ComponentPreviewP
       {/* Code pane */}
       {tab === "code" && (
         <div className="relative bg-[#0a0a0a]">
-          <pre className="overflow-x-auto p-5 text-[13px] leading-relaxed">
+          <pre className="scrollbar-hidden overflow-x-auto p-5 text-[13px] leading-relaxed">
             <code className="font-mono text-[#e4e4e7]">{code}</code>
           </pre>
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-linear-to-r from-[#0a0a0a] to-transparent opacity-0 transition-opacity md:opacity-100" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-linear-to-l from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent md:opacity-100" />
         </div>
       )}
     </div>

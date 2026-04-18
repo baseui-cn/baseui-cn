@@ -30,7 +30,7 @@ links:
 <Step>Install dependencies</Step>
 
 ```bash
-npm install @base-ui/react
+npm install @base-ui/react lucide-react
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
@@ -51,8 +51,8 @@ npm install @base-ui/react
 import {
   Accordion,
   AccordionItem,
+  AccordionPanel,
   AccordionTrigger,
-  AccordionContent,
 } from "@/components/ui/accordion"
 ```
 
@@ -60,9 +60,9 @@ import {
 <Accordion defaultValue={["item-1"]}>
   <AccordionItem value="item-1">
     <AccordionTrigger>Is it accessible?</AccordionTrigger>
-    <AccordionContent>
+    <AccordionPanel>
       Yes. Built on Base UI with full ARIA and keyboard support.
-    </AccordionContent>
+    </AccordionPanel>
   </AccordionItem>
 </Accordion>
 ```

@@ -3,6 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { trackCopyCode, trackComponentSourceExpand } from "@/lib/events"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface ComponentSourceProps {
   name: string
@@ -80,13 +81,17 @@ export function ComponentSource({ name, title, code }: ComponentSourceProps) {
       </div>
 
       {/* Code area */}
-      <div className={cn(
-        "relative",
-        expanded ? "max-h-96 overflow-y-auto" : "max-h-52 overflow-hidden"
-      )}>
-        <pre className="overflow-x-auto p-5 pt-4 text-[13px] leading-relaxed">
-          <code className="font-mono text-[#e4e4e7] whitespace-pre">{source}</code>
-        </pre>
+      <div
+        className={cn(
+          "relative",
+          expanded ? "h-96" : "max-h-52 overflow-hidden"
+        )}
+      >
+        <ScrollArea className={cn("w-full", expanded ? "h-full" : "max-h-52")} scrollbarGutter>
+          <pre className="min-w-max p-5 pt-4 text-[13px] leading-relaxed">
+            <code className="font-mono whitespace-pre text-[#e4e4e7]">{source}</code>
+          </pre>
+        </ScrollArea>
         {!expanded && (
           <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
         )}

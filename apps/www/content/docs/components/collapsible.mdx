@@ -50,15 +50,15 @@ npm install @base-ui/react
 ```tsx
 import {
   Collapsible,
+  CollapsiblePanel,
   CollapsibleTrigger,
-  CollapsibleContent,
 } from "@/components/ui/collapsible"
 ```
 
 ```tsx
 <Collapsible>
   <CollapsibleTrigger>Toggle</CollapsibleTrigger>
-  <CollapsibleContent>Content here.</CollapsibleContent>
+  <CollapsiblePanel>Content here.</CollapsiblePanel>
 </Collapsible>
 ```
 
@@ -77,3 +77,9 @@ A simple collapsible.
 Control open state externally.
 
 <ComponentPreview name="collapsible-controlled" />
+
+### Compact frame
+
+Pair it with [`frame`](/docs/components/frame) and [`button`](/docs/components/button) for settings sections, side panels, or inspector-style layouts.
+
+<ComponentPreview name="collapsible-compact-frame" />
