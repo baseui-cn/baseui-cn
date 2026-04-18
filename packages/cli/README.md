@@ -57,7 +57,7 @@ npx baseui-cn list --json
 
 Display: `button`, `badge`, `avatar`, `card`, `item`, `separator`, `scroll-area`, `skeleton`, `spinner`, `progress`, `toggle`, `toggle-group`
 
-Form: `input`, `textarea`, `label`, `field`, `checkbox`, `switch`, `radio-group`, `select`, `combobox`, `autocomplete`, `slider`, `number-field`, `input-group`
+Form: `input`, `textarea`, `label`, `field`, `checkbox`, `switch`, `radio-group`, `select`, `combobox`, `autocomplete`, `slider`, `number-field`, `otp-field`, `input-group`
 
 Overlays: `dialog`, `alert-dialog`, `drawer`, `popover`, `tooltip`, `preview-card`, `dropdown-menu`, `toast`, `command`
 

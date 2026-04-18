@@ -4,7 +4,7 @@
   "label": "Card",
   "section": "Display",
   "description": "A container for grouping related content and actions.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "baseUIVersion": ">=1.3.0",
   "files": [
     {

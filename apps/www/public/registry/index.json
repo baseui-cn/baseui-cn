@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "components": [
     {
       "name": "button",
@@ -249,6 +249,17 @@
         "interactive"
       ],
       "badge": "New"
+    },
+    {
+      "name": "otp-field",
+      "type": "component",
+      "description": "A one-time password input composed of individual character slots.",
+      "tags": [
+        "form",
+        "primitive",
+        "interactive"
+      ],
+      "badge": "Preview"
     },
     {
       "name": "input-group",

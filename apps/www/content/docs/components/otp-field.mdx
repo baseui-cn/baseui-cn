@@ -1,0 +1,69 @@
+---
+title: OTP Field
+description: A one-time password input composed of individual character slots.
+component: true
+---
+
+<Callout variant="warning" title="Preview primitive">
+  This installable wraps the current Base UI `OTPFieldPreview` API from `@base-ui/react/otp-field`.
+  The underlying Base UI primitive is still in preview, so expect small API adjustments as it matures.
+</Callout>
+
+<ComponentPreview name="otp-field-demo" />
+
+## Installation
+
+<InstallTabs
+  slug="otp-field"
+  addCmd="baseui-cn add otp-field"
+/>
+
+## Usage
+
+```tsx
+import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@/components/ui/otp-field"
+```
+
+```tsx
+<OTPField length={6}>
+  <OTPFieldInput />
+  <OTPFieldInput aria-label="Character 2 of 6" />
+  <OTPFieldInput aria-label="Character 3 of 6" />
+  <OTPFieldSeparator aria-hidden="true">-</OTPFieldSeparator>
+  <OTPFieldInput aria-label="Character 4 of 6" />
+  <OTPFieldInput aria-label="Character 5 of 6" />
+  <OTPFieldInput aria-label="Character 6 of 6" />
+</OTPField>
+```
+
+## Examples
+
+### Form integration
+
+Use the OTP field inside `Form` and `Field` when you want one named value submitted to your action.
+
+<ComponentPreview name="otp-field-form" />
+
+### Auto submit with feedback
+
+Use `autoSubmit` when the form should verify immediately after the last slot is filled. This example keeps the feedback inside your existing Base UI stack with button loading state and a success toast.
+
+<ComponentPreview name="otp-field-auto-submit" />
+
+### Alphanumeric codes
+
+Use `validationType="alphanumeric"` for recovery, invite, or backup codes that mix letters and numbers.
+
+<ComponentPreview name="otp-field-alphanumeric" />
+
+### Grouped layout
+
+Wrap subsets of inputs in your own layout elements and use `OTPFieldSeparator` when you want a chunked visual format like `123-456`.
+
+<ComponentPreview name="otp-field-grouped" />
+
+### Connected slots
+
+Use a zero-gap layout with shared borders when you want the OTP field to read like one combined control.
+
+<ComponentPreview name="otp-field-connected" />

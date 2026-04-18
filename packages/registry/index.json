@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://baseui-cn.com",
   "registry": "https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/registry",
   "baseUIVersion": ">=1.3.0",
@@ -252,6 +252,17 @@
         "interactive"
       ],
       "badge": "New"
+    },
+    {
+      "name": "otp-field",
+      "type": "component",
+      "description": "A one-time password input composed of individual character slots.",
+      "tags": [
+        "form",
+        "primitive",
+        "interactive"
+      ],
+      "badge": "Preview"
     },
     {
       "name": "input-group",

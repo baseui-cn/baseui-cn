@@ -30,6 +30,7 @@ import { labelPreviewMap } from "@/components/previews/label-previews"
 import { menubarPreviewMap } from "@/components/previews/menubar-previews"
 import { navigationMenuPreviewMap } from "@/components/previews/navigation-menu-previews"
 import { numberFieldPreviewMap } from "@/components/previews/number-field-previews"
+import { otpFieldPreviewMap } from "@/components/previews/otp-field-previews"
 import { paginationPreviewMap } from "@/components/previews/pagination-previews"
 import { popoverPreviewMap } from "@/components/previews/popover-previews"
 import { previewCardPreviewMap } from "@/components/previews/preview-card-previews"
@@ -75,6 +76,7 @@ export const previewMap: Record<string, ComponentType> = {
   ...inputGroupPreviewMap,
   ...labelPreviewMap,
   ...numberFieldPreviewMap,
+  ...otpFieldPreviewMap,
   ...radioGroupPreviewMap,
   ...selectPreviewMap,
   ...sliderPreviewMap,

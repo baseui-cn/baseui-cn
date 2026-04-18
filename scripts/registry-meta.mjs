@@ -275,6 +275,15 @@ export const componentMeta = {
     deps: ["@base-ui/react", "class-variance-authority", "lucide-react"],
     registryDeps: ["utils", "label"],
   }),
+  "otp-field": defineEntry("otp-field", {
+    section: "Form",
+    description: "A one-time password input composed of individual character slots.",
+    tags: ["form", "primitive", "interactive"],
+    badge: "Preview",
+    baseUIPrimitive: "OTPFieldPreview",
+    deps: ["@base-ui/react", "class-variance-authority"],
+    registryDeps: ["utils"],
+  }),
   "input-group": defineEntry("input-group", {
     section: "Form",
     description: "A composite input component with addons, icons, and buttons.",
