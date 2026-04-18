@@ -360,6 +360,42 @@ export function Preview({ slug }: { slug: string }) {
   return <ComponentPreviewWrapper slug={slug} code="" />
 }
 
+function InstallTabsMdx(props: React.ComponentProps<typeof InstallTabs>) {
+  return <InstallTabs {...props} />
+}
+
+function CodeBlockMdx(props: React.ComponentProps<typeof CodeBlock>) {
+  return <CodeBlock {...props} />
+}
+
+function PackageManagerTabsMdx(props: React.ComponentProps<typeof PackageManagerTabs>) {
+  return <PackageManagerTabs {...props} />
+}
+
+function CodeTabsMdx(props: React.ComponentProps<typeof CodeTabs>) {
+  return <CodeTabs {...props} />
+}
+
+function TabsListMdx(props: React.ComponentProps<typeof TabsList>) {
+  return <TabsList {...props} />
+}
+
+function TabsTriggerMdx(props: React.ComponentProps<typeof TabsTrigger>) {
+  return <TabsTrigger {...props} />
+}
+
+function TabsContentMdx(props: React.ComponentProps<typeof TabsContent>) {
+  return <TabsContent {...props} />
+}
+
+function ComponentPreviewMdxWrapper(props: React.ComponentProps<typeof ComponentPreviewMdx>) {
+  return <ComponentPreviewMdx {...props} />
+}
+
+function ComponentSourceMdxWrapper(props: React.ComponentProps<typeof ComponentSource>) {
+  return <ComponentSource {...props} />
+}
+
 
 // ── Export map for use with next-mdx-remote or @next/mdx ──────────────────
 
@@ -394,18 +430,18 @@ export const mdxComponents = {
   PropsTable,
   PropRow,
   Preview,
-  InstallTabs,
-  CodeBlock,
-  PackageManagerTabs,
+  InstallTabs: InstallTabsMdx,
+  CodeBlock: CodeBlockMdx,
+  PackageManagerTabs: PackageManagerTabsMdx,
   // CodeTabs pattern (used in existing hand-written MDX files)
-  CodeTabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
+  CodeTabs: CodeTabsMdx,
+  TabsList: TabsListMdx,
+  TabsTrigger: TabsTriggerMdx,
+  TabsContent: TabsContentMdx,
   // ComponentPreview with name prop (e.g. name="button-demo")
-  ComponentPreview: ComponentPreviewMdx,
+  ComponentPreview: ComponentPreviewMdxWrapper,
   // ComponentSource with name + optional title props
-  ComponentSource,
+  ComponentSource: ComponentSourceMdxWrapper,
   Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
     <Link
       className={cn("font-medium underline underline-offset-4", className)}
