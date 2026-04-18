@@ -10,6 +10,7 @@
     "registry:build": "node scripts/build-registry.mjs",
     "registry:watch": "node scripts/watch-registry.mjs",
     "previews:build": "node scripts/build-preview-sources.mjs",
+    "previews:watch": "node scripts/watch-preview-sources.mjs",
     "build:all": "node scripts/build-registry.mjs && node scripts/build-preview-sources.mjs"
   },
   "devDependencies": {
