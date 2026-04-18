@@ -8,9 +8,12 @@ import { cn } from "@/lib/utils"
 
 type OTPFieldSize = "sm" | "default" | "lg"
 
-export interface OTPFieldProps extends Omit<OTPFieldPrimitive.Root.Props, "className"> {
+export interface OTPFieldProps
+  extends Omit<OTPFieldPrimitive.Root.Props, "className" | "autoSubmit" | "onValueChange"> {
   className?: string
   size?: OTPFieldSize
+  autoSubmit?: boolean
+  onValueChange?: OTPFieldPrimitive.Root.Props["onValueChange"]
 }
 
 export interface OTPFieldInputProps
@@ -61,14 +64,80 @@ const otpFieldSeparatorVariants = cva("flex items-center justify-center text-mut
 export function OTPField({
   className,
   size = "default",
+  autoSubmit = false,
+  onValueChange,
+  length,
+  value,
   ...props
 }: OTPFieldProps): React.ReactElement {
+  const rootRef = React.useRef<React.ElementRef<typeof OTPFieldPrimitive.Root>>(null)
+  const lastValueRef = React.useRef(typeof value === "string" ? value : "")
+  const submitFrameRef = React.useRef<number | null>(null)
+  const submitQueuedRef = React.useRef(false)
+
+  React.useEffect(() => {
+    if (typeof value === "string") {
+      lastValueRef.current = value
+    }
+  }, [value])
+
+  React.useEffect(() => {
+    return () => {
+      if (submitFrameRef.current !== null) {
+        cancelAnimationFrame(submitFrameRef.current)
+      }
+    }
+  }, [])
+
+  const handleValueChange = React.useCallback<NonNullable<OTPFieldProps["onValueChange"]>>(
+    (nextValue, eventDetails) => {
+      onValueChange?.(nextValue, eventDetails)
+
+      const targetLength = typeof length === "number" ? length : 0
+      if (!autoSubmit || targetLength < 1) {
+        lastValueRef.current = nextValue
+        return
+      }
+
+      const wasComplete = lastValueRef.current.length >= targetLength
+      const isComplete = nextValue.length >= targetLength
+
+      if (!isComplete) {
+        submitQueuedRef.current = false
+      }
+
+      if (!wasComplete && isComplete && !submitQueuedRef.current) {
+        submitQueuedRef.current = true
+
+        queueMicrotask(() => {
+          submitFrameRef.current = requestAnimationFrame(() => {
+            submitFrameRef.current = null
+            submitQueuedRef.current = false
+
+            const form = rootRef.current?.closest("form")
+            if (form instanceof HTMLFormElement) {
+              form.requestSubmit()
+            }
+          })
+        })
+      }
+
+      lastValueRef.current = nextValue
+    },
+    [autoSubmit, length, onValueChange]
+  )
+
   return (
     <OTPFieldSizeContext.Provider value={size}>
       <OTPFieldPrimitive.Root
+        ref={rootRef}
         className={cn(otpFieldRootVariants(), className)}
         data-size={size}
         data-slot="otp-field"
+        autoSubmit={false}
+        length={length}
+        onValueChange={handleValueChange}
+        value={value}
         {...props}
       />
     </OTPFieldSizeContext.Provider>
