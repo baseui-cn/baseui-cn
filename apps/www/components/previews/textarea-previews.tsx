@@ -48,6 +48,17 @@ function TextareaBasicPreview() {
   return <Textarea placeholder="Write something..." className="max-w-xs" />
 }
 
+function TextareaDisabledPreview() {
+  return (
+    <Textarea
+      placeholder="This textarea is disabled"
+      disabled
+      className="max-w-xs"
+      defaultValue="Readonly-style disabled state"
+    />
+  )
+}
+
 function TextareaWithFieldPreview() {
   return (
     <div className="flex flex-col gap-4 w-full max-w-sm">
@@ -145,6 +156,7 @@ export const textareaPreviewMap: Record<string, React.ComponentType> = {
   textarea: TextareaPreview,
   "textarea-demo": TextareaPreview,
   "textarea-basic": TextareaBasicPreview,
+  "textarea-disabled": TextareaDisabledPreview,
   "textarea-with-field": TextareaWithFieldPreview,
   "textarea-popover-form": TextareaPopoverFormPreview,
   "textarea-auto-resize": TextareaAutoResizePreview,

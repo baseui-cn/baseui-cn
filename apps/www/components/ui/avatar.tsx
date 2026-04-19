@@ -29,21 +29,21 @@ export function Avatar({
   badgePosition?: "top-right" | "top-left" | "bottom-right" | "bottom-left"
 }): React.ReactElement {
   return (
-    <AvatarPrimitive.Root
-      className={cn(
-        "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden rounded-full border border-border/70 bg-background align-middle font-medium text-foreground shadow-xs",
-        avatarSizeClasses[size],
-        className
-      )}
-      data-size={size}
-      data-slot="avatar"
-      {...props}
-    >
-      {children}
-      {showBadge ? (
-        <AvatarBadge variant={badgeVariant} badgePosition={badgePosition} />
-      ) : null}
-    </AvatarPrimitive.Root>
+    <div className="relative">
+      <AvatarPrimitive.Root
+        className={cn(
+          "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden rounded-full border border-border/70 bg-background align-middle font-medium text-foreground shadow-xs",
+          avatarSizeClasses[size],
+          className
+        )}
+        data-size={size}
+        data-slot="avatar"
+        {...props}
+      >
+        {children}
+      </AvatarPrimitive.Root>
+      {showBadge ? <AvatarBadge variant={badgeVariant} badgePosition={badgePosition} /> : null}
+    </div>
   )
 }
 
@@ -79,25 +79,26 @@ export function AvatarFallback({
 const avatarBadgeVariants = cva(
   "absolute size-2 rounded-full outline-2 outline-background ring-1 ring-background/60",
   {
-  variants: {
-    variant: {
-      online: "bg-success", // available
-      offline: "bg-muted-foreground", // neutral
-      busy: "bg-destructive", // do not disturb
-      away: "bg-warning", // idle/away
+    variants: {
+      variant: {
+        online: "bg-success", // available
+        offline: "bg-muted-foreground", // neutral
+        busy: "bg-destructive", // do not disturb
+        away: "bg-warning", // idle/away
+      },
+      badgePosition: {
+        "top-right": "top-0 right-0",
+        "top-left": "top-0 left-0",
+        "bottom-right": "bottom-0 end-0",
+        "bottom-left": "bottom-0 start-0",
+      },
     },
-    badgePosition: {
-      "top-right": "top-0 right-0",
-      "top-left": "top-0 left-0",
-      "bottom-right": "bottom-0 end-0",
-      "bottom-left": "bottom-0 start-0",
+    defaultVariants: {
+      variant: "online",
+      badgePosition: "top-right",
     },
-  },
-  defaultVariants: {
-    variant: "online",
-    badgePosition: "top-right",
-  },
-})
+  }
+)
 
 export function AvatarBadge({
   className,
