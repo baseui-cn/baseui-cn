@@ -218,7 +218,7 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
           {filtered.map((component) => (
             <Link
               key={component.name}
@@ -236,11 +236,11 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
               <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                 {component.description}
               </p>
-              {component.baseUIPrimitive && (
-                <p className="mt-2 font-mono text-[10px] text-muted-foreground/40">
+              {/* {component.baseUIPrimitive && (
+                <p className="mt-2 font-mono text-[10px] text-primary/80">
                   {component.baseUIPrimitive}
                 </p>
-              )}
+              )} */}
             </Link>
           ))}
         </div>

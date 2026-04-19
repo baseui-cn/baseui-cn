@@ -668,7 +668,7 @@ export default function HomePage() {
                   manifest. AI agents read it to understand every component, its import path, usage
                   patterns, and which dependencies belong to this project.
                 </p>
-                <a
+                <Link
                   href="/llms.txt"
                   target="_blank"
                   className="inline-flex items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
@@ -683,7 +683,7 @@ export default function HomePage() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </a>
+                </Link>
               </div>
               <div className="rounded-lg border border-border bg-muted/30 p-5 font-mono text-sm space-y-1.5">
                 <p className="text-muted-foreground text-xs mb-3">In Cursor or Claude:</p>
@@ -712,16 +712,17 @@ export default function HomePage() {
               One command to initialize. One command per component. Everything else is yours.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/30 px-4 py-3 font-mono text-sm">
+              <div className="flex items-center gap-3 rounded-lg border border-border h-10 bg-muted/30 px-4 py-3 font-mono text-sm">
                 <span className="text-muted-foreground select-none">$</span>
                 <span>npx baseui-cn init</span>
                 <CopyButton text="npx baseui-cn init" />
               </div>
               <Link
                 href="/docs"
-                className="inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors"
+                className="inline-flex items-center gap-2 rounded-lg h-10 bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-foreground/80 transition-colors"
               >
                 Read the docs
+                <ArrowRightIcon className="size-4" />
               </Link>
             </div>
           </div>
@@ -764,22 +765,22 @@ export default function HomePage() {
             baseui-cn · MIT
           </div>
           <div className="flex items-center gap-4">
-            <a
+            <Link
               href="https://base-ui.com"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
             >
               Base UI
-            </a>
-            <a
+            </Link>
+            <Link
               href={siteConfig.github}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
             >
               GitHub
-            </a>
+            </Link>
             <a href="/llms.txt" target="_blank" className="hover:text-foreground transition-colors">
               llms.txt
             </a>
