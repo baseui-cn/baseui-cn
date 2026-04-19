@@ -37,8 +37,8 @@ function TextareaPreview() {
         <Textarea placeholder="Write your message here..." />
       </div>
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium">Notes</label>
-        <Textarea placeholder="Add notes..." />
+        <Label className="text-sm font-medium">Notes (disabled)</Label>
+        <Textarea placeholder="Add notes..." disabled />
       </div>
     </div>
   )

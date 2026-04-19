@@ -33,6 +33,7 @@ function LoginPreview() {
       onGoogleLogin={() => {}}
       onGithubLogin={() => {}}
       signUpHref="#signup"
+      variant="elevated"
       forgotPasswordHref="#forgot"
     />
   )
@@ -42,7 +43,7 @@ function LoginErrorPreview() {
   return (
     <LoginBlock
       showSocial={false}
-      variant="bordered"
+      variant="elevated"
       onSubmit={async () => {
         await new Promise((resolve) => setTimeout(resolve, 800))
         return {
@@ -64,6 +65,7 @@ function SignupPreview() {
       onGithubLogin={() => {}}
       signInHref="#login"
       termsHref="#terms"
+      variant="elevated"
       privacyHref="#privacy"
     />
   )
@@ -76,7 +78,8 @@ function SignupSuccessPreview() {
       variant="elevated"
       successToast={{
         title: "Auth block ready",
-        description: "Replace the demo submit callback with your real signup action when you're ready.",
+        description:
+          "Replace the demo submit callback with your real signup action when you're ready.",
       }}
     />
   )

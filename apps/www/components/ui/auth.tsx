@@ -160,11 +160,11 @@ const authSizeConfig = {
   },
 } as const
 
-const authVariantClasses: Record<AuthBlockVariant, string> = {
-  default: "bg-card ring-foreground/10",
-  bordered: "bg-card ring-foreground/20 shadow-sm",
-  elevated: "bg-card ring-foreground/10 shadow-xl shadow-black/5",
-  minimal: "bg-transparent ring-0 shadow-none",
+const authCardVariants: Record<AuthBlockVariant, React.ComponentProps<typeof Card>["variant"]> = {
+  default: "default",
+  bordered: "outline",
+  elevated: "elevated",
+  minimal: "ghost",
 }
 
 const passwordRules = [
@@ -359,7 +359,7 @@ function AuthCardShell({
 
   return (
     <div className={cn("w-full", config.width, motionClassName, className)}>
-      <Card className={cn("w-full", authVariantClasses[variant])}>
+      <Card variant={authCardVariants[variant]} className="w-full">
         <CardHeader className="gap-2">
           <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
             <Sparkles className="size-4" />

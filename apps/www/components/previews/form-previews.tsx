@@ -4,7 +4,8 @@ import * as React from "react"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
-import { Field, FieldControl, FieldError, FieldLabel } from "@/components/ui/field"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
 import { Form } from "@/components/ui/form"
 
 const profileSchema = z.object({
@@ -34,7 +35,7 @@ function FormPreview() {
     >
       <Field name="email">
         <FieldLabel>Email</FieldLabel>
-        <FieldControl type="email" placeholder="you@example.com" />
+        <Input type="email" placeholder="you@example.com" />
         <FieldError />
       </Field>
       <Button type="submit" className="w-full">

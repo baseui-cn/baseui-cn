@@ -1,13 +1,9 @@
 "use client"
 
 import * as React from "react"
-import {
-  Field,
-  FieldControl,
-  FieldDescription,
-  FieldLabel,
-} from "@/components/ui/field"
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
 import { Fieldset, FieldsetLegend } from "@/components/ui/fieldset"
+import { Input } from "@/components/ui/input"
 
 function FieldsetPreview() {
   return (
@@ -15,11 +11,11 @@ function FieldsetPreview() {
       <FieldsetLegend>Billing details</FieldsetLegend>
       <Field>
         <FieldLabel>Company</FieldLabel>
-        <FieldControl placeholder="Acme Inc." />
+        <Input placeholder="Acme Inc." />
       </Field>
       <Field>
         <FieldLabel>Tax ID</FieldLabel>
-        <FieldControl placeholder="US-123456789" />
+        <Input placeholder="US-123456789" />
       </Field>
     </Fieldset>
   )
@@ -31,12 +27,12 @@ function FieldsetHelperPreview() {
       <FieldsetLegend>Profile</FieldsetLegend>
       <Field>
         <FieldLabel>Display name</FieldLabel>
-        <FieldControl defaultValue="Base UI Builder" />
+        <Input defaultValue="Base UI Builder" />
         <FieldDescription>This name appears in collaborative spaces.</FieldDescription>
       </Field>
       <Field>
         <FieldLabel>Email</FieldLabel>
-        <FieldControl defaultValue="hello@baseui-cn.com" type="email" />
+        <Input defaultValue="hello@baseui-cn.com" type="email" />
       </Field>
     </Fieldset>
   )

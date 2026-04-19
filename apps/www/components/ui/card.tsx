@@ -1,24 +1,41 @@
 "use client"
 
+import type React from "react"
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
-import type React from "react"
 import { cn } from "@/lib/utils"
+import { cva, type VariantProps } from "class-variance-authority"
 
-//Card Size
+const cardVariants = cva(
+  "relative flex flex-col rounded-2xl bg-card not-dark:bg-clip-padding text-card-foreground transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)]",
+  {
+  variants: {
+    variant: {
+      default: "border border-transparent shadow-none before:hidden",
+      outline:
+        "border border-border shadow-xs/5 before:shadow-[0_1px_--theme(--color-black/4%)] dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+      elevated:
+        "border border-border/70 shadow-lg shadow-black/5 before:shadow-[0_1px_--theme(--color-black/4%)] dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+      ghost: "border border-transparent bg-transparent shadow-none before:hidden",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+})
 
 export function Card({
   className,
   render,
+  variant,
   size = "default",
   ...props
-}: useRender.ComponentProps<"div"> & { size?: "default" | "sm" | "lg" }): React.ReactElement {
+}: useRender.ComponentProps<"div"> &
+  VariantProps<typeof cardVariants> & { size?: "default" | "sm" | "lg" }): React.ReactElement {
   const defaultProps = {
-    className: cn(
-      "relative flex flex-col rounded-2xl border bg-card not-dark:bg-clip-padding text-card-foreground shadow-xs/5 before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
-      className
-    ),
+    className: cn(cardVariants({ variant }), className),
     "data-slot": "card",
+    "data-variant": variant,
   }
 
   return useRender({
