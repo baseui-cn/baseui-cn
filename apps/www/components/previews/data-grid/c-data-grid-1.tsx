@@ -249,7 +249,7 @@ export function Pattern() {
         header: ({ column }) => (
           <DataGridColumnHeader title="Staff" column={column} className="px-4 py-2" />
         ),
-        size: 400,
+        size: 100,
         enablePinning: true,
         enableResizing: true,
         enableSorting: true,
@@ -289,7 +289,7 @@ export function Pattern() {
             </div>
           )
         },
-        size: 400,
+        size: 100,
         enablePinning: true,
         enableResizing: true,
         enableSorting: true,
@@ -311,7 +311,7 @@ export function Pattern() {
             return <Badge variant="warning-outline">Pending</Badge>
           }
         },
-        size: 200,
+        size: 100,
         enableResizing: false,
         meta: {
           cellClassName: "px-4 py-2",

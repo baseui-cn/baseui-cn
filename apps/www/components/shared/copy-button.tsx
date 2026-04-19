@@ -2,33 +2,38 @@
 
 import * as React from "react"
 import { trackCopyCode } from "@/lib/events"
+import { CheckCheckIcon, CheckCircle, CheckCircleIcon, CopyIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
+import { ToastProvider, useToast } from "@/components/ui/toast"
 export function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = React.useState(false)
-
+  const { add } = useToast()
   const handleCopy = () => {
     navigator.clipboard.writeText(text)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
     trackCopyCode("code_block")
+    add({
+      title: "Copied to clipboard",
+      type: "success",
+      timeout: 3000,
+    })
   }
 
   return (
-    <button
+    <Button
       onClick={handleCopy}
-      className="text-muted-foreground hover:text-foreground transition-colors"
+      variant="ghost"
+      size="icon"
+      className="rounded-full text-muted-foreground hover:text-foreground transition-colors"
       aria-label={copied ? "Copied" : "Copy"}
     >
       {copied ? (
-        <svg className="h-3.5 w-3.5 text-green-500" viewBox="0 0 16 16" fill="none">
-          <path d="M3 8l3.5 3.5 6.5-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <CheckCheckIcon className="size-4 text-success" />
       ) : (
-        <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none">
-          <rect x="5" y="5" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
-          <path d="M3 11V3h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <CopyIcon className="size-4 text-muted-foreground" />
       )}
-    </button>
+    </Button>
   )
 }

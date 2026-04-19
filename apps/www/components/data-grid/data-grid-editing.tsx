@@ -595,7 +595,7 @@ function renderDialogField<TData extends EditableRow>({
           const optionId = `dialog-${rowId}-${columnId}-${optionValue}`
 
           return (
-            <label
+            <Label
               key={optionId}
               htmlFor={optionId}
               className={cn(
@@ -615,7 +615,7 @@ function renderDialogField<TData extends EditableRow>({
                   <span className="text-muted-foreground text-sm">{option.description}</span>
                 ) : null}
               </div>
-            </label>
+            </Label>
           )
         })}
       </RadioGroup>
@@ -626,20 +626,23 @@ function renderDialogField<TData extends EditableRow>({
     const controlId = `dialog-${rowId}-${columnId}`
 
     return (
-      <Field className="gap-3 rounded-lg border p-3">
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1">
-            <FieldLabel htmlFor={controlId}>{editor.label ?? "Toggle option"}</FieldLabel>
-            {editor.description ? <FieldDescription>{editor.description}</FieldDescription> : null}
-          </div>
-          <Checkbox
-            id={controlId}
-            checked={value === true}
-            onCheckedChange={(nextChecked) => setValue(nextChecked === true)}
-            disabled={isPending}
-          />
+      <Label
+        htmlFor={controlId}
+        className="flex items-start gap-2 rounded-lg border p-3 hover:bg-accent/50 has-data-checked:border-primary/48 has-data-checked:bg-accent/50"
+      >
+        <Checkbox
+          id={controlId}
+          onCheckedChange={(nextChecked) => setValue(nextChecked === true)}
+          checked={value === true}
+          disabled={isPending}
+        />
+        <div className="flex flex-col gap-1">
+          <p>{editor.label ?? "Enable notifications"}</p>
+          {editor.description ? (
+            <p className="text-muted-foreground text-xs">{editor.description}</p>
+          ) : null}
         </div>
-      </Field>
+      </Label>
     )
   }
 
@@ -647,20 +650,23 @@ function renderDialogField<TData extends EditableRow>({
     const controlId = `dialog-${rowId}-${columnId}`
 
     return (
-      <Field className="gap-3 rounded-lg border p-3">
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1">
-            <FieldLabel htmlFor={controlId}>{editor.label ?? "Toggle option"}</FieldLabel>
-            {editor.description ? <FieldDescription>{editor.description}</FieldDescription> : null}
-          </div>
-          <Switch
-            id={controlId}
-            checked={value === true}
-            onCheckedChange={(nextChecked) => setValue(nextChecked === true)}
-            disabled={isPending}
-          />
+      <Label
+        htmlFor={controlId}
+        className="flex items-start gap-2 rounded-lg border p-3 hover:bg-accent/50 has-data-checked:border-primary/48 has-data-checked:bg-accent/50"
+      >
+        <Switch
+          id={controlId}
+          onCheckedChange={(nextChecked) => setValue(nextChecked === true)}
+          checked={value === true}
+          disabled={isPending}
+        />
+        <div className="flex flex-col gap-1">
+          <p>{editor.label ?? "Enable notifications"}</p>
+          {editor.description ? (
+            <p className="text-muted-foreground text-xs">{editor.description}</p>
+          ) : null}
         </div>
-      </Field>
+      </Label>
     )
   }
 

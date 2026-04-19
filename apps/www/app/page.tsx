@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { LandingReveal } from "@/components/shared/landing-reveal"
 import { SiteHeader } from "@/components/shared/site-header"
+import { LandingTerminalDemo } from "@/components/shared/terminal"
 
 export const dynamic = "force-dynamic"
 import { CopyButton } from "@/components/shared/copy-button"
@@ -8,6 +10,10 @@ import { ComponentsGrid } from "@/components/shared/components-grid"
 import { TrackCTALink } from "@/components/shared/track-page-view"
 import { components } from "@/lib/registry"
 import { siteConfig } from "@/lib/site-config"
+import { Button } from "@/components/ui/button"
+import { ArrowRightIcon, DotIcon } from "lucide-react"
+import { Icons } from "@/components/shared/icons"
+import { Badge } from "@/components/ui/badge"
 
 export const metadata: Metadata = {
   alternates: {
@@ -29,7 +35,7 @@ export default function HomePage() {
         {/* ── Hero ─────────────────────────────────────────────── */}
         <section className="border-b border-border">
           <div className="mx-auto max-w-7xl px-4 lg:px-0 py-8 md:py-32">
-            <div className="max-w-3xl">
+            <LandingReveal className="max-w-3xl">
               {/* Badge */}
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
@@ -50,37 +56,21 @@ export default function HomePage() {
 
               {/* Install command */}
               <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/30 px-4 py-3 font-mono text-sm">
+                <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/30 px-4 py-3 h-10 font-mono text-sm">
                   <span className="text-muted-foreground select-none">$</span>
                   <span className="text-foreground">npx baseui-cn init</span>
-                  <CopyButton text="npx baseui-cn init" />
+                  <CopyButton text="npx baseui-cn init " />
                 </div>
-                <Link
-                  href="/docs"
-                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-3 text-sm font-medium hover:bg-accent transition-colors"
-                >
+                <Button size="lg" render={<Link href="/docs" />}>
                   Read docs
-                  <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M3 8h10M9 4l4 4-4 4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
+                  <ArrowRightIcon className="size-4" />
+                </Button>
                 <TrackCTALink
                   cta="star_github"
                   href={siteConfig.github}
                   external
                   className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-3 text-sm font-medium hover:bg-accent transition-colors"
-                >
-                  <svg className="h-4 w-4" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-                  </svg>
-                  Star on GitHub
-                </TrackCTALink>
+                />
               </div>
 
               {/* Stats */}
@@ -99,7 +89,7 @@ export default function HomePage() {
                 <span className="text-border">|</span>
                 <span>MIT license</span>
               </div>
-            </div>
+            </LandingReveal>
           </div>
         </section>
 
@@ -555,11 +545,11 @@ export default function HomePage() {
         {/* ── How it works ─────────────────────────────────────── */}
         <section className="border-b border-border">
           <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-            <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-8">
+            <h2 className="font-mono text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-8">
               How it works
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-              <div className="flex flex-col gap-6">
+              <LandingReveal className="flex flex-col gap-6">
                 {[
                   {
                     step: "01",
@@ -578,9 +568,9 @@ export default function HomePage() {
                   },
                 ].map((item) => (
                   <div key={item.step} className="flex gap-5">
-                    <span className="font-mono text-xs text-muted-foreground/50 mt-0.5 w-6 shrink-0">
+                    <Badge size="sm" className="font-mono rounded-full shrink-0 mt-1.5">
                       {item.step}
-                    </span>
+                    </Badge>
                     <div>
                       <code className="font-mono text-sm text-foreground">{item.cmd}</code>
                       <p className="mt-1 text-sm text-muted-foreground">{item.desc}</p>
@@ -588,22 +578,27 @@ export default function HomePage() {
                   </div>
                 ))}
 
-                <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
-                  <span className="font-medium text-foreground/60">Works with</span>
-                  <span>Next.js</span>
-                  <span className="text-border">·</span>
-                  <span>Vite</span>
-                  <span className="text-border">·</span>
-                  <span>Remix</span>
-                  <span className="text-border">·</span>
-                  <span>Astro</span>
-                  <span className="text-border">·</span>
-                  <span>any React project</span>
+                <div className="mt-4 flex flex-col">
+                  <h2 className="font-mono text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                    Works with your stack
+                  </h2>
+                  <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
+                    <span>Next.js</span>
+                    <DotIcon className="size-6 text-muted-foreground" />
+                    <span>Vite</span>
+                    <DotIcon className="size-6 text-muted-foreground" />
+                    <span>Remix</span>
+                    <DotIcon className="size-6 text-muted-foreground" />
+                    <span>Astro</span>
+                    <DotIcon className="size-6 text-muted-foreground" />
+                    <span>Any React project</span>
+                  </div>
                 </div>
-              </div>
+              </LandingReveal>
 
               {/* Terminal mockup */}
-              <div className="rounded-lg border border-border bg-[#0a0a0a] overflow-hidden">
+              <LandingTerminalDemo />
+              <div className="hidden rounded-lg border border-border bg-[#0a0a0a] overflow-hidden">
                 <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/10">
                   <span className="h-3 w-3 rounded-full bg-white/10" />
                   <span className="h-3 w-3 rounded-full bg-white/10" />
