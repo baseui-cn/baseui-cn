@@ -223,6 +223,7 @@ export function Pattern() {
 
   const [data, setData] = useState(demoData)
   const dataIds = useMemo<UniqueIdentifier[]>(() => data?.map(({ id }) => id), [data])
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
     if (active && over && active.id !== over.id) {
@@ -351,7 +352,7 @@ export function Pattern() {
         width: "auto",
       }}
     >
-      <Card className="w-full gap-0 p-0">
+      <Card variant="elevated" className="w-full gap-0 p-0">
         <CardHeader className="flex items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="text-foreground text-sm font-medium">Basic Data Grid</span>

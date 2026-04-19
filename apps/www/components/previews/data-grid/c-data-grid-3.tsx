@@ -504,7 +504,7 @@ export function PatternEdit2() {
         headerSticky: "sticky top-0 z-10 bg-background/90 backdrop-blur-xs",
       }}
     >
-      <Card className="w-full gap-0 p-0">
+      <Card variant="elevated" className="w-full gap-0 p-0">
         <CardHeader className="flex items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="text-foreground text-sm font-medium">Async Editing Sandbox</span>
