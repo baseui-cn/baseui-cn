@@ -16,7 +16,7 @@ import { trackCopyCode, trackExternalLink } from "@/lib/events"
 
 type DocsActionsMenuProps = {
   title: string
-  markdown: string
+  markdown?: string
   pageUrl: string
 }
 
@@ -71,12 +71,14 @@ export function DocsActionsMenu({ title, markdown, pageUrl }: DocsActionsMenuPro
   }, [])
 
   const handleCopyMarkdown = React.useCallback(async () => {
+    if (!markdown) return
     await navigator.clipboard.writeText(markdown)
     trackCopyCode("code_block")
     setTemporaryState("copied")
   }, [markdown, setTemporaryState])
 
   const handleViewMarkdown = React.useCallback(() => {
+    if (!markdown) return
     const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" })
     const objectUrl = URL.createObjectURL(blob)
     const opened = window.open(objectUrl, "_blank", "noopener,noreferrer")
@@ -209,8 +211,12 @@ export function DocsActionsMenu({ title, markdown, pageUrl }: DocsActionsMenuPro
       <DropdownMenuContent align="end" className="w-64 min-w-64">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Markdown actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={handleCopyMarkdown}>Copy as Markdown</DropdownMenuItem>
-          <DropdownMenuItem onClick={handleViewMarkdown}>View as Markdown</DropdownMenuItem>
+          <DropdownMenuItem disabled={!markdown} onClick={handleCopyMarkdown}>
+            Copy as Markdown
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled={!markdown} onClick={handleViewMarkdown}>
+            View as Markdown
+          </DropdownMenuItem>
 
           <DropdownMenuSeparator />
           <DropdownMenuLabel>Open with AI</DropdownMenuLabel>

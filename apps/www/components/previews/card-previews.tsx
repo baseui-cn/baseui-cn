@@ -14,6 +14,19 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Label } from "@/components/ui/label"
+import { Field, FieldLabel, FieldDescription, FieldError } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Form } from "@/components/ui/form"
+import { Checkbox } from "@/components/ui/checkbox"
+import { InfoIcon } from "lucide-react"
 
 function CardPreview() {
   return (
@@ -21,7 +34,9 @@ function CardPreview() {
       <Card>
         <CardHeader>
           <CardTitle>Project Alpha</CardTitle>
-          <CardDescription>Next-generation design system built on Base UI primitives.</CardDescription>
+          <CardDescription>
+            Next-generation design system built on Base UI primitives.
+          </CardDescription>
           <CardAction>
             <Badge variant="success">Active</Badge>
           </CardAction>
@@ -41,7 +56,9 @@ function CardPreview() {
               </Avatar>
             ))}
           </div>
-          <Button variant="outline" size="sm">View project</Button>
+          <Button variant="outline" size="sm">
+            View project
+          </Button>
         </CardFooter>
       </Card>
 
@@ -85,32 +102,58 @@ function CardBasicPreview() {
 function CardWithFooterPreview() {
   return (
     <Card className="max-w-sm w-full">
-      <CardHeader>
+      <CardHeader className="border-b">
         <CardTitle>Create project</CardTitle>
         <CardDescription>Deploy your new project in one-click.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">Name</label>
-            <input
-              className="h-9 rounded-md border border-border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring/50"
-              placeholder="My Awesome Project"
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">Framework</label>
-            <select className="h-9 rounded-md border border-border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring/50">
-              <option>Next.js</option>
-              <option>Vite</option>
-              <option>Remix</option>
-            </select>
-          </div>
-        </div>
+        <Form className="flex w-full flex-col gap-4">
+          <Field name="fullName">
+            <FieldLabel>
+              Name <span className="text-destructive">*</span>
+            </FieldLabel>
+            <Input placeholder="John Doe" required type="text" />
+            <FieldError>Please .</FieldError>
+          </Field>
+
+          <Field name="role">
+            <FieldLabel>Role</FieldLabel>
+            <Select
+              items={[
+                { label: "Select framework", value: null },
+                { label: "Next.js", value: "nextjs" },
+                { label: "Vite", value: "vite" },
+                { label: "Remix", value: "remix" },
+                { label: "TanstackStart", value: "tanstack" },
+              ]}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false}>
+                <SelectItem value="nextjs">Next.js</SelectItem>
+                <SelectItem value="vite">Vite</SelectItem>
+                <SelectItem value="remix">Remix</SelectItem>
+                <SelectItem value="tanstack">TanstackStart</SelectItem>
+              </SelectContent>
+            </Select>
+          </Field>
+
+          <Field name="newsletter">
+            <div className="flex items-center gap-2">
+              <Checkbox />
+              <FieldLabel className="cursor-pointer">Allow Public</FieldLabel>
+            </div>
+          </Field>
+
+          <Button type="submit">Submit</Button>
+        </Form>
       </CardContent>
-      <CardFooter className="justify-end gap-2">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
+      <CardFooter className="border-t">
+        <div className="flex gap-1 text-muted-foreground text-xs">
+          <InfoIcon className="size-3 h-lh shrink-0" />
+          <p>This will take a few seconds to complete.</p>
+        </div>
       </CardFooter>
     </Card>
   )
@@ -123,7 +166,9 @@ function CardWithActionPreview() {
         <CardTitle>Notifications</CardTitle>
         <CardDescription>You have 3 unread messages.</CardDescription>
         <CardAction>
-          <Button variant="outline" size="sm">Mark all read</Button>
+          <Button variant="outline" size="sm">
+            Mark all read
+          </Button>
         </CardAction>
       </CardHeader>
       <CardContent>
@@ -160,7 +205,7 @@ function CardSmallPreview() {
         { title: "Revenue", value: "$12.5k", change: "+22%" },
         { title: "Active Now", value: "573", change: "+201" },
       ].map((stat) => (
-        <Card key={stat.title} size="sm" className="flex-1">
+        <Card key={stat.title} className="flex-1">
           <CardHeader>
             <CardTitle>{stat.title}</CardTitle>
           </CardHeader>
@@ -180,7 +225,7 @@ function CardWithImagePreview() {
       <img
         src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=300&fit=crop"
         alt="Mountain landscape"
-        className="h-48 w-full object-cover"
+        className="h-48 w-full object-cover rounded-t-2xl"
       />
       <CardHeader>
         <CardTitle>Mountain Retreat</CardTitle>

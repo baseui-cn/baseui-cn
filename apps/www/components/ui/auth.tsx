@@ -359,7 +359,7 @@ function AuthCardShell({
 
   return (
     <div className={cn("w-full", config.width, motionClassName, className)}>
-      <Card size={config.card} className={cn("w-full", authVariantClasses[variant])}>
+      <Card className={cn("w-full", authVariantClasses[variant])}>
         <CardHeader className="gap-2">
           <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
             <Sparkles className="size-4" />

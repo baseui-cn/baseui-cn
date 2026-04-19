@@ -1,0 +1,34 @@
+{
+  "name": "checkbox-group",
+  "type": "component",
+  "label": "Checkbox Group",
+  "section": "Form",
+  "description": "A semantic group for managing multiple related checkboxes with shared state.",
+  "version": "1.0.3",
+  "baseUIVersion": ">=1.3.0",
+  "files": [
+    {
+      "path": "checkbox-group.tsx",
+      "type": "component",
+      "content": "\"use client\"\r\n\r\nimport { CheckboxGroup as CheckboxGroupPrimitive } from \"@base-ui/react/checkbox-group\"\r\nimport type React from \"react\"\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nexport function CheckboxGroup({\r\n  className,\r\n  ...props\r\n}: CheckboxGroupPrimitive.Props): React.ReactElement {\r\n  return (\r\n    <CheckboxGroupPrimitive\r\n      className={cn(\"flex flex-col items-start gap-3\", className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { CheckboxGroupPrimitive }\r\n"
+    }
+  ],
+  "dependencies": {
+    "required": [
+      "@base-ui/react"
+    ],
+    "peer": []
+  },
+  "registryDependencies": [
+    "utils"
+  ],
+  "tags": [
+    "form",
+    "interactive",
+    "group"
+  ],
+  "exportName": "CheckboxGroup",
+  "installedPath": "components/ui/checkbox-group.tsx",
+  "badge": "New",
+  "baseUIPrimitive": "CheckboxGroup"
+}

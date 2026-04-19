@@ -3,7 +3,10 @@ import type React from "react"
 import { readFile } from "fs/promises"
 import { join } from "path"
 import { mdxComponents, Callout } from "@/components/docs/mdx-components"
+import { CodeBlock } from "@/components/docs/code-block"
+import { CodeTabs } from "@/components/docs/code-tabs"
 import { InstallTabs } from "@/components/docs/install-tabs"
+import { PackageManagerTabs } from "@/components/docs/package-manager-tabs"
 import { ComponentPreviewWrapper } from "@/components/docs/component-preview-wrapper"
 import { DocsToc } from "@/components/docs/docs-toc"
 import { DocsTocDropdown } from "@/components/docs/docs-toc"
@@ -11,12 +14,15 @@ import { getComponent } from "@/lib/registry"
 import { getRegistryFileContent } from "@/lib/registry-server"
 import { ComponentPreviewMdx } from "@/components/docs/component-preview-mdx"
 import { ComponentSource } from "@/components/docs/component-source"
+import { DocsActionsMenu } from "@/components/docs/docs-actions-menu"
 import type { Metadata } from "next"
 import { siteConfig } from "@/lib/site-config"
 import { TrackComponentView } from "@/components/shared/track-page-view"
+import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { source } from "@/lib/source"
 
 const PREVIEW_SOURCES_PATH = join(process.cwd(), "lib/__generated__/preview-sources.json")
+const DOCS_MARKDOWN_PATH = join(process.cwd(), "lib/__generated__/docs-markdown.json")
 
 type TocItem = { title: string; url: string; depth: number; items?: TocItem[] }
 type DocsPageData = {
@@ -29,6 +35,15 @@ type DocsPageData = {
 async function loadPreviewSources(): Promise<Record<string, string>> {
   try {
     const raw = await readFile(PREVIEW_SOURCES_PATH, "utf-8")
+    return JSON.parse(raw)
+  } catch {
+    return {}
+  }
+}
+
+async function loadDocsMarkdown(): Promise<Record<string, string>> {
+  try {
+    const raw = await readFile(DOCS_MARKDOWN_PATH, "utf-8")
     return JSON.parse(raw)
   } catch {
     return {}
@@ -132,6 +147,30 @@ export async function generateMetadata({
   }
 }
 
+function CodeBlockMdx(props: React.ComponentProps<typeof CodeBlock>) {
+  return <CodeBlock {...props} />
+}
+
+function CodeTabsMdx(props: React.ComponentProps<typeof CodeTabs>) {
+  return <CodeTabs {...props} />
+}
+
+function PackageManagerTabsMdx(props: React.ComponentProps<typeof PackageManagerTabs>) {
+  return <PackageManagerTabs {...props} />
+}
+
+function TabsListMdx(props: React.ComponentProps<typeof TabsList>) {
+  return <TabsList {...props} />
+}
+
+function TabsTriggerMdx(props: React.ComponentProps<typeof TabsTrigger>) {
+  return <TabsTrigger {...props} />
+}
+
+function TabsContentMdx(props: React.ComponentProps<typeof TabsContent>) {
+  return <TabsContent {...props} />
+}
+
 export default async function ComponentPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const page = source.getPage([slug])
@@ -140,9 +179,10 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   const docsPage = page as typeof page & { data: DocsPageData }
 
   const comp = getComponent(slug)
-  const [registryData, previewSources] = await Promise.all([
+  const [registryData, previewSources, docsMarkdown] = await Promise.all([
     getRegistryFileContent(slug),
     loadPreviewSources(),
+    loadDocsMarkdown(),
   ])
   const sourceCode = registryData?.code ?? ""
   const title =
@@ -150,6 +190,8 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
     comp?.label ??
     slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
   const description = docsPage.data.description ?? comp?.description
+  const markdown = docsMarkdown[slug] ?? ""
+  const pageUrl = `${siteConfig.url}/docs/components/${slug}`
   const toc = normalizeToc(docsPage.data.toc)
   const MDX = docsPage.data.body
 
@@ -179,6 +221,12 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
     InstallTabs: (props: React.ComponentProps<typeof InstallTabs>) => (
       <InstallTabs {...props} installedPath={getComponent(props.slug)?.installedPath} />
     ),
+    CodeBlock: CodeBlockMdx,
+    CodeTabs: CodeTabsMdx,
+    PackageManagerTabs: PackageManagerTabsMdx,
+    TabsList: TabsListMdx,
+    TabsTrigger: TabsTriggerMdx,
+    TabsContent: TabsContentMdx,
     Callout,
   }
 
@@ -199,6 +247,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
               <h1 className="mb-2 text-3xl font-bold tracking-tight">{title}</h1>
               {description ? <p className="text-base text-muted-foreground">{description}</p> : null}
             </div>
+            <DocsActionsMenu markdown={markdown} pageUrl={pageUrl} title={title} />
           </div>
           {comp?.type === "block" && (
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">

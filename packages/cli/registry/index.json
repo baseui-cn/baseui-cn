@@ -191,6 +191,17 @@
       ]
     },
     {
+      "name": "checkbox-group",
+      "type": "component",
+      "description": "A semantic group for managing multiple related checkboxes with shared state.",
+      "tags": [
+        "form",
+        "interactive",
+        "group"
+      ],
+      "badge": "New"
+    },
+    {
       "name": "switch",
       "type": "component",
       "description": "A control that allows the user to toggle between checked and not checked.",

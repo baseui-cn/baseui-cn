@@ -303,6 +303,23 @@
       "baseUIPrimitive": "Checkbox"
     },
     {
+      "name": "checkbox-group",
+      "type": "component",
+      "section": "Form",
+      "label": "Checkbox Group",
+      "description": "A semantic group for managing multiple related checkboxes with shared state.",
+      "tags": [
+        "form",
+        "interactive",
+        "group"
+      ],
+      "version": "1.0.3",
+      "exportName": "CheckboxGroup",
+      "installedPath": "components/ui/checkbox-group.tsx",
+      "badge": "New",
+      "baseUIPrimitive": "CheckboxGroup"
+    },
+    {
       "name": "switch",
       "type": "component",
       "section": "Form",
@@ -873,6 +890,11 @@
         {
           "name": "checkbox",
           "label": "Checkbox"
+        },
+        {
+          "name": "checkbox-group",
+          "label": "Checkbox Group",
+          "badge": "New"
         },
         {
           "name": "switch",

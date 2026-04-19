@@ -224,6 +224,15 @@ export const componentMeta = {
     deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils"],
   }),
+  "checkbox-group": defineEntry("checkbox-group", {
+    section: "Form",
+    description: "A semantic group for managing multiple related checkboxes with shared state.",
+    tags: ["form", "interactive", "group"],
+    badge: COMPONENT_BADGE,
+    baseUIPrimitive: "CheckboxGroup",
+    deps: ["@base-ui/react"],
+    registryDeps: ["utils"],
+  }),
   "switch": defineEntry("switch", {
     section: "Form",
     description: "A control that allows the user to toggle between checked and not checked.",

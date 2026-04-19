@@ -50,18 +50,19 @@ npm install @base-ui/react
 ```tsx
 import {
   Avatar,
-  AvatarImage,
-  AvatarFallback,
   AvatarBadge,
+  AvatarFallback,
   AvatarGroup,
   AvatarGroupCount,
+  AvatarImage,
 } from "@/components/ui/avatar"
 ```
 
 ```tsx
-<Avatar>
+<Avatar size="md">
   <AvatarImage src="/photo.jpg" alt="Aria Chen" />
   <AvatarFallback>AC</AvatarFallback>
+  <AvatarBadge className="bg-success" />
 </Avatar>
 ```
 
@@ -75,36 +76,36 @@ An avatar with fallback initials.
 
 ### With image
 
-Avatars with user photos — falls back to initials if the image fails to load.
+Image avatars fall back to initials when the image is unavailable.
 
 <ComponentPreview name="avatar-with-image" />
 
 ### Image sizes
 
-Image avatars in sm, default, and lg sizes.
+Use `xs`, `sm`, `md`, and `lg` to keep avatars aligned with nearby controls and cards.
 
 <ComponentPreview name="avatar-image-sizes" />
 
 ### With badge
 
-Show online, busy, away, or offline status.
+Status badges use your theme tokens so online and away states still feel native to the app.
 
 <ComponentPreview name="avatar-with-badge" />
 
 ### Group
 
-Stack multiple avatars with an overflow count.
+Stack avatars together and add an overflow count when you do not want to render every participant.
 
 <ComponentPreview name="avatar-group" />
 
 ### Sizes
 
-Avatars in sm, default, and lg sizes.
+The core avatar supports `xs`, `sm`, `md`, and `lg` sizing for denser or roomier layouts.
 
 <ComponentPreview name="avatar-sizes" />
 
 ### Image group
 
-Stacked image avatars with overflow count.
+The grouped pattern also works with uploaded images and mixed fallbacks.
 
 <ComponentPreview name="avatar-image-group" />

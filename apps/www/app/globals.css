@@ -33,8 +33,7 @@
 }
 
 :root {
-  font-size: 14px; /* 90% of 16px = 14.4px */
-  /* --radius: 0.625rem; */
+  font-size: 14px; /* --radius: 0.625rem; */
   --text-lg: 1.2rem;
   --text-base: 1.1rem;
   --text-sm: 0.98rem;

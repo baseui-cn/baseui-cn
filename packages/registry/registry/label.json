@@ -10,7 +10,7 @@
     {
       "path": "label.tsx",
       "type": "component",
-      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction Label({ className, ...props }: React.ComponentProps<\"label\">) {\n  return (\n    <label\n      data-slot=\"label\"\n      className={cn(\n        \"gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Label }\n"
+      "content": "\"use client\"\n\nimport { mergeProps } from \"@base-ui/react/merge-props\"\nimport { useRender } from \"@base-ui/react/use-render\"\nimport type React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport function Label({\n  className,\n  render,\n  ...props\n}: useRender.ComponentProps<\"label\">): React.ReactElement {\n  const defaultProps = {\n    className: cn(\n      \"inline-flex items-center gap-2 font-medium text-base/4.5 text-foreground sm:text-sm/4\",\n      className\n    ),\n    \"data-slot\": \"label\",\n  }\n\n  return useRender({\n    defaultTagName: \"label\",\n    props: mergeProps<\"label\">(defaultProps, props),\n    render,\n  })\n}\n"
     }
   ],
   "dependencies": {

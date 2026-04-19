@@ -9,9 +9,10 @@
     "clean": "turbo run clean",
     "registry:build": "node scripts/build-registry.mjs",
     "registry:watch": "node scripts/watch-registry.mjs",
+    "docs:markdown": "node scripts/build-doc-markdown.mjs",
     "previews:build": "node scripts/build-preview-sources.mjs",
     "previews:watch": "node scripts/watch-preview-sources.mjs",
-    "build:all": "node scripts/build-registry.mjs && node scripts/build-preview-sources.mjs"
+    "build:all": "node scripts/build-registry.mjs && node scripts/build-preview-sources.mjs && node scripts/build-doc-markdown.mjs"
   },
   "devDependencies": {
     "turbo": "latest",

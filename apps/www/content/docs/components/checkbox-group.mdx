@@ -1,0 +1,71 @@
+---
+title: Checkbox Group
+description: Group related checkboxes with shared selection state and consistent spacing.
+component: true
+links:
+  doc: https://base-ui.com/react/components/checkbox-group
+---
+
+<ComponentPreview name="checkbox-group" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+<PackageManagerTabs command="baseui-cn add checkbox-group" />
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install dependencies</Step>
+
+```bash
+npm install @base-ui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="checkbox-group" title="components/ui/checkbox-group.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Checkbox } from "@/components/ui/checkbox"
+import { CheckboxGroup } from "@/components/ui/checkbox-group"
+import { Label } from "@/components/ui/label"
+```
+
+```tsx
+<CheckboxGroup aria-label="Select libraries" defaultValue={["baseui"]}>
+  <Label>
+    <Checkbox value="baseui" />
+    Base UI
+  </Label>
+  <Label>
+    <Checkbox value="baseui-cn" />
+    baseui-cn
+  </Label>
+</CheckboxGroup>
+```
+
+## Notes
+
+Use `CheckboxGroup` when several checkboxes belong to the same question or preference set. It keeps layout and shared state handling together while letting each checkbox stay fully composable.

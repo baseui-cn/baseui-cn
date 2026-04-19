@@ -8,4 +8,4 @@ node scripts/build-preview-sources.mjs
 
 # Both at once
 
-node scripts/build-registry.mjs; node scripts/build-preview-sources.mjs
+node scripts/build-doc-markdown.mjs

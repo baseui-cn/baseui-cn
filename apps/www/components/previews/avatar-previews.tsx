@@ -4,49 +4,52 @@ import * as React from "react"
 
 import {
   Avatar,
-  AvatarImage,
   AvatarBadge,
   AvatarFallback,
   AvatarGroup,
   AvatarGroupCount,
+  AvatarImage,
 } from "@/components/ui/avatar"
+
+const statusBadges = [
+  { variant: "online", label: "Online (top right)", position: "top-right" },
+  { variant: "busy", label: "Busy (top left)", position: "top-left" },
+  { variant: "away", label: "Away (bottom right)", position: "bottom-right" },
+  { variant: "offline", label: "Offline (bottom left)", position: "bottom-left" },
+] as const
+
+const avatarSizes = ["xs", "sm", "md", "lg"] as const
 
 function AvatarPreview() {
   return (
     <div className="flex flex-col gap-6 items-center">
       <div className="flex items-end gap-4">
-        {(["sm", "default", "lg"] as const).map((size) => (
+        {avatarSizes.map((size) => (
           <div key={size} className="flex flex-col items-center gap-1.5">
             <Avatar size={size}>
               <AvatarFallback>AC</AvatarFallback>
             </Avatar>
-            <span className="text-[10px] text-muted-foreground">{size}</span>
+            <span className="text-sm text-muted-foreground">{size}</span>
           </div>
         ))}
       </div>
       <div className="flex items-center gap-4">
-        {[
-          { bg: "bg-green-500", label: "Online" },
-          { bg: "bg-destructive", label: "Busy" },
-          { bg: "bg-yellow-500", label: "Away" },
-          { bg: "bg-muted-foreground", label: "Offline" },
-        ].map(({ bg, label }) => (
+        {statusBadges.map(({ variant, label, position }) => (
           <div key={label} className="flex flex-col items-center gap-1.5">
-            <Avatar>
+            <Avatar showBadge badgeVariant={variant} badgePosition={position}>
               <AvatarFallback>MO</AvatarFallback>
-              <AvatarBadge className={bg} />
             </Avatar>
-            <span className="text-[10px] text-muted-foreground">{label}</span>
+            <span className="text-sm text-muted-foreground">{label}</span>
           </div>
         ))}
       </div>
       <AvatarGroup>
         {["AC", "MO", "PN", "JD"].map((initials) => (
-          <Avatar key={initials}>
-            <AvatarFallback>{initials}</AvatarFallback>
+          <Avatar key={initials} className="hover:z-10">
+            <AvatarFallback className="border border-transparent">{initials}</AvatarFallback>
           </Avatar>
         ))}
-        <AvatarGroupCount>+4</AvatarGroupCount>
+        <AvatarGroupCount size="md">+4</AvatarGroupCount>
       </AvatarGroup>
     </div>
   )
@@ -55,9 +58,15 @@ function AvatarPreview() {
 function AvatarBasicPreview() {
   return (
     <div className="flex gap-3">
-      <Avatar><AvatarFallback>AC</AvatarFallback></Avatar>
-      <Avatar><AvatarFallback>MO</AvatarFallback></Avatar>
-      <Avatar><AvatarFallback>JD</AvatarFallback></Avatar>
+      <Avatar>
+        <AvatarFallback>AC</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarFallback>MO</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarFallback>JD</AvatarFallback>
+      </Avatar>
     </div>
   )
 }
@@ -65,15 +74,12 @@ function AvatarBasicPreview() {
 function AvatarWithBadgePreview() {
   return (
     <div className="flex gap-4">
-      {[
-        { bg: "bg-green-500", label: "Online" },
-        { bg: "bg-destructive", label: "Busy" },
-        { bg: "bg-yellow-500", label: "Away" },
-        { bg: "bg-muted-foreground", label: "Offline" },
-      ].map(({ bg, label }) => (
+      {statusBadges.map(({ variant, label, position }) => (
         <div key={label} className="flex flex-col items-center gap-1.5">
-          <Avatar><AvatarFallback>MO</AvatarFallback><AvatarBadge className={bg} /></Avatar>
-          <span className="text-[10px] text-muted-foreground">{label}</span>
+          <Avatar showBadge badgeVariant={variant} badgePosition={position}>
+            <AvatarFallback>MO</AvatarFallback>
+          </Avatar>
+          <span className="text-sm text-muted-foreground">{label}</span>
         </div>
       ))}
     </div>
@@ -83,8 +89,12 @@ function AvatarWithBadgePreview() {
 function AvatarGroupPreview() {
   return (
     <AvatarGroup>
-      {["AC", "MO", "PN", "JD"].map((i) => <Avatar key={i}><AvatarFallback>{i}</AvatarFallback></Avatar>)}
-      <AvatarGroupCount>+4</AvatarGroupCount>
+      {["AC", "MO", "PN", "JD"].map((i) => (
+        <Avatar key={i} className="hover:z-10">
+          <AvatarFallback className="border border-transparent">{i}</AvatarFallback>
+        </Avatar>
+      ))}
+      <AvatarGroupCount size="md">+4</AvatarGroupCount>
     </AvatarGroup>
   )
 }
@@ -92,10 +102,12 @@ function AvatarGroupPreview() {
 function AvatarSizesPreview() {
   return (
     <div className="flex items-end gap-4">
-      {(["sm", "default", "lg"] as const).map((size) => (
+      {avatarSizes.map((size) => (
         <div key={size} className="flex flex-col items-center gap-1.5">
-          <Avatar size={size}><AvatarFallback>AC</AvatarFallback></Avatar>
-          <span className="text-[10px] text-muted-foreground">{size}</span>
+          <Avatar size={size}>
+            <AvatarFallback>AC</AvatarFallback>
+          </Avatar>
+          <span className="text-sm text-muted-foreground">{size}</span>
         </div>
       ))}
     </div>
@@ -103,10 +115,10 @@ function AvatarSizesPreview() {
 }
 
 const sampleImages = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
-  "https://images.unsplash.com/photo-1599566150163-29194dcabd9c?w=80&h=80&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&dpr=2&q=80",
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&dpr=2&q=80",
+  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&dpr=2&q=80",
+  "https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=96&h=96&dpr=2&q=80",
 ]
 
 function AvatarWithImagePreview() {
@@ -125,7 +137,7 @@ function AvatarWithImagePreview() {
 function AvatarImageSizesPreview() {
   return (
     <div className="flex items-end gap-4">
-      {(["sm", "default", "lg"] as const).map((size, i) => (
+      {avatarSizes.map((size, i) => (
         <div key={size} className="flex flex-col items-center gap-1.5">
           <Avatar size={size}>
             <AvatarImage src={sampleImages[i]} alt={`User ${size}`} />
@@ -142,12 +154,12 @@ function AvatarImageGroupPreview() {
   return (
     <AvatarGroup>
       {sampleImages.map((src, i) => (
-        <Avatar key={i}>
+        <Avatar key={i} className="hover:z-10 border-1 border-transparent">
           <AvatarImage src={src} alt={`User ${i + 1}`} />
           <AvatarFallback>{["AC", "MO", "JD", "KL"][i]}</AvatarFallback>
         </Avatar>
       ))}
-      <AvatarGroupCount>+3</AvatarGroupCount>
+      <AvatarGroupCount size="md">+3</AvatarGroupCount>
     </AvatarGroup>
   )
 }

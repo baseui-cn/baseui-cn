@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
+import { CheckboxGroup } from "@/components/ui/checkbox-group"
 
 function CheckboxPreview() {
   return (
@@ -29,10 +30,6 @@ function CheckboxPreview() {
   )
 }
 
-function CheckboxBasicPreview() {
-  return <Checkbox id="cb-basic" />
-}
-
 function CheckboxWithLabelPreview() {
   return (
     <div className="flex flex-col gap-3">
@@ -48,18 +45,17 @@ function CheckboxWithLabelPreview() {
   )
 }
 
-function CheckboxDisabledPreview() {
+function CheckboxCardStylePreview() {
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2">
-        <Checkbox id="cb-dis-1" disabled />
-        <Label htmlFor="cb-dis-1">Disabled unchecked</Label>
+    <Label className="flex items-start gap-2 rounded-lg border p-3 hover:bg-accent/50 has-data-checked:border-primary/48 has-data-checked:bg-accent/50">
+      <Checkbox defaultChecked />
+      <div className="flex flex-col gap-1">
+        <p>Enable notifications</p>
+        <p className="text-muted-foreground text-xs">
+          You can enable or disable notifications at any time.
+        </p>
       </div>
-      <div className="flex items-center gap-2">
-        <Checkbox id="cb-dis-2" disabled defaultChecked />
-        <Label htmlFor="cb-dis-2">Disabled checked</Label>
-      </div>
-    </div>
+    </Label>
   )
 }
 
@@ -67,17 +63,41 @@ function CheckboxIndeterminatePreview() {
   const [checked, setChecked] = React.useState(false)
   return (
     <div className="flex items-center gap-2">
-      <Checkbox id="cb-indet" indeterminate checked={checked} onCheckedChange={(v) => setChecked(v)} />
-      <Label htmlFor="cb-indet">Indeterminate (click to toggle)</Label>
+      <Checkbox
+        id="cb-indet"
+        indeterminate
+        checked={checked}
+        onCheckedChange={(v) => setChecked(v)}
+      />
+      <Label htmlFor="cb-indet">Indeterminate</Label>
     </div>
+  )
+}
+
+function CheckboxGroupPreview() {
+  return (
+    <CheckboxGroup aria-label="Select components" defaultValue={["baseui"]}>
+      <Label>
+        <Checkbox value="baseui" />
+        base-ui
+      </Label>
+      <Label>
+        <Checkbox value="mui" />
+        MUI
+      </Label>
+      <Label>
+        <Checkbox value="baseui-cn" />
+        Baseui-cn
+      </Label>
+    </CheckboxGroup>
   )
 }
 
 export const checkboxPreviewMap: Record<string, React.ComponentType> = {
   checkbox: CheckboxPreview,
   "checkbox-demo": CheckboxPreview,
-  "checkbox-basic": CheckboxBasicPreview,
   "checkbox-with-label": CheckboxWithLabelPreview,
-  "checkbox-disabled": CheckboxDisabledPreview,
+  "checkbox-card-style": CheckboxCardStylePreview,
+  "checkbox-group": CheckboxGroupPreview,
   "checkbox-indeterminate": CheckboxIndeterminatePreview,
 }

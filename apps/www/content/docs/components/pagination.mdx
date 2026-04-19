@@ -42,3 +42,58 @@ npm install @base-ui/react
 </TabsContent>
 
 </CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+```
+
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="#" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#" isActive>
+        1
+      </PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="#" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+## Examples
+
+### Standard
+
+Use this when you want a full page range with previous and next controls.
+
+<ComponentPreview name="pagination-demo" />
+
+### With ellipsis
+
+Collapse long page ranges while keeping the active page and edge pages visible.
+
+<ComponentPreview name="pagination-with-ellipsis" />
+
+### Compact
+
+A tighter pattern for drawers, dialogs, or dense toolbars where you only need the current page context.
+
+<ComponentPreview name="pagination-compact" />
