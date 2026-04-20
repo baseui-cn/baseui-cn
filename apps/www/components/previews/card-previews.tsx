@@ -31,7 +31,7 @@ import { InfoIcon } from "lucide-react"
 function CardPreview() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 max-w-2xl w-full">
-      <Card>
+      <Card variant="elevated">
         <CardHeader>
           <CardTitle>Project Alpha</CardTitle>
           <CardDescription>
@@ -62,7 +62,7 @@ function CardPreview() {
         </CardFooter>
       </Card>
 
-      <Card>
+      <Card variant="elevated">
         <CardHeader>
           <CardTitle>Monthly Revenue</CardTitle>
           <CardDescription>Jan 2024 &ndash; Mar 2024</CardDescription>
@@ -85,7 +85,7 @@ function CardPreview() {
 
 function CardBasicPreview() {
   return (
-    <Card className="max-w-sm w-full">
+    <Card variant="elevated" className="max-w-sm w-full">
       <CardHeader>
         <CardTitle>Card Title</CardTitle>
         <CardDescription>A brief description of the card content.</CardDescription>
@@ -101,7 +101,7 @@ function CardBasicPreview() {
 
 function CardWithFooterPreview() {
   return (
-    <Card className="max-w-sm w-full">
+    <Card variant="elevated" className="max-w-sm w-full">
       <CardHeader className="border-b">
         <CardTitle>Create project</CardTitle>
         <CardDescription>Deploy your new project in one-click.</CardDescription>
@@ -161,7 +161,7 @@ function CardWithFooterPreview() {
 
 function CardWithActionPreview() {
   return (
-    <Card className="max-w-sm w-full">
+    <Card variant="elevated" className="max-w-sm w-full">
       <CardHeader>
         <CardTitle>Notifications</CardTitle>
         <CardDescription>You have 3 unread messages.</CardDescription>
@@ -205,7 +205,7 @@ function CardSmallPreview() {
         { title: "Revenue", value: "$12.5k", change: "+22%" },
         { title: "Active Now", value: "573", change: "+201" },
       ].map((stat) => (
-        <Card key={stat.title} className="flex-1">
+        <Card key={stat.title} variant="outline" className="flex-1">
           <CardHeader>
             <CardTitle>{stat.title}</CardTitle>
           </CardHeader>
@@ -221,7 +221,7 @@ function CardSmallPreview() {
 
 function CardWithImagePreview() {
   return (
-    <Card className="max-w-sm w-full">
+    <Card variant="elevated" className="max-w-sm w-full">
       <img
         src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=300&fit=crop"
         alt="Mountain landscape"
