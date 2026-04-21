@@ -4,7 +4,7 @@ export const siteConfig = {
   github: "https://github.com/baseui-cn/baseui-cn",
   version: "1.0.0",
   description:
-    "A Base UI-first open component registry. 40+ components built exclusively on @base-ui/react. shadcn-style install.",
+    "Open-source shadcn-style Base UI components for React and Next.js. Copy accessible components into your project, own the code, and style them with Tailwind CSS.",
   baseUIVersion: ">=1.3.0",
   license: "MIT",
 } as const

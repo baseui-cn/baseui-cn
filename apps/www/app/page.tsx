@@ -12,26 +12,110 @@ import { components } from "@/lib/registry"
 import { siteConfig } from "@/lib/site-config"
 import { Button } from "@/components/ui/button"
 import { ArrowRightIcon, DotIcon } from "lucide-react"
-import { Icons } from "@/components/shared/icons"
 import { Badge } from "@/components/ui/badge"
+
+const homeKeywords = [
+  "base ui components",
+  "base ui react components",
+  "shadcn base ui components",
+  "shadcn style base ui",
+  "base ui component library",
+  "tailwind css components",
+  "nextjs ui components",
+]
 
 export const metadata: Metadata = {
   alternates: {
     canonical: siteConfig.url,
   },
-  title: `${siteConfig.name} — Base UI components. One command install.`,
-  description: siteConfig.description,
+  title: "Base UI Components for React - shadcn-style Registry",
+  description:
+    "Shadcn-style Base UI components for React and Next.js. Copy accessible components into your project, keep the code, and avoid mixed-library overlay bugs.",
+  keywords: homeKeywords,
+  openGraph: {
+    title: "Base UI Components for React - shadcn-style Registry",
+    description:
+      "Shadcn-style Base UI components for React and Next.js. Copy accessible components into your project, keep the code, and avoid mixed-library overlay bugs.",
+    url: siteConfig.url,
+    images: ["/baseui-cn-og.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Base UI Components for React - shadcn-style Registry",
+    description:
+      "Shadcn-style Base UI components for React and Next.js. Copy accessible components into your project, keep the code, and avoid mixed-library overlay bugs.",
+    images: ["/baseui-cn-og.png"],
+  },
 }
 
 const componentCount = components.filter((c) => c.type === "component").length
 const blockCount = components.filter((c) => c.type === "block").length
+const homeFaqs = [
+  {
+    question: "Is baseui-cn a shadcn-style registry for Base UI components?",
+    answer:
+      "Yes. baseui-cn gives you the same copy-and-own developer experience people expect from shadcn-style tools, but the components are built on Base UI primitives instead of a mixed stack.",
+  },
+  {
+    question: "Why use Base UI components instead of mixing Radix, Vaul, Sonner, and cmdk?",
+    answer:
+      "Because overlays compose more reliably when they share one primitive layer. baseui-cn keeps drawers, dialogs, selects, comboboxes, and toasts on Base UI so focus, portals, and layering stay consistent.",
+  },
+  {
+    question: "Do I keep the code after installing a component?",
+    answer:
+      "Yes. Components are copied directly into your project, so you can edit the code, theme it with Tailwind CSS, and ship it without depending on a runtime component package.",
+  },
+]
 
 export default function HomePage() {
+  const homeStructuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        name: "Base UI Components for React",
+        url: siteConfig.url,
+        description:
+          "Shadcn-style Base UI components for React and Next.js with copy-and-own installation.",
+        keywords: homeKeywords.join(", "),
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: homeFaqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.answer,
+          },
+        })),
+      },
+      {
+        "@type": "ItemList",
+        name: "baseui-cn components",
+        numberOfItems: componentCount + blockCount,
+        itemListElement: components.slice(0, 8).map((component, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: component.label,
+          url: `${siteConfig.url}/docs/components/${component.name}`,
+        })),
+      },
+    ],
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
 
       <main className="flex-1">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(homeStructuredData),
+          }}
+        />
         {/* ── Hero ─────────────────────────────────────────────── */}
         <section className="border-b border-border">
           <div className="mx-auto max-w-7xl px-4 lg:px-0 py-8 md:py-32">
@@ -44,14 +128,15 @@ export default function HomePage() {
 
               {/* Headline */}
               <h1 className="font-mono text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl leading-[1.1]">
-                Base UI components.
+                Base UI components for React.
                 <br />
-                <span className="text-muted-foreground">One command install.</span>
+                <span className="text-muted-foreground">shadcn-style install.</span>
               </h1>
 
               <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
-                A registry of beautifully styled, accessible components built exclusively on Base UI
-                primitives. Copy into your project, own the code, style with Tailwind.
+                An open-source registry of shadcn-style Base UI components for React and Next.js.
+                Copy accessible components into your project, own the code, and style everything
+                with Tailwind CSS.
               </p>
 
               {/* Install command */}
@@ -103,9 +188,9 @@ export default function HomePage() {
               One overlay system. Everything composes.
             </p>
             <p className="text-muted-foreground mb-10 max-w-xl">
-              shadcn mixes Radix UI, Vaul, Sonner, and cmdk — different portal and focus systems
-              that conflict when composed. baseui-cn uses Base UI exclusively, so overlays just work
-              together.
+              If you are searching for shadcn Base UI components, baseui-cn gives you the same
+              copy-and-own workflow while staying fully on Base UI primitives. That means one
+              portal system, one focus model, and fewer overlay bugs.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -698,6 +783,59 @@ export default function HomePage() {
                 </p>
                 <p className="text-zinc-500 text-xs">→ Use render prop, not asChild</p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+            <div className="max-w-3xl">
+              <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
+                Common questions
+              </h2>
+              <p className="text-2xl font-semibold text-foreground mb-4">
+                What teams ask when they want Base UI components
+              </p>
+              <p className="text-muted-foreground mb-10 max-w-2xl">
+                baseui-cn is a Base UI-first component registry with a shadcn-style workflow.
+                Start with the{" "}
+                <Link href="/docs" className="text-foreground underline underline-offset-4">
+                  documentation
+                </Link>
+                , install with{" "}
+                <code className="font-mono text-xs rounded bg-muted px-1.5 py-0.5">
+                  npx baseui-cn init
+                </code>
+                , and browse components like{" "}
+                <Link
+                  href="/docs/components/drawer"
+                  className="text-foreground underline underline-offset-4"
+                >
+                  Drawer
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/docs/components/select"
+                  className="text-foreground underline underline-offset-4"
+                >
+                  Select
+                </Link>
+                .
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {homeFaqs.map((faq) => (
+                <article
+                  key={faq.question}
+                  className="rounded-xl border border-border bg-background p-6"
+                >
+                  <h3 className="text-base font-semibold text-foreground">{faq.question}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {faq.answer}
+                  </p>
+                </article>
+              ))}
             </div>
           </div>
         </section>

@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/docs/installation`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/docs/theming`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/docs/llms`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/docs/changelog`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
   ] as MetadataRoute.Sitemap
 
   const componentPages = components.map((c) => ({
