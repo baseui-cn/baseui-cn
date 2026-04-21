@@ -108,16 +108,16 @@ function CardWithFooterPreview() {
       </CardHeader>
       <CardContent>
         <Form className="flex w-full flex-col gap-4">
-          <Field name="fullName">
+          <Field name="projectName">
             <FieldLabel>
               Name <span className="text-destructive">*</span>
             </FieldLabel>
             <Input placeholder="John Doe" required type="text" />
-            <FieldError>Please .</FieldError>
+            <FieldError>Enter project name.</FieldError>
           </Field>
 
-          <Field name="role">
-            <FieldLabel>Role</FieldLabel>
+          <Field name="framework">
+            <FieldLabel>Framework</FieldLabel>
             <Select
               items={[
                 { label: "Select framework", value: null },
@@ -142,7 +142,7 @@ function CardWithFooterPreview() {
           <Field name="newsletter">
             <div className="flex items-center gap-2">
               <Checkbox />
-              <FieldLabel className="cursor-pointer">Allow Public</FieldLabel>
+              <FieldLabel className="cursor-pointer">Allow Public Access</FieldLabel>
             </div>
           </Field>
 
