@@ -6,7 +6,14 @@ import { CheckCheckIcon, CheckCircle, CheckCircleIcon, CopyIcon } from "lucide-r
 import { Button } from "@/components/ui/button"
 
 import { ToastProvider, useToast } from "@/components/ui/toast"
-export function CopyButton({ text }: { text: string }) {
+
+//Props
+interface CopyButtonProps {
+  text: string
+  size?: "icon" | "icon-xs"
+}
+
+export function CopyButton({ text, size = "icon" }: CopyButtonProps) {
   const [copied, setCopied] = React.useState(false)
   const { add } = useToast()
   const handleCopy = () => {
@@ -25,7 +32,7 @@ export function CopyButton({ text }: { text: string }) {
     <Button
       onClick={handleCopy}
       variant="ghost"
-      size="icon"
+      size={size}
       className="rounded-full text-muted-foreground hover:text-foreground transition-colors"
       aria-label={copied ? "Copied" : "Copy"}
     >

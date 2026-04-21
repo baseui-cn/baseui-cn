@@ -88,13 +88,13 @@ export function SiteSearch() {
           trackSearchOpen("click")
           setOpen(true)
         }}
-        className="hidden md:inline-flex items-center gap-2 rounded-full border border-border bg-muted/30 px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        className="hidden md:inline-flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       >
         <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none">
           <circle cx="7" cy="7" r="5.25" stroke="currentColor" strokeWidth="1.5" />
           <path d="M11 11l3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
-        <span className="hidden lg:inline">Search baseui-cn...</span>
+        <span className="hidden lg:inline">Search components...</span>
         <kbd className="pointer-events-none hidden h-5 select-none items-center gap-0.5 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground lg:inline-flex">
           <span className="text-xs">⌘</span>K
         </kbd>

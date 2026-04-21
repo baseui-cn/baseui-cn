@@ -2,9 +2,13 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Sparkles, TerminalSquare, TableProperties } from "lucide-react"
+import { Sparkles, TerminalSquare, TableProperties, SearchIcon, XIcon } from "lucide-react"
+import { CopyButton } from "@/components/shared/copy-button"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+
 import type { ComponentMeta } from "@/lib/registry"
 
 type FilterDefinition = {
@@ -87,9 +91,6 @@ const FEATURED_INSTALLABLES = [
 export function ComponentsGrid({ components }: { components: ComponentMeta[] }) {
   const [search, setSearch] = React.useState("")
   const [activeFilter, setActiveFilter] = React.useState<string>("all")
-  const authBlocks = components.filter(
-    (component) => component.name === "login" || component.name === "signup"
-  )
 
   const filtered = components.filter((component) => {
     const query = search.toLowerCase()
@@ -155,49 +156,42 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
 
       <div className="mb-6 space-y-3">
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <div className="relative w-full sm:w-64">
-            <svg
-              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              viewBox="0 0 16 16"
-              fill="none"
-            >
-              <circle cx="7" cy="7" r="5.25" stroke="currentColor" strokeWidth="1.5" />
-              <path
-                d="M11 11l3.5 3.5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-            <input
-              type="text"
+          <InputGroup className="w-full lg:w-72">
+            <InputGroupInput
+              aria-label="Search"
               placeholder="Search installables..."
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              className="h-9 w-full rounded-md border border-border bg-background pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-ring"
+              type="search"
             />
-          </div>
+            <InputGroupAddon>
+              <SearchIcon aria-hidden="true" />
+            </InputGroupAddon>
+            {search && (
+              <InputGroupAddon align="inline-end" className="pointer-events-auto">
+                <Button variant="ghost" size="icon-xs" onClick={() => setSearch("")}>
+                  <XIcon aria-hidden="true" />
+                </Button>
+              </InputGroupAddon>
+            )}
+          </InputGroup>
 
           <span className="text-xs text-muted-foreground">
             Quick filters for the most-used component groups
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-1">
+        <div className="flex flex-wrap items-center gap-2">
           {FILTERS.map((filter) => (
-            <button
+            <Button
+              size="xs"
+              className="rounded-2xl"
+              variant={activeFilter === filter.id ? "default" : "outline"}
               key={filter.id}
               onClick={() => setActiveFilter(filter.id)}
-              className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                activeFilter === filter.id
-                  ? "bg-foreground text-background"
-                  : filter.featured
-                    ? "border border-primary/20 bg-primary/5 text-primary hover:bg-primary/10"
-                    : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
             >
               {filter.label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -207,7 +201,8 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
           <p className="text-sm text-muted-foreground">
             No installables match &ldquo;{search}&rdquo;
           </p>
-          <button
+          <Button
+            variant="ghost"
             onClick={() => {
               setSearch("")
               setActiveFilter("all")
@@ -215,61 +210,49 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
             className="mt-2 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
           >
             Clear filters
-          </button>
+          </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((component) => (
-            <Link
+            <div
               key={component.name}
-              href={`/docs/components/${component.name}`}
-              className="group bg-background p-4 transition-colors hover:bg-accent/50"
+              className="flex min-h-40 flex-col justify-between rounded-2xl border border-border/70 bg-background p-5 shadow-xs/5 transition-all hover:-translate-y-0.5 hover:border-foreground/15 hover:shadow-lg hover:shadow-black/5"
             >
-              <div className="flex items-start justify-between gap-2">
-                <span className="font-mono text-sm text-foreground">{component.name}</span>
-                {component.badge && (
-                  <span className="shrink-0 rounded bg-foreground px-1 py-0.5 text-[9px] font-semibold leading-none text-background">
-                    {component.badge}
-                  </span>
-                )}
-              </div>
-              <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                {component.description}
-              </p>
-              {/* {component.baseUIPrimitive && (
-                <p className="mt-2 font-mono text-[10px] text-primary/80">
-                  {component.baseUIPrimitive}
+              <div className="space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <Link
+                      href={`/docs/components/${component.name}`}
+                      className="text-base font-medium text-foreground transition-colors hover:text-primary"
+                    >
+                      {component.label}
+                    </Link>
+                  </div>
+                </div>
+                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                  {component.description}
                 </p>
-              )} */}
-            </Link>
+              </div>
+
+              <div className="mt-5 space-y-3">
+                <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-muted/20 px-3 py-1">
+                  <code className="min-w-0 truncate font-mono text-[11px] text-foreground">
+                    npx baseui-cn add {component.name}
+                  </code>
+                  <CopyButton size="icon-xs" text={`npx baseui-cn add ${component.name}`} />
+                </div>
+                <Link
+                  href={`/docs/components/${component.name}`}
+                  className="inline-flex text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  View docs →
+                </Link>
+              </div>
+            </div>
           ))}
         </div>
       )}
-
-      {authBlocks.length > 0 ? (
-        <div className="mt-6 grid gap-3 rounded-xl border border-border bg-muted/20 p-4 md:grid-cols-2">
-          {authBlocks.map((block) => (
-            <Link
-              key={block.name}
-              href={`/docs/components/${block.name}`}
-              className="rounded-lg border border-border bg-background px-4 py-3 transition-colors hover:bg-accent/30"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-sm font-medium text-foreground">{block.label}</div>
-                  <p className="mt-1 text-sm text-muted-foreground">{block.description}</p>
-                </div>
-                <Badge variant="info-outline" size="sm" shape="pill">
-                  Block
-                </Badge>
-              </div>
-              <div className="mt-3 font-mono text-[11px] text-muted-foreground">
-                installs from {block.installedPath}
-              </div>
-            </Link>
-          ))}
-        </div>
-      ) : null}
 
       <div className="mt-4 text-center">
         <span className="text-xs text-muted-foreground">

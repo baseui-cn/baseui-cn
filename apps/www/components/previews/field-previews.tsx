@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Field, FieldLabel, FieldDescription, FieldError } from "@/components/ui/field"
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { ToastProvider, useToast } from "@/components/ui/toast"
@@ -9,21 +9,24 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import {
   Select,
-  SelectItem,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
 import { Form } from "@/components/ui/form"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 function useFormSubmit(onValid: (data: FormData) => void) {
-  return (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const form = e.currentTarget
+  return (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const form = event.currentTarget
+
     if (!form.checkValidity()) {
       form.reportValidity()
       return
     }
+
     onValid(new FormData(form))
   }
 }
@@ -115,7 +118,7 @@ function FieldWithPatternInner() {
         <Input pattern="^[a-z0-9_-]{3,16}$" required placeholder="your_username" />
         <FieldError match="valueMissing">Username is required.</FieldError>
         <FieldError match="patternMismatch">
-          3–16 characters, lowercase letters, numbers, hyphens and underscores only.
+          3-16 characters, lowercase letters, numbers, hyphens and underscores only.
         </FieldError>
         <FieldDescription>This will be your public display name.</FieldDescription>
       </Field>
@@ -160,15 +163,19 @@ function FieldCustomValidationInner() {
       <Field
         name="password"
         validate={(value) => {
-          const v = String(value)
-          if (v.length > 0 && v.length < 8) return "Password must be at least 8 characters."
+          const nextValue = String(value)
+
+          if (nextValue.length > 0 && nextValue.length < 8) {
+            return "Password must be at least 8 characters."
+          }
+
           return null
         }}
         validationMode="onChange"
         validationDebounceTime={300}
       >
         <FieldLabel>Password</FieldLabel>
-        <Input type="password" required placeholder="••••••••" />
+        <Input type="password" required placeholder="Enter at least 8 characters" />
         <FieldError match="valueMissing">Please enter a password.</FieldError>
         <FieldError match="customError" />
         <FieldDescription>Minimum 8 characters. Validated on change.</FieldDescription>
@@ -191,10 +198,11 @@ function FieldCustomValidationPreview() {
 function FieldTextareaInner() {
   const toast = useToast()
   const handleSubmit = useFormSubmit((data) => {
-    const bio = data.get("bio") as string
+    const bio = String(data.get("bio") ?? "")
+
     toast.add({
       title: "Bio updated",
-      description: bio.length > 50 ? `${bio.slice(0, 50)}…` : bio,
+      description: bio.length > 50 ? `${bio.slice(0, 50)}...` : bio,
       type: "success",
       timeout: 4000,
     })
@@ -204,7 +212,7 @@ function FieldTextareaInner() {
     <form className="w-full max-w-sm space-y-4" onSubmit={handleSubmit} noValidate>
       <Field name="bio">
         <FieldLabel>Bio</FieldLabel>
-        <Textarea placeholder="Tell us about yourself…" />
+        <Textarea placeholder="Tell us about yourself..." required />
         <FieldError match="valueMissing">Please write a short bio.</FieldError>
         <FieldDescription>A brief description for your profile.</FieldDescription>
       </Field>
@@ -219,88 +227,106 @@ function FieldTextareaPreview() {
   return (
     <ToastProvider>
       <FieldTextareaInner />
-      <FormBuiltWithFieldPreview />
     </ToastProvider>
   )
 }
 
-function FormBuiltWithFieldPreview() {
+function FormBuiltWithFieldPreviewInner() {
   const [loading, setLoading] = React.useState(false)
   const toast = useToast()
-  const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    setLoading(true)
-    await new Promise((r) => setTimeout(r, 800))
-    setLoading(false)
-    const data = {
-      email: formData.get("email"),
-      fullName: formData.get("fullName"),
-      newsletter: formData.get("newsletter"),
-      role: formData.get("role"),
-    }
-    toast.add({
-      title: "Form submitted",
-      description: `Full name: ${data.fullName || ""}\nEmail: ${data.email || ""}\nRole: ${
-        data.role || ""
-      }\nNewsletter: ${data.newsletter}`,
-      type: "success",
-      timeout: 4000,
-    })
-  }
+
   return (
-    <Form className="flex w-full flex-col gap-4" onSubmit={onSubmit}>
-      <Field name="fullName">
-        <FieldLabel>
-          Full Name <span className="text-destructive">*</span>
-        </FieldLabel>
-        <Input placeholder="John Doe" required type="text" />
-        <FieldError>Please enter a valid name.</FieldError>
-      </Field>
+    <Card variant="elevated">
+      <CardHeader>
+        <CardTitle>Form Built with Field</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form<{
+          fullName: string
+          email: string
+          role?: string
+          newsletter?: boolean
+        }>
+          className="w-full max-w-sm"
+          onFormSubmit={async (formValues) => {
+            const role = typeof formValues.role === "string" ? formValues.role : "Not provided"
+            const newsletter = Boolean(formValues.newsletter)
 
-      <Field name="email">
-        <FieldLabel>
-          Email <span className="text-destructive">*</span>
-        </FieldLabel>
-        <Input placeholder="john@example.com" required type="email" />
-        <FieldError>Please enter a valid email.</FieldError>
-      </Field>
+            setLoading(true)
+            await new Promise((resolve) => setTimeout(resolve, 800))
+            setLoading(false)
 
-      <Field name="role">
-        <FieldLabel>Role</FieldLabel>
-        <Select
-          items={[
-            { label: "Select your role", value: null },
-            { label: "Developer", value: "developer" },
-            { label: "Designer", value: "designer" },
-            { label: "Manager", value: "manager" },
-            { label: "Other", value: "other" },
-          ]}
+            toast.add({
+              title: "Form submitted",
+              description: `Full name: ${formValues.fullName || ""}\nEmail: ${formValues.email || ""}\nRole: ${role}\nNewsletter: ${newsletter ? "Subscribed" : "Not subscribed"}`,
+              type: "success",
+              timeout: 4000,
+            })
+          }}
         >
-          <SelectTrigger className="w-full">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent alignItemWithTrigger={false}>
-            <SelectItem value="developer">Developer</SelectItem>
-            <SelectItem value="designer">Designer</SelectItem>
-            <SelectItem value="manager">Manager</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
-          </SelectContent>
-        </Select>
-        <FieldDescription>This is an optional field</FieldDescription>
-      </Field>
+          <Field name="fullName">
+            <FieldLabel>
+              Full Name <span className="text-destructive">*</span>
+            </FieldLabel>
+            <Input placeholder="John Doe" required type="text" />
+            <FieldError match="valueMissing">Please enter your full name.</FieldError>
+          </Field>
 
-      <Field name="newsletter">
-        <div className="flex items-center gap-2">
-          <Checkbox />
-          <FieldLabel className="cursor-pointer">Subscribe to newsletter</FieldLabel>
-        </div>
-      </Field>
+          <Field name="email">
+            <FieldLabel>
+              Email <span className="text-destructive">*</span>
+            </FieldLabel>
+            <Input placeholder="john@example.com" required type="email" />
+            <FieldError match="valueMissing">Please enter your email.</FieldError>
+            <FieldError match="typeMismatch">Please enter a valid email.</FieldError>
+          </Field>
 
-      <Button loading={loading} type="submit">
-        Submit
-      </Button>
-    </Form>
+          <Field name="role">
+            <FieldLabel>Role</FieldLabel>
+            <Select
+              name="role"
+              items={[
+                { label: "Select your role", value: null },
+                { label: "Developer", value: "developer" },
+                { label: "Designer", value: "designer" },
+                { label: "Manager", value: "manager" },
+                { label: "Other", value: "other" },
+              ]}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false}>
+                <SelectItem value="developer">Developer</SelectItem>
+                <SelectItem value="designer">Designer</SelectItem>
+                <SelectItem value="manager">Manager</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+            <FieldDescription>This is optional, but helps personalize your setup.</FieldDescription>
+          </Field>
+
+          <Field name="newsletter">
+            <div className="flex items-center gap-2">
+              <Checkbox name="newsletter" />
+              <FieldLabel className="cursor-pointer">Subscribe to newsletter</FieldLabel>
+            </div>
+          </Field>
+
+          <Button loading={loading} type="submit">
+            Submit
+          </Button>
+        </Form>
+      </CardContent>
+    </Card>
+  )
+}
+
+function FormBuiltWithFieldPreview() {
+  return (
+    <ToastProvider>
+      <FormBuiltWithFieldPreviewInner />
+    </ToastProvider>
   )
 }
 
