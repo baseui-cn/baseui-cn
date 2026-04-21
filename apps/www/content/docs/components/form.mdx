@@ -8,10 +8,7 @@ component: true
 
 ## Installation
 
-<InstallTabs
-  slug="form"
-  addCmd="baseui-cn add form"
-/>
+<InstallTabs slug="form" addCmd="baseui-cn add form" />
 
 ## Usage
 
@@ -19,8 +16,7 @@ component: true
 import { Button } from "@/components/ui/button"
 import { Field, FieldControl, FieldError, FieldLabel } from "@/components/ui/field"
 import { Form } from "@/components/ui/form"
-
-<Form
+;<Form
   onFormSubmit={async (values) => {
     console.log(values)
   }}
@@ -33,6 +29,12 @@ import { Form } from "@/components/ui/form"
   <Button type="submit">Submit</Button>
 </Form>
 ```
+
+### Form Demo
+
+Build an entire Base UI form out of `Field` parts and keep validation, submission state, and help text consistent.
+
+<ComponentPreview name="field-form-built-with-field" />
 
 ## Why Use This Wrapper
 
