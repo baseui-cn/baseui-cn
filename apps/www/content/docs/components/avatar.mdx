@@ -109,3 +109,29 @@ The core avatar supports `xs`, `sm`, `md`, and `lg` sizing for denser or roomier
 The grouped pattern also works with uploaded images and mixed fallbacks.
 
 <ComponentPreview name="avatar-image-group" />
+
+## API
+
+### Avatar
+
+| Prop            | Type                                                           | Default       | Description                                                          |
+| --------------- | -------------------------------------------------------------- | ------------- | -------------------------------------------------------------------- |
+| `size`          | `"xs" \| "sm" \| "md" \| "lg"`                                 | `"md"`        | Diameter of the avatar circle and font size of the fallback initials |
+| `showBadge`     | `boolean`                                                      | `false`       | Render a presence/status badge overlay on the avatar                 |
+| `badgeVariant`  | `"online" \| "offline" \| "busy" \| "away"`                    | `"online"`    | Color of the presence badge (requires `showBadge`)                   |
+| `badgePosition` | `"top-right" \| "top-left" \| "bottom-right" \| "bottom-left"` | `"top-right"` | Corner placement of the badge                                        |
+
+### AvatarBadge
+
+Use `AvatarBadge` directly for fine-grained control over the badge separately from `Avatar`.
+
+| Prop            | Type                                                           | Default       | Description           |
+| --------------- | -------------------------------------------------------------- | ------------- | --------------------- |
+| `variant`       | `"online" \| "offline" \| "busy" \| "away"`                    | `"online"`    | Presence status color |
+| `badgePosition` | `"top-right" \| "top-left" \| "bottom-right" \| "bottom-left"` | `"top-right"` | Corner placement      |
+
+### AvatarGroupCount
+
+| Prop   | Type                           | Default | Description                                    |
+| ------ | ------------------------------ | ------- | ---------------------------------------------- |
+| `size` | `"xs" \| "sm" \| "md" \| "lg"` | `"md"`  | Diameter to match the rest of the avatar group |

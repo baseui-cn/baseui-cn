@@ -84,3 +84,13 @@ Use the built-in `loading` prop to block interaction and show the spinner automa
 Combine icons with button text.
 
 <ComponentPreview name="button-with-icon" />
+
+## API
+
+### Button
+
+| Prop      | Type                                                                                                                | Default     | Description                                                                   |
+| --------- | ------------------------------------------------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------- |
+| `variant` | `"default" \| "destructive" \| "destructive-outline" \| "ghost" \| "link" \| "outline" \| "secondary" \| "warning"` | `"default"` | Visual style and color role                                                   |
+| `size`    | `"xs" \| "sm" \| "default" \| "md" \| "lg" \| "xl" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg" \| "icon-xl"`   | `"default"` | Height, padding, and icon-size                                                |
+| `loading` | `boolean`                                                                                                           | `false`     | Show a spinner overlay and set `aria-disabled` while an action is in progress |

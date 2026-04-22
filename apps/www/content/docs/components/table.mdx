@@ -7,7 +7,8 @@ component: true
 <ComponentPreview name="table-demo" />
 
 <Callout variant="info">
-  Need editing, filtering, virtualization, or drag-and-drop? Use the richer `data-grid` family instead of the lightweight `table` primitive.
+  Need editing, filtering, virtualization, or drag-and-drop? Use the richer `data-grid` family
+  instead of the lightweight `table` primitive.
 </Callout>
 
 ## Installation
@@ -46,3 +47,11 @@ npm install @base-ui/react
 </TabsContent>
 
 </CodeTabs>
+
+## API
+
+### Table
+
+| Prop                     | Type      | Default | Description                                                                                        |
+| ------------------------ | --------- | ------- | -------------------------------------------------------------------------------------------------- |
+| `disableScrollContainer` | `boolean` | —       | Render only `<table>` without the overflow wrapper — use when the parent already handles scrolling |

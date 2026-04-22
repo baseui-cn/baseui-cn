@@ -46,13 +46,10 @@ npm install class-variance-authority
 ## Usage
 
 ```tsx
-import {
-  EmptyState,
-  EmptyStateIcons,
-} from "@/components/ui/blocks"
+import { EmptyState, EmptyStateIcons } from "@/components/ui/blocks"
 import { Button } from "@/components/ui/button"
 
-<EmptyState
+;<EmptyState
   icon={EmptyStateIcons.folder}
   title="No projects yet"
   description="Create your first project to get started."
@@ -67,3 +64,11 @@ import { Button } from "@/components/ui/button"
 Use `className="border border-dashed"` for a dashed container style.
 
 <ComponentPreview name="empty-state-outline" />
+
+## API
+
+### EmptyStateMedia
+
+| Prop      | Type                  | Default     | Description                                                                     |
+| --------- | --------------------- | ----------- | ------------------------------------------------------------------------------- |
+| `variant` | `"default" \| "icon"` | `"default"` | `"icon"` wraps content in a small muted rounded box; `"default"` is transparent |

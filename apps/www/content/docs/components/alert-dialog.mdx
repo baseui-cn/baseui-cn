@@ -67,9 +67,7 @@ import {
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-      <AlertDialogDescription>
-        This action cannot be undone.
-      </AlertDialogDescription>
+      <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>
       <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -94,3 +92,20 @@ A standard confirmation dialog.
 A destructive confirmation with a warning tone.
 
 <ComponentPreview name="alert-dialog-destructive" />
+
+## API
+
+### AlertDialogContent
+
+| Prop   | Type                | Default     | Description                   |
+| ------ | ------------------- | ----------- | ----------------------------- |
+| `size` | `"default" \| "sm"` | `"default"` | Max-width of the dialog panel |
+
+### AlertDialogCancel
+
+Renders a `Button`. All `Button` props are accepted.
+
+| Prop      | Type                                                                                       | Default     | Description          |
+| --------- | ------------------------------------------------------------------------------------------ | ----------- | -------------------- |
+| `variant` | `"default" \| "destructive" \| "ghost" \| "link" \| "outline" \| "secondary" \| "warning"` | `"outline"` | Visual style variant |
+| `size`    | `"xs" \| "sm" \| "default" \| "md" \| "lg" \| "xl" \| "icon"`                              | `"default"` | Button size          |

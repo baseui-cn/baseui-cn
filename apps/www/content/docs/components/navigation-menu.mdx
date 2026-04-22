@@ -63,9 +63,7 @@ import {
   <NavigationMenuList>
     <NavigationMenuItem>
       <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
-      <NavigationMenuContent>
-        {/* Content */}
-      </NavigationMenuContent>
+      <NavigationMenuContent>{/* Content */}</NavigationMenuContent>
     </NavigationMenuItem>
     <NavigationMenuItem>
       <NavigationMenuLink href="/docs">Documentation</NavigationMenuLink>
@@ -73,3 +71,11 @@ import {
   </NavigationMenuList>
 </NavigationMenu>
 ```
+
+## API
+
+### NavigationMenu
+
+| Prop    | Type                           | Default   | Description                                                                 |
+| ------- | ------------------------------ | --------- | --------------------------------------------------------------------------- |
+| `align` | `"start" \| "center" \| "end"` | `"start"` | Horizontal alignment of the popup positioner relative to the active trigger |

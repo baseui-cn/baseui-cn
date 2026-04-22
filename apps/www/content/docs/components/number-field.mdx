@@ -110,3 +110,19 @@ A compact variant with stacked chevron up/down buttons on the right side.
 ### Disabled
 
 <ComponentPreview name="number-field-disabled" />
+
+## API
+
+### NumberField
+
+| Prop   | Type                        | Default     | Description                                                                 |
+| ------ | --------------------------- | ----------- | --------------------------------------------------------------------------- |
+| `size` | `"sm" \| "default" \| "lg"` | `"default"` | Height and font-size scale shared with all child sub-components via context |
+
+`NumberFieldGroup`, `NumberFieldDecrement`, `NumberFieldIncrement`, and `NumberFieldInput` all inherit `size` from the parent `NumberField` context. Pass `size` directly to any of them to override locally.
+
+### NumberFieldScrubArea
+
+| Prop    | Type     | Default  | Description                                       |
+| ------- | -------- | -------- | ------------------------------------------------- |
+| `label` | `string` | required | Accessible label text for the scrub cursor region |

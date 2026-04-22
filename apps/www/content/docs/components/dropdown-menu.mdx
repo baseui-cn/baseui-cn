@@ -110,3 +110,25 @@ Use `DropdownMenuRadioGroup` for single-select items.
 Nested menus with `DropdownMenuSub`.
 
 <ComponentPreview name="dropdown-menu-submenu" />
+
+## API
+
+### DropdownMenuContent
+
+| Prop          | Type                                     | Default    | Description                                     |
+| ------------- | ---------------------------------------- | ---------- | ----------------------------------------------- |
+| `side`        | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Side of the trigger the menu appears on         |
+| `sideOffset`  | `number`                                 | `4`        | Distance in px between the menu and the trigger |
+| `align`       | `"start" \| "center" \| "end"`           | `"start"`  | Alignment of the popup relative to the trigger  |
+| `alignOffset` | `number`                                 | `0`        | Offset in px along the alignment axis           |
+
+### DropdownMenuItem
+
+| Prop      | Type                         | Default     | Description                                      |
+| --------- | ---------------------------- | ----------- | ------------------------------------------------ |
+| `variant` | `"default" \| "destructive"` | `"default"` | Applies destructive red coloring to the item     |
+| `inset`   | `boolean`                    | —           | Adds left padding so text aligns with icon items |
+
+### DropdownMenuLabel / DropdownMenuSubTrigger / DropdownMenuCheckboxItem / DropdownMenuRadioItem
+
+Each of these accepts an `inset` (`boolean`) prop that adds left padding to align content with icon-bearing menu items.

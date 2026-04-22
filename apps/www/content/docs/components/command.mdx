@@ -7,7 +7,9 @@ component: true
 <ComponentPreview name="command-demo" />
 
 <Callout variant="info">
-  `command` stays a single installable. The richer workspace and AI-assisted demos below are both built from the same exported primitives in [`components/ui/command.tsx`](/d:/Projects/baseui-cn-main/baseui-cn/apps/www/components/ui/command.tsx).
+  `command` stays a single installable. The richer workspace and AI-assisted demos below are both
+  built from the same exported primitives in
+  [`components/ui/command.tsx`](/d:/Projects/baseui-cn-main/baseui-cn/apps/www/components/ui/command.tsx).
 </Callout>
 
 ## Installation
@@ -35,7 +37,7 @@ import {
   CommandPanel,
 } from "@/components/ui/command"
 
-<CommandDialog open={open} onOpenChange={setOpen}>
+;<CommandDialog open={open} onOpenChange={setOpen}>
   <CommandDialogPopup>
     <Command items={groups}>
       <CommandInput placeholder="Search actions..." />
@@ -81,3 +83,12 @@ This variant shows how far the same primitives can stretch: inline search, an AI
 - `CommandDialog`, `CommandDialogPopup`, and `CommandDialogTrigger` handle the overlay shell.
 - `CommandInput`, `CommandList`, `CommandGroup`, `CommandCollection`, and `CommandItem` compose the searchable list.
 - `CommandEmpty`, `CommandSeparator`, `CommandFooter`, and `CommandShortcut` round out the interaction details.
+
+## API
+
+### Command
+
+| Prop            | Type                              | Default    | Description                                                  |
+| --------------- | --------------------------------- | ---------- | ------------------------------------------------------------ |
+| `autoHighlight` | `"always" \| "whenOpen" \| false` | `"always"` | When to automatically highlight the first matching item      |
+| `keepHighlight` | `boolean`                         | `true`     | Keep the highlighted item highlighted after the list updates |

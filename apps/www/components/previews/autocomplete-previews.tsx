@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { SearchIcon } from "lucide-react"
 import {
   Autocomplete,
   AutocompleteEmpty,
@@ -9,59 +10,92 @@ import {
   AutocompleteList,
   AutocompletePopup,
 } from "@/components/ui/autocomplete"
+import { Spinner } from "@/components/ui/spinner"
 
-interface Item {
+interface LabelItem {
   id: string
   value: string
 }
 
-const items: Item[] = [
+const labelItems: LabelItem[] = [
   { id: "t1", value: "feature" },
   { id: "t2", value: "fix" },
   { id: "t3", value: "bug" },
   { id: "t4", value: "docs" },
   { id: "t5", value: "internal" },
   { id: "t6", value: "mobile" },
-  { id: "c-accordion", value: "component: accordion" },
-  { id: "c-alert-dialog", value: "component: alert dialog" },
   { id: "c-autocomplete", value: "component: autocomplete" },
-  { id: "c-avatar", value: "component: avatar" },
-  { id: "c-checkbox", value: "component: checkbox" },
-  { id: "c-checkbox-group", value: "component: checkbox group" },
-  { id: "c-collapsible", value: "component: collapsible" },
   { id: "c-combobox", value: "component: combobox" },
-  { id: "c-context-menu", value: "component: context menu" },
   { id: "c-dialog", value: "component: dialog" },
   { id: "c-field", value: "component: field" },
-  { id: "c-fieldset", value: "component: fieldset" },
-  { id: "c-filterable-menu", value: "component: filterable menu" },
   { id: "c-form", value: "component: form" },
   { id: "c-input", value: "component: input" },
-  { id: "c-menu", value: "component: menu" },
-  { id: "c-menubar", value: "component: menubar" },
-  { id: "c-meter", value: "component: meter" },
-  { id: "c-navigation-menu", value: "component: navigation menu" },
-  { id: "c-number-field", value: "component: number field" },
-  { id: "c-popover", value: "component: popover" },
-  { id: "c-preview-card", value: "component: preview card" },
-  { id: "c-progress", value: "component: progress" },
-  { id: "c-radio", value: "component: radio" },
-  { id: "c-scroll-area", value: "component: scroll area" },
   { id: "c-select", value: "component: select" },
-  { id: "c-separator", value: "component: separator" },
-  { id: "c-slider", value: "component: slider" },
-  { id: "c-switch", value: "component: switch" },
   { id: "c-tabs", value: "component: tabs" },
   { id: "c-toast", value: "component: toast" },
-  { id: "c-toggle", value: "component: toggle" },
-  { id: "c-toggle-group", value: "component: toggle group" },
-  { id: "c-toolbar", value: "component: toolbar" },
-  { id: "c-tooltip", value: "component: tooltip" },
+]
+
+const fruits = [
+  "Apple",
+  "Apricot",
+  "Banana",
+  "Blueberry",
+  "Cherry",
+  "Coconut",
+  "Date",
+  "Fig",
+  "Grape",
+  "Guava",
+  "Kiwi",
+  "Lemon",
+  "Lime",
+  "Mango",
+  "Melon",
+  "Orange",
+  "Papaya",
+  "Peach",
+  "Pear",
+  "Pineapple",
+  "Plum",
+  "Raspberry",
+  "Strawberry",
+  "Watermelon",
+]
+
+const npmPackages = [
+  "react",
+  "react-dom",
+  "react-router",
+  "react-query",
+  "react-hook-form",
+  "next",
+  "nuxt",
+  "vue",
+  "vue-router",
+  "svelte",
+  "typescript",
+  "ts-node",
+  "tsup",
+  "tailwindcss",
+  "tailwind-merge",
+  "tailwind-variants",
+  "zod",
+  "valibot",
+  "yup",
+  "axios",
+  "swr",
+  "tanstack-query",
+  "framer-motion",
+  "motion",
+  "gsap",
+  "lucide-react",
+  "radix-ui",
+  "base-ui",
 ]
 
 function AutocompletePreview() {
   const [value, setValue] = React.useState<string>("")
-  const filteredItems = items.filter((item) =>
+  const filtered = labelItems.filter((item) =>
     item.value.toLowerCase().includes(value.toLowerCase())
   )
 
@@ -70,12 +104,12 @@ function AutocompletePreview() {
       <Autocomplete
         value={value}
         onValueChange={setValue}
-        items={filteredItems}
-        itemToStringValue={(item: unknown) => (item as Item).value}
+        items={filtered}
+        itemToStringValue={(item: unknown) => (item as LabelItem).value}
       >
-        <AutocompleteInput placeholder="e.g. feature" showTrigger showClear />
+        <AutocompleteInput placeholder="Filter labels..." showTrigger showClear />
         <AutocompletePopup>
-          <AutocompleteEmpty>No items found.</AutocompleteEmpty>
+          <AutocompleteEmpty>No labels found.</AutocompleteEmpty>
           <AutocompleteList>
             {(item) => (
               <AutocompleteItem key={item.id} value={item}>
@@ -91,20 +125,49 @@ function AutocompletePreview() {
 
 function AutocompleteBasicPreview() {
   const [value, setValue] = React.useState("")
-  const opts = items.filter((i) =>
-    i.value.toLowerCase().includes(value.toLowerCase())
-  )
+  const filtered = fruits.filter((f) => f.toLowerCase().includes(value.toLowerCase()))
+
   return (
     <div className="w-full max-w-xs">
       <Autocomplete
         value={value}
         onValueChange={setValue}
-        items={opts}
-        itemToStringValue={(i: unknown) => (i as Item).value}
+        items={filtered}
+        itemToStringValue={(item: unknown) => item as string}
       >
-        <AutocompleteInput placeholder="Type to search..." />
+        <AutocompleteInput placeholder="Search fruits..." />
         <AutocompletePopup>
-          <AutocompleteEmpty>No results.</AutocompleteEmpty>
+          <AutocompleteEmpty>No fruits found.</AutocompleteEmpty>
+          <AutocompleteList>
+            {(item) => (
+              <AutocompleteItem key={item} value={item}>
+                {item}
+              </AutocompleteItem>
+            )}
+          </AutocompleteList>
+        </AutocompletePopup>
+      </Autocomplete>
+    </div>
+  )
+}
+
+function AutocompleteWithClearButtonPreview() {
+  const [value, setValue] = React.useState("")
+  const filtered = labelItems.filter((item) =>
+    item.value.toLowerCase().includes(value.toLowerCase())
+  )
+
+  return (
+    <div className="w-full max-w-xs">
+      <Autocomplete
+        value={value}
+        onValueChange={setValue}
+        items={filtered}
+        itemToStringValue={(item: unknown) => (item as LabelItem).value}
+      >
+        <AutocompleteInput placeholder="Search labels..." showClear startAddon={<SearchIcon />} />
+        <AutocompletePopup>
+          <AutocompleteEmpty>No labels found.</AutocompleteEmpty>
           <AutocompleteList>
             {(item) => (
               <AutocompleteItem key={item.id} value={item}>
@@ -118,26 +181,45 @@ function AutocompleteBasicPreview() {
   )
 }
 
-function AutocompleteWithClearButtonPreview() {
+function AutocompleteAsyncPreview() {
   const [value, setValue] = React.useState("")
-  const opts = items.filter((i) =>
-    i.value.toLowerCase().includes(value.toLowerCase())
-  )
+  const [loading, setLoading] = React.useState(false)
+  const [results, setResults] = React.useState(npmPackages.slice(0, 8))
+
+  React.useEffect(() => {
+    if (!value.trim()) {
+      setResults(npmPackages.slice(0, 8))
+      setLoading(false)
+      return
+    }
+    setLoading(true)
+    setResults([])
+    const timer = window.setTimeout(() => {
+      setResults(npmPackages.filter((p) => p.includes(value.toLowerCase())))
+      setLoading(false)
+    }, 400)
+    return () => window.clearTimeout(timer)
+  }, [value])
+
   return (
     <div className="w-full max-w-xs">
       <Autocomplete
         value={value}
         onValueChange={setValue}
-        items={opts}
-        itemToStringValue={(i: unknown) => (i as Item).value}
+        items={results}
+        itemToStringValue={(item: unknown) => item as string}
       >
-        <AutocompleteInput placeholder="Search..." showTrigger showClear />
+        <AutocompleteInput
+          placeholder="Search npm packages..."
+          showClear
+          startAddon={loading ? <Spinner /> : <SearchIcon />}
+        />
         <AutocompletePopup>
-          <AutocompleteEmpty>No results.</AutocompleteEmpty>
+          <AutocompleteEmpty>No packages found.</AutocompleteEmpty>
           <AutocompleteList>
             {(item) => (
-              <AutocompleteItem key={item.id} value={item}>
-                {item.value}
+              <AutocompleteItem key={item} value={item}>
+                {item}
               </AutocompleteItem>
             )}
           </AutocompleteList>
@@ -151,6 +233,6 @@ export const autocompletePreviewMap: Record<string, React.ComponentType> = {
   autocomplete: AutocompletePreview,
   "autocomplete-demo": AutocompletePreview,
   "autocomplete-basic": AutocompleteBasicPreview,
-  "autocomplete-async": AutocompletePreview,
+  "autocomplete-async": AutocompleteAsyncPreview,
   "autocomplete-with-clear-button": AutocompleteWithClearButtonPreview,
 }

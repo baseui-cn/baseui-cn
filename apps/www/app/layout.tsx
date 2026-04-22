@@ -11,71 +11,17 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const dynamic = "force-dynamic"
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      name: siteConfig.name,
-      url: siteConfig.url,
-      logo: `${siteConfig.url}/baseui-cn-og.png`,
-      sameAs: [siteConfig.github],
-    },
-    {
-      "@type": "WebSite",
-      name: siteConfig.name,
-      url: siteConfig.url,
-      description: siteConfig.description,
-      inLanguage: "en-US",
-    },
-    {
-      "@type": "SoftwareApplication",
-      name: siteConfig.name,
-      description: siteConfig.description,
-      url: siteConfig.url,
-      applicationCategory: "DeveloperApplication",
-      applicationSubCategory: "UI component registry",
-      operatingSystem: "Any",
-      image: `${siteConfig.url}/baseui-cn-og.png`,
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "USD",
-      },
-      author: {
-        "@type": "Organization",
-        name: siteConfig.name,
-        url: siteConfig.url,
-      },
-    },
-  ],
-}
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  applicationName: siteConfig.name,
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: [
-    "base ui components",
-    "base ui react components",
-    "base ui component library",
-    "shadcn base ui components",
-    "shadcn style base ui",
-    "shadcn alternative for base ui",
-    "react component registry",
-    "tailwind css components",
-    "accessible react components",
-    "nextjs ui components",
-  ],
+  keywords:
+    "base ui components, base ui react components, shadcn base ui components, base ui component library, tailwind css components, accessible react components, nextjs ui components",
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
-  publisher: siteConfig.name,
-  category: "Developer Tools",
-  classification: "Open source React component registry",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -125,12 +71,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
-        />
         <ThemeProvider>
           <ToastProvider>
             <TooltipProvider>{children}</TooltipProvider>

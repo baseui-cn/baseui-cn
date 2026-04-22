@@ -111,3 +111,18 @@ Rich item layout with header actions and footer interactions.
 Items in default, sm, and xs sizes.
 
 <ComponentPreview name="item-sizes" />
+
+## API
+
+### Item
+
+| Prop      | Type                                | Default     | Description                                     |
+| --------- | ----------------------------------- | ----------- | ----------------------------------------------- |
+| `variant` | `"default" \| "outline" \| "muted"` | `"default"` | Border and background treatment of the item row |
+| `size`    | `"default" \| "sm" \| "xs"`         | `"default"` | Padding and gap scale                           |
+
+### ItemMedia
+
+| Prop      | Type                             | Default     | Description                                                                                  |
+| --------- | -------------------------------- | ----------- | -------------------------------------------------------------------------------------------- |
+| `variant` | `"default" \| "icon" \| "image"` | `"default"` | `"icon"` sizes the SVG; `"image"` adds fixed dimensions and `overflow-hidden` for thumbnails |

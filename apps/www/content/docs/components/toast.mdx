@@ -128,44 +128,72 @@ Control where toasts appear on screen using the `position` prop on `ToastProvide
 <ComponentPreview name="toast-positions" />
 
 ```tsx
-<ToastProvider position="top-center">
-  {children}
-</ToastProvider>
+<ToastProvider position="top-center">{children}</ToastProvider>
 ```
 
 ## API
 
 ### ToastProvider
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `position` | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `"bottom-right"` | Where toasts appear on screen |
-| `limit` | `number` | `5` | Max visible toasts. Excess toasts are stacked behind and animate out with `data-limited` |
-| `toastManager` | `ToastManager` | — | Optional external toast manager from `createToastManager()` |
+| Prop           | Type                                                                                              | Default          | Description                                                                                                                            |
+| -------------- | ------------------------------------------------------------------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `position`     | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `"bottom-right"` | Where toasts appear on screen                                                                                                          |
+| `limit`        | `number`                                                                                          | `5`              | Max visible toasts at once. Excess toasts are queued and animate in when the front ones close                                          |
+| `toastManager` | `ReturnType<typeof createToastManager>`                                                           | —                | Optional external manager from `createToastManager()`. Use this when you need to trigger toasts from outside React (e.g. an API layer) |
+| `children`     | `React.ReactNode`                                                                                 | —                | App content                                                                                                                            |
 
 ### useToast
 
-Returns the toast manager instance from `Toast.useToastManager()`.
+Returns the toast manager instance from the nearest `ToastProvider`. Must be used inside a component wrapped by `ToastProvider`.
 
 ```tsx
 const { add, promise, close, toasts } = useToast()
 ```
 
+### createToastManager
+
+Creates an external toast manager that can be used outside of the React tree. Pass the returned value to `ToastProvider` via `toastManager`.
+
+```tsx
+export const toastManager = createToastManager()
+
+// Anywhere outside React:
+toastManager.add({ title: "Done", type: "success" })
+```
+
 ### add(options)
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `title` | `string` | Toast heading |
-| `description` | `string` | Supporting text |
-| `type` | `"success" \| "error" \| "warning" \| "info" \| "loading"` | Icon and color variant |
-| `timeout` | `number` | Auto-dismiss timeout in ms |
-| `actionProps` | `object` | Props for the action button (e.g. `{ children: "Undo", onClick: fn }`) |
-| `data` | `object` | Custom data attached to the toast |
+| Prop          | Type                                                       | Description                                                                   |
+| ------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `title`       | `string`                                                   | Toast heading                                                                 |
+| `description` | `string`                                                   | Supporting text shown below the title                                         |
+| `type`        | `"success" \| "error" \| "warning" \| "info" \| "loading"` | Icon and border color variant                                                 |
+| `timeout`     | `number`                                                   | Auto-dismiss timeout in ms. Omit for a persistent toast                       |
+| `actionProps` | `object`                                                   | Props forwarded to `<ToastAction>` (e.g. `{ children: "Undo", onClick: fn }`) |
+| `data`        | `object`                                                   | Arbitrary custom data attached to the toast object                            |
 
 ### promise(promise, options)
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `loading` | `string \| object` | Message or `{ title, description, type }` shown while loading |
-| `success` | `string \| (data) => string \| object` | Message on success |
-| `error` | `string \| (err) => string \| object` | Message on error |
+Wraps a `Promise` and automatically transitions through `loading` → `success` or `error` states.
+
+| Prop      | Type                                     | Description                                |
+| --------- | ---------------------------------------- | ------------------------------------------ |
+| `loading` | `string \| { title, description, type }` | Content shown while the promise is pending |
+| `success` | `string \| (data) => string \| object`   | Content shown on resolve                   |
+| `error`   | `string \| (err) => string \| object`    | Content shown on reject                    |
+
+### Primitive components
+
+All primitive sub-components are exported for advanced custom layouts:
+
+| Export             | Description                                                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `ToastRoot`        | The individual toast container. Handles position-aware animation classes and type-based border colors              |
+| `ToastContent`     | Wraps toast body. Manages `data-behind` / `data-expanded` visibility transitions                                   |
+| `ToastTitle`       | Renders the `title` field — reads from toast context automatically                                                 |
+| `ToastDescription` | Renders the `description` field — reads from toast context automatically                                           |
+| `ToastAction`      | Action button with hover and focus ring styles                                                                     |
+| `ToastClose`       | Absolute-positioned dismiss button, visible on hover or focus. Accepts `children` to override the default `X` icon |
+| `ToastViewport`    | The fixed viewport container. Position is driven by `ToastProvider` context                                        |
+| `ToastList`        | Renders all active toasts from the nearest manager via `useToastManager`                                           |
+| `typeIcon`         | `Record<string, React.ReactNode>` — icon map for `success`, `error`, `warning`, `info`, `loading`                  |

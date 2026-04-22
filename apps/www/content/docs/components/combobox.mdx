@@ -75,24 +75,114 @@ import {
 
 ### Basic
 
-A simple combobox.
+A single-value selector with a flat filtered list, trigger, and clear button.
 
 <ComponentPreview name="combobox-basic" />
 
+### With trigger button
+
+Use `ComboboxTrigger` with a custom `Button` as the anchor. The search input lives inside the popup with `autoFocus={false}` to prevent scroll-jank on open.
+
+<ComponentPreview name="combobox-with-trigger" />
+
 ### Multi-select with chips
 
-Use `ComboboxChips` for multi-select.
+Manage multiple selections as dismissible chips using `ComboboxChips`, `ComboboxChip`, and `ComboboxValue`.
 
 <ComponentPreview name="combobox-multi-select-with-chips" />
 
-### With groups
+### Chips with overflow
 
-Group options with `ComboboxGroup`.
+When many items are selected, show only the first few chips and collapse the rest behind a `+N more` toggle. Click to expand, click **Show less** to collapse.
 
-<ComponentPreview name="combobox-with-groups" />
+<ComponentPreview name="combobox-multi-select-overflow" />
 
 ### Async
 
-Load options asynchronously.
+Debounce input changes and load matching options on each keystroke. Shows a live result count while the request is in flight.
 
 <ComponentPreview name="combobox-async" />
+
+## API
+
+### Combobox
+
+Root component — a thin alias for `ComboboxPrimitive.Root`.
+
+| Prop                 | Type                 | Default | Description                         |
+| -------------------- | -------------------- | ------- | ----------------------------------- |
+| `items`              | `T[]`                | —       | Full list of items to render        |
+| `multiple`           | `boolean`            | `false` | Enables multi-select mode           |
+| `value`              | `string \| string[]` | —       | Controlled selected value(s)        |
+| `defaultValue`       | `string \| string[]` | —       | Uncontrolled initial value          |
+| `inputValue`         | `string`             | —       | Controlled text in the search input |
+| `onValueChange`      | `(value) => void`    | —       | Fires when the selection changes    |
+| `onInputValueChange` | `(value) => void`    | —       | Fires when the input text changes   |
+| `disabled`           | `boolean`            | `false` | Disables the entire combobox        |
+
+### ComboboxInput
+
+| Prop          | Type              | Default | Description                                                                                                                                     |
+| ------------- | ----------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `showTrigger` | `boolean`         | `true`  | Show the chevron trigger button at the trailing edge                                                                                            |
+| `showClear`   | `boolean`         | `false` | Show an X clear button when the input has a value                                                                                               |
+| `autoFocus`   | `boolean`         | `true`  | Focus the input when the popup opens. Set to `false` when the input lives inside the popup (e.g. trigger-button pattern) to prevent scroll-jank |
+| `startAddon`  | `React.ReactNode` | —       | Content rendered at the leading edge (e.g. `<SearchIcon />`)                                                                                    |
+| `disabled`    | `boolean`         | `false` | Disables the input and its buttons                                                                                                              |
+
+### ComboboxTrigger
+
+| Prop       | Type                 | Default               | Description                                                                   |
+| ---------- | -------------------- | --------------------- | ----------------------------------------------------------------------------- |
+| `showIcon` | `boolean`            | `true`                | Render the built-in chevron icon                                              |
+| `icon`     | `React.ReactNode`    | `<ChevronDownIcon />` | Custom icon to render when `showIcon` is true                                 |
+| `render`   | `React.ReactElement` | —                     | Custom element to render as the trigger (e.g. `<Button variant="outline" />`) |
+
+### ComboboxItem
+
+| Prop            | Type                | Default   | Description                                        |
+| --------------- | ------------------- | --------- | -------------------------------------------------- |
+| `value`         | `T`                 | —         | The item value                                     |
+| `disabled`      | `boolean`           | `false`   | Prevents selection                                 |
+| `checkPosition` | `"right" \| "left"` | `"right"` | Position of the selected-state checkmark indicator |
+
+### ComboboxContent
+
+| Prop          | Type                                     | Default    | Description                                                              |
+| ------------- | ---------------------------------------- | ---------- | ------------------------------------------------------------------------ |
+| `side`        | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Which side of the anchor the popup opens toward                          |
+| `sideOffset`  | `number`                                 | `6`        | Gap in px between anchor and popup                                       |
+| `align`       | `"start" \| "center" \| "end"`           | `"start"`  | Alignment relative to the anchor                                         |
+| `alignOffset` | `number`                                 | `0`        | Offset in px along the alignment axis                                    |
+| `anchor`      | `React.RefObject`                        | —          | Explicit anchor ref for pinning popup width (required for chips pattern) |
+
+### ComboboxChips
+
+| Prop         | Type              | Default | Description                                                |
+| ------------ | ----------------- | ------- | ---------------------------------------------------------- |
+| `startAddon` | `React.ReactNode` | —       | Icon or content at the leading edge of the chips container |
+
+### ComboboxChip
+
+| Prop          | Type                       | Default | Description                                |
+| ------------- | -------------------------- | ------- | ------------------------------------------ |
+| `removeProps` | `ComboboxChipRemove.Props` | —       | Props forwarded to the inner remove button |
+
+### useComboboxAnchor
+
+Returns a `RefObject<HTMLDivElement>` to pass as `anchor` to `ComboboxContent`. Use this when the combobox has a chips input or a custom trigger button so the popup width is pinned to a stable outer wrapper instead of the dynamic chips container.
+
+```tsx
+const anchor = useComboboxAnchor()
+
+<div ref={anchor}>
+  <Combobox multiple ...>
+    ...
+    <ComboboxContent anchor={anchor}>...</ComboboxContent>
+  </Combobox>
+</div>
+```
+
+### useComboboxFilter
+
+Re-export of `ComboboxPrimitive.useFilter`. Returns a `contains` function for client-side filtering.

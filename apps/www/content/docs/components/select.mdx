@@ -106,3 +106,21 @@ default and sm sizes.
 A disabled select and disabled items.
 
 <ComponentPreview name="select-disabled" />
+
+## API
+
+### SelectTrigger
+
+| Prop   | Type                        | Default     | Description                         |
+| ------ | --------------------------- | ----------- | ----------------------------------- |
+| `size` | `"sm" \| "default" \| "lg"` | `"default"` | Height of the select trigger button |
+
+### SelectContent
+
+| Prop                   | Type                                     | Default    | Description                                                             |
+| ---------------------- | ---------------------------------------- | ---------- | ----------------------------------------------------------------------- |
+| `side`                 | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Side of the trigger the listbox appears on                              |
+| `sideOffset`           | `number`                                 | `4`        | Distance in px between the listbox and the trigger                      |
+| `align`                | `"start" \| "center" \| "end"`           | `"center"` | Alignment relative to the trigger                                       |
+| `alignOffset`          | `number`                                 | `0`        | Offset in px along the alignment axis                                   |
+| `alignItemWithTrigger` | `boolean`                                | `true`     | Visually align the selected item inside the popup with the trigger text |

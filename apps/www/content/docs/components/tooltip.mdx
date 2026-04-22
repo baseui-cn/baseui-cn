@@ -48,12 +48,7 @@ npm install @base-ui/react
 ## Usage
 
 ```tsx
-import {
-  TooltipProvider,
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip"
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 ```
 
 ```tsx
@@ -92,3 +87,14 @@ Include a keyboard shortcut.
 Multiple tooltips sharing one provider.
 
 <ComponentPreview name="tooltip-delay-group" />
+
+## API
+
+### TooltipContent
+
+| Prop          | Type                                     | Default    | Description                                        |
+| ------------- | ---------------------------------------- | ---------- | -------------------------------------------------- |
+| `side`        | `"top" \| "bottom" \| "left" \| "right"` | `"top"`    | Side of the trigger the tooltip appears on         |
+| `sideOffset`  | `number`                                 | `4`        | Distance in px between the tooltip and the trigger |
+| `align`       | `"start" \| "center" \| "end"`           | `"center"` | Alignment relative to the trigger                  |
+| `alignOffset` | `number`                                 | `0`        | Offset in px along the alignment axis              |

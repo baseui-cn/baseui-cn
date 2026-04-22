@@ -48,12 +48,7 @@ npm install @base-ui/react class-variance-authority
 ## Usage
 
 ```tsx
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 ```
 
 ```tsx
@@ -110,3 +105,11 @@ Tabs with inline SVG icons alongside labels.
 Individual tabs can be disabled.
 
 <ComponentPreview name="tabs-disabled" />
+
+## API
+
+### TabsList
+
+| Prop      | Type                                 | Default     | Description                                                               |
+| --------- | ------------------------------------ | ----------- | ------------------------------------------------------------------------- |
+| `variant` | `"default" \| "underline" \| "line"` | `"default"` | Visual style of the tab list — pill/chip (default) or underline indicator |

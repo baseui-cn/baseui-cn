@@ -93,3 +93,20 @@ Use `orientation="vertical"` for a vertical layout.
 Combine icons and text directly inside each item for richer segmented controls.
 
 <ComponentPreview name="toggle-group-with-text" />
+
+## API
+
+### ToggleGroup
+
+| Prop          | Type                         | Default        | Description                                                  |
+| ------------- | ---------------------------- | -------------- | ------------------------------------------------------------ |
+| `variant`     | `"default" \| "outline"`     | `"default"`    | Visual style shared with all child items via context         |
+| `size`        | `"sm" \| "default" \| "lg"`  | `"default"`    | Button size shared with all child items via context          |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout direction and border-radius joining of adjacent items |
+
+### ToggleGroupItem
+
+| Prop      | Type                        | Default   | Description                                             |
+| --------- | --------------------------- | --------- | ------------------------------------------------------- |
+| `variant` | `"default" \| "outline"`    | inherited | Override the visual style from the parent `ToggleGroup` |
+| `size`    | `"sm" \| "default" \| "lg"` | inherited | Override the button size from the parent `ToggleGroup`  |

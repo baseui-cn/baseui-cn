@@ -6,17 +6,15 @@ component: true
 
 <Callout variant="warning" title="Preview primitive">
   This installable wraps the current Base UI `OTPFieldPreview` API from `@base-ui/react/otp-field`.
-  The underlying Base UI primitive is still in preview, so expect small API adjustments as it matures.
+  The underlying Base UI primitive is still in preview, so expect small API adjustments as it
+  matures.
 </Callout>
 
 <ComponentPreview name="otp-field-demo" />
 
 ## Installation
 
-<InstallTabs
-  slug="otp-field"
-  addCmd="baseui-cn add otp-field"
-/>
+<InstallTabs slug="otp-field" addCmd="baseui-cn add otp-field" />
 
 ## Usage
 
@@ -73,3 +71,14 @@ Use a zero-gap layout with shared borders when you want the OTP field to read li
 Use a controlled value when you want to clear the current code and move focus back to the first slot for another attempt.
 
 <ComponentPreview name="otp-field-reset" />
+
+## API
+
+### OTPField
+
+| Prop         | Type                        | Default     | Description                                                           |
+| ------------ | --------------------------- | ----------- | --------------------------------------------------------------------- |
+| `size`       | `"sm" \| "default" \| "lg"` | `"default"` | Height and width of each input cell; shared with children via context |
+| `autoSubmit` | `boolean`                   | `false`     | Automatically submit the nearest `<form>` when all cells are filled   |
+
+`OTPFieldInput` and `OTPFieldSeparator` inherit `size` from the parent context and accept a `size` prop to override locally.

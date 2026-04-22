@@ -77,3 +77,24 @@ Compose `Fieldset` with your existing `Field` primitives for grouped forms that 
 Use `Fieldset` to group larger sets of related fields, such as an address or checkout form.
 
 <ComponentPreview name="fieldset-address" />
+
+## API
+
+### Fieldset
+
+Renders a native `<fieldset>` element via Base UI's `Fieldset.Root`.
+
+| Prop        | Type              | Default | Description                                                                                 |
+| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------- |
+| `disabled`  | `boolean`         | `false` | Disables all child form controls semantically via the native `fieldset[disabled]` attribute |
+| `className` | `string`          | —       | Additional classes merged onto the root element                                             |
+| `children`  | `React.ReactNode` | —       | Content of the fieldset                                                                     |
+
+### FieldsetLegend
+
+| Prop        | Type                    | Default     | Description                                           |
+| ----------- | ----------------------- | ----------- | ----------------------------------------------------- |
+| `variant`   | `"default" \| "border"` | `"default"` | `"border"` adds a bottom border rule below the legend |
+| `size`      | `"sm" \| "md" \| "lg"`  | `"md"`      | Controls font-size and vertical padding of the legend |
+| `className` | `string`                | —           | Additional classes merged onto the legend element     |
+| `children`  | `React.ReactNode`       | —           | Legend text or content                                |

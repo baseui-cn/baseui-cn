@@ -97,3 +97,12 @@ Collapse long page ranges while keeping the active page and edge pages visible.
 A tighter pattern for drawers, dialogs, or dense toolbars where you only need the current page context.
 
 <ComponentPreview name="pagination-compact" />
+
+## API
+
+### PaginationLink
+
+| Prop       | Type         | Default  | Description                                                    |
+| ---------- | ------------ | -------- | -------------------------------------------------------------- |
+| `isActive` | `boolean`    | —        | Marks the link as the current page and applies outline styling |
+| `size`     | `ButtonSize` | `"icon"` | Size forwarded to the underlying `Button`                      |

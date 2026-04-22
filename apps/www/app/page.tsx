@@ -3,11 +3,11 @@ import Link from "next/link"
 import { LandingReveal } from "@/components/shared/landing-reveal"
 import { SiteHeader } from "@/components/shared/site-header"
 import { LandingTerminalDemo } from "@/components/shared/terminal"
-
 export const dynamic = "force-dynamic"
 import { CopyButton } from "@/components/shared/copy-button"
 import { ComponentsGrid } from "@/components/shared/components-grid"
 import { TrackCTALink } from "@/components/shared/track-page-view"
+import { latestChangelogEntry } from "@/lib/changelog"
 import { components } from "@/lib/registry"
 import { siteConfig } from "@/lib/site-config"
 import { Button } from "@/components/ui/button"
@@ -123,7 +123,7 @@ export default function HomePage() {
               {/* Badge */}
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                Base UI Drawer stable · v1.3.0 · March 2026
+                All Base UI primitives covered · one primitive library for your app
               </div>
 
               {/* Headline */}
@@ -135,8 +135,9 @@ export default function HomePage() {
 
               <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
                 An open-source registry of shadcn-style Base UI components for React and Next.js.
-                Copy accessible components into your project, own the code, and style everything
-                with Tailwind CSS.
+                Copy accessible components into your project, own the code, and build forms,
+                fields, drawers, dialogs, selects, and the rest of your application on one
+                primitive library with Tailwind CSS.
               </p>
 
               {/* Install command */}
@@ -169,7 +170,7 @@ export default function HomePage() {
                 </span>
                 <span className="text-border">|</span>
                 <span>
-                  <strong className="text-foreground">1</strong> primitive library
+                  <strong className="text-foreground">1</strong> primitive library for the whole app
                 </span>
                 <span className="text-border">|</span>
                 <span>MIT license</span>
@@ -782,6 +783,50 @@ export default function HomePage() {
                   → Both share Base UI portal — no z-index fix needed
                 </p>
                 <p className="text-zinc-500 text-xs">→ Use render prop, not asChild</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+            <div className="flex flex-col gap-4 rounded-2xl border border-border bg-muted/20 p-6 md:flex-row md:items-start md:justify-between md:p-8">
+              <div className="max-w-2xl">
+                <p className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  Latest release
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold text-foreground">
+                  {latestChangelogEntry.title}
+                </h2>
+                <p className="mt-2 text-sm text-muted-foreground">{latestChangelogEntry.date}</p>
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                  {latestChangelogEntry.summary}
+                </p>
+                <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
+                  <Link
+                    href="/docs/changelog"
+                    className="text-foreground underline underline-offset-4"
+                  >
+                    Read the changelog
+                  </Link>
+                  <a
+                    href="/docs/changelog/rss.xml"
+                    className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                  >
+                    Subscribe via RSS
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid gap-3 md:max-w-md">
+                {latestChangelogEntry.notes.slice(0, 3).map((note) => (
+                  <div
+                    key={note}
+                    className="rounded-xl border border-border/60 bg-background px-4 py-3 text-sm leading-relaxed text-muted-foreground"
+                  >
+                    {note}
+                  </div>
+                ))}
               </div>
             </div>
           </div>

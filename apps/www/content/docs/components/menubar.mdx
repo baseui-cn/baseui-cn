@@ -80,3 +80,24 @@ import {
   </MenubarMenu>
 </Menubar>
 ```
+
+## API
+
+### MenubarContent
+
+| Prop          | Type                           | Default   | Description                                             |
+| ------------- | ------------------------------ | --------- | ------------------------------------------------------- |
+| `align`       | `"start" \| "center" \| "end"` | `"start"` | Alignment of the dropdown relative to the trigger       |
+| `alignOffset` | `number`                       | `-4`      | Offset in px along the alignment axis                   |
+| `sideOffset`  | `number`                       | `8`       | Distance in px between the menu and the menubar trigger |
+
+### MenubarItem
+
+| Prop      | Type                         | Default     | Description                                     |
+| --------- | ---------------------------- | ----------- | ----------------------------------------------- |
+| `variant` | `"default" \| "destructive"` | `"default"` | Applies destructive red styling to the item     |
+| `inset`   | `boolean`                    | —           | Adds left padding to align text with icon items |
+
+### MenubarLabel / MenubarSubTrigger / MenubarCheckboxItem / MenubarRadioItem
+
+Each of these accepts an `inset` (`boolean`) prop that adds left padding to align content with icon-bearing menu items.

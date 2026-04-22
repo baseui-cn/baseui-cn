@@ -8,10 +8,7 @@ component: true
 
 ## Installation
 
-<InstallTabs
-  slug="alert"
-  addCmd="baseui-cn add alert"
-/>
+<InstallTabs slug="alert" addCmd="baseui-cn add alert" />
 
 ## Usage
 
@@ -19,12 +16,10 @@ component: true
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Info } from "lucide-react"
 
-<Alert>
+;<Alert>
   <Info className="size-4 text-info" />
   <AlertTitle>Heads up</AlertTitle>
-  <AlertDescription>
-    This alert stays inline with your form or settings surface.
-  </AlertDescription>
+  <AlertDescription>This alert stays inline with your form or settings surface.</AlertDescription>
 </Alert>
 ```
 
@@ -37,3 +32,11 @@ import { Info } from "lucide-react"
 Use `Alert` when the message should stay visible until the user fixes something. That makes it a good fit for auth failures, validation summaries, permissions messaging, and configuration warnings.
 
 <ComponentPreview name="alert-with-action" />
+
+## API
+
+### Alert
+
+| Prop      | Type                                                             | Default     | Description                                |
+| --------- | ---------------------------------------------------------------- | ----------- | ------------------------------------------ |
+| `variant` | `"default" \| "destructive" \| "info" \| "success" \| "warning"` | `"default"` | Color theme and semantic icon of the alert |

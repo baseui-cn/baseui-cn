@@ -24,7 +24,7 @@ function FieldsetPreview() {
 function FieldsetHelperPreview() {
   return (
     <Fieldset className="flex w-full max-w-sm flex-col gap-4 rounded-xl border border-border p-4">
-      <FieldsetLegend>Profile</FieldsetLegend>
+      <FieldsetLegend variant="border">Profile</FieldsetLegend>
       <Field>
         <FieldLabel>Display name</FieldLabel>
         <Input defaultValue="Base UI Builder" />

@@ -114,3 +114,20 @@ A dialog with scrollable content.
 Confirm an action in the dialog and show a toast notification. The dialog and toast use independent overlay systems, so they don't interfere with each other.
 
 <ComponentPreview name="dialog-with-toast" />
+
+## API
+
+### DialogContent
+
+| Prop              | Type                                                                                         | Default     | Description                                                              |
+| ----------------- | -------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------ |
+| `variant`         | `"default" \| "fullscreen"`                                                                  | `"default"` | Centered modal or fullscreen inset layout                                |
+| `size`            | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl" \| "4xl" \| "5xl" \| "6xl" \| "7xl"` | `"lg"`      | Max-width breakpoint of the centered dialog (ignored for `"fullscreen"`) |
+| `showCloseButton` | `boolean`                                                                                    | `true`      | Render the default × close button in the top-right corner                |
+| `noPadding`       | `boolean`                                                                                    | `false`     | Remove the default `p-6` padding from the popup surface                  |
+
+### DialogFooter
+
+| Prop              | Type      | Default | Description                                           |
+| ----------------- | --------- | ------- | ----------------------------------------------------- |
+| `showCloseButton` | `boolean` | `false` | Append a Close button (outline variant) to the footer |

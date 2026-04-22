@@ -77,18 +77,39 @@ import {
 
 ### Basic
 
-A simple autocomplete with static options.
+A minimal autocomplete with no trigger or clear button — type to filter a static list.
 
 <ComponentPreview name="autocomplete-basic" />
 
 ### With clear button
 
-Use `showClear` to show a clear button.
+Combine `showClear` and `startAddon` to add a search icon and clear action to the input.
 
 <ComponentPreview name="autocomplete-with-clear-button" />
 
 ### Async
 
-Fetch options dynamically as the user types.
+Debounce input changes, clear the list while fetching, and populate results when the search resolves.
 
 <ComponentPreview name="autocomplete-async" />
+
+## API
+
+### AutocompleteInput
+
+| Prop          | Type                        | Default     | Description                                                       |
+| ------------- | --------------------------- | ----------- | ----------------------------------------------------------------- |
+| `showTrigger` | `boolean`                   | `false`     | Show a chevron open/close trigger button at the trailing edge     |
+| `showClear`   | `boolean`                   | `false`     | Show an × clear button when the field has a value                 |
+| `startAddon`  | `React.ReactNode`           | —           | Icon or element rendered as a leading decoration inside the input |
+| `size`        | `"sm" \| "default" \| "lg"` | `"default"` | Height and padding scale of the input                             |
+
+### AutocompletePopup
+
+| Prop          | Type                                     | Default    | Description                                     |
+| ------------- | ---------------------------------------- | ---------- | ----------------------------------------------- |
+| `side`        | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Side of the anchor the popup appears on         |
+| `sideOffset`  | `number`                                 | `4`        | Distance in px between the popup and its anchor |
+| `align`       | `"start" \| "center" \| "end"`           | `"start"`  | Alignment relative to the anchor                |
+| `alignOffset` | `number`                                 | —          | Offset in px along the alignment axis           |
+| `anchor`      | `React.RefObject`                        | —          | Custom anchor element to position against       |
