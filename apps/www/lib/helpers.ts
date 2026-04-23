@@ -44,12 +44,10 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
 }
 
 export function toAbsoluteUrl(pathname: string): string {
-  //get current base path from the window object
-  const basePath = window.location.origin
-  console.log("basePath", basePath)
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_PATH
 
-  if (basePath && basePath !== "/") {
-    return basePath + pathname
+  if (baseUrl && baseUrl !== "/") {
+    return baseUrl + pathname
   } else {
     return pathname
   }
