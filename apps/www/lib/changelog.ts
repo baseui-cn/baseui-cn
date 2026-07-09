@@ -23,11 +23,44 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "base-ui-1-6-compatibility-and-cli-fix",
+    date: "July 9, 2026",
+    isoDate: "2026-07-09",
+    title: "Base UI 1.6 Compatibility And CLI Fix",
+    badge: "Latest",
+    summary:
+      "A compatibility release that updates the registry baseline to Base UI 1.6, moves OTP Field to the stable API, and fixes the CLI runtime for new Windows developers.",
+    notes: [
+      "Updated the Base UI dependency baseline and generated registry metadata to target @base-ui/react ^1.6.0.",
+      "Switched OTP Field from the preview primitive to the stable OTPField API and refreshed examples for numeric, grouped, alphanumeric, masked, and auto-submit flows.",
+      "Updated OTP Field docs and registry labels to the stable Base UI primitive.",
+      "Pinned the CommonJS CLI runtime dependencies to CJS-compatible versions so npx execution no longer crashes on ESM-only Chalk.",
+      "Regenerated registry and docs artifacts so installs, source previews, and catalog metadata stay aligned with the new package version.",
+    ],
+    links: [
+      { href: "/docs/components/otp-field", label: "View OTP field docs" },
+      { href: "/docs/components/drawer", label: "View drawer docs" },
+      { href: "/docs/changelog", label: "Read changelog" },
+    ],
+    examples: [
+      {
+        href: "/docs/components/otp-field",
+        label: "Stable OTP Field",
+        description: "Use the stable Base UI OTP Field primitive for verification and recovery-code flows.",
+      },
+      {
+        href: "/docs/components/otp-field",
+        label: "Masked entry",
+        description: "Obscure one-time codes on shared screens while keeping the same installable component.",
+      },
+    ],
+  },
+  {
     slug: "combobox-and-fieldset-legend-upgrade",
     date: "April 22, 2026",
     isoDate: "2026-04-22",
     title: "Combobox And Fieldset Legend Upgrade",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "A component-focused release that improves combobox usability, expands the public API, and adds more styling control to FieldsetLegend.",
     notes: [

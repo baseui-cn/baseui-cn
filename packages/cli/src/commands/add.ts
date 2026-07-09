@@ -3,7 +3,7 @@ import fs from "fs-extra"
 import chalk from "chalk"
 import ora from "ora"
 import prompts from "prompts"
-import { execa } from "execa"
+import execa from "execa"
 import { getConfig, writeConfig } from "../utils/config"
 import {
   fetchRegistry,

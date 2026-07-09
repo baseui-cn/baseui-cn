@@ -82,12 +82,12 @@ export function ComponentPreviewWrapper({
       setStatus("loading")
 
       try {
-        const module = await import("@/components/previews/component-previews-map")
+        const previewModule = await import("@/components/previews/component-previews-map")
         if (cancelled) {
           return
         }
 
-        const resolvedPreview = resolvePreviewComponent(module.previewMap, slug)
+        const resolvedPreview = resolvePreviewComponent(previewModule.previewMap, slug)
         setPreview(() => resolvedPreview)
         setStatus(resolvedPreview ? "ready" : "missing")
       } catch {

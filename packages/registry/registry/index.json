@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
+  "version": "1.1.0",
   "components": [
     {
       "name": "button",
@@ -281,7 +281,7 @@
         "primitive",
         "interactive"
       ],
-      "badge": "Preview"
+      "badge": "Stable"
     },
     {
       "name": "input-group",

@@ -8,7 +8,7 @@ import { Form } from "@/components/ui/form"
 import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@/components/ui/otp-field"
 import { ToastProvider, useToast } from "@/components/ui/toast"
 
-function OTPFieldPreview() {
+function OTPFieldDemoPreview() {
   const [value, setValue] = React.useState("")
 
   return (
@@ -100,8 +100,27 @@ function OTPFieldAlphanumericPreview() {
         </OTPField>
       </div>
       <p className="text-sm text-muted-foreground">
-        Sanitized value: <span className="font-mono text-foreground">{value || "------"}</span>
+        Normalized value: <span className="font-mono text-foreground">{value || "------"}</span>
       </p>
+    </Field>
+  )
+}
+
+function OTPFieldMaskedPreview() {
+  return (
+    <Field className="max-w-sm">
+      <FieldLabel>Access code</FieldLabel>
+      <FieldDescription>Use mask to obscure the code on shared screens.</FieldDescription>
+      <div className="flex justify-center mx-auto w-fit">
+        <OTPField length={6} mask>
+          {Array.from({ length: 6 }, (_, index) => (
+            <OTPFieldInput
+              key={index}
+              aria-label={index === 0 ? undefined : `Character ${index + 1} of 6`}
+            />
+          ))}
+        </OTPField>
+      </div>
     </Field>
   )
 }
@@ -274,10 +293,11 @@ function OTPFieldAutoSubmitPreview() {
 }
 
 export const otpFieldPreviewMap: Record<string, React.ComponentType> = {
-  "otp-field": OTPFieldPreview,
-  "otp-field-demo": OTPFieldPreview,
+  "otp-field": OTPFieldDemoPreview,
+  "otp-field-demo": OTPFieldDemoPreview,
   "otp-field-form": OTPFieldFormPreview,
   "otp-field-alphanumeric": OTPFieldAlphanumericPreview,
+  "otp-field-masked": OTPFieldMaskedPreview,
   "otp-field-grouped": OTPFieldGroupedPreview,
   "otp-field-connected": OTPFieldConnectedPreview,
   "otp-field-reset": OTPFieldResetPreview,

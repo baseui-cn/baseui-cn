@@ -4,12 +4,6 @@ description: A one-time password input composed of individual character slots.
 component: true
 ---
 
-<Callout variant="warning" title="Preview primitive">
-  This installable wraps the current Base UI `OTPFieldPreview` API from `@base-ui/react/otp-field`.
-  The underlying Base UI primitive is still in preview, so expect small API adjustments as it
-  matures.
-</Callout>
-
 <ComponentPreview name="otp-field-demo" />
 
 ## Installation
@@ -53,6 +47,12 @@ Use `autoSubmit` when the form should verify immediately after the last slot is 
 Use `validationType="alphanumeric"` for recovery, invite, or backup codes that mix letters and numbers.
 
 <ComponentPreview name="otp-field-alphanumeric" />
+
+### Masked entry
+
+Use `mask` when the code should be obscured while it is being typed.
+
+<ComponentPreview name="otp-field-masked" />
 
 ### Grouped layout
 

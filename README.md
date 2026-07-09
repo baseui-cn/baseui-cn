@@ -75,7 +75,7 @@ Tailwind classes like `bg-primary`, `text-muted-foreground`, `border-border` wor
 
 ## Stack
 
-- [@base-ui/react](https://base-ui.com) `>=1.3.0` — primitives
+- [@base-ui/react](https://base-ui.com) `^1.6.0` — primitives
 - [Tailwind CSS](https://tailwindcss.com) v4 — styling
 - [class-variance-authority](https://cva.style) — variants
 - [tailwind-merge](https://github.com/dcastil/tailwind-merge) — class merging

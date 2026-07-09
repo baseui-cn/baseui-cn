@@ -1,7 +1,7 @@
 # baseui-cn
 
 > A styled component registry built on Base UI primitives with a one-command install experience.
-> All components use @base-ui/react (v1.3.0+) as the exclusive primitive layer.
+> All components use @base-ui/react (^1.6.0) as the exclusive primitive layer.
 > Tailwind CSS v4 for styling. No other UI library dependencies.
 
 ## Related documentation

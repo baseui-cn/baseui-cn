@@ -22,6 +22,7 @@ export const SECTION_ORDER = [
 ]
 
 const COMPONENT_BADGE = "New"
+const BASE_UI_VERSION = "^1.6.0"
 
 function slugToLabel(name) {
   return name.replace(/-/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())
@@ -297,8 +298,8 @@ export const componentMeta = {
     section: "Form",
     description: "A one-time password input composed of individual character slots.",
     tags: ["form", "primitive", "interactive"],
-    badge: "Preview",
-    baseUIPrimitive: "OTPFieldPreview",
+    badge: "Stable",
+    baseUIPrimitive: "OTPField",
     deps: ["@base-ui/react", "class-variance-authority"],
     registryDeps: ["utils"],
   }),
@@ -616,7 +617,7 @@ export function buildEntry(name, files, meta, version) {
     section: meta.section,
     description: meta.description,
     version,
-    baseUIVersion: ">=1.3.0",
+    baseUIVersion: BASE_UI_VERSION,
     files,
     dependencies: {
       required: meta.deps,

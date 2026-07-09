@@ -101,7 +101,7 @@ export { ComponentName }
   "type": "component",
   "description": "One sentence description.",
   "version": "0.1.0",
-  "baseUIVersion": ">=1.3.0",
+  "baseUIVersion": "^1.6.0",
   "files": [
     {
       "path": "component-name.tsx",
