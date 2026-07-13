@@ -4,7 +4,7 @@
   "label": "Pagination",
   "section": "Navigation & Data",
   "description": "Page navigation with first, last, next, and previous buttons.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "baseUIVersion": "^1.6.0",
   "files": [
     {

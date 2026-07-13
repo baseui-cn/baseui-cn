@@ -23,11 +23,30 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "cli-dependency-reuse-fix",
+    date: "July 13, 2026",
+    isoDate: "2026-07-13",
+    title: "CLI Dependency Reuse Fix",
+    badge: "Latest",
+    summary:
+      "Fixed add command behavior so existing dependency components are reused by default instead of prompting to replace them, with clean spinner and prompt sequencing during dependency resolution.",
+    notes: [
+      "Separated explicitly requested component conflicts from existing transitive dependency components during add commands.",
+      "Existing dependency files are now reported clearly and reused by default, preserving project customizations unless --overwrite is provided.",
+      "Stopped the dependency resolver spinner before printing conflict details or waiting for user input so prompts are always visible and responsive.",
+      "Kept the existing replace or skip flow for explicitly requested components that already have target files.",
+    ],
+    links: [
+      { href: "/docs/installation", label: "View installation docs" },
+      { href: "/docs/components/date-picker", label: "View Date Picker docs" },
+    ],
+  },
+  {
     slug: "date-picker-and-date-range-picker",
     date: "July 13, 2026",
     isoDate: "2026-07-13",
     title: "Date Picker And Date Range Picker",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "A new production-ready Date Picker system with single-date and date-range controls, form-ready inputs, presets, formatting, and theme-aware registry installation.",
     notes: [

@@ -27,6 +27,12 @@ interface InstallOptions {
   mode: InstallMode
 }
 
+interface InstallState {
+  requestedColliding: string[]
+  dependencyColliding: string[]
+  fresh: string[]
+}
+
 function resolveInstallFilePath(
   filePath: string,
   defaultComponentsPath: string,
@@ -60,10 +66,7 @@ export async function add(
   return installComponents(components, { ...options, mode: "add" })
 }
 
-export async function installComponents(
-  components: string[],
-  options: InstallOptions
-) {
+export async function installComponents(components: string[], options: InstallOptions) {
   let config = await getConfig()
 
   if (!config) {
@@ -137,37 +140,60 @@ export async function installComponents(
     })
 
     if (!selected?.length) {
-      console.log(chalk.dim(`No components selected${options.mode === "update" ? " for update" : ""}.`))
+      console.log(
+        chalk.dim(`No components selected${options.mode === "update" ? " for update" : ""}.`)
+      )
       return
     }
 
     components = selected
   }
 
+  const requestedComponents = new Set(components)
   const resolveSpinner = ora("Resolving dependencies...").start()
-  const allComponents = await resolveComponentDependencies(components)
+  let allComponents: string[]
   const componentEntries = new Map<string, ComponentEntry>()
+  let installState: InstallState
 
-  for (const name of allComponents) {
-    componentEntries.set(name, await fetchComponent(name))
+  try {
+    allComponents = await resolveComponentDependencies(components)
+
+    for (const name of allComponents) {
+      componentEntries.set(name, await fetchComponent(name))
+    }
+
+    installState = await partitionInstallState(
+      allComponents,
+      requestedComponents,
+      componentEntries,
+      config,
+      options.path
+    )
+  } catch (error) {
+    resolveSpinner.fail("Failed to resolve dependencies")
+    throw error
   }
-
-  const installState = await partitionInstallState(
-    allComponents,
-    componentEntries,
-    config,
-    options.path
-  )
-  const toInstall = await resolveInstallTargets(
-    installState,
-    componentEntries,
-    config,
-    options
-  )
 
   resolveSpinner.succeed(
     `${allComponents.length} component${allComponents.length !== 1 ? "s" : ""} resolved`
   )
+
+  if (installState.dependencyColliding.length && !options.overwrite) {
+    console.log()
+    console.log(chalk.bold("Existing dependency components found and reused:"))
+    installState.dependencyColliding.forEach((componentName) => {
+      const component = componentEntries.get(componentName)
+      if (!component) return
+
+      console.log(
+        chalk.dim(
+          `  - ${componentName} -> ${describeInstallTarget(component, config.componentsPath, options.path)}`
+        )
+      )
+    })
+  }
+
+  const toInstall = await resolveInstallTargets(installState, componentEntries, config, options)
 
   if (!toInstall.length) {
     console.log()
@@ -226,9 +252,7 @@ export async function installComponents(
         `${componentName} ${chalk.dim(`-> ${describeInstallTarget(component, config.componentsPath, options.path)}`)}`
       )
     } catch (err) {
-      spinner.fail(
-        `Failed to ${options.mode === "update" ? "update" : "add"} ${componentName}`
-      )
+      spinner.fail(`Failed to ${options.mode === "update" ? "update" : "add"} ${componentName}`)
       console.log(chalk.dim(`  ${err}`))
     }
   }
@@ -261,11 +285,13 @@ export async function installComponents(
 
 async function partitionInstallState(
   components: string[],
+  requestedComponents: Set<string>,
   componentEntries: Map<string, ComponentEntry>,
   config: { componentsPath: string },
   customPath?: string
-): Promise<{ colliding: string[]; fresh: string[] }> {
-  const colliding: string[] = []
+): Promise<InstallState> {
+  const requestedColliding: string[] = []
+  const dependencyColliding: string[] = []
   const fresh: string[] = []
 
   for (const name of components) {
@@ -282,39 +308,43 @@ async function partitionInstallState(
     )
 
     if (existingFiles.some(Boolean)) {
-      colliding.push(name)
+      if (requestedComponents.has(name)) {
+        requestedColliding.push(name)
+      } else {
+        dependencyColliding.push(name)
+      }
     } else {
       fresh.push(name)
     }
   }
 
-  return { colliding, fresh }
+  return { requestedColliding, dependencyColliding, fresh }
 }
 
 async function resolveInstallTargets(
-  installState: { colliding: string[]; fresh: string[] },
+  installState: InstallState,
   componentEntries: Map<string, ComponentEntry>,
   config: { componentsPath: string },
   options: InstallOptions
 ): Promise<string[]> {
-  const { colliding, fresh } = installState
+  const { requestedColliding, dependencyColliding, fresh } = installState
 
-  if (options.mode === "update" || options.overwrite) {
-    return [...fresh, ...colliding]
+  if (options.overwrite) {
+    return [...fresh, ...requestedColliding, ...dependencyColliding]
   }
 
-  if (!colliding.length || options.yes) {
-    if (colliding.length && options.yes) {
+  if (!requestedColliding.length || options.yes) {
+    if (requestedColliding.length && options.yes) {
       console.log()
       console.log(chalk.dim("Existing target files detected (skipping without --overwrite):"))
-      colliding.forEach((component) => console.log(chalk.dim(`  - ${component}`)))
+      requestedColliding.forEach((component) => console.log(chalk.dim(`  - ${component}`)))
     }
     return fresh
   }
 
   console.log()
-  console.log(chalk.bold("Existing target files:"))
-  colliding.forEach((componentName) => {
+  console.log(chalk.bold("Existing requested component files:"))
+  requestedColliding.forEach((componentName) => {
     const component = componentEntries.get(componentName)
     if (!component) return
 
@@ -329,11 +359,11 @@ async function resolveInstallTargets(
   const { replaceExisting } = await prompts({
     type: "confirm",
     name: "replaceExisting",
-    message: `Replace ${colliding.length} component${colliding.length !== 1 ? "s" : ""} with existing target files?`,
+    message: `Replace ${requestedColliding.length} requested component${requestedColliding.length !== 1 ? "s" : ""} with existing target files?`,
     initial: true,
   })
 
-  return replaceExisting ? [...fresh, ...colliding] : fresh
+  return replaceExisting ? [...fresh, ...requestedColliding] : fresh
 }
 
 function describeInstallTarget(
@@ -346,9 +376,7 @@ function describeInstallTarget(
 
   if (component.files.length === 1) {
     const firstFile = component.files[0]!
-    return relativeToCwd(
-      resolveInstallFilePath(firstFile.path, defaultComponentsPath, customPath)
-    )
+    return relativeToCwd(resolveInstallFilePath(firstFile.path, defaultComponentsPath, customPath))
   }
 
   const firstFile = component.files[0]!

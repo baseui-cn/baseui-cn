@@ -4,7 +4,7 @@
   "label": "Breadcrumb",
   "section": "Navigation & Data",
   "description": "Displays the path to the current resource using a hierarchy of links.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "baseUIVersion": "^1.6.0",
   "files": [
     {

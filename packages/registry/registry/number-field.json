@@ -4,7 +4,7 @@
   "label": "Number Field",
   "section": "Form",
   "description": "A numeric input with increment and decrement buttons.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "baseUIVersion": "^1.6.0",
   "files": [
     {
