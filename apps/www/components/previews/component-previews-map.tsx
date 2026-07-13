@@ -17,6 +17,7 @@ import { collapsiblePreviewMap } from "@/components/previews/collapsible-preview
 import { comboboxPreviewMap } from "@/components/previews/combobox-previews"
 import { commandPreviewMap } from "@/components/previews/command-previews"
 import { dataGridPreviewMap } from "@/components/previews/data-grid-previews"
+import { datePickerPreviewMap } from "@/components/previews/date-picker-previews"
 import { dialogPreviewMap } from "@/components/previews/dialog-previews"
 import { drawerPreviewMap } from "@/components/previews/drawer-previews"
 import { dropdownMenuPreviewMap } from "@/components/previews/dropdown-menu-previews"
@@ -72,6 +73,7 @@ export const previewMap: Record<string, ComponentType> = {
   ...buttonPreviewMap,
   ...checkboxPreviewMap,
   ...comboboxPreviewMap,
+  ...datePickerPreviewMap,
   ...fieldPreviewMap,
   ...fieldsetPreviewMap,
   ...formPreviewMap,

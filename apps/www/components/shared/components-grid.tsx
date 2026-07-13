@@ -2,7 +2,14 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Sparkles, TerminalSquare, TableProperties, SearchIcon, XIcon } from "lucide-react"
+import {
+  CalendarDays,
+  SearchIcon,
+  Sparkles,
+  TableProperties,
+  TerminalSquare,
+  XIcon,
+} from "lucide-react"
 import { CopyButton } from "@/components/shared/copy-button"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -36,6 +43,12 @@ const FILTERS: FilterDefinition[] = [
     label: "Data Grid",
     featured: true,
     matches: (component) => component.name === "data-grid",
+  },
+  {
+    id: "date-picker",
+    label: "Date Picker",
+    featured: true,
+    matches: (component) => component.name === "date-picker",
   },
   {
     id: "display",
@@ -86,6 +99,14 @@ const FEATURED_INSTALLABLES = [
       "Explore inline editing, pending states, rollback handling, and the optimistic update workflow in one installable family.",
     cta: "Open data-grid docs",
   },
+  {
+    href: "/docs/components/date-picker",
+    icon: CalendarDays,
+    label: "Date Picker",
+    description:
+      "Single date, date range, presets, forms, formats, and theme-aware styling in one registry install.",
+    cta: "Open date-picker docs",
+  },
 ] as const
 
 export function ComponentsGrid({ components }: { components: ComponentMeta[] }) {
@@ -119,10 +140,10 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
         </AlertTitle>
         <AlertDescription>
           <p>
-            The fastest way to understand what is different here is to try the AI command search
-            demo and the optimistic-editing data grid demo first.
+            Start with the AI command search, optimistic data grid, or the new production-ready Date
+            Picker and Date Range Picker.
           </p>
-          <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
             {FEATURED_INSTALLABLES.map((feature) => {
               const Icon = feature.icon
 
@@ -229,6 +250,11 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
                       {component.label}
                     </Link>
                   </div>
+                  {component.badge ? (
+                    <Badge variant="success-outline" size="sm" shape="pill">
+                      {component.badge}
+                    </Badge>
+                  ) : null}
                 </div>
                 <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
                   {component.description}

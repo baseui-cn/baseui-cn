@@ -9,7 +9,14 @@ export const REGISTRY_DIR = join(REPO_ROOT, "packages", "registry", "registry")
 export const PUBLIC_REGISTRY_DIR = join(REPO_ROOT, "apps", "www", "public", "registry")
 export const CLI_REGISTRY_DIR = join(REPO_ROOT, "packages", "cli", "registry")
 export const REGISTRY_PACKAGE_INDEX = join(REPO_ROOT, "packages", "registry", "index.json")
-export const SITE_CATALOG_FILE = join(REPO_ROOT, "apps", "www", "lib", "__generated__", "catalog.json")
+export const SITE_CATALOG_FILE = join(
+  REPO_ROOT,
+  "apps",
+  "www",
+  "lib",
+  "__generated__",
+  "catalog.json"
+)
 export const CLI_PACKAGE_FILE = join(REPO_ROOT, "packages", "cli", "package.json")
 
 export const SECTION_ORDER = [
@@ -37,18 +44,17 @@ function slugToExportName(name) {
 
 function defineEntry(name, meta) {
   const targetPath = meta.targetPath ?? `${name}.tsx`
-  const files =
-    meta.files?.map((file) => ({
-      sourcePath: file.sourcePath,
-      targetPath: file.targetPath,
-      type: file.type ?? meta.type ?? "component",
-    })) ?? [
-      {
-        sourcePath: meta.sourcePath ?? `${name}.tsx`,
-        targetPath,
-        type: meta.type ?? "component",
-      },
-    ]
+  const files = meta.files?.map((file) => ({
+    sourcePath: file.sourcePath,
+    targetPath: file.targetPath,
+    type: file.type ?? meta.type ?? "component",
+  })) ?? [
+    {
+      sourcePath: meta.sourcePath ?? `${name}.tsx`,
+      targetPath,
+      type: meta.type ?? "component",
+    },
+  ]
 
   return {
     name,
@@ -71,7 +77,7 @@ function defineEntry(name, meta) {
 
 export const componentMeta = {
   // Display
-  "button": defineEntry("button", {
+  button: defineEntry("button", {
     section: "Display",
     description: "A clickable element that triggers an action.",
     tags: ["form", "primitive"],
@@ -79,21 +85,21 @@ export const componentMeta = {
     deps: ["@base-ui/react", "class-variance-authority"],
     registryDeps: ["utils", "spinner"],
   }),
-  "badge": defineEntry("badge", {
+  badge: defineEntry("badge", {
     section: "Display",
     description: "A small status descriptor for UI elements.",
     tags: ["display", "primitive"],
     deps: ["@base-ui/react", "class-variance-authority"],
     registryDeps: ["utils"],
   }),
-  "alert": defineEntry("alert", {
+  alert: defineEntry("alert", {
     section: "Display",
     description: "A semantic feedback container for errors, warnings, and status messaging.",
     tags: ["display", "feedback"],
     deps: ["class-variance-authority"],
     registryDeps: ["utils"],
   }),
-  "avatar": defineEntry("avatar", {
+  avatar: defineEntry("avatar", {
     section: "Display",
     description: "An image element with a fallback for representing the user.",
     tags: ["display", "primitive"],
@@ -101,20 +107,20 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "card": defineEntry("card", {
+  card: defineEntry("card", {
     section: "Display",
     description: "A container for grouping related content and actions.",
     tags: ["display", "layout"],
     registryDeps: ["utils"],
   }),
-  "item": defineEntry("item", {
+  item: defineEntry("item", {
     section: "Display",
     description: "A flexible list item component with media, content, actions, and variants.",
     tags: ["display", "layout", "list"],
     deps: ["@base-ui/react", "class-variance-authority"],
     registryDeps: ["utils", "separator"],
   }),
-  "separator": defineEntry("separator", {
+  separator: defineEntry("separator", {
     section: "Display",
     description: "Visually or semantically separates content.",
     tags: ["display", "primitive"],
@@ -130,20 +136,20 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "skeleton": defineEntry("skeleton", {
+  skeleton: defineEntry("skeleton", {
     section: "Display",
     description: "Loading placeholder with pulse animation.",
     tags: ["display", "feedback"],
     registryDeps: ["utils"],
   }),
-  "spinner": defineEntry("spinner", {
+  spinner: defineEntry("spinner", {
     section: "Display",
     description: "An animated loading spinner indicator.",
     tags: ["display", "feedback"],
     deps: ["lucide-react"],
     registryDeps: ["utils"],
   }),
-  "progress": defineEntry("progress", {
+  progress: defineEntry("progress", {
     section: "Display",
     description: "Displays an indicator showing the completion progress of a task.",
     tags: ["display", "feedback"],
@@ -152,7 +158,7 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "toggle": defineEntry("toggle", {
+  toggle: defineEntry("toggle", {
     section: "Display",
     description: "A two-state button that can be toggled on or off.",
     tags: ["form", "primitive", "interactive"],
@@ -172,7 +178,7 @@ export const componentMeta = {
   }),
 
   // Form
-  "input": defineEntry("input", {
+  input: defineEntry("input", {
     section: "Form",
     description: "A text input field.",
     tags: ["form", "primitive"],
@@ -180,35 +186,37 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "textarea": defineEntry("textarea", {
+  textarea: defineEntry("textarea", {
     section: "Form",
     description: "A multi-line text input field.",
     tags: ["form", "primitive"],
     registryDeps: ["utils"],
   }),
-  "label": defineEntry("label", {
+  label: defineEntry("label", {
     section: "Form",
     description: "Accessible form label with required indicator.",
     tags: ["form", "primitive"],
     registryDeps: ["utils"],
   }),
-  "field": defineEntry("field", {
+  field: defineEntry("field", {
     section: "Form",
-    description: "A form field component that provides labeling, description, and validation for form controls.",
+    description:
+      "A form field component that provides labeling, description, and validation for form controls.",
     tags: ["form", "layout"],
     baseUIPrimitive: "Field",
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "form": defineEntry("form", {
+  form: defineEntry("form", {
     section: "Form",
-    description: "A Base UI form wrapper for submission handling, validation wiring, and consistent layout.",
+    description:
+      "A Base UI form wrapper for submission handling, validation wiring, and consistent layout.",
     tags: ["form", "layout", "validation"],
     baseUIPrimitive: "Form",
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "fieldset": defineEntry("fieldset", {
+  fieldset: defineEntry("fieldset", {
     section: "Form",
     description: "A semantic form section wrapper with a legend for grouped inputs.",
     tags: ["form", "layout", "semantic"],
@@ -217,7 +225,7 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "checkbox": defineEntry("checkbox", {
+  checkbox: defineEntry("checkbox", {
     section: "Form",
     description: "A control that allows the user to toggle between checked and unchecked states.",
     tags: ["form", "interactive"],
@@ -234,7 +242,7 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "switch": defineEntry("switch", {
+  switch: defineEntry("switch", {
     section: "Form",
     description: "A control that allows the user to toggle between checked and not checked.",
     tags: ["form", "interactive"],
@@ -250,7 +258,7 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "select": defineEntry("select", {
+  select: defineEntry("select", {
     section: "Form",
     description: "Displays a list of options for the user to pick from, triggered by a button.",
     tags: ["form", "overlay", "interactive"],
@@ -258,7 +266,7 @@ export const componentMeta = {
     deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils"],
   }),
-  "combobox": defineEntry("combobox", {
+  combobox: defineEntry("combobox", {
     section: "Form",
     description: "An input combined with a listbox for selecting from a list of options.",
     tags: ["form", "overlay", "interactive"],
@@ -267,7 +275,7 @@ export const componentMeta = {
     deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils", "button", "input-group"],
   }),
-  "autocomplete": defineEntry("autocomplete", {
+  autocomplete: defineEntry("autocomplete", {
     section: "Form",
     description: "An input with a list of filtered options that appear as the user types.",
     tags: ["form", "overlay", "interactive"],
@@ -276,7 +284,7 @@ export const componentMeta = {
     deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils", "scroll-area"],
   }),
-  "slider": defineEntry("slider", {
+  slider: defineEntry("slider", {
     section: "Form",
     description: "An input where the user selects a value from within a given range.",
     tags: ["form", "interactive"],
@@ -303,6 +311,29 @@ export const componentMeta = {
     deps: ["@base-ui/react", "class-variance-authority"],
     registryDeps: ["utils"],
   }),
+  "date-picker": defineEntry("date-picker", {
+    section: "Form",
+    description:
+      "Single-date and date-range calendars with popover inputs, presets, and formatting.",
+    tags: ["form", "calendar", "overlay", "interactive"],
+    badge: COMPONENT_BADGE,
+    baseUIPrimitive: "Popover",
+    deps: ["@base-ui/react", "@daypicker/react", "date-fns", "lucide-react"],
+    registryDeps: ["utils", "button", "field", "input", "popover"],
+    files: [
+      {
+        sourcePath: "date-picker.tsx",
+        targetPath: "components/ui/date-picker.tsx",
+      },
+      {
+        sourcePath: "apps/www/styles/date-picker.styles.css",
+        targetPath: "styles/date-picker.styles.css",
+        type: "style",
+      },
+    ],
+    installedPath: "components/ui/date-picker.tsx",
+    exportName: "DatePicker",
+  }),
   "input-group": defineEntry("input-group", {
     section: "Form",
     description: "A composite input component with addons, icons, and buttons.",
@@ -311,7 +342,7 @@ export const componentMeta = {
   }),
 
   // Overlays
-  "dialog": defineEntry("dialog", {
+  dialog: defineEntry("dialog", {
     section: "Overlays",
     description: "A window overlaid on either the primary window or another dialog window.",
     tags: ["overlay", "interactive"],
@@ -321,13 +352,14 @@ export const componentMeta = {
   }),
   "alert-dialog": defineEntry("alert-dialog", {
     section: "Overlays",
-    description: "A modal dialog that interrupts the user with important content and expects a response.",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
     tags: ["overlay", "interactive"],
     baseUIPrimitive: "AlertDialog",
     deps: ["@base-ui/react"],
     registryDeps: ["utils", "button"],
   }),
-  "drawer": defineEntry("drawer", {
+  drawer: defineEntry("drawer", {
     section: "Overlays",
     description: "A panel that slides in from the edge of the screen.",
     tags: ["overlay", "interactive", "mobile"],
@@ -336,7 +368,7 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "popover": defineEntry("popover", {
+  popover: defineEntry("popover", {
     section: "Overlays",
     description: "Displays rich content in a portal, triggered by a button.",
     tags: ["overlay", "interactive"],
@@ -344,7 +376,7 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "tooltip": defineEntry("tooltip", {
+  tooltip: defineEntry("tooltip", {
     section: "Overlays",
     description: "A popup that displays information related to an element when focused or hovered.",
     tags: ["overlay", "interactive"],
@@ -363,13 +395,14 @@ export const componentMeta = {
   }),
   "dropdown-menu": defineEntry("dropdown-menu", {
     section: "Overlays",
-    description: "Displays a menu to the user, such as a set of actions or functions, triggered by a button.",
+    description:
+      "Displays a menu to the user, such as a set of actions or functions, triggered by a button.",
     tags: ["overlay", "interactive", "navigation"],
     baseUIPrimitive: "Menu",
     deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils"],
   }),
-  "toast": defineEntry("toast", {
+  toast: defineEntry("toast", {
     section: "Overlays",
     description: "A succinct message that is displayed temporarily.",
     tags: ["overlay", "feedback"],
@@ -378,7 +411,7 @@ export const componentMeta = {
     deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils"],
   }),
-  "command": defineEntry("command", {
+  command: defineEntry("command", {
     section: "Overlays",
     description: "A command palette component for searching and executing actions.",
     tags: ["overlay", "navigation"],
@@ -387,7 +420,7 @@ export const componentMeta = {
   }),
 
   // Layout
-  "collapsible": defineEntry("collapsible", {
+  collapsible: defineEntry("collapsible", {
     section: "Layout",
     description: "An interactive component which expands or collapses a panel.",
     tags: ["disclosure", "interactive"],
@@ -395,24 +428,26 @@ export const componentMeta = {
     deps: ["@base-ui/react"],
     registryDeps: ["utils"],
   }),
-  "accordion": defineEntry("accordion", {
+  accordion: defineEntry("accordion", {
     section: "Layout",
-    description: "A vertically stacked set of interactive headings that each reveal a section of content.",
+    description:
+      "A vertically stacked set of interactive headings that each reveal a section of content.",
     tags: ["disclosure", "interactive"],
     baseUIPrimitive: "Accordion",
     deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils"],
   }),
-  "frame": defineEntry("frame", {
+  frame: defineEntry("frame", {
     section: "Layout",
     description: "A layered panel shell for grouping sections, headers, and supporting content.",
     tags: ["layout", "display"],
     badge: COMPONENT_BADGE,
     registryDeps: ["utils"],
   }),
-  "tabs": defineEntry("tabs", {
+  tabs: defineEntry("tabs", {
     section: "Layout",
-    description: "A set of layered sections of content known as tab panels that are displayed one at a time.",
+    description:
+      "A set of layered sections of content known as tab panels that are displayed one at a time.",
     tags: ["navigation", "interactive"],
     baseUIPrimitive: "Tabs",
     deps: ["@base-ui/react", "class-variance-authority"],
@@ -420,7 +455,7 @@ export const componentMeta = {
   }),
 
   // Navigation & Data
-  "table": defineEntry("table", {
+  table: defineEntry("table", {
     section: "Navigation & Data",
     description: "Semantic table primitives for displaying data.",
     tags: ["data", "display"],
@@ -428,7 +463,8 @@ export const componentMeta = {
   }),
   "data-grid": defineEntry("data-grid", {
     section: "Navigation & Data",
-    description: "A composable TanStack data grid family with editing, virtualization, drag-and-drop, and Base UI-friendly controls.",
+    description:
+      "A composable TanStack data grid family with editing, virtualization, drag-and-drop, and Base UI-friendly controls.",
     tags: ["data", "table", "interactive"],
     badge: COMPONENT_BADGE,
     installedPath: "components/data-grid/*",
@@ -520,23 +556,24 @@ export const componentMeta = {
       },
     ],
   }),
-  "breadcrumb": defineEntry("breadcrumb", {
+  breadcrumb: defineEntry("breadcrumb", {
     section: "Navigation & Data",
     description: "Displays the path to the current resource using a hierarchy of links.",
     tags: ["navigation", "display"],
     deps: ["@base-ui/react", "lucide-react"],
     registryDeps: ["utils"],
   }),
-  "pagination": defineEntry("pagination", {
+  pagination: defineEntry("pagination", {
     section: "Navigation & Data",
     description: "Page navigation with first, last, next, and previous buttons.",
     tags: ["navigation", "interactive"],
     deps: ["lucide-react"],
     registryDeps: ["utils", "button"],
   }),
-  "menubar": defineEntry("menubar", {
+  menubar: defineEntry("menubar", {
     section: "Navigation & Data",
-    description: "A visually persistent menu common in desktop applications providing quick access to commands.",
+    description:
+      "A visually persistent menu common in desktop applications providing quick access to commands.",
     tags: ["navigation", "interactive", "overlay"],
     baseUIPrimitive: "Menubar",
     deps: ["@base-ui/react", "lucide-react"],
@@ -562,7 +599,7 @@ export const componentMeta = {
     exportName: "EmptyState",
     registryDeps: ["utils"],
   }),
-  "login": defineEntry("login", {
+  login: defineEntry("login", {
     section: "Blocks",
     type: "block",
     description: "Card-based login form built with Base UI Form, alerts, and toast success states.",
@@ -582,13 +619,24 @@ export const componentMeta = {
     ],
     installedPath: "components/ui/auth.tsx",
     exportName: "LoginBlock",
-    registryDeps: ["utils", "alert", "button", "card", "checkbox", "field", "form", "input", "toast"],
+    registryDeps: [
+      "utils",
+      "alert",
+      "button",
+      "card",
+      "checkbox",
+      "field",
+      "form",
+      "input",
+      "toast",
+    ],
   }),
-  "signup": defineEntry("signup", {
+  signup: defineEntry("signup", {
     section: "Blocks",
     type: "block",
     label: "Sign Up",
-    description: "Card-based signup form built with Base UI Form, password rules, alerts, and success toasts.",
+    description:
+      "Card-based signup form built with Base UI Form, password rules, alerts, and success toasts.",
     tags: ["block", "form", "auth"],
     deps: ["lucide-react", "zod"],
     files: [
@@ -605,7 +653,17 @@ export const componentMeta = {
     ],
     installedPath: "components/ui/auth.tsx",
     exportName: "SignupBlock",
-    registryDeps: ["utils", "alert", "button", "card", "checkbox", "field", "form", "input", "toast"],
+    registryDeps: [
+      "utils",
+      "alert",
+      "button",
+      "card",
+      "checkbox",
+      "field",
+      "form",
+      "input",
+      "toast",
+    ],
   }),
 }
 

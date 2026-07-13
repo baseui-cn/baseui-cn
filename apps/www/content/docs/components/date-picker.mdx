@@ -1,0 +1,185 @@
+---
+title: Date Picker
+description: A production-ready React date picker and date range picker built with Base UI, Tailwind CSS, react-day-picker, presets, form examples, date formats, and theme-aware styling.
+component: true
+links:
+  doc: https://daypicker.dev
+---
+
+<ComponentPreview name="date-picker-demo" />
+
+## Installation
+
+<InstallTabs slug="date-picker" addCmd="baseui-cn@latest add date-picker" />
+
+The registry item installs the component, its token-based stylesheet, and the required DayPicker and date-fns dependencies.
+
+## Usage
+
+```tsx
+import {
+  DatePicker,
+  DatePickerInput,
+  DateRangePicker,
+  DateRangePickerInput,
+} from "@/components/ui/date-picker"
+```
+
+Use `DatePicker` and `DateRangePicker` when the calendar should remain visible. Use the input variants for forms, filters, and compact layouts where the calendar belongs in a popover.
+
+```tsx
+const [date, setDate] = React.useState<Date>()
+
+<DatePickerInput value={date} onValueChange={setDate} />
+```
+
+## Examples
+
+### Single date inline
+
+`DatePicker` renders only the calendar and keeps values as `Date` objects.
+
+<ComponentPreview name="date-picker-inline" />
+
+For an inline multi-select calendar, set `mode="multiple"`; its value and callback use `Date[]`.
+
+### Single date input
+
+`DatePickerInput` combines the standard Input surface, an accessible read-only trigger, Base UI Popover, clear action, and calendar. Pass `label` to use the standard Field label treatment. It closes after a selection by default.
+
+<ComponentPreview name="date-picker-input" />
+
+### Display formats
+
+Use a built-in `formatPreset` for common formats. A custom `displayFormat` is a date-fns format string and takes precedence over the preset.
+
+<ComponentPreview name="date-picker-format" />
+
+<ComponentPreview name="date-range-picker-format" />
+
+```tsx
+<DatePickerInput formatPreset="short" />
+<DatePickerInput formatPreset="long" />
+<DatePickerInput displayFormat="dd MMM yyyy" />
+<DateRangePickerInput formatPreset="medium" rangeSeparator=" to " />
+```
+
+### Date range inline
+
+`DateRangePicker` supports one to three visible months. Two months are shown by default.
+
+<ComponentPreview name="date-range-picker-inline" />
+
+### Date range input
+
+The range input keeps a draft selection while open. Its visible value follows that draft immediately, including partial and preset selections. `Cancel` restores the committed value, while `Apply` commits the draft.
+
+<ComponentPreview name="date-range-picker-input" />
+
+### Presets
+
+Built-in presets include today, yesterday, the last 7 and 30 days, this month, last month, and year to date. Pass your own `DateRangePreset[]` to replace them.
+
+<ComponentPreview name="date-range-picker-presets" />
+
+```tsx
+const presets = [
+  {
+    label: "Next 14 days",
+    getValue: () => ({ from: new Date(), to: addDays(new Date(), 13) }),
+  },
+]
+
+<DateRangePickerInput presets={presets} />
+```
+
+### Single date form
+
+This Base UI form keeps the selected value as a `Date`, validates it on submit, and reports the formatted result with the standard toast component. The hidden ISO value is only the serialized transport value for backend submission; picker state remains a `Date`.
+
+<ComponentPreview name="date-picker-form" />
+
+### Date range form
+
+Range forms keep `{ from?: Date; to?: Date }` in state. The example serializes `from` and `to` into separate hidden ISO values when a backend form submission needs strings.
+
+<ComponentPreview name="date-range-picker-form" />
+
+### Sizes
+
+The `sm`, `md`, and `lg` sizes apply to both the trigger and calendar.
+
+<ComponentPreview name="date-picker-sizes" />
+
+### Disabled dates and boundaries
+
+Use `minDate` and `maxDate` for navigation and selection boundaries. `disabledDates` accepts any DayPicker matcher or matcher array.
+
+<ComponentPreview name="date-picker-constraints" />
+
+### Month and year switcher
+
+Select the caption to move from days to years, then months. `startMonth` and `endMonth` also limit the custom switcher.
+
+<ComponentPreview name="date-picker-switcher" />
+
+### Controlled value
+
+<ComponentPreview name="date-picker-controlled" />
+
+## Formatting helpers
+
+The module exports `getDateFormat`, `formatDateValue`, `formatDateRangeValue`, `formatDate`, `formatDateRange`, `isValidDate`, and `normalizeMonth`. Formatting is display-only; the source of truth remains `Date` objects. Input variants intentionally use a read-only Input surface instead of guessing how locale-specific typed input should be parsed.
+
+| Preset         | date-fns format      |
+| -------------- | -------------------- |
+| `short`        | `MM/dd/yyyy`         |
+| `medium`       | `MMM d, yyyy`        |
+| `long`         | `MMMM d, yyyy`       |
+| `full`         | `EEEE, MMMM d, yyyy` |
+| `iso`          | `yyyy-MM-dd`         |
+| `numeric`      | `M/d/yyyy`           |
+| `compact`      | `MM/dd/yy`           |
+| `monthDayYear` | `MMMM d, yyyy`       |
+| `dayMonthYear` | `d MMMM yyyy`        |
+
+## Styling
+
+`date-picker.styles.css` maps DayPicker variables to the standard baseui-cn tokens, including `--background`, `--popover`, `--primary`, `--accent`, `--border`, and `--ring`. Override DayPicker internals with `classNames`, the outer calendar with `className`, or the input surfaces with `triggerClassName`, `popoverClassName`, and `calendarClassName`.
+
+## API
+
+### DatePicker
+
+| Prop                    | Type                                | Default | Description                                      |
+| ----------------------- | ----------------------------------- | ------- | ------------------------------------------------ |
+| `value`                 | `Date`                              | -       | Controlled selected date                         |
+| `defaultValue`          | `Date`                              | -       | Initial uncontrolled date                        |
+| `onValueChange`         | `(date: Date \| undefined) => void` | -       | Called when the selected date changes            |
+| `size`                  | `"sm" \| "md" \| "lg"`              | `"md"`  | Calendar size                                    |
+| `minDate` / `maxDate`   | `Date`                              | -       | Selection and navigation boundaries              |
+| `disabledDates`         | `Matcher \| Matcher[]`              | -       | DayPicker-compatible disabled-date matcher       |
+| `enableYearMonthPicker` | `boolean`                           | `true`  | Enables caption-driven year and month navigation |
+| `calendarProps`         | safe `DayPicker` base props         | -       | Additional localization and display options      |
+
+`DatePicker` defaults to `mode="single"`. With `mode="multiple"`, `value`, `defaultValue`, and `onValueChange` use `Date[]` instead.
+
+### DatePickerInput
+
+Accepts the DatePicker props plus `label`, `placeholder`, `formatPreset`, `displayFormat`, `clearable`, `closeOnSelect`, `open`, `defaultOpen`, and `onOpenChange`. `displayFormat` overrides `formatPreset`; the default preset is `medium`.
+
+### DateRangePicker
+
+| Prop             | Type                                           | Default   | Description                                 |
+| ---------------- | ---------------------------------------------- | --------- | ------------------------------------------- |
+| `value`          | `{ from?: Date; to?: Date }`                   | -         | Controlled range                            |
+| `onValueChange`  | `(range: DateRangeValue \| undefined) => void` | -         | Called as the range changes                 |
+| `numberOfMonths` | `number`                                       | `2`       | Visible months, clamped from one to three   |
+| `presets`        | `DateRangePreset[]`                            | built-ins | Range shortcuts                             |
+| `showPresets`    | `boolean`                                      | `false`   | Shows the preset list                       |
+| `showFooter`     | `boolean`                                      | `false`   | Shows clear, cancel, and apply actions      |
+| `closeOnSelect`  | `boolean`                                      | `false`   | Closes a range input after both dates exist |
+
+### DateRangePickerInput
+
+Accepts the range picker props plus `label`, `startLabel`, `endLabel`, `placeholder`, `startPlaceholder`, `endPlaceholder`, `rangeSeparator`, `formatPreset`, and `displayFormat`. Presets and the footer default to visible, and the control displays draft changes immediately until they are applied or canceled.

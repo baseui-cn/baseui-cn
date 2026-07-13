@@ -30,12 +30,12 @@ export const metadata: Metadata = {
   },
   title: "Base UI Components for React - shadcn-style Registry",
   description:
-    "Shadcn-style Base UI components for React and Next.js. Copy accessible components into your project, keep the code, and avoid mixed-library overlay bugs.",
+    "Copy-paste React components built with Base UI and Tailwind CSS, including buttons, forms, data display, OTP fields, and production-ready date pickers.",
   keywords: homeKeywords,
   openGraph: {
     title: "Base UI Components for React - shadcn-style Registry",
     description:
-      "Shadcn-style Base UI components for React and Next.js. Copy accessible components into your project, keep the code, and avoid mixed-library overlay bugs.",
+      "Copy-paste React components built with Base UI and Tailwind CSS, including buttons, forms, data display, OTP fields, and production-ready date pickers.",
     url: siteConfig.url,
     images: ["/baseui-cn-og.png"],
   },
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Base UI Components for React - shadcn-style Registry",
     description:
-      "Shadcn-style Base UI components for React and Next.js. Copy accessible components into your project, keep the code, and avoid mixed-library overlay bugs.",
+      "Copy-paste React components built with Base UI and Tailwind CSS, including buttons, forms, data display, OTP fields, and production-ready date pickers.",
     images: ["/baseui-cn-og.png"],
   },
 }
@@ -77,7 +77,7 @@ export default function HomePage() {
         name: "Base UI Components for React",
         url: siteConfig.url,
         description:
-          "Shadcn-style Base UI components for React and Next.js with copy-and-own installation.",
+          "Copy-paste React components built with Base UI and Tailwind CSS, including production-ready date pickers.",
         keywords: homeKeywords.join(", "),
       },
       {
@@ -121,10 +121,14 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 lg:px-0 py-8 md:py-32">
             <LandingReveal className="max-w-3xl">
               {/* Badge */}
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
+              <Link
+                href="/docs/components/date-picker"
+                className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              >
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                All Base UI primitives covered · one primitive library for your app
-              </div>
+                New in v1.2.0: Date Picker and Date Range Picker
+                <ArrowRightIcon className="size-3" aria-hidden="true" />
+              </Link>
 
               {/* Headline */}
               <h1 className="font-mono text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl leading-[1.1]">
@@ -135,9 +139,9 @@ export default function HomePage() {
 
               <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
                 An open-source registry of shadcn-style Base UI components for React and Next.js.
-                Copy accessible components into your project, own the code, and build forms,
-                fields, drawers, dialogs, selects, and the rest of your application on one
-                primitive library with Tailwind CSS.
+                Copy accessible components into your project, own the code, and build forms, fields,
+                drawers, dialogs, selects, and the rest of your application on one primitive library
+                with Tailwind CSS.
               </p>
 
               {/* Install command */}
@@ -190,8 +194,8 @@ export default function HomePage() {
             </p>
             <p className="text-muted-foreground mb-10 max-w-xl">
               If you are searching for shadcn Base UI components, baseui-cn gives you the same
-              copy-and-own workflow while staying fully on Base UI primitives. That means one
-              portal system, one focus model, and fewer overlay bugs.
+              copy-and-own workflow while staying fully on Base UI primitives. That means one portal
+              system, one focus model, and fewer overlay bugs.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -842,8 +846,8 @@ export default function HomePage() {
                 What teams ask when they want Base UI components
               </p>
               <p className="text-muted-foreground mb-10 max-w-2xl">
-                baseui-cn is a Base UI-first component registry with a shadcn-style workflow.
-                Start with the{" "}
+                baseui-cn is a Base UI-first component registry with a shadcn-style workflow. Start
+                with the{" "}
                 <Link href="/docs" className="text-foreground underline underline-offset-4">
                   documentation
                 </Link>
@@ -876,9 +880,7 @@ export default function HomePage() {
                   className="rounded-xl border border-border bg-background p-6"
                 >
                   <h3 className="text-base font-semibold text-foreground">{faq.question}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {faq.answer}
-                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
                 </article>
               ))}
             </div>

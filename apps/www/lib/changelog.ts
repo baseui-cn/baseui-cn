@@ -23,11 +23,46 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "date-picker-and-date-range-picker",
+    date: "July 13, 2026",
+    isoDate: "2026-07-13",
+    title: "Date Picker And Date Range Picker",
+    badge: "Latest",
+    summary:
+      "A new production-ready Date Picker system with single-date and date-range controls, form-ready inputs, presets, formatting, and theme-aware registry installation.",
+    notes: [
+      "Added production-ready DatePicker, DatePickerInput, DateRangePicker, and DateRangePickerInput components with stable month and year navigation.",
+      "Integrated picker controls with the standard Input, Field, and Popover components for consistent labels, focus states, clear actions, and accessibility.",
+      "Added common date format presets, custom date-fns display formats, partial range labels, and immediate draft updates for range selections and presets.",
+      "Added built-in date-range presets plus Base UI form examples that validate Date values and report submitted dates through toast feedback.",
+      "Mapped the calendar stylesheet to global theme and radius tokens for polished light, dark, inline, and popover presentations.",
+      "Published Date Picker through the registry with its component source, stylesheet, DayPicker and date-fns dependencies, and required baseui-cn components.",
+    ],
+    links: [
+      { href: "/docs/components/date-picker", label: "View Date Picker docs" },
+      { href: "/docs/changelog", label: "Read changelog" },
+    ],
+    examples: [
+      {
+        href: "/docs/components/date-picker",
+        label: "Date and range inputs",
+        description:
+          "Use labeled, form-ready controls for single dates, date ranges, presets, and custom display formats.",
+      },
+      {
+        href: "/docs/components/date-picker",
+        label: "Theme-aware calendars",
+        description:
+          "Install inline and popover calendars that inherit the application's color and radius tokens.",
+      },
+    ],
+  },
+  {
     slug: "base-ui-1-6-compatibility-and-cli-fix",
     date: "July 9, 2026",
     isoDate: "2026-07-09",
     title: "Base UI 1.6 Compatibility And CLI Fix",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "A compatibility release that updates the registry baseline to Base UI 1.6, moves OTP Field to the stable API, and fixes the CLI runtime for new Windows developers.",
     notes: [
@@ -46,12 +81,14 @@ export const changelogEntries: ChangelogRelease[] = [
       {
         href: "/docs/components/otp-field",
         label: "Stable OTP Field",
-        description: "Use the stable Base UI OTP Field primitive for verification and recovery-code flows.",
+        description:
+          "Use the stable Base UI OTP Field primitive for verification and recovery-code flows.",
       },
       {
         href: "/docs/components/otp-field",
         label: "Masked entry",
-        description: "Obscure one-time codes on shared screens while keeping the same installable component.",
+        description:
+          "Obscure one-time codes on shared screens while keeping the same installable component.",
       },
     ],
   },
@@ -81,17 +118,20 @@ export const changelogEntries: ChangelogRelease[] = [
       {
         href: "/docs/components/combobox",
         label: "Async assignee picker",
-        description: "Use the updated async combobox pattern for teammate search and assignment flows.",
+        description:
+          "Use the updated async combobox pattern for teammate search and assignment flows.",
       },
       {
         href: "/docs/components/combobox",
         label: "Filter chips with overflow",
-        description: "Build denser filter bars by combining multi-select chips with collapsed overflow handling.",
+        description:
+          "Build denser filter bars by combining multi-select chips with collapsed overflow handling.",
       },
       {
         href: "/docs/components/fieldset",
         label: "Settings sections",
-        description: "Use bordered FieldsetLegend variants and sizes to structure forms, preferences, and account panels.",
+        description:
+          "Use bordered FieldsetLegend variants and sizes to structure forms, preferences, and account panels.",
       },
     ],
   },
@@ -117,7 +157,8 @@ export const changelogEntries: ChangelogRelease[] = [
       {
         href: "/docs",
         label: "Faster onboarding",
-        description: "Share a clearer docs starting point when teammates are new to the component registry.",
+        description:
+          "Share a clearer docs starting point when teammates are new to the component registry.",
       },
     ],
   },
@@ -144,12 +185,14 @@ export const changelogEntries: ChangelogRelease[] = [
       {
         href: "/docs/components/command",
         label: "Command menu",
-        description: "Build searchable command palettes and workspace shortcuts with richer grouped interactions.",
+        description:
+          "Build searchable command palettes and workspace shortcuts with richer grouped interactions.",
       },
       {
         href: "/docs/components/data-grid",
         label: "Editable admin tables",
-        description: "Use the data grid family for inline editing, async states, and optimistic table workflows.",
+        description:
+          "Use the data grid family for inline editing, async states, and optimistic table workflows.",
       },
     ],
   },
@@ -175,7 +218,8 @@ export const changelogEntries: ChangelogRelease[] = [
       {
         href: "/docs/components/login",
         label: "Auth screens",
-        description: "Ship login and signup flows with stronger validation, alerts, and success feedback.",
+        description:
+          "Ship login and signup flows with stronger validation, alerts, and success feedback.",
       },
     ],
   },

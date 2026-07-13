@@ -67,7 +67,6 @@
   /* --border: theme(colors.gray.300); */
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --radius: 0.5rem;
 
   /* Docs-specific */
   --sidebar-width: 240px;

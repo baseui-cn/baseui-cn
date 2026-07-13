@@ -4,7 +4,7 @@
   "label": "Checkbox Group",
   "section": "Form",
   "description": "A semantic group for managing multiple related checkboxes with shared state.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "baseUIVersion": "^1.6.0",
   "files": [
     {

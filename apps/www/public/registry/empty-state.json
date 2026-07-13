@@ -4,7 +4,7 @@
   "label": "Empty State",
   "section": "Blocks",
   "description": "Empty state with icon, title, description, and action.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "baseUIVersion": "^1.6.0",
   "files": [
     {

@@ -27,6 +27,7 @@ export function ComponentPreview({ preview, code, className }: ComponentPreviewP
       <div className="flex items-center justify-between border-b border-border px-1 bg-muted/30">
         <div className="flex">
           <button
+            type="button"
             onClick={() => setTab("preview")}
             className={cn(
               "px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px",
@@ -38,6 +39,7 @@ export function ComponentPreview({ preview, code, className }: ComponentPreviewP
             Preview
           </button>
           <button
+            type="button"
             onClick={() => setTab("code")}
             className={cn(
               "px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px",
@@ -51,21 +53,42 @@ export function ComponentPreview({ preview, code, className }: ComponentPreviewP
         </div>
         {tab === "code" && (
           <button
+            type="button"
             onClick={handleCopy}
             className="mr-2 flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
           >
             {copied ? (
               <>
                 <svg className="h-3.5 w-3.5 text-green-500" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8l3.5 3.5 6.5-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M3 8l3.5 3.5 6.5-7"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
                 Copied
               </>
             ) : (
               <>
                 <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none">
-                  <rect x="5" y="5" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
-                  <path d="M3 11V3h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <rect
+                    x="5"
+                    y="5"
+                    width="8"
+                    height="8"
+                    rx="1.5"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                  />
+                  <path
+                    d="M3 11V3h8"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
                 Copy
               </>
@@ -76,9 +99,7 @@ export function ComponentPreview({ preview, code, className }: ComponentPreviewP
 
       {/* Preview pane */}
       {tab === "preview" && (
-        <div className="flex min-h-55 items-center justify-center p-8 bg-background">
-          {preview}
-        </div>
+        <div className="flex min-h-55 items-center justify-center p-8 bg-background">{preview}</div>
       )}
 
       {/* Code pane */}

@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "components": [
     {
       "name": "button",
@@ -282,6 +282,18 @@
         "interactive"
       ],
       "badge": "Stable"
+    },
+    {
+      "name": "date-picker",
+      "type": "component",
+      "description": "Single-date and date-range calendars with popover inputs, presets, and formatting.",
+      "tags": [
+        "form",
+        "calendar",
+        "overlay",
+        "interactive"
+      ],
+      "badge": "New"
     },
     {
       "name": "input-group",

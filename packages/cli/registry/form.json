@@ -4,7 +4,7 @@
   "label": "Form",
   "section": "Form",
   "description": "A Base UI form wrapper for submission handling, validation wiring, and consistent layout.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "baseUIVersion": "^1.6.0",
   "files": [
     {

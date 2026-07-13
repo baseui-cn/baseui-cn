@@ -36,7 +36,11 @@ function resolveInstallFilePath(
   const projectSourceRoot = path.dirname(path.dirname(installAnchor))
   const normalizedPath = filePath.replace(/\\/g, "/")
 
-  if (normalizedPath.startsWith("components/") || normalizedPath.startsWith("hooks/")) {
+  if (
+    normalizedPath.startsWith("components/") ||
+    normalizedPath.startsWith("hooks/") ||
+    normalizedPath.startsWith("styles/")
+  ) {
     return path.resolve(projectSourceRoot, normalizedPath)
   }
 

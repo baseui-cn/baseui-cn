@@ -4,7 +4,7 @@
   "label": "Data Grid",
   "section": "Navigation & Data",
   "description": "A composable TanStack data grid family with editing, virtualization, drag-and-drop, and Base UI-friendly controls.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "baseUIVersion": "^1.6.0",
   "files": [
     {
