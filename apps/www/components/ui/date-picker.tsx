@@ -531,14 +531,12 @@ function CaptionToggle({ label, expanded, onClick, ariaLabel }: CaptionTogglePro
       size="sm"
       className="rdp-caption_label rdp-caption_label--button"
       onClick={onClick}
+      data-expanded={expanded ? "" : undefined}
       aria-expanded={expanded}
       aria-label={ariaLabel}
     >
       <span>{label}</span>
-      <ChevronDownIcon
-        className={cn("rdp-caption_chevron size-3.5", expanded && "rdp-caption_chevron--expanded")}
-        aria-hidden="true"
-      />
+      <ChevronDownIcon className="rdp-caption_chevron" aria-hidden="true" />
     </Button>
   )
 }
@@ -774,7 +772,11 @@ const CalendarMonth: CustomComponents["Month"] = ({
 
   if (view === "days") {
     return (
-      <div {...props} className={className} data-rdp-panel={displayIndex}>
+      <div
+        {...props}
+        className={cn(className, context.numberOfMonths > 1 && "rdp-range_panel")}
+        data-rdp-panel={displayIndex}
+      >
         {children}
       </div>
     )
@@ -802,7 +804,11 @@ const CalendarMonth: CustomComponents["Month"] = ({
   return (
     <div
       {...props}
-      className={cn(className, "rdp-month--picker")}
+      className={cn(
+        className,
+        "rdp-month--picker",
+        context.numberOfMonths > 1 && "rdp-range_panel"
+      )}
       data-panel-view={view}
       data-rdp-panel={displayIndex}
     >
@@ -992,6 +998,23 @@ function CalendarSurface({
     })
   }
 
+  function handleShellKeyDownCapture(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "Escape" || !hasOpenPanelPicker) return
+
+    const targetPanel = (event.target as HTMLElement).closest<HTMLElement>("[data-rdp-panel]")
+    const targetIndex = Number(targetPanel?.dataset.rdpPanel)
+    const activeDisplayIndex =
+      Number.isInteger(targetIndex) && visiblePanelViews[targetIndex] !== "days"
+        ? targetIndex
+        : visiblePanelViews.findIndex((view) => view !== "days")
+
+    if (activeDisplayIndex < 0) return
+
+    event.preventDefault()
+    event.stopPropagation()
+    returnPanelToDays(activeDisplayIndex)
+  }
+
   const disabledMatchers = getDisabledMatchers(disabled, disabledDates, minDate, maxDate)
   const rootClassName = cn("rdp-root rdp-root--embedded", classNames?.root, className)
   const contextValue: CalendarSurfaceContextValue = {
@@ -1048,6 +1071,7 @@ function CalendarSurface({
       <DayPicker
         {...commonDayPickerProps}
         mode="range"
+        resetOnSelect
         selected={selection as DateRange | undefined}
         onSelect={(range) => onSelect(range)}
       />
@@ -1065,6 +1089,7 @@ function CalendarSurface({
         data-picker-view={hasOpenPanelPicker ? "mixed" : "days"}
         data-size={size}
         data-view-transition={effectiveViewTransition}
+        onKeyDownCapture={handleShellKeyDownCapture}
         style={
           {
             "--rdp-animation-duration": `${resolvedAnimationDuration}ms`,

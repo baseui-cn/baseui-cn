@@ -33,6 +33,8 @@ interface InstallState {
   fresh: string[]
 }
 
+type DependencyConflictAction = "reuse" | "replace" | "cancel"
+
 function resolveInstallFilePath(
   filePath: string,
   defaultComponentsPath: string,
@@ -178,22 +180,26 @@ export async function installComponents(components: string[], options: InstallOp
     `${allComponents.length} component${allComponents.length !== 1 ? "s" : ""} resolved`
   )
 
-  if (installState.dependencyColliding.length && !options.overwrite) {
-    console.log()
-    console.log(chalk.bold("Existing dependency components found and reused:"))
-    installState.dependencyColliding.forEach((componentName) => {
-      const component = componentEntries.get(componentName)
-      if (!component) return
+  const dependencyAction = await resolveDependencyConflicts(
+    installState,
+    componentEntries,
+    config,
+    options
+  )
 
-      console.log(
-        chalk.dim(
-          `  - ${componentName} -> ${describeInstallTarget(component, config.componentsPath, options.path)}`
-        )
-      )
-    })
+  if (dependencyAction === "cancel") {
+    console.log()
+    console.log(chalk.dim("Installation cancelled. No component files were changed."))
+    return
   }
 
-  const toInstall = await resolveInstallTargets(installState, componentEntries, config, options)
+  const toInstall = await resolveInstallTargets(
+    installState,
+    componentEntries,
+    config,
+    options,
+    dependencyAction
+  )
 
   if (!toInstall.length) {
     console.log()
@@ -225,7 +231,9 @@ export async function installComponents(components: string[], options: InstallOp
 
   await ensureThemeCSS(config)
 
-  const allNpmDeps: string[] = []
+  const allNpmDeps = allComponents.flatMap(
+    (componentName) => componentEntries.get(componentName)?.dependencies?.required ?? []
+  )
 
   for (const componentName of toInstall) {
     const spinner = ora(
@@ -236,10 +244,6 @@ export async function installComponents(components: string[], options: InstallOp
       const component = componentEntries.get(componentName)
       if (!component) {
         throw new Error(`Missing registry entry for "${componentName}"`)
-      }
-
-      if (component.dependencies?.required) {
-        allNpmDeps.push(...component.dependencies.required)
       }
 
       for (const file of component.files) {
@@ -321,11 +325,69 @@ async function partitionInstallState(
   return { requestedColliding, dependencyColliding, fresh }
 }
 
-async function resolveInstallTargets(
+async function resolveDependencyConflicts(
   installState: InstallState,
   componentEntries: Map<string, ComponentEntry>,
   config: { componentsPath: string },
   options: InstallOptions
+): Promise<DependencyConflictAction> {
+  if (!installState.dependencyColliding.length || options.overwrite) {
+    return options.overwrite ? "replace" : "reuse"
+  }
+
+  console.log()
+  console.log(chalk.bold("Some dependency components already exist:"))
+  installState.dependencyColliding.forEach((componentName) => {
+    const component = componentEntries.get(componentName)
+    if (!component) return
+
+    console.log(
+      chalk.dim(
+        `  - ${componentName} -> ${describeInstallTarget(component, config.componentsPath, options.path)}`
+      )
+    )
+  })
+
+  if (options.yes) {
+    console.log()
+    console.log(`${chalk.green("✔")} Reuse existing files`)
+    return "reuse"
+  }
+
+  console.log()
+  const { dependencyAction } = await prompts({
+    type: "select",
+    name: "dependencyAction",
+    message: "How should baseui-cn handle these existing dependencies?",
+    choices: [
+      {
+        title: "Reuse existing files",
+        description: "Keep project customizations and install only missing components.",
+        value: "reuse",
+      },
+      {
+        title: "Replace existing files",
+        description: "Overwrite the listed dependency component files.",
+        value: "replace",
+      },
+      {
+        title: "Cancel",
+        description: "Stop before installing the resolved components.",
+        value: "cancel",
+      },
+    ],
+    initial: 0,
+  })
+
+  return dependencyAction ?? "cancel"
+}
+
+async function resolveInstallTargets(
+  installState: InstallState,
+  componentEntries: Map<string, ComponentEntry>,
+  config: { componentsPath: string },
+  options: InstallOptions,
+  dependencyAction: DependencyConflictAction
 ): Promise<string[]> {
   const { requestedColliding, dependencyColliding, fresh } = installState
 
@@ -333,13 +395,16 @@ async function resolveInstallTargets(
     return [...fresh, ...requestedColliding, ...dependencyColliding]
   }
 
+  const installable =
+    dependencyAction === "replace" ? [...fresh, ...dependencyColliding] : [...fresh]
+
   if (!requestedColliding.length || options.yes) {
     if (requestedColliding.length && options.yes) {
       console.log()
       console.log(chalk.dim("Existing target files detected (skipping without --overwrite):"))
       requestedColliding.forEach((component) => console.log(chalk.dim(`  - ${component}`)))
     }
-    return fresh
+    return installable
   }
 
   console.log()
@@ -363,7 +428,7 @@ async function resolveInstallTargets(
     initial: true,
   })
 
-  return replaceExisting ? [...fresh, ...requestedColliding] : fresh
+  return replaceExisting ? [...installable, ...requestedColliding] : installable
 }
 
 function describeInstallTarget(

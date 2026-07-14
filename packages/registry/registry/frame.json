@@ -4,7 +4,7 @@
   "label": "Frame",
   "section": "Layout",
   "description": "A layered panel shell for grouping sections, headers, and supporting content.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "baseUIVersion": "^1.6.0",
   "files": [
     {

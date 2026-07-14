@@ -119,9 +119,11 @@ Use `minDate` and `maxDate` for navigation and selection boundaries. `disabledDa
 
 ### Month and year switcher
 
-Select the caption to move from days to years, then months. `startMonth` and `endMonth` also limit the custom switcher.
+Select the caption to open the year view, select a year to choose a month, then select a month to return to days. Press Escape from either custom view to return to day selection without closing an open picker. `startMonth` and `endMonth` also limit the custom switcher.
 
 <ComponentPreview name="date-picker-switcher" />
+
+After a completed range, selecting any day starts a new range from that date. Select a second day to complete the new range; selecting an earlier second day normalizes the dates into chronological order.
 
 ### Controlled value
 

@@ -29,7 +29,7 @@ bunx baseui-cn add button
 2. Add the components or blocks you want with `add`.
 3. Run `update` later to replace previously installed files with the latest registry versions.
 
-The CLI can also detect existing component files and prompt before replacing them. If you already know you want to replace matching files, use `--overwrite` with `add` or use `update`, which replaces installed files by default.
+The CLI detects existing requested and dependency component files before writing. Existing dependencies can be reused, replaced, or cancelled with reuse selected by default. If you already know you want to replace every matching requested and dependency file, use `--overwrite` with `add` or use `update`, which replaces installed files by default.
 
 ## Commands
 

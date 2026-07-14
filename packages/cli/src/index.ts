@@ -11,7 +11,7 @@ const program = new Command()
 program
   .name("baseui-cn")
   .description("Add Base UI components to your React app - one command at a time.")
-  .version("1.2.1")
+  .version("1.2.2")
 
 program
   .command("init")
@@ -26,7 +26,7 @@ program
   .command("add [components...]")
   .description("Add one or more components to your project.")
   .option("-y, --yes", "Skip confirmation prompts", false)
-  .option("-o, --overwrite", "Overwrite existing files", false)
+  .option("-o, --overwrite", "Overwrite existing requested and dependency component files", false)
   .option("-a, --all", "Add all available components", false)
   .option("--css <path>", "Stylesheet file to update with theme variables")
   .option("-p, --path <path>", "Custom path to add components to")

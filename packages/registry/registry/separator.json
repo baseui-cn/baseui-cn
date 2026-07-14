@@ -4,7 +4,7 @@
   "label": "Separator",
   "section": "Display",
   "description": "Visually or semantically separates content.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "baseUIVersion": "^1.6.0",
   "files": [
     {

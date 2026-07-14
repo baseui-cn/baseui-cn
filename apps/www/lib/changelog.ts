@@ -23,11 +23,50 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "date-picker-range-and-accessibility-fixes",
+    date: "July 14, 2026",
+    isoDate: "2026-07-14",
+    title: "Date Picker Range And Accessibility Fixes",
+    badge: "Latest",
+    summary:
+      "Refined range selection, custom month and year navigation, and multi-month layout behavior following community accessibility and usability feedback.",
+    notes: [
+      "Prevented disabled and duplicate outside days from inheriting selected range endpoint or middle styling.",
+      "Added clear theme-aware focus outlines to month, year, and caption controls for keyboard users.",
+      "Stabilized multi-month panel dimensions so opening either month or year selector does not shift the adjacent calendar, presets, or footer.",
+      "Made the first click after a completed range start a new two-click range selection from any date.",
+      "Changed Escape handling so an open month or year selector returns to days before a subsequent Escape closes the picker.",
+    ],
+    links: [
+      { href: "/docs/components/date-picker", label: "View Date Picker docs" },
+      { href: "/docs/changelog", label: "Read changelog" },
+    ],
+  },
+  {
+    slug: "cli-dependency-conflict-safety",
+    date: "July 13, 2026",
+    isoDate: "2026-07-13",
+    title: "CLI Dependency Conflict Safety",
+    badge: "Release",
+    summary:
+      "Added an explicit, safe dependency conflict flow so existing project components can be reused, deliberately replaced, or cancelled before any component files are written.",
+    notes: [
+      "Added a Reuse existing files, Replace existing files, and Cancel selector when transitive dependency component files already exist.",
+      "Made reuse the default selection and the automatic behavior for --yes, protecting customized project components.",
+      "Kept requested component conflicts in a separate replace or skip prompt and preserved --overwrite as the explicit replace-everything option.",
+      "Stopped dependency resolution output before prompting and continued installing required npm packages even when dependency component files are reused.",
+    ],
+    links: [
+      { href: "/docs/installation", label: "View installation docs" },
+      { href: "/docs/components/date-picker", label: "View Date Picker docs" },
+    ],
+  },
+  {
     slug: "cli-dependency-reuse-fix",
     date: "July 13, 2026",
     isoDate: "2026-07-13",
     title: "CLI Dependency Reuse Fix",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "Fixed add command behavior so existing dependency components are reused by default instead of prompting to replace them, with clean spinner and prompt sequencing during dependency resolution.",
     notes: [
