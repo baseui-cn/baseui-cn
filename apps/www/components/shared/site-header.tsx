@@ -9,6 +9,7 @@ import { SiteSearch } from "@/components/shared/site-search"
 import { siteConfig } from "@/lib/site-config"
 import { trackExternalLink } from "@/lib/events"
 import { useTheme } from "next-themes"
+import { PackageIcon } from "lucide-react"
 
 function LogoMark({ size = 22 }: { size?: number }) {
   return (
@@ -91,6 +92,17 @@ export function SiteHeader() {
         {/* Right side */}
         <div className="flex items-center gap-1">
           <ThemeToggle />
+          <a
+            href={siteConfig.npm}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            aria-label="View baseui-cn on npm"
+            title="View baseui-cn on npm"
+            onClick={() => trackExternalLink(siteConfig.npm)}
+          >
+            <PackageIcon className="h-4 w-4" aria-hidden="true" />
+          </a>
           <a
             href={siteConfig.github}
             target="_blank"
