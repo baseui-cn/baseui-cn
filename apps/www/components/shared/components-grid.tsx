@@ -3,11 +3,13 @@
 import * as React from "react"
 import Link from "next/link"
 import {
+  ArrowRightIcon,
   CalendarDays,
+  Clock3,
+  RefreshCw,
   SearchIcon,
   Sparkles,
   TableProperties,
-  TerminalSquare,
   XIcon,
 } from "lucide-react"
 import { CopyButton } from "@/components/shared/copy-button"
@@ -51,6 +53,12 @@ const FILTERS: FilterDefinition[] = [
     matches: (component) => component.name === "date-picker",
   },
   {
+    id: "time-picker",
+    label: "Time Picker",
+    featured: true,
+    matches: (component) => component.name === "time-picker",
+  },
+  {
     id: "display",
     label: "Display",
     matches: (component) => matchesTagPrefix(component, "display"),
@@ -84,20 +92,20 @@ const FILTERS: FilterDefinition[] = [
 
 const FEATURED_INSTALLABLES = [
   {
-    href: "/docs/components/command",
-    icon: TerminalSquare,
-    label: "Try AI Command Search Demo",
-    description:
-      "Open the richer command palette demo with grouped results, keyboard flows, and AI-style search interactions.",
-    cta: "Open command docs",
-  },
-  {
     href: "/docs/components/data-grid",
     icon: TableProperties,
-    label: "Try Data Grid Optimistic Updates",
+    label: "Data Grid",
     description:
-      "Explore inline editing, pending states, rollback handling, and the optimistic update workflow in one installable family.",
+      "Build sortable, editable data surfaces with reusable columns, row actions, and loading states.",
     cta: "Open data-grid docs",
+  },
+  {
+    href: "/docs/components/data-grid#async-editing-with-optimistic-rollback",
+    icon: RefreshCw,
+    label: "Optimistic Update",
+    description:
+      "Explore inline editing with pending states, optimistic commits, failure feedback, and rollback handling.",
+    cta: "Open optimistic update demo",
   },
   {
     href: "/docs/components/date-picker",
@@ -106,6 +114,14 @@ const FEATURED_INSTALLABLES = [
     description:
       "Single date, date range, presets, forms, formats, and theme-aware styling in one registry install.",
     cta: "Open date-picker docs",
+  },
+  {
+    href: "/docs/components/time-picker",
+    icon: Clock3,
+    label: "Time Picker",
+    description:
+      "Desktop, mobile, and static time selection with formats, steps, constraints, and form-ready controls.",
+    cta: "Open time-picker docs",
   },
 ] as const
 
@@ -140,10 +156,10 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
         </AlertTitle>
         <AlertDescription>
           <p>
-            Start with the AI command search, optimistic data grid, or the new production-ready Date
-            Picker and Date Range Picker.
+            Explore the Data Grid, optimistic editing workflow, Date Picker, and the new Time
+            Picker.
           </p>
-          <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             {FEATURED_INSTALLABLES.map((feature) => {
               const Icon = feature.icon
 
@@ -167,7 +183,10 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
                       Demo
                     </Badge>
                   </div>
-                  <div className="mt-3 text-xs font-medium text-primary">{feature.cta} →</div>
+                  <div className="mt-3 text-xs font-medium text-primary">
+                    {feature.cta}
+                    <ArrowRightIcon className="size-3 inline-block ml-1 transition-transform group-hover:translate-x-0.5" />
+                  </div>
                 </Link>
               )
             })}
@@ -197,7 +216,7 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
             )}
           </InputGroup>
 
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground sr-only">
             Quick filters for the most-used component groups
           </span>
         </div>
@@ -268,11 +287,13 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
                   </code>
                   <CopyButton size="icon-xs" text={`npx baseui-cn add ${component.name}`} />
                 </div>
+
                 <Link
                   href={`/docs/components/${component.name}`}
-                  className="inline-flex text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  className="px-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  View docs →
+                  View docs
+                  <ArrowRightIcon className="size-3 inline-block ml-1 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </div>
             </div>

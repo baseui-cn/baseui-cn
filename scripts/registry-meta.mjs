@@ -334,6 +334,29 @@ export const componentMeta = {
     installedPath: "components/ui/date-picker.tsx",
     exportName: "DatePicker",
   }),
+  "time-picker": defineEntry("time-picker", {
+    section: "Form",
+    description:
+      "Static, popover, and dialog time pickers with clock and list modes, steps, and formatting.",
+    tags: ["form", "time", "overlay", "interactive"],
+    badge: COMPONENT_BADGE,
+    baseUIPrimitive: "Popover, Dialog",
+    deps: ["@base-ui/react", "lucide-react"],
+    registryDeps: ["utils", "button", "field", "input", "popover", "dialog"],
+    files: [
+      {
+        sourcePath: "time-picker.tsx",
+        targetPath: "components/ui/time-picker.tsx",
+      },
+      {
+        sourcePath: "apps/www/styles/time-picker.styles.css",
+        targetPath: "styles/time-picker.styles.css",
+        type: "style",
+      },
+    ],
+    installedPath: "components/ui/time-picker.tsx",
+    exportName: "TimePicker",
+  }),
   "input-group": defineEntry("input-group", {
     section: "Form",
     description: "A composite input component with addons, icons, and buttons.",

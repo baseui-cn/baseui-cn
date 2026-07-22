@@ -1,0 +1,186 @@
+---
+title: Time Picker
+description: A production-ready React time picker with desktop Popover, mobile Dialog, static variants, 12-hour and 24-hour formats, minute steps, form examples, and theme-aware styling.
+component: true
+links:
+  doc: https://base-ui.com/react/overview/quick-start
+---
+
+<ComponentPreview name="time-picker-demo" />
+
+## Installation
+
+<InstallTabs slug="time-picker" addCmd="baseui-cn@latest add time-picker" />
+
+The registry item installs the component, its token-based stylesheet, and the Base UI primitives used by the popover and dialog variants.
+
+## Usage
+
+```tsx
+import { TimePicker, TimePickerDialog, TimePickerInput } from "@/components/ui/time-picker"
+```
+
+Time values are canonical 24-hour strings. Use `HH:mm` normally and `HH:mm:ss` when `showSeconds` is enabled. The `format`, `formatPreset`, and `displayFormat` props change presentation only.
+
+```tsx
+const [time, setTime] = React.useState<string | null>("09:30")
+
+<TimePickerInput value={time} onValueChange={setTime} />
+```
+
+## Examples
+
+### Desktop input
+
+`TimePickerInput` combines the standard Input and Field treatment with a Base UI Popover. It defaults to list mode and keeps changes as a draft until OK is selected. The Input surface is intentionally read-only for deterministic keyboard, pointer, and mobile behavior.
+
+<ComponentPreview name="time-picker-input" />
+
+### 24-hour format
+
+The canonical value is always 24-hour time. The `format` prop controls the display and available hour options.
+
+<ComponentPreview name="time-picker-24-hour" />
+
+```tsx
+<TimePickerInput format="24h" formatPreset="iso" />
+```
+
+### Minute and second steps
+
+Use `minuteStep` and `secondStep` to control the options shown by the clock and list selectors. Pointer and touch movement defaults to `touchPrecision="minute"`, so the clock can still select an exact value such as `08:17` when five-minute labels are shown. Set `touchPrecision="step"` when pointer movement should snap to `minuteStep`. Seconds are included in the value only when `showSeconds` is enabled. Selecting an hour advances to minutes by default, and minutes advance to seconds when present. Set `autoAdvance={false}` to keep the current view.
+
+<ComponentPreview name="time-picker-steps" />
+
+### Static portrait
+
+Use `TimePicker` when the selector should remain visible. Static pickers have no footer actions by default and support both `"clock"` and `"list"` modes.
+
+<ComponentPreview name="time-picker-static" />
+
+### Static landscape
+
+Set `orientation="landscape"` on a static picker to place the segmented display and period controls beside the selector. On narrow screens, the layout remains responsive without changing the value model.
+
+<ComponentPreview name="time-picker-static-landscape" />
+
+### Mobile Dialog portrait
+
+`TimePickerDialog` composes the existing Base UI Dialog with a title, large segmented time display, accessible AM/PM toggle, clock face, and Cancel/OK footer.
+
+<ComponentPreview name="time-picker-dialog" />
+
+### Mobile Dialog landscape
+
+Set `orientation="landscape"` on the Dialog to keep the display and controls balanced beside the clock face. On very narrow screens the layout stacks to prevent overflow.
+
+<ComponentPreview name="time-picker-dialog-landscape" />
+
+### Flexible actions
+
+Popover and dialog pickers show Cancel and OK by default. Configure secondary actions with one `actions` object; Now, Clear, Reset, and optional precision controls stay in the footer, visually separate from the primary action row.
+
+<ComponentPreview name="time-picker-actions" />
+
+```tsx
+<TimePickerInput
+  actions={{
+    showNow: true,
+    showClear: true,
+    showReset: true,
+    showPrecisionControls: true,
+    showCancel: true,
+    showOk: true,
+  }}
+/>
+```
+
+The trigger clear icon is controlled separately with `clearable`. Footer Clear changes the draft and waits for OK; Reset restores the committed value; Cancel discards the draft. Precision controls are hidden by default. When enabled, `-1m` and `+1m` always move exactly one minute and wrap across hours and midnight without snapping to `minuteStep`.
+
+### Display formats
+
+Built-in presets cover common displays. `displayFormat` accepts `H`, `HH`, `h`, `hh`, `mm`, `ss`, and `a` tokens and takes precedence over `formatPreset`.
+
+<ComponentPreview name="time-picker-format" />
+
+```tsx
+<TimePickerInput formatPreset="short" />
+<TimePickerInput format="24h" formatPreset="iso" />
+<TimePickerInput format="24h" displayFormat="HH.mm" />
+```
+
+### Boundaries and disabled times
+
+`minTime` and `maxTime` constrain the selectable day. `disabledTimes` accepts a time string, an inclusive `{ from, to }` interval, a matcher function, or an array of matchers.
+
+<ComponentPreview name="time-picker-constraints" />
+
+### Form submit
+
+The form example keeps the canonical string in state and submits it through a hidden field. The toast shows both the formatted display and transport value.
+
+<ComponentPreview name="time-picker-form" />
+
+### Date and time form
+
+Date Picker returns a `Date` object while Time Picker returns a timezone-free canonical string. This example keeps them separate and creates an ISO-like local value for display. Your application should decide the timezone and final serialization strategy.
+
+<ComponentPreview name="date-time-form" />
+
+## View switching
+
+The hour, minute, and optional second segments are buttons. Select a segment directly or use the previous and next controls beneath the display. Direct rendered options move immediately to their value. Clock dragging selects exact minutes by default or stepped minutes when `touchPrecision="step"`. Neither interaction forces a clockwise path, and the clock hand follows the shortest visual route across values such as `55`, `00`, and `05`. The active segment is visually highlighted and announced to assistive technology. `autoAdvance` defaults to `true`.
+
+## Formatting helpers
+
+The module exports `parseTimeValue`, `formatTimeValue`, `isValidTimeValue`, `clampTimeToStep`, and `compareTimeValues`. These helpers do not create `Date` objects or apply a timezone.
+
+| Preset   | 12-hour display | 24-hour display |
+| -------- | --------------- | --------------- |
+| `short`  | `h:mm a`        | `H:mm`          |
+| `medium` | `hh:mm a`       | `HH:mm`         |
+| `full`   | `hh:mm:ss a`    | `HH:mm:ss`      |
+| `iso`    | `HH:mm`         | `HH:mm`         |
+
+When `showSeconds` is true, `short`, `medium`, and `iso` include seconds as well.
+
+## Styling
+
+`time-picker.styles.css` maps component aliases to the standard `--popover`, `--foreground`, `--muted`, `--accent`, `--primary`, `--border`, `--ring`, and `--radius` tokens. Inline pickers own one frame; popover and dialog variants reuse their overlay frame without adding a second border.
+
+## API
+
+### TimePicker
+
+| Prop                  | Type                                 | Default       | Description                                  |
+| --------------------- | ------------------------------------ | ------------- | -------------------------------------------- |
+| `value`               | `TimeValue \| null`                  | -             | Controlled canonical time                    |
+| `defaultValue`        | `TimeValue \| null`                  | -             | Initial uncontrolled time                    |
+| `onValueChange`       | `(value: TimeValue \| null) => void` | -             | Called with `HH:mm` or `HH:mm:ss`            |
+| `format`              | `"12h" \| "24h"`                     | `"12h"`       | Display and hour-selection system            |
+| `pickerMode`          | `"clock" \| "list"`                  | `"clock"`     | Visual selector                              |
+| `orientation`         | `"portrait" \| "landscape"`          | `"portrait"`  | Picker layout                                |
+| `touchPrecision`      | `"minute" \| "step"`                 | `"minute"`    | Exact or stepped pointer minute selection    |
+| `autoAdvance`         | `boolean`                            | `true`        | Advances hours to minutes and then seconds   |
+| `minuteStep`          | `1 \| 5 \| 10 \| 15 \| 30`           | `1`           | Minute options shown by the clock and list   |
+| `showSeconds`         | `boolean`                            | `false`       | Adds second selection and canonical seconds  |
+| `secondStep`          | `1 \| 5 \| 10 \| 15 \| 30`           | `1`           | Second interval                              |
+| `minTime` / `maxTime` | `TimeValue`                          | -             | Inclusive daily boundaries                   |
+| `disabledTimes`       | `TimeMatcher \| TimeMatcher[]`       | -             | Disabled exact times, intervals, or matchers |
+| `actions`             | `TimePickerActionConfig`             | variant-based | Footer action visibility                     |
+| `size`                | `"sm" \| "md" \| "lg"`               | `"md"`        | Picker dimensions                            |
+| `classNames`          | `TimePickerClassNames`               | -             | Named overrides for picker internals         |
+
+Static `TimePicker` has no actions by default. Popover and dialog variants default to `{ showCancel: true, showOk: true }`.
+
+### TimePickerInput
+
+Accepts the TimePicker selection props plus `label`, `placeholder`, `formatPreset`, `displayFormat`, `clearable`, `closeOnSelect`, `open`, `defaultOpen`, and `onOpenChange`. It defaults to list mode.
+
+### TimePickerDialog
+
+Accepts the same selection and formatting props plus `label`, `title`, `description`, `orientation`, and controlled dialog state. It defaults to clock mode. Escape closes the Dialog through the standard Base UI behavior.
+
+## Typed input
+
+The first release uses an accessible read-only Input trigger. Free-form typing is intentionally deferred until locale, partial-input, validation, and mobile keyboard behavior can be handled without changing the canonical value contract.

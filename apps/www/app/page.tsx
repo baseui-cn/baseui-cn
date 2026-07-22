@@ -11,7 +11,7 @@ import { latestChangelogEntry } from "@/lib/changelog"
 import { components } from "@/lib/registry"
 import { siteConfig } from "@/lib/site-config"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon, DotIcon } from "lucide-react"
+import { ArrowRight, ArrowRightIcon, DotIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 const homeKeywords = [
@@ -30,12 +30,12 @@ export const metadata: Metadata = {
   },
   title: "Base UI Components for React - shadcn-style Registry",
   description:
-    "Copy-paste React components built with Base UI and Tailwind CSS, including buttons, forms, data display, OTP fields, and production-ready date pickers.",
+    "Copy-paste React components built with Base UI and Tailwind CSS, including buttons, forms, data display, OTP fields, and production-ready date and time pickers.",
   keywords: homeKeywords,
   openGraph: {
     title: "Base UI Components for React - shadcn-style Registry",
     description:
-      "Copy-paste React components built with Base UI and Tailwind CSS, including buttons, forms, data display, OTP fields, and production-ready date pickers.",
+      "Copy-paste React components built with Base UI and Tailwind CSS, including buttons, forms, data display, OTP fields, and production-ready date and time pickers.",
     url: siteConfig.url,
     images: ["/baseui-cn-og.png"],
   },
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Base UI Components for React - shadcn-style Registry",
     description:
-      "Copy-paste React components built with Base UI and Tailwind CSS, including buttons, forms, data display, OTP fields, and production-ready date pickers.",
+      "Copy-paste React components built with Base UI and Tailwind CSS, including buttons, forms, data display, OTP fields, and production-ready date and time pickers.",
     images: ["/baseui-cn-og.png"],
   },
 }
@@ -77,7 +77,7 @@ export default function HomePage() {
         name: "Base UI Components for React",
         url: siteConfig.url,
         description:
-          "Copy-paste React components built with Base UI and Tailwind CSS, including production-ready date pickers.",
+          "Copy-paste React components built with Base UI and Tailwind CSS, including production-ready date and time pickers.",
         keywords: homeKeywords.join(", "),
       },
       {
@@ -122,11 +122,11 @@ export default function HomePage() {
             <LandingReveal className="max-w-3xl">
               {/* Badge */}
               <Link
-                href="/docs/components/date-picker"
+                href="/docs/components/time-picker"
                 className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                New in v1.2.0: Date Picker and Date Range Picker
+                New in v1.3.0: Time Picker
                 <ArrowRightIcon className="size-3" aria-hidden="true" />
               </Link>
 
@@ -732,9 +732,10 @@ export default function HomePage() {
               </h2>
               <Link
                 href="/docs/components/button"
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm text-accent-foreground hover:text-foreground transition-colors"
               >
-                View all docs →
+                View all docs
+                <ArrowRightIcon className="size-3 inline-block ml-1" />
               </Link>
             </div>
             <ComponentsGrid components={components} />

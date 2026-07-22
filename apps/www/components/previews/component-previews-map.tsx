@@ -49,6 +49,7 @@ import { switchPreviewMap } from "@/components/previews/switch-previews"
 import { tablePreviewMap } from "@/components/previews/table-previews"
 import { tabsPreviewMap } from "@/components/previews/tabs-previews"
 import { textareaPreviewMap } from "@/components/previews/textarea-previews"
+import { timePickerPreviewMap } from "@/components/previews/time-picker-previews"
 import { toastPreviewMap } from "@/components/previews/toast-previews"
 import { togglePreviewMap } from "@/components/previews/toggle-previews"
 import { toggleGroupPreviewMap } from "@/components/previews/toggle-group-previews"
@@ -87,6 +88,7 @@ export const previewMap: Record<string, ComponentType> = {
   ...sliderPreviewMap,
   ...switchPreviewMap,
   ...textareaPreviewMap,
+  ...timePickerPreviewMap,
   ...togglePreviewMap,
   ...toggleGroupPreviewMap,
 

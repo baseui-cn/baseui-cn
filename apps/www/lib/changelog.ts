@@ -23,11 +23,47 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "time-picker",
+    date: "July 22, 2026",
+    isoDate: "2026-07-22",
+    title: "Time Picker",
+    badge: "Latest",
+    summary:
+      "A production-ready Time Picker system for desktop, mobile, and static layouts with precise clock and list selection, formatting, constraints, and form-ready controls.",
+    notes: [
+      "Added TimePicker, TimePickerInput, and TimePickerDialog with shared provider and context architecture and canonical HH:mm or HH:mm:ss values.",
+      "Added desktop Popover and mobile Dialog controls plus static portrait and landscape variants with clock and list selection modes.",
+      "Added 12-hour and 24-hour formats, minute and second steps, exact or stepped touch precision, and accessible hour, minute, second, and AM/PM controls.",
+      "Added display format presets, custom display tokens, min and max boundaries, and disabled-time matchers without changing the canonical value model.",
+      "Added configurable Now, Clear, Reset, Cancel, OK, and opt-in one-minute precision actions with clean draft, commit, and cancel behavior.",
+      "Added Time Picker form submission and combined Date and Time examples with toast feedback and explicit serialization guidance.",
+      "Published Time Picker through the registry with its component source, theme-aware stylesheet, npm dependencies, and required baseui-cn primitives.",
+    ],
+    links: [
+      { href: "/docs/components/time-picker", label: "View Time Picker docs" },
+      { href: "/docs/changelog", label: "Read changelog" },
+    ],
+    examples: [
+      {
+        href: "/docs/components/time-picker",
+        label: "Desktop and mobile pickers",
+        description:
+          "Use an anchored desktop Popover, mobile Dialog, or static clock and list surface from one component family.",
+      },
+      {
+        href: "/docs/components/time-picker",
+        label: "Date and time forms",
+        description:
+          "Keep Date objects and canonical time strings separate while your application owns timezone serialization.",
+      },
+    ],
+  },
+  {
     slug: "date-picker-range-and-accessibility-fixes",
     date: "July 14, 2026",
     isoDate: "2026-07-14",
     title: "Date Picker Range And Accessibility Fixes",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "Refined range selection, custom month and year navigation, and multi-month layout behavior following community accessibility and usability feedback.",
     notes: [
