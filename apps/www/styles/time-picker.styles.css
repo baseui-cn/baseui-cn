@@ -234,6 +234,9 @@
   border-radius: 50%;
   outline: none;
   background: var(--tp-muted-bg);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  overscroll-behavior: contain;
   touch-action: none;
   user-select: none;
 }
@@ -298,7 +301,9 @@
   cursor: pointer;
   font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
+  touch-action: none;
   transform: translate(-50%, -50%);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .tp-clock_option:hover,

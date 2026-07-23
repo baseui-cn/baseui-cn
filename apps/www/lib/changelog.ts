@@ -23,11 +23,31 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "time-picker-interaction-fix",
+    date: "July 23, 2026",
+    isoDate: "2026-07-23",
+    title: "Time Picker Interaction Fix",
+    badge: "Latest",
+    summary:
+      "Fixed TimePickerInput popover dismissal and scroll behavior and improved mobile clock touch gestures.",
+    notes: [
+      "Made the anchored desktop TimePickerInput a modal Base UI Popover that locks document scrolling while open.",
+      "Prevented outside pointer interactions from dismissing a draft while preserving Cancel, OK, trigger, and keyboard Escape behavior.",
+      "Unified clock-number taps and clock-face drags under one captured pointer gesture so touch can begin anywhere on the dial.",
+      "Kept literal option taps exact, deduplicated pointer updates, and prevented drag gestures from auto-advancing or committing twice.",
+      "Improved 24-hour inner and outer ring detection and added mobile selection safeguards without changing the public API.",
+    ],
+    links: [
+      { href: "/docs/components/time-picker", label: "View Time Picker docs" },
+      { href: "/docs/changelog", label: "Read changelog" },
+    ],
+  },
+  {
     slug: "time-picker-mobile-dialog-fix",
     date: "July 23, 2026",
     isoDate: "2026-07-23",
     title: "Time Picker Mobile Dialog Fix",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "Fixed TimePickerDialog mobile positioning and improved clock touch interaction reliability.",
     notes: [

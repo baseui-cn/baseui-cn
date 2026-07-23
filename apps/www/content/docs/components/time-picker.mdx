@@ -34,6 +34,8 @@ const [time, setTime] = React.useState<string | null>("09:30")
 
 `TimePickerInput` combines the standard Input and Field treatment with a Base UI Popover. It defaults to list mode and keeps changes as a draft until OK is selected. The Input surface is intentionally read-only for deterministic keyboard, pointer, and mobile behavior.
 
+The anchored picker locks document scrolling and keeps its draft open when users interact outside it. Use OK to commit, Cancel to restore the committed value, or Escape to cancel from the keyboard.
+
 <ComponentPreview name="time-picker-input" />
 
 ### 24-hour format

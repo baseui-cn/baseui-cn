@@ -866,14 +866,23 @@ function TimePickerClockFace() {
   React.useEffect(() => {
     setHandAngle((currentAngle) => currentAngle + shortestAngleDelta(currentAngle, targetHandAngle))
   }, [targetHandAngle])
-  const dragStateRef = React.useRef<{
-    pointerId: number
-    view: TimePickerView
-    startX: number
-    startY: number
+  const gestureStateRef = React.useRef<{
+    active: boolean
+    pointerId: number | null
+    startedAtX: number
+    startedAtY: number
     moved: boolean
-    selectedUnit: number | null
-  } | null>(null)
+    activeViewAtStart: TimePickerView
+    lastSelectedUnit: number | null
+  }>({
+    active: false,
+    pointerId: null,
+    startedAtX: 0,
+    startedAtY: 0,
+    moved: false,
+    activeViewAtStart: activeView,
+    lastSelectedUnit: null,
+  })
   const options =
     activeView === "hours"
       ? format === "12h"
@@ -896,7 +905,7 @@ function TimePickerClockFace() {
     if (view === "hours") {
       let hour = Math.round(normalizedDegrees / 30) % 12
       if (format === "12h") hour = hour === 0 ? 12 : hour
-      else if (Math.sqrt(x * x + y * y) < rect.width * 0.36) hour += 12
+      else if (Math.sqrt(x * x + y * y) < Math.min(rect.width, rect.height) * 0.37) hour += 12
       return hour
     }
 
@@ -909,70 +918,104 @@ function TimePickerClockFace() {
 
   const selectFromPointer = (
     event: React.PointerEvent<HTMLDivElement>,
-    dragState: NonNullable<typeof dragStateRef.current>
+    gestureState: typeof gestureStateRef.current
   ) => {
-    const unit = getUnitFromPointer(event, dragState.view)
-    if (dragState.selectedUnit === unit) return true
-    const selected = selectUnit(unit, dragState.view, { complete: false })
-    if (selected) dragState.selectedUnit = unit
+    const unit = getUnitFromPointer(event, gestureState.activeViewAtStart)
+    if (gestureState.lastSelectedUnit === unit) return true
+    const selected = selectUnit(unit, gestureState.activeViewAtStart, { complete: false })
+    if (selected) gestureState.lastSelectedUnit = unit
+    return selected
+  }
+
+  const selectLiteralUnit = (unit: number, gestureState: typeof gestureStateRef.current) => {
+    if (gestureState.lastSelectedUnit === unit) return true
+    const selected = selectUnit(unit, gestureState.activeViewAtStart, { complete: false })
+    if (selected) gestureState.lastSelectedUnit = unit
     return selected
   }
 
   const releasePointer = (element: HTMLDivElement, pointerId: number) => {
+    gestureStateRef.current = {
+      active: false,
+      pointerId: null,
+      startedAtX: 0,
+      startedAtY: 0,
+      moved: false,
+      activeViewAtStart: activeView,
+      lastSelectedUnit: null,
+    }
     if (element.hasPointerCapture(pointerId)) element.releasePointerCapture(pointerId)
-    dragStateRef.current = null
   }
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (
-      disabled ||
-      !event.isPrimary ||
-      event.button !== 0 ||
-      (event.target as HTMLElement).closest(".tp-clock_option")
-    ) {
-      return
-    }
+    if (disabled || !event.isPrimary || event.button !== 0 || gestureStateRef.current.active) return
+
+    const option = (event.target as HTMLElement).closest<HTMLButtonElement>(".tp-clock_option")
+    const literalUnit = option?.dataset.unit ? Number(option.dataset.unit) : null
+    if (option && event.pointerType === "mouse") option.focus({ preventScroll: true })
     event.preventDefault()
-    const dragState = {
+    const gestureState = {
+      active: true,
       pointerId: event.pointerId,
-      view: activeView,
-      startX: event.clientX,
-      startY: event.clientY,
+      startedAtX: event.clientX,
+      startedAtY: event.clientY,
       moved: false,
-      selectedUnit: null,
+      activeViewAtStart: activeView,
+      lastSelectedUnit: null,
     }
-    dragStateRef.current = dragState
+    gestureStateRef.current = gestureState
     event.currentTarget.setPointerCapture(event.pointerId)
-    selectFromPointer(event, dragState)
+    if (literalUnit === null || Number.isNaN(literalUnit)) {
+      selectFromPointer(event, gestureState)
+    } else {
+      selectLiteralUnit(literalUnit, gestureState)
+    }
   }
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const dragState = dragStateRef.current
-    if (!dragState || dragState.pointerId !== event.pointerId) return
+    const gestureState = gestureStateRef.current
+    if (!gestureState.active || gestureState.pointerId !== event.pointerId) return
     event.preventDefault()
-    const distance = Math.hypot(event.clientX - dragState.startX, event.clientY - dragState.startY)
-    if (distance >= 4) dragState.moved = true
-    selectFromPointer(event, dragState)
+    const distance = Math.hypot(
+      event.clientX - gestureState.startedAtX,
+      event.clientY - gestureState.startedAtY
+    )
+    if (distance < 4) return
+    gestureState.moved = true
+    selectFromPointer(event, gestureState)
   }
 
   const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
-    const dragState = dragStateRef.current
-    if (!dragState || dragState.pointerId !== event.pointerId) return
+    const gestureState = gestureStateRef.current
+    if (!gestureState.active || gestureState.pointerId !== event.pointerId) return
     event.preventDefault()
-    const selected = selectFromPointer(event, dragState)
-    const shouldComplete = selected && !dragState.moved
-    const completedView = dragState.view
+    const selected = gestureState.moved
+      ? selectFromPointer(event, gestureState)
+      : gestureState.lastSelectedUnit !== null
+    const shouldComplete = selected && !gestureState.moved
+    const completedView = gestureState.activeViewAtStart
     releasePointer(event.currentTarget, event.pointerId)
     if (shouldComplete) completeSelection(completedView)
   }
 
   const handlePointerCancel = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (dragStateRef.current?.pointerId !== event.pointerId) return
+    if (!gestureStateRef.current.active || gestureStateRef.current.pointerId !== event.pointerId) {
+      return
+    }
     releasePointer(event.currentTarget, event.pointerId)
   }
 
   const handleLostPointerCapture = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (dragStateRef.current?.pointerId === event.pointerId) dragStateRef.current = null
+    if (gestureStateRef.current.pointerId !== event.pointerId) return
+    gestureStateRef.current = {
+      active: false,
+      pointerId: null,
+      startedAtX: 0,
+      startedAtY: 0,
+      moved: false,
+      activeViewAtStart: activeView,
+      lastSelectedUnit: null,
+    }
   }
 
   return (
@@ -1014,6 +1057,7 @@ function TimePickerClockFace() {
             tabIndex={selected || (!options.includes(selectedUnit) && index === 0) ? 0 : -1}
             className={cn("tp-clock_option", classNames?.clockOption)}
             data-selected={selected || undefined}
+            data-unit={option}
             style={
               {
                 "--tp-option-x": `${50 + Math.sin(radians) * radius}%`,
@@ -1021,9 +1065,12 @@ function TimePickerClockFace() {
               } as React.CSSProperties
             }
             onKeyDown={handleOptionKeyDown}
-            onPointerDown={(event) => event.stopPropagation()}
             onClick={(event) => {
               event.stopPropagation()
+              if (event.detail !== 0) {
+                event.preventDefault()
+                return
+              }
               selectUnit(option, activeView)
             }}
           >
@@ -1386,13 +1433,19 @@ function TimePickerPopoverRoot({
 }: TimePickerOverlayRootProps & { popoverClassName?: string }) {
   const { reset } = useTimePickerContext()
 
-  const handleOpenChange = (nextOpen: boolean) => {
-    if (!nextOpen) reset()
-    onOpenChange(nextOpen)
-  }
-
   return (
-    <Popover open={open} onOpenChange={handleOpenChange}>
+    <Popover
+      modal
+      open={open}
+      onOpenChange={(nextOpen, eventDetails) => {
+        if (!nextOpen && eventDetails.reason === "outside-press") {
+          eventDetails.cancel()
+          return
+        }
+        if (!nextOpen) reset()
+        onOpenChange(nextOpen)
+      }}
+    >
       <TimePickerInputTrigger
         kind="popover"
         controlId={controlId}
