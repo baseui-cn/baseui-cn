@@ -23,11 +23,30 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "time-picker-draft-and-mobile-search-fix",
+    date: "July 23, 2026",
+    isoDate: "2026-07-23",
+    title: "Time Picker Draft And Mobile Search Fix",
+    badge: "Latest",
+    summary:
+      "Fixed empty Time Picker confirmation so OK commits the visible draft and made documentation search available from the mobile header.",
+    notes: [
+      "Added defaultPickerValue as an uncommitted opening draft that remains distinct from defaultValue.",
+      "Made empty pickers use the nearest valid stepped current time when no explicit picker draft is provided.",
+      "Kept Cancel lossless while allowing OK to commit the time already visible when a picker opens empty.",
+      "Added a compact mobile search trigger that opens the existing documentation command dialog without duplicating search state or navigation.",
+    ],
+    links: [
+      { href: "/docs/components/time-picker", label: "View Time Picker docs" },
+      { href: "/docs/changelog", label: "Read changelog" },
+    ],
+  },
+  {
     slug: "time-picker-interaction-fix",
     date: "July 23, 2026",
     isoDate: "2026-07-23",
     title: "Time Picker Interaction Fix",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "Fixed TimePickerInput popover dismissal and scroll behavior and improved mobile clock touch gestures.",
     notes: [

@@ -4,7 +4,7 @@
   "label": "Label",
   "section": "Form",
   "description": "Accessible form label with required indicator.",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "baseUIVersion": "^1.6.0",
   "files": [
     {

@@ -135,6 +135,7 @@ function TimePickerFormPreviewContent() {
           setValue(nextValue)
           if (nextValue) setError("")
         }}
+        defaultPickerValue="09:30"
         minuteStep={5}
       />
       <input type="hidden" name="meetingTime" value={value ?? ""} />

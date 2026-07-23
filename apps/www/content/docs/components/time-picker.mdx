@@ -36,6 +36,8 @@ const [time, setTime] = React.useState<string | null>("09:30")
 
 The anchored picker locks document scrolling and keeps its draft open when users interact outside it. Use OK to commit, Cancel to restore the committed value, or Escape to cancel from the keyboard.
 
+When opened empty, the picker can show a draft time. OK commits the visible draft; Cancel restores the previous value. Use `defaultPickerValue` to choose that initial draft, or omit it to use the nearest valid stepped current time. Unlike `defaultValue`, it does not commit a value until the user confirms.
+
 <ComponentPreview name="time-picker-input" />
 
 ### 24-hour format
@@ -158,6 +160,7 @@ When `showSeconds` is true, `short`, `medium`, and `iso` include seconds as well
 | --------------------- | ------------------------------------ | ------------- | -------------------------------------------- |
 | `value`               | `TimeValue \| null`                  | -             | Controlled canonical time                    |
 | `defaultValue`        | `TimeValue \| null`                  | -             | Initial uncontrolled time                    |
+| `defaultPickerValue`  | `TimeValue`                          | current time  | Initial uncommitted draft when opened empty  |
 | `onValueChange`       | `(value: TimeValue \| null) => void` | -             | Called with `HH:mm` or `HH:mm:ss`            |
 | `format`              | `"12h" \| "24h"`                     | `"12h"`       | Display and hour-selection system            |
 | `pickerMode`          | `"clock" \| "list"`                  | `"clock"`     | Visual selector                              |
@@ -177,7 +180,7 @@ Static `TimePicker` has no actions by default. Popover and dialog variants defau
 
 ### TimePickerInput
 
-Accepts the TimePicker selection props plus `label`, `placeholder`, `formatPreset`, `displayFormat`, `clearable`, `closeOnSelect`, `open`, `defaultOpen`, and `onOpenChange`. It defaults to list mode.
+Accepts the TimePicker selection props plus `label`, `placeholder`, `formatPreset`, `displayFormat`, `defaultPickerValue`, `clearable`, `closeOnSelect`, `open`, `defaultOpen`, and `onOpenChange`. It defaults to list mode.
 
 ### TimePickerDialog
 

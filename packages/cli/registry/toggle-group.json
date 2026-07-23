@@ -4,7 +4,7 @@
   "label": "Toggle Group",
   "section": "Display",
   "description": "A set of two-state buttons grouped together.",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "baseUIVersion": "^1.6.0",
   "files": [
     {

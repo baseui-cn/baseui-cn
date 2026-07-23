@@ -73,6 +73,7 @@ type TimeStep = 1 | 5 | 10 | 15 | 30
 export type TimePickerProps = {
   value?: TimeValue | null
   defaultValue?: TimeValue | null
+  defaultPickerValue?: TimeValue
   onValueChange?: (value: TimeValue | null) => void
   format?: TimeFormat
   formatPreset?: TimeFormatPreset
@@ -377,6 +378,44 @@ function getSelectableValue(
   return null
 }
 
+function getInitialPickerValue(
+  defaultPickerValue: TimeValue | undefined,
+  showSeconds: boolean,
+  minuteStep: TimeStep,
+  secondStep: TimeStep,
+  minTime: TimeValue | undefined,
+  maxTime: TimeValue | undefined,
+  disabledTimes: TimeMatcher | TimeMatcher[] | undefined
+): TimeValue | null {
+  const preferredValue =
+    normalizeCanonicalValue(defaultPickerValue, showSeconds, minuteStep, secondStep) ??
+    nowValue(showSeconds, minuteStep, secondStep)
+  const preferredParts = parseTimeValue(preferredValue)
+  if (!preferredParts) return null
+
+  let nearestValue: TimeValue | null = null
+  let nearestDistance = Number.POSITIVE_INFINITY
+  const preferredSeconds = partsToSeconds(preferredParts)
+  const seconds = showSeconds ? stepOptions(secondStep) : [0]
+
+  for (let hour = 0; hour < 24; hour += 1) {
+    for (const minute of stepOptions(minuteStep)) {
+      for (const second of seconds) {
+        const candidate = serializeTime({ hour, minute, second }, showSeconds)
+        if (isUnavailable(candidate, minTime, maxTime, disabledTimes)) continue
+
+        const distance = Math.abs(partsToSeconds({ hour, minute, second }) - preferredSeconds)
+        if (distance < nearestDistance) {
+          nearestDistance = distance
+          nearestValue = candidate
+        }
+      }
+    }
+  }
+
+  return nearestValue
+}
+
 function useControllableValue(
   controlledValue: TimeValue | null | undefined,
   defaultValue: TimeValue | null | undefined,
@@ -504,9 +543,11 @@ type TimePickerContextValue = {
   clear: () => void
   clearCommitted: () => void
   reset: () => void
+  prepareDraft: () => void
   selectNow: () => void
   cancel: () => void
   commit: () => void
+  canCommit: boolean
 }
 
 const TimePickerContext = React.createContext<TimePickerContextValue | null>(null)
@@ -529,6 +570,7 @@ type TimePickerProviderProps = {
   | "format"
   | "formatPreset"
   | "displayFormat"
+  | "defaultPickerValue"
   | "minuteStep"
   | "showSeconds"
   | "secondStep"
@@ -557,6 +599,7 @@ function TimePickerProvider({
   format = "12h",
   formatPreset = "medium",
   displayFormat,
+  defaultPickerValue,
   minuteStep: minuteStepProp = 1,
   showSeconds = false,
   secondStep: secondStepProp = 1,
@@ -581,6 +624,7 @@ function TimePickerProvider({
   const actions = resolveActions(variant, actionConfig)
   const deferred = actions.showOk
   const [draftState, setDraftState] = React.useState<TimeValue | null>(committedValue)
+  const [draftUnavailable, setDraftUnavailable] = React.useState(false)
   const [activeView, setActiveView] = React.useState<TimePickerView>(
     initialView === "seconds" && !showSeconds ? "minutes" : initialView
   )
@@ -589,9 +633,13 @@ function TimePickerProvider({
     normalizeTimeShape(draftValue, showSeconds) ?? nowValue(showSeconds, minuteStep, secondStep)
   const parts = parseTimeValue(selectedValue) ?? { hour: 0, minute: 0, second: 0 }
   const draftValueRef = React.useRef(draftValue)
+  const draftUnavailableRef = React.useRef(draftUnavailable)
   React.useEffect(() => {
     draftValueRef.current = draftValue
   }, [draftValue])
+  React.useEffect(() => {
+    draftUnavailableRef.current = draftUnavailable
+  }, [draftUnavailable])
   const views: TimePickerView[] = showSeconds
     ? ["hours", "minutes", "seconds"]
     : ["hours", "minutes"]
@@ -600,11 +648,14 @@ function TimePickerProvider({
 
   const setDraftValue = (nextValue: TimeValue | null) => {
     draftValueRef.current = nextValue
+    draftUnavailableRef.current = false
+    setDraftUnavailable(false)
     setDraftState(nextValue)
     if (!deferred) onCommittedValueChange(nextValue)
   }
 
   const finishWithValue = (nextValue: TimeValue | null) => {
+    draftValueRef.current = nextValue
     setDraftState(nextValue)
     onCommittedValueChange(nextValue)
     onAccept?.(nextValue)
@@ -690,20 +741,60 @@ function TimePickerProvider({
 
   const clear = () => setDraftValue(null)
   const clearCommitted = () => {
+    draftValueRef.current = null
+    draftUnavailableRef.current = false
+    setDraftUnavailable(false)
     setDraftState(null)
     onCommittedValueChange(null)
   }
-  const reset = () => setDraftValue(committedValue)
+  const reset = React.useCallback(() => {
+    draftValueRef.current = committedValue
+    draftUnavailableRef.current = false
+    setDraftUnavailable(false)
+    setDraftState(committedValue)
+  }, [committedValue])
+  const prepareDraft = React.useCallback(() => {
+    if (draftValueRef.current || committedValue) return
+
+    const initialValue = getInitialPickerValue(
+      defaultPickerValue,
+      showSeconds,
+      minuteStep,
+      secondStep,
+      minTime,
+      maxTime,
+      disabledTimes
+    )
+    draftValueRef.current = initialValue
+    draftUnavailableRef.current = initialValue === null
+    setDraftUnavailable(initialValue === null)
+    setDraftState(initialValue)
+  }, [
+    committedValue,
+    defaultPickerValue,
+    disabledTimes,
+    maxTime,
+    minTime,
+    minuteStep,
+    secondStep,
+    showSeconds,
+  ])
   const selectNow = () => {
     const nextValue = nowValue(showSeconds, minuteStep, secondStep)
     if (!isUnavailable(nextValue, minTime, maxTime, disabledTimes)) setDraftValue(nextValue)
   }
   const cancel = () => {
+    draftValueRef.current = committedValue
+    draftUnavailableRef.current = false
+    setDraftUnavailable(false)
     setDraftState(committedValue)
     onCancel?.()
     onRequestClose?.()
   }
-  const commit = () => finishWithValue(draftValue)
+  const commit = () => {
+    if (draftUnavailableRef.current) return
+    finishWithValue(draftValueRef.current)
+  }
 
   return (
     <TimePickerContext.Provider
@@ -741,9 +832,11 @@ function TimePickerProvider({
         clear,
         clearCommitted,
         reset,
+        prepareDraft,
         selectNow,
         cancel,
         commit,
+        canCommit: !draftUnavailable,
       }}
     >
       {children}
@@ -1165,6 +1258,7 @@ function TimePickerActions() {
     canAdjustMinute,
     cancel,
     commit,
+    canCommit,
     classNames,
   } = useTimePickerContext()
   const hasSecondary =
@@ -1238,7 +1332,7 @@ function TimePickerActions() {
           </Button>
         ) : null}
         {actions.showOk ? (
-          <Button type="button" size="sm" disabled={disabled} onClick={commit}>
+          <Button type="button" size="sm" disabled={disabled || !canCommit} onClick={commit}>
             OK
           </Button>
         ) : null}
@@ -1431,13 +1525,18 @@ function TimePickerPopoverRoot({
   triggerClassName,
   popoverClassName,
 }: TimePickerOverlayRootProps & { popoverClassName?: string }) {
-  const { reset } = useTimePickerContext()
+  const { prepareDraft, reset } = useTimePickerContext()
+
+  React.useEffect(() => {
+    if (open) prepareDraft()
+  }, [open, prepareDraft])
 
   return (
     <Popover
       modal
       open={open}
       onOpenChange={(nextOpen, eventDetails) => {
+        if (nextOpen) prepareDraft()
         if (!nextOpen && eventDetails.reason === "outside-press") {
           eventDetails.cancel()
           return
@@ -1567,10 +1666,15 @@ function TimePickerDialogRoot({
   description: string
   dialogClassName?: string
 }) {
-  const { reset } = useTimePickerContext()
+  const { prepareDraft, reset } = useTimePickerContext()
+
+  React.useEffect(() => {
+    if (open) prepareDraft()
+  }, [open, prepareDraft])
 
   const handleOpenChange = (nextOpen: boolean) => {
-    if (!nextOpen) reset()
+    if (nextOpen) prepareDraft()
+    else reset()
     onOpenChange(nextOpen)
   }
 
