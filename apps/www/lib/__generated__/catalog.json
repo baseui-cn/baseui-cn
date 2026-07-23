@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
+  "version": "1.3.1",
   "components": [
     {
       "name": "button",
@@ -11,7 +11,7 @@
         "form",
         "primitive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Button",
       "installedPath": "components/ui/button.tsx",
       "baseUIPrimitive": "Button"
@@ -26,7 +26,7 @@
         "display",
         "primitive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Badge",
       "installedPath": "components/ui/badge.tsx"
     },
@@ -40,7 +40,7 @@
         "display",
         "feedback"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Alert",
       "installedPath": "components/ui/alert.tsx"
     },
@@ -54,7 +54,7 @@
         "display",
         "primitive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Avatar",
       "installedPath": "components/ui/avatar.tsx",
       "baseUIPrimitive": "Avatar"
@@ -69,7 +69,7 @@
         "display",
         "layout"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Card",
       "installedPath": "components/ui/card.tsx"
     },
@@ -84,7 +84,7 @@
         "layout",
         "list"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Item",
       "installedPath": "components/ui/item.tsx"
     },
@@ -98,7 +98,7 @@
         "display",
         "primitive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Separator",
       "installedPath": "components/ui/separator.tsx",
       "baseUIPrimitive": "Separator"
@@ -113,7 +113,7 @@
         "display",
         "layout"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "ScrollArea",
       "installedPath": "components/ui/scroll-area.tsx",
       "baseUIPrimitive": "ScrollArea"
@@ -128,7 +128,7 @@
         "display",
         "feedback"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Skeleton",
       "installedPath": "components/ui/skeleton.tsx"
     },
@@ -142,7 +142,7 @@
         "display",
         "feedback"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Spinner",
       "installedPath": "components/ui/spinner.tsx"
     },
@@ -156,7 +156,7 @@
         "display",
         "feedback"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Progress",
       "installedPath": "components/ui/progress.tsx",
       "badge": "New",
@@ -173,7 +173,7 @@
         "primitive",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Toggle",
       "installedPath": "components/ui/toggle.tsx",
       "badge": "New",
@@ -190,7 +190,7 @@
         "primitive",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "ToggleGroup",
       "installedPath": "components/ui/toggle-group.tsx",
       "badge": "New",
@@ -206,7 +206,7 @@
         "form",
         "primitive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Input",
       "installedPath": "components/ui/input.tsx",
       "baseUIPrimitive": "Input"
@@ -221,7 +221,7 @@
         "form",
         "primitive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Textarea",
       "installedPath": "components/ui/textarea.tsx"
     },
@@ -235,7 +235,7 @@
         "form",
         "primitive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Label",
       "installedPath": "components/ui/label.tsx"
     },
@@ -249,7 +249,7 @@
         "form",
         "layout"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Field",
       "installedPath": "components/ui/field.tsx",
       "baseUIPrimitive": "Field"
@@ -265,7 +265,7 @@
         "layout",
         "validation"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Form",
       "installedPath": "components/ui/form.tsx",
       "baseUIPrimitive": "Form"
@@ -281,7 +281,7 @@
         "layout",
         "semantic"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Fieldset",
       "installedPath": "components/ui/fieldset.tsx",
       "badge": "New",
@@ -297,7 +297,7 @@
         "form",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Checkbox",
       "installedPath": "components/ui/checkbox.tsx",
       "baseUIPrimitive": "Checkbox"
@@ -313,7 +313,7 @@
         "interactive",
         "group"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "CheckboxGroup",
       "installedPath": "components/ui/checkbox-group.tsx",
       "badge": "New",
@@ -329,7 +329,7 @@
         "form",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Switch",
       "installedPath": "components/ui/switch.tsx",
       "baseUIPrimitive": "Switch"
@@ -344,7 +344,7 @@
         "form",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "RadioGroup",
       "installedPath": "components/ui/radio-group.tsx",
       "baseUIPrimitive": "RadioGroup + Radio"
@@ -360,7 +360,7 @@
         "overlay",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Select",
       "installedPath": "components/ui/select.tsx",
       "baseUIPrimitive": "Select"
@@ -376,7 +376,7 @@
         "overlay",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Combobox",
       "installedPath": "components/ui/combobox.tsx",
       "badge": "New",
@@ -393,7 +393,7 @@
         "overlay",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Autocomplete",
       "installedPath": "components/ui/autocomplete.tsx",
       "badge": "New",
@@ -409,7 +409,7 @@
         "form",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Slider",
       "installedPath": "components/ui/slider.tsx",
       "badge": "New",
@@ -426,7 +426,7 @@
         "primitive",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "NumberField",
       "installedPath": "components/ui/number-field.tsx",
       "badge": "New",
@@ -443,7 +443,7 @@
         "primitive",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "OtpField",
       "installedPath": "components/ui/otp-field.tsx",
       "badge": "Stable",
@@ -461,7 +461,7 @@
         "overlay",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "DatePicker",
       "installedPath": "components/ui/date-picker.tsx",
       "badge": "New",
@@ -479,7 +479,7 @@
         "overlay",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "TimePicker",
       "installedPath": "components/ui/time-picker.tsx",
       "badge": "New",
@@ -495,7 +495,7 @@
         "form",
         "composite"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "InputGroup",
       "installedPath": "components/ui/input-group.tsx"
     },
@@ -509,7 +509,7 @@
         "overlay",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Dialog",
       "installedPath": "components/ui/dialog.tsx",
       "baseUIPrimitive": "Dialog"
@@ -524,7 +524,7 @@
         "overlay",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "AlertDialog",
       "installedPath": "components/ui/alert-dialog.tsx",
       "baseUIPrimitive": "AlertDialog"
@@ -540,7 +540,7 @@
         "interactive",
         "mobile"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Drawer",
       "installedPath": "components/ui/drawer.tsx",
       "badge": "New",
@@ -556,7 +556,7 @@
         "overlay",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Popover",
       "installedPath": "components/ui/popover.tsx",
       "baseUIPrimitive": "Popover"
@@ -571,7 +571,7 @@
         "overlay",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Tooltip",
       "installedPath": "components/ui/tooltip.tsx",
       "baseUIPrimitive": "Tooltip"
@@ -586,7 +586,7 @@
         "overlay",
         "display"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "PreviewCard",
       "installedPath": "components/ui/preview-card.tsx",
       "badge": "New",
@@ -603,7 +603,7 @@
         "interactive",
         "navigation"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "DropdownMenu",
       "installedPath": "components/ui/dropdown-menu.tsx",
       "baseUIPrimitive": "Menu"
@@ -618,7 +618,7 @@
         "overlay",
         "feedback"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Toast",
       "installedPath": "components/ui/toast.tsx",
       "badge": "New",
@@ -634,7 +634,7 @@
         "overlay",
         "navigation"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Command",
       "installedPath": "components/ui/command.tsx",
       "badge": "New"
@@ -649,7 +649,7 @@
         "disclosure",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Collapsible",
       "installedPath": "components/ui/collapsible.tsx",
       "baseUIPrimitive": "Collapsible"
@@ -664,7 +664,7 @@
         "disclosure",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Accordion",
       "installedPath": "components/ui/accordion.tsx",
       "baseUIPrimitive": "Accordion"
@@ -679,7 +679,7 @@
         "layout",
         "display"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Frame",
       "installedPath": "components/ui/frame.tsx",
       "badge": "New"
@@ -694,7 +694,7 @@
         "navigation",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Tabs",
       "installedPath": "components/ui/tabs.tsx",
       "baseUIPrimitive": "Tabs"
@@ -709,7 +709,7 @@
         "data",
         "display"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Table",
       "installedPath": "components/ui/table.tsx"
     },
@@ -724,7 +724,7 @@
         "table",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "DataGrid",
       "installedPath": "components/data-grid/*",
       "badge": "New"
@@ -739,7 +739,7 @@
         "navigation",
         "display"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Breadcrumb",
       "installedPath": "components/ui/breadcrumb.tsx"
     },
@@ -753,7 +753,7 @@
         "navigation",
         "interactive"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Pagination",
       "installedPath": "components/ui/pagination.tsx"
     },
@@ -768,7 +768,7 @@
         "interactive",
         "overlay"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "Menubar",
       "installedPath": "components/ui/menubar.tsx",
       "baseUIPrimitive": "Menubar"
@@ -784,7 +784,7 @@
         "interactive",
         "overlay"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "NavigationMenu",
       "installedPath": "components/ui/navigation-menu.tsx",
       "baseUIPrimitive": "NavigationMenu"
@@ -799,7 +799,7 @@
         "block",
         "feedback"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "EmptyState",
       "installedPath": "components/ui/blocks.tsx"
     },
@@ -814,7 +814,7 @@
         "form",
         "auth"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "LoginBlock",
       "installedPath": "components/ui/auth.tsx"
     },
@@ -829,7 +829,7 @@
         "form",
         "auth"
       ],
-      "version": "1.3.0",
+      "version": "1.3.1",
       "exportName": "SignupBlock",
       "installedPath": "components/ui/auth.tsx"
     }

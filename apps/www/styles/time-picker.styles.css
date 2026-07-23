@@ -557,16 +557,27 @@
 }
 
 .tp-dialog_content {
-  width: min(22rem, calc(100vw - 1.5rem)) !important;
+  --tp-dialog-gap-top: max(0.75rem, env(safe-area-inset-top, 0px));
+  --tp-dialog-gap-right: max(0.75rem, env(safe-area-inset-right, 0px));
+  --tp-dialog-gap-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  --tp-dialog-gap-left: max(0.75rem, env(safe-area-inset-left, 0px));
+  width: min(
+    22rem,
+    calc(100vw - var(--tp-dialog-gap-left) - var(--tp-dialog-gap-right))
+  ) !important;
   max-width: 22rem !important;
-  max-height: calc(100dvh - 1.5rem);
+  max-height: calc(100dvh - var(--tp-dialog-gap-top) - var(--tp-dialog-gap-bottom));
   overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--tp-surface);
   color: var(--tp-surface-foreground);
 }
 
 .tp-dialog_content[data-orientation="landscape"] {
-  width: min(42rem, calc(100vw - 1.5rem)) !important;
+  width: min(
+    42rem,
+    calc(100vw - var(--tp-dialog-gap-left) - var(--tp-dialog-gap-right))
+  ) !important;
   max-width: 42rem !important;
 }
 
@@ -609,22 +620,6 @@
 @media (max-width: 32rem) {
   .tp-shell {
     --tp-clock-size: min(16.5rem, calc(100vw - 4rem));
-  }
-
-  .tp-dialog_content {
-    inset-block-start: auto !important;
-    bottom: 0;
-    width: 100% !important;
-    max-width: none !important;
-    max-height: calc(100dvh - 0.75rem);
-    border-end-start-radius: 0;
-    border-end-end-radius: 0;
-    transform: translateX(-50%) !important;
-  }
-
-  .tp-dialog_content[data-orientation="landscape"] {
-    width: 100% !important;
-    max-width: none !important;
   }
 
   .tp-shell[data-orientation="landscape"] .tp-picker_layout {

@@ -23,11 +23,30 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "time-picker-mobile-dialog-fix",
+    date: "July 23, 2026",
+    isoDate: "2026-07-23",
+    title: "Time Picker Mobile Dialog Fix",
+    badge: "Latest",
+    summary:
+      "Fixed TimePickerDialog mobile positioning and improved clock touch interaction reliability.",
+    notes: [
+      "Kept the mobile Dialog centered through the Base UI portal at every breakpoint instead of changing it into a document-positioned bottom sheet.",
+      "Added dynamic viewport and safe-area bounds so the Dialog remains usable on narrow or short screens with internally scrollable content.",
+      "Unified clock touch and pointer handling around one captured gesture with fresh geometry, exact or stepped precision, and duplicate-value suppression.",
+      "Separated taps from drags so clean taps can auto-advance while drag gestures keep the active view stable and finalize without duplicate updates.",
+    ],
+    links: [
+      { href: "/docs/components/time-picker", label: "View Time Picker docs" },
+      { href: "/docs/changelog", label: "Read changelog" },
+    ],
+  },
+  {
     slug: "time-picker",
     date: "July 22, 2026",
     isoDate: "2026-07-22",
     title: "Time Picker",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "A production-ready Time Picker system for desktop, mobile, and static layouts with precise clock and list selection, formatting, constraints, and form-ready controls.",
     notes: [

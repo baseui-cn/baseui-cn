@@ -866,7 +866,14 @@ function TimePickerClockFace() {
   React.useEffect(() => {
     setHandAngle((currentAngle) => currentAngle + shortestAngleDelta(currentAngle, targetHandAngle))
   }, [targetHandAngle])
-  const dragPointerIdRef = React.useRef<number | null>(null)
+  const dragStateRef = React.useRef<{
+    pointerId: number
+    view: TimePickerView
+    startX: number
+    startY: number
+    moved: boolean
+    selectedUnit: number | null
+  } | null>(null)
   const options =
     activeView === "hours"
       ? format === "12h"
@@ -876,59 +883,96 @@ function TimePickerClockFace() {
         ? Array.from({ length: 12 }, (_, index) => index * 5)
         : stepOptions(step)
 
-  const selectFromPointer = (event: React.PointerEvent<HTMLDivElement>) => {
+  const getUnitFromPointer = (
+    event: React.PointerEvent<HTMLDivElement>,
+    view: TimePickerView
+  ): number => {
     const rect = event.currentTarget.getBoundingClientRect()
     const x = event.clientX - rect.left - rect.width / 2
     const y = event.clientY - rect.top - rect.height / 2
     const degrees = (Math.atan2(x, -y) * 180) / Math.PI
     const normalizedDegrees = (degrees + 360) % 360
 
-    if (activeView === "hours") {
+    if (view === "hours") {
       let hour = Math.round(normalizedDegrees / 30) % 12
       if (format === "12h") hour = hour === 0 ? 12 : hour
       else if (Math.sqrt(x * x + y * y) < rect.width * 0.36) hour += 12
-      return selectUnit(hour, activeView, { complete: false })
+      return hour
     }
 
     const raw = Math.round(normalizedDegrees / 6) % 60
-    const unit =
-      activeView === "minutes" && touchPrecision === "minute"
-        ? raw
-        : (Math.round(raw / step) * step) % 60
-    return selectUnit(unit, activeView, { complete: false })
+    const viewStep = view === "minutes" ? minuteStep : secondStep
+    return view === "minutes" && touchPrecision === "minute"
+      ? raw
+      : (Math.round(raw / viewStep) * viewStep) % 60
+  }
+
+  const selectFromPointer = (
+    event: React.PointerEvent<HTMLDivElement>,
+    dragState: NonNullable<typeof dragStateRef.current>
+  ) => {
+    const unit = getUnitFromPointer(event, dragState.view)
+    if (dragState.selectedUnit === unit) return true
+    const selected = selectUnit(unit, dragState.view, { complete: false })
+    if (selected) dragState.selectedUnit = unit
+    return selected
+  }
+
+  const releasePointer = (element: HTMLDivElement, pointerId: number) => {
+    if (element.hasPointerCapture(pointerId)) element.releasePointerCapture(pointerId)
+    dragStateRef.current = null
   }
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (disabled || (event.target as HTMLElement).closest(".tp-clock_option")) return
+    if (
+      disabled ||
+      !event.isPrimary ||
+      event.button !== 0 ||
+      (event.target as HTMLElement).closest(".tp-clock_option")
+    ) {
+      return
+    }
     event.preventDefault()
-    dragPointerIdRef.current = event.pointerId
+    const dragState = {
+      pointerId: event.pointerId,
+      view: activeView,
+      startX: event.clientX,
+      startY: event.clientY,
+      moved: false,
+      selectedUnit: null,
+    }
+    dragStateRef.current = dragState
     event.currentTarget.setPointerCapture(event.pointerId)
-    selectFromPointer(event)
+    selectFromPointer(event, dragState)
   }
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (dragPointerIdRef.current !== event.pointerId) return
+    const dragState = dragStateRef.current
+    if (!dragState || dragState.pointerId !== event.pointerId) return
     event.preventDefault()
-    selectFromPointer(event)
+    const distance = Math.hypot(event.clientX - dragState.startX, event.clientY - dragState.startY)
+    if (distance >= 4) dragState.moved = true
+    selectFromPointer(event, dragState)
   }
 
   const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (dragPointerIdRef.current !== event.pointerId) return
+    const dragState = dragStateRef.current
+    if (!dragState || dragState.pointerId !== event.pointerId) return
     event.preventDefault()
-    const selected = selectFromPointer(event)
-    dragPointerIdRef.current = null
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId)
-    }
-    if (selected) completeSelection(activeView)
+    const selected = selectFromPointer(event, dragState)
+    const shouldComplete = selected && !dragState.moved
+    const completedView = dragState.view
+    releasePointer(event.currentTarget, event.pointerId)
+    if (shouldComplete) completeSelection(completedView)
   }
 
   const handlePointerCancel = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (dragPointerIdRef.current !== event.pointerId) return
-    dragPointerIdRef.current = null
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId)
-    }
+    if (dragStateRef.current?.pointerId !== event.pointerId) return
+    releasePointer(event.currentTarget, event.pointerId)
+  }
+
+  const handleLostPointerCapture = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStateRef.current?.pointerId === event.pointerId) dragStateRef.current = null
   }
 
   return (
@@ -940,6 +984,7 @@ function TimePickerClockFace() {
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerCancel}
+      onLostPointerCapture={handleLostPointerCapture}
     >
       <span
         className="tp-clock_hand"
@@ -976,6 +1021,7 @@ function TimePickerClockFace() {
               } as React.CSSProperties
             }
             onKeyDown={handleOptionKeyDown}
+            onPointerDown={(event) => event.stopPropagation()}
             onClick={(event) => {
               event.stopPropagation()
               selectUnit(option, activeView)
