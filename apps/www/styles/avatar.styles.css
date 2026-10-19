@@ -1,0 +1,64 @@
+@layer components {
+  .cn-avatar,
+  .cn-avatar-count {
+    --avatar-size: 40;
+    --avatar-type: 14;
+    --avatar-marker: 8;
+    position: relative;
+    display: inline-flex;
+    width: calc(var(--avatar-size) * var(--cn-unit));
+    height: calc(var(--avatar-size) * var(--cn-unit));
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--cn-border);
+    border-radius: 9999px;
+    background: var(--cn-surface-muted);
+    color: var(--cn-text);
+    font-size: calc(var(--avatar-type) * var(--cn-unit));
+    line-height: 1;
+    font-weight: 500;
+    vertical-align: middle;
+    user-select: none;
+  }
+  .cn-avatar-xs {
+    --avatar-size: 24;
+    --avatar-type: 11;
+    --avatar-marker: 6;
+  }
+  .cn-avatar-sm {
+    --avatar-size: 32;
+    --avatar-type: 12;
+    --avatar-marker: 6;
+  }
+  .cn-avatar-lg {
+    --avatar-size: 48;
+    --avatar-type: 16;
+  }
+  .cn-avatar-wrap {
+    position: relative;
+    display: inline-flex;
+  }
+  .cn-avatar-marker {
+    position: absolute;
+    width: calc(8 * var(--cn-unit));
+    height: calc(8 * var(--cn-unit));
+    border-radius: 9999px;
+    outline: 2px solid var(--cn-surface);
+  }
+  .cn-avatar-wrap:has(.cn-avatar-xs, .cn-avatar-sm) .cn-avatar-marker {
+    width: calc(6 * var(--cn-unit));
+    height: calc(6 * var(--cn-unit));
+  }
+  .cn-avatar-group {
+    display: flex;
+    align-items: center;
+  }
+  .cn-avatar-group > :not(:first-child) {
+    margin-inline-start: calc(-8 * var(--cn-unit));
+  }
+  .cn-avatar-group :is(.cn-avatar, .cn-avatar-count) {
+    outline: 2px solid var(--cn-surface);
+  }
+}

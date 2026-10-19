@@ -1,0 +1,156 @@
+@layer components {
+  .cn-card,
+  .cn-card-frame,
+  .cn-frame,
+  .cn-frame-panel {
+    position: relative;
+    box-sizing: border-box;
+    color: var(--cn-text);
+  }
+  .cn-card,
+  .cn-card-frame,
+  .cn-frame {
+    display: flex;
+    flex-direction: column;
+  }
+  .cn-card {
+    --card-padding: 20;
+    border: 1px solid transparent;
+    border-radius: var(--cn-radius-card);
+    background: var(--cn-surface);
+  }
+  .cn-card-outline {
+    border-color: var(--cn-border);
+  }
+  .cn-card-elevated {
+    border-color: var(--cn-border);
+    box-shadow: var(--cn-shadow-card);
+  }
+  .cn-card-ghost {
+    background: transparent;
+  }
+  .cn-card-frame {
+    --clip-top: -1rem;
+    --clip-bottom: -1rem;
+    border: 1px solid var(--cn-border);
+    border-radius: var(--cn-radius-frame);
+    background: var(--cn-surface-muted);
+  }
+  .cn-card-frame:has(> [data-slot="table-container"]) {
+    overflow: hidden;
+  }
+  .cn-card-frame > [data-slot="card"],
+  .cn-card-frame > [data-slot="table-container"] {
+    margin: -1px;
+  }
+  .cn-card-frame > [data-slot="table-container"] {
+    width: calc(100% + 2px);
+  }
+  .cn-card-frame > [data-slot="card"] {
+    background-clip: padding-box;
+    box-shadow: none;
+    clip-path: inset(
+      var(--clip-top) 1px var(--clip-bottom) 1px round calc(var(--cn-radius-frame) - 1px)
+    );
+  }
+  .cn-card-frame > [data-slot="card"]:not(:first-child) {
+    border-start-start-radius: var(--cn-radius-card);
+    border-start-end-radius: var(--cn-radius-card);
+  }
+  .cn-card-frame > [data-slot="card"]:not(:last-child) {
+    border-end-start-radius: var(--cn-radius-card);
+    border-end-end-radius: var(--cn-radius-card);
+  }
+  .cn-card-frame > [data-slot="card"]:first-child {
+    --clip-top: 1px;
+  }
+  .cn-card-frame > [data-slot="card"]:last-child {
+    --clip-bottom: 1px;
+  }
+  .cn-card-header,
+  .cn-card-panel,
+  .cn-card-footer {
+    padding: calc(var(--card-padding, 20) * var(--cn-unit));
+  }
+  .cn-card-header {
+    display: grid;
+    grid-auto-rows: min-content;
+    grid-template-rows: auto auto;
+    align-items: start;
+    gap: calc(6 * var(--cn-unit));
+  }
+  .cn-card:has(> [data-slot="card-panel"]) > .cn-card-header {
+    padding-block-end: calc(16 * var(--cn-unit));
+  }
+  .cn-card-header:has([data-slot="card-action"]) {
+    grid-template-columns: 1fr auto;
+  }
+  .cn-card-panel {
+    flex: 1;
+  }
+  .cn-card:has(> [data-slot="card-header"]:not(.border-b)) > .cn-card-panel {
+    padding-block-start: 0;
+  }
+  .cn-card:has(> [data-slot="card-footer"]:not(.border-t)) > .cn-card-panel {
+    padding-block-end: 0;
+  }
+  .cn-card-footer {
+    display: flex;
+    align-items: center;
+  }
+  .cn-card:has(> [data-slot="card-panel"]) > .cn-card-footer {
+    padding-block-start: calc(16 * var(--cn-unit));
+  }
+  .cn-surface-title {
+    font-size: calc(18 * var(--cn-unit));
+    line-height: calc(26 * var(--cn-unit));
+    font-weight: 600;
+  }
+  .cn-surface-description {
+    font-size: calc(14 * var(--cn-unit));
+    line-height: calc(20 * var(--cn-unit));
+    color: var(--cn-text-muted);
+  }
+  .cn-card-frame-header {
+    position: relative;
+    display: grid;
+    grid-auto-rows: min-content;
+    grid-template-rows: auto auto;
+    align-items: start;
+    column-gap: calc(16 * var(--cn-unit));
+  }
+  .cn-card-frame-header:has([data-slot="card-frame-action"]) {
+    grid-template-columns: 1fr auto;
+  }
+  .cn-card-frame-header,
+  .cn-card-frame-footer,
+  .cn-frame-header,
+  .cn-frame-footer {
+    padding: calc(16 * var(--cn-unit)) calc(20 * var(--cn-unit));
+  }
+  .cn-frame {
+    border-radius: var(--cn-radius-frame);
+    background: var(--cn-surface-muted);
+    padding: calc(4 * var(--cn-unit));
+  }
+  .cn-frame > [data-slot="frame-panel"] + [data-slot="frame-panel"] {
+    margin-block-start: calc(4 * var(--cn-unit));
+  }
+  .cn-frame-panel {
+    border: 1px solid var(--cn-border);
+    border-radius: max(0px, calc(var(--cn-radius-frame) - 4 * var(--cn-unit)));
+    background: var(--cn-surface-raised);
+    padding: calc(16 * var(--cn-unit));
+    box-shadow: var(--cn-shadow-card);
+  }
+  .cn-frame-header {
+    display: flex;
+    flex-direction: column;
+  }
+  .cn-frame-title,
+  .cn-card-frame-title {
+    font-size: calc(14 * var(--cn-unit));
+    line-height: calc(20 * var(--cn-unit));
+    font-weight: 600;
+  }
+}

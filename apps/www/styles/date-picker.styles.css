@@ -346,6 +346,8 @@
 }
 
 .rdp-caption_chevron {
+  /* Preserve the caption optics formerly inherited from Button SVG margins. */
+  margin-inline: -0.125rem;
   display: inline-block;
   flex-shrink: 0;
   width: var(--rdp-caption-chevron-size) !important;

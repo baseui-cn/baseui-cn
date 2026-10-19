@@ -248,6 +248,20 @@ export async function installComponents(components: string[], options: InstallOp
 
       for (const file of component.files) {
         const filePath = resolveInstallFilePath(file.path, config.componentsPath, options.path)
+        // Shared anatomy CSS can already belong to another installed component.
+        // A new component must reuse it, preserving consumer edits. Explicit
+        // replacement of an existing component (or --overwrite) refreshes it.
+        const replacingComponent =
+          installState.requestedColliding.includes(componentName) ||
+          installState.dependencyColliding.includes(componentName)
+        if (
+          file.type === "style" &&
+          !options.overwrite &&
+          !replacingComponent &&
+          (await fs.pathExists(filePath))
+        ) {
+          continue
+        }
         await fs.ensureDir(path.dirname(filePath))
         await fs.writeFile(filePath, file.content)
       }
@@ -306,9 +320,11 @@ async function partitionInstallState(
     }
 
     const existingFiles = await Promise.all(
-      component.files.map((file) =>
-        fs.pathExists(resolveInstallFilePath(file.path, config.componentsPath, customPath))
-      )
+      component.files
+        .filter((file) => file.type !== "style")
+        .map((file) =>
+          fs.pathExists(resolveInstallFilePath(file.path, config.componentsPath, customPath))
+        )
     )
 
     if (existingFiles.some(Boolean)) {

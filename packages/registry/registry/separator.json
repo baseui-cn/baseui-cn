@@ -10,7 +10,7 @@
     {
       "path": "separator.tsx",
       "type": "component",
-      "content": "\"use client\"\n\nimport { Separator as SeparatorPrimitive } from \"@base-ui/react/separator\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction Separator({ className, ...props }: SeparatorPrimitive.Props) {\n  return (\n    <SeparatorPrimitive\n      data-slot=\"separator\"\n      className={cn(\n        \"bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px data-[orientation=vertical]:self-stretch\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Separator }\n"
+      "content": "\"use client\"\n\nimport { Separator as SeparatorPrimitive } from \"@base-ui/react/separator\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction Separator({ className, ...props }: SeparatorPrimitive.Props) {\n  return (\n    <SeparatorPrimitive\n      data-slot=\"separator\"\n      className={cn(\n        \"bg-[var(--cn-border-subtle)] shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px data-[orientation=vertical]:self-stretch\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Separator }\n"
     }
   ],
   "dependencies": {

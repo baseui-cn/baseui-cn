@@ -1,0 +1,241 @@
+@layer components {
+  .cn-button {
+    --button-height: 36;
+    --button-inset: 12;
+    --button-type: 14;
+    --button-leading: 20;
+    --button-icon: 16;
+    --button-gap: 6;
+    --button-bg: var(--cn-primary);
+    --button-fg: var(--cn-primary-foreground);
+    --button-border: transparent;
+    --button-hover: var(--cn-primary-hover);
+    --button-pressed: var(--cn-primary-pressed);
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: calc(var(--button-height) * var(--cn-unit));
+    gap: calc(var(--button-gap) * var(--cn-unit));
+    padding-inline: calc(var(--button-inset) * var(--cn-unit) - 1px);
+    border: 1px solid var(--button-border);
+    border-radius: var(--cn-radius-control);
+    background: var(--button-bg);
+    color: var(--button-fg);
+    font-size: calc(var(--button-type) * var(--cn-unit));
+    line-height: calc(var(--button-leading) * var(--cn-unit));
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition-property: background-color, border-color, color;
+    transition-duration: var(--cn-duration-fast);
+    transition-timing-function: var(--cn-ease-standard);
+  }
+  .cn-button-xs,
+  .cn-button-icon-xs {
+    --button-height: 28;
+    --button-inset: 8;
+    --button-type: 12;
+    --button-leading: 16;
+    --button-icon: 12;
+    --button-gap: 4;
+  }
+  .cn-button-sm,
+  .cn-button-icon-sm {
+    --button-height: 32;
+    --button-inset: 10;
+    --button-type: 13;
+    --button-leading: 18;
+  }
+  .cn-button-lg,
+  .cn-button-icon-lg {
+    --button-height: 40;
+    --button-inset: 14;
+    --button-icon: 20;
+    --button-gap: 8;
+  }
+  .cn-button-xl,
+  .cn-button-icon-xl {
+    --button-height: 44;
+    --button-inset: 16;
+    --button-type: 16;
+    --button-leading: 24;
+    --button-icon: 20;
+    --button-gap: 8;
+  }
+  .cn-button[class*="cn-button-icon"] {
+    width: calc(var(--button-height) * var(--cn-unit));
+    padding: 0;
+  }
+  .cn-button :where(svg) {
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+  .cn-button :where(svg:not([class*="size-"])) {
+    width: calc(var(--button-icon) * var(--cn-unit));
+    height: calc(var(--button-icon) * var(--cn-unit));
+  }
+  .cn-button-outline,
+  .cn-button-destructive-outline {
+    --button-bg: var(--cn-surface);
+    --button-fg: var(--cn-text);
+    --button-border: var(--cn-border-control);
+    --button-hover: var(--cn-surface-hover);
+    --button-pressed: var(--cn-surface-pressed);
+  }
+  .cn-button-secondary {
+    --button-bg: var(--cn-surface-muted);
+    --button-fg: var(--cn-text);
+    --button-hover: var(--cn-surface-hover);
+    --button-pressed: var(--cn-surface-pressed);
+  }
+  .cn-button-ghost,
+  .cn-button-link {
+    --button-bg: transparent;
+    --button-fg: var(--cn-text);
+    --button-hover: var(--cn-surface-hover);
+    --button-pressed: var(--cn-surface-pressed);
+  }
+  .cn-button-destructive {
+    --button-bg: var(--cn-status-destructive-text);
+    --button-fg: var(--cn-status-destructive-foreground);
+    --button-hover: color-mix(in srgb, var(--button-bg), var(--button-fg) 8%);
+    --button-pressed: color-mix(in srgb, var(--button-bg), var(--button-fg) 16%);
+  }
+  .cn-button-warning {
+    --button-bg: var(--cn-status-warning-text);
+    --button-fg: var(--cn-status-warning-foreground);
+    --button-hover: color-mix(in srgb, var(--button-bg), var(--button-fg) 8%);
+    --button-pressed: color-mix(in srgb, var(--button-bg), var(--button-fg) 16%);
+  }
+  .cn-button-destructive-outline {
+    --button-fg: var(--cn-status-destructive-text);
+    --button-border: var(--cn-status-destructive-border);
+    --button-hover: var(--cn-status-destructive-surface);
+    --button-pressed: var(--cn-status-destructive-surface);
+  }
+  .cn-button-link {
+    text-underline-offset: 4px;
+    --button-hover: transparent;
+    --button-pressed: transparent;
+  }
+  .cn-button:not(:disabled, [aria-disabled="true"], [data-disabled]):is(:active, [data-pressed]) {
+    background: var(--button-pressed);
+  }
+  .cn-button-outline:not(:disabled, [aria-disabled="true"], [data-disabled]):is(
+      :active,
+      [data-pressed]
+    ) {
+    border-color: var(--cn-border-active);
+  }
+  .cn-button-link:not(:disabled, [aria-disabled="true"], [data-disabled]):is(
+      :active,
+      [data-pressed]
+    ) {
+    text-decoration-line: underline;
+  }
+
+  .cn-button:is(:disabled, [aria-disabled="true"], [data-disabled]) {
+    cursor: not-allowed;
+    --button-bg: var(--cn-surface-disabled);
+    --button-fg: var(--cn-text-disabled);
+    --button-border: var(--cn-border-disabled);
+  }
+  .cn-button[data-loading] {
+    color: transparent;
+    user-select: none;
+    transition-property: background-color, border-color;
+  }
+  .cn-button [data-slot="button-loading-indicator"] {
+    color: var(--cn-text-disabled);
+    width: calc(var(--button-icon) * var(--cn-unit));
+    height: calc(var(--button-icon) * var(--cn-unit));
+  }
+  /* Keep the protected picker families on their existing rem scale. */
+  :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .cn-button {
+    --cn-unit: 0.0625rem;
+    --cn-radius-control: var(--radius);
+    --button-type: 15.68;
+    --button-gap: 8;
+    --button-icon: 16;
+  }
+  :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .cn-button-icon-sm {
+    --button-height: 32;
+  }
+  :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .cn-button-icon-xs {
+    --button-height: 28;
+    --button-icon: 16;
+  }
+  :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .cn-button-sm {
+    --button-gap: 6;
+  }
+}
+@media (min-width: 40rem) {
+  @layer components {
+    :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .cn-button-icon-sm {
+      --button-height: 28;
+    }
+    :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .cn-button-icon-xs {
+      --button-height: 24;
+      --button-icon: 14;
+    }
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    .cn-button:not(
+        :disabled,
+        [aria-disabled="true"],
+        [data-disabled],
+        :active,
+        [data-pressed]
+      ):hover {
+      background: var(--button-hover);
+    }
+    .cn-button-outline:not(
+        :disabled,
+        [aria-disabled="true"],
+        [data-disabled],
+        :active,
+        [data-pressed]
+      ):hover {
+      border-color: var(--cn-border-hover);
+    }
+    .cn-button-link:not(
+        :disabled,
+        [aria-disabled="true"],
+        [data-disabled],
+        :active,
+        [data-pressed]
+      ):hover {
+      text-decoration-line: underline;
+    }
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    .cn-button:not([class*="rdp-"], [class*="tp-"], .tp-shell *, .rdp-shell *) {
+      min-width: calc(44 * var(--cn-unit));
+      min-height: calc(44 * var(--cn-unit));
+    }
+  }
+}
+/* A composed trigger may still carry legacy ring utilities. The Button owns
+   the single contour; calendar's more specific intentional outline is retained. */
+:where(.cn-button):focus-visible {
+  outline: 2px solid var(--cn-focus-color);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn-button {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .cn-button:focus-visible {
+    outline-color: Highlight;
+  }
+}

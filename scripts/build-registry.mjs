@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import "./build-theme.mjs"
 /**
  * Builds the installable registry from scripts/registry-meta.mjs and writes:
  *   1. packages/registry/registry/   - source registry JSON

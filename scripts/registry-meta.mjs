@@ -104,13 +104,14 @@ export const componentMeta = {
     description: "An image element with a fallback for representing the user.",
     tags: ["display", "primitive"],
     baseUIPrimitive: "Avatar",
-    deps: ["@base-ui/react"],
+    deps: ["@base-ui/react", "class-variance-authority"],
     registryDeps: ["utils"],
   }),
   card: defineEntry("card", {
     section: "Display",
     description: "A container for grouping related content and actions.",
     tags: ["display", "layout"],
+    deps: ["@base-ui/react", "class-variance-authority"],
     registryDeps: ["utils"],
   }),
   item: defineEntry("item", {
@@ -361,6 +362,7 @@ export const componentMeta = {
     section: "Form",
     description: "A composite input component with addons, icons, and buttons.",
     tags: ["form", "composite"],
+    deps: ["class-variance-authority"],
     registryDeps: ["utils", "button", "input", "textarea"],
   }),
 
@@ -688,6 +690,24 @@ export const componentMeta = {
       "toast",
     ],
   }),
+}
+
+const phaseOneStyles = {
+  button: "button",
+  input: "text-control",
+  textarea: "text-control",
+  "input-group": "text-control",
+  badge: "badge",
+  avatar: "avatar",
+  card: "surface",
+  frame: "surface",
+}
+for (const [name, style] of Object.entries(phaseOneStyles)) {
+  componentMeta[name].files.push({
+    sourcePath: `apps/www/styles/${style}.styles.css`,
+    targetPath: `styles/${style}.styles.css`,
+    type: "style",
+  })
 }
 
 export function buildEntry(name, files, meta, version) {
