@@ -29,7 +29,7 @@ export const SECTION_ORDER = [
 ]
 
 const COMPONENT_BADGE = "New"
-const BASE_UI_VERSION = "^1.6.0"
+const BASE_UI_VERSION = "1.9.0"
 
 function slugToLabel(name) {
   return name.replace(/-/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())

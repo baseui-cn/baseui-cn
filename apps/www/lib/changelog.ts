@@ -23,11 +23,30 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "base-ui-v1-9-upgrade",
+    date: "October 19, 2026",
+    isoDate: "2026-10-19",
+    title: "Base UI Upgraded To v1.9",
+    badge: "Latest",
+    summary:
+      "Updated the Base UI foundation from v1.6.0 to v1.9.0 while preserving existing baseui-cn component APIs and styling.",
+    notes: [
+      "Inherited upstream mobile and touch fixes, including Drawer gestures, virtual keyboard handling, and Scroll Area interactions.",
+      "Inherited performance improvements for Select, Combobox, Menu, and popup triggers, plus accessibility, focus, validation, and interaction fixes.",
+      "Reviewed existing wrappers and examples for compatibility and regenerated all three registry copies against the v1.9.0 baseline.",
+      "Kept existing Date Picker and Time Picker behavior and styling unchanged. The preview Menu filtering API is not adopted or documented as a baseui-cn feature.",
+    ],
+    links: [
+      { href: "https://base-ui.com/react/overview/releases/v1-9-0", label: "Base UI v1.9 release notes" },
+      { href: "/docs/changelog", label: "Read changelog" },
+    ],
+  },
+  {
     slug: "time-picker-draft-and-mobile-search-fix",
     date: "July 23, 2026",
     isoDate: "2026-07-23",
     title: "Time Picker Draft And Mobile Search Fix",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "Fixed empty Time Picker confirmation so OK commits the visible draft and made documentation search available from the mobile header.",
     notes: [

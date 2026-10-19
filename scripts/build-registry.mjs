@@ -25,7 +25,7 @@ import {
 
 const OUTPUT_DIRS = [REGISTRY_DIR, PUBLIC_REGISTRY_DIR, CLI_REGISTRY_DIR]
 const REGISTRY_URL = "https://raw.githubusercontent.com/baseui-cn/baseui-cn/main/packages/registry/registry"
-const BASE_UI_VERSION = "^1.6.0"
+const BASE_UI_VERSION = "1.9.0"
 
 async function readCliVersion() {
   const pkg = JSON.parse(await readFile(CLI_PACKAGE_FILE, "utf-8"))
