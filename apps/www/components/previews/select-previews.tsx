@@ -1,5 +1,7 @@
 "use client"
 
+import { Phase3SystemPreview } from "@/components/previews/phase3-system-preview"
+
 import * as React from "react"
 import {
   Select,
@@ -137,6 +139,7 @@ function SelectSizesPreview() {
 
 export const selectPreviewMap: Record<string, React.ComponentType> = {
   select: SelectPreview,
+  "selection-system": Phase3SystemPreview,
   "select-demo": SelectPreview,
   "select-basic": SelectBasicPreview,
   "select-with-groups": SelectWithGroupsPreview,

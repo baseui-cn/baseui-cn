@@ -1,0 +1,521 @@
+/* Selection/search anatomy. Public theme roles remain owned by the V2 foundation. */
+@layer components {
+  .cn-select-trigger {
+    --selection-height: 36;
+    --selection-inset: 12;
+    --selection-type: 14;
+    --selection-leading: 20;
+    display: inline-flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(6 * var(--cn-unit));
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+    height: calc(var(--selection-height) * var(--cn-unit));
+    padding: 0 calc(var(--selection-inset) * var(--cn-unit) - 1px);
+    border: 1px solid var(--cn-border-control);
+    border-radius: var(--cn-radius-control);
+    background: var(--cn-surface);
+    color: var(--cn-text);
+    font-size: calc(var(--selection-type) * var(--cn-unit));
+    line-height: calc(var(--selection-leading) * var(--cn-unit));
+    font-weight: 500;
+    text-align: start;
+    transition:
+      border-color var(--cn-duration-fast) var(--cn-ease-standard),
+      background-color var(--cn-duration-fast) var(--cn-ease-standard);
+  }
+  .cn-select-trigger[data-size="sm"] {
+    --selection-height: 32;
+    --selection-inset: 10;
+    --selection-type: 13;
+    --selection-leading: 18;
+  }
+  .cn-select-trigger[data-size="lg"] {
+    --selection-height: 40;
+    --selection-inset: 14;
+  }
+  .cn-select-value {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: calc(6 * var(--cn-unit));
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: start;
+  }
+  .cn-select-trigger[data-placeholder] {
+    color: var(--cn-text-muted);
+    font-weight: 400;
+  }
+  .cn-select-icon {
+    flex-shrink: 0;
+    color: var(--cn-text-muted);
+  }
+  .cn-select-trigger svg,
+  .cn-combobox-trigger svg,
+  .cn-selection-start svg,
+  .cn-selection-item :where(svg:not([class*="size-"])) {
+    flex-shrink: 0;
+    width: calc(16 * var(--cn-unit));
+    height: calc(16 * var(--cn-unit));
+    pointer-events: none;
+  }
+  .cn-select-trigger[data-popup-open],
+  :is(.cn-autocomplete-control, .cn-combobox-control):has(input[data-popup-open]),
+  .cn-combobox-chips:has(input[data-popup-open]) {
+    border-color: var(--cn-border-active);
+  }
+  .cn-select-trigger:is([aria-invalid="true"], [data-invalid]) {
+    border-color: var(--cn-status-destructive-border);
+  }
+  .cn-select-trigger[data-readonly] {
+    background: var(--cn-surface-muted);
+  }
+  .cn-select-trigger:is(:disabled, [data-disabled]) {
+    color: var(--cn-text-disabled);
+    background: var(--cn-surface-disabled);
+    border-color: var(--cn-border-disabled);
+    cursor: not-allowed;
+  }
+  .cn-select-trigger:is(:disabled, [data-disabled]) .cn-select-icon {
+    color: inherit;
+  }
+  .cn-select-trigger:focus-visible {
+    outline: 2px solid var(--cn-focus-color);
+    outline-offset: 2px;
+  }
+  .cn-selection-positioner {
+    isolation: isolate;
+    z-index: 50;
+  }
+  .cn-selection-popup {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: min(calc(144 * var(--cn-unit)), var(--available-width));
+    width: var(--anchor-width);
+    max-width: var(--available-width);
+    max-height: min(var(--available-height), calc(368 * var(--cn-unit)));
+    overflow: hidden;
+    border: 1px solid var(--cn-border);
+    border-radius: var(--cn-radius-card);
+    background: var(--cn-surface-popup);
+    color: var(--cn-text);
+    box-shadow: var(--cn-shadow-popup);
+    transform-origin: var(--transform-origin);
+    transition:
+      opacity var(--cn-duration-popup) var(--cn-ease-enter),
+      scale var(--cn-duration-popup) var(--cn-ease-enter);
+  }
+  .cn-selection-popup:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    scale: 0.98;
+  }
+  .cn-selection-popup[data-ending-style] {
+    transition-duration: var(--cn-duration-fast);
+    transition-timing-function: var(--cn-ease-exit);
+  }
+  /* Item-aligned Select positioning measures the popup; do not scale that geometry. */
+  .cn-select-popup[data-align-trigger="true"] {
+    scale: none;
+    transition: opacity var(--cn-duration-fast);
+  }
+  .cn-select-popup {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .cn-selection-list {
+    box-sizing: border-box;
+    min-height: 0;
+    padding: calc(4 * var(--cn-unit));
+    scroll-padding-block: calc(4 * var(--cn-unit));
+    outline: none;
+  }
+  .cn-selection-scroll {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+  .cn-selection-scroll > [data-slot="scroll-area-viewport"] {
+    flex: 1;
+    min-height: 0;
+    max-height: inherit;
+  }
+  .cn-combobox-list {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .cn-combobox-popup > .cn-input-group {
+    margin: calc(4 * var(--cn-unit));
+    flex-shrink: 0;
+  }
+  .cn-selection-item {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--cn-unit));
+    min-width: 0;
+    min-height: calc(32 * var(--cn-unit));
+    width: 100%;
+    padding: calc(6 * var(--cn-unit)) calc(8 * var(--cn-unit));
+    border-radius: var(--cn-radius-item);
+    color: var(--cn-text);
+    font-size: calc(14 * var(--cn-unit));
+    line-height: calc(20 * var(--cn-unit));
+    font-weight: 400;
+    overflow-wrap: anywhere;
+    cursor: default;
+    user-select: none;
+    outline: none;
+  }
+  .cn-selection-text {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: calc(8 * var(--cn-unit));
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .cn-selection-indicator {
+    display: flex;
+    flex: 0 0 calc(16 * var(--cn-unit));
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    margin-inline-start: auto;
+  }
+  .cn-selection-indicator svg {
+    width: calc(12 * var(--cn-unit));
+    height: calc(12 * var(--cn-unit));
+  }
+  [data-check-position="left"] > .cn-selection-indicator {
+    order: -1;
+    margin-inline-start: 0;
+  }
+  .cn-selection-item[data-selected] {
+    background: var(--cn-surface-selected);
+    font-weight: 500;
+  }
+  .cn-selection-item[data-highlighted] {
+    background: var(--cn-surface-hover);
+  }
+  /* Selection keeps its check; the inset edge marks navigation even on a selected row. */
+  .cn-selection-item[data-highlighted] {
+    box-shadow: inset calc(2 * var(--cn-unit)) 0 var(--cn-border-active);
+  }
+  .cn-selection-item[data-selected][data-highlighted] {
+    background: var(--cn-surface-selected);
+  }
+  .cn-selection-item[data-disabled] {
+    color: var(--cn-text-disabled);
+    pointer-events: none;
+  }
+  .cn-selection-item[data-disabled][data-selected] {
+    background: var(--cn-surface-disabled);
+  }
+  .cn-selection-group + .cn-selection-group {
+    margin-block-start: calc(4 * var(--cn-unit));
+  }
+  .cn-selection-label {
+    padding: calc(8 * var(--cn-unit));
+    color: var(--cn-text-muted);
+    font-size: calc(12 * var(--cn-unit));
+    line-height: calc(18 * var(--cn-unit));
+    font-weight: 500;
+  }
+  .cn-selection-meta {
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    color: var(--cn-text-muted);
+    font-family: inherit;
+    font-size: calc(12 * var(--cn-unit));
+    line-height: calc(18 * var(--cn-unit));
+    font-weight: 400;
+  }
+  .cn-selection-separator {
+    height: 1px;
+    margin: calc(4 * var(--cn-unit));
+    background: var(--cn-border-subtle);
+    pointer-events: none;
+  }
+  .cn-selection-empty,
+  .cn-selection-status {
+    padding: calc(12 * var(--cn-unit));
+    color: var(--cn-text-muted);
+    font-size: calc(14 * var(--cn-unit));
+    line-height: calc(20 * var(--cn-unit));
+    overflow-wrap: anywhere;
+  }
+  .cn-selection-empty {
+    text-align: center;
+  }
+  .cn-selection-empty:empty,
+  .cn-selection-status:empty {
+    margin: 0;
+    padding: 0;
+  }
+  .cn-selection-status {
+    flex-shrink: 0;
+    font-size: calc(12 * var(--cn-unit));
+    line-height: calc(18 * var(--cn-unit));
+  }
+  .cn-select-scroll {
+    position: sticky;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(24 * var(--cn-unit));
+    width: 100%;
+    background: var(--cn-surface-popup);
+  }
+  .cn-select-scroll-up {
+    top: 0;
+  }
+  .cn-select-scroll-down {
+    bottom: 0;
+  }
+  .cn-select-scroll svg {
+    width: calc(16 * var(--cn-unit));
+    height: calc(16 * var(--cn-unit));
+  }
+  .cn-selection-start {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding-inline-start: calc(11 * var(--cn-unit));
+    color: var(--cn-text-muted);
+    pointer-events: none;
+  }
+  .cn-autocomplete-control:has(.cn-selection-start) .cn-input {
+    padding-inline-start: calc(6 * var(--cn-unit));
+  }
+  .cn-selection-action {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: calc(28 * var(--cn-unit));
+    height: calc(28 * var(--cn-unit));
+    padding: 0;
+    border: 0;
+    border-radius: var(--cn-radius-item);
+    background: transparent;
+    color: var(--cn-text-muted);
+    cursor: pointer;
+  }
+  .cn-selection-action svg {
+    width: calc(16 * var(--cn-unit));
+    height: calc(16 * var(--cn-unit));
+    pointer-events: none;
+  }
+  /* Inset contours stay complete inside compact composite boundaries. */
+  .cn-selection-action:focus-visible,
+  .cn-combobox-chip:focus-visible {
+    outline: 2px solid var(--cn-focus-color);
+    outline-offset: -2px;
+  }
+  .cn-selection-action:is(:disabled, [data-disabled], [aria-disabled="true"]) {
+    color: var(--cn-text-disabled);
+    cursor: default;
+  }
+  .cn-autocomplete-control > .cn-selection-action {
+    margin-inline-end: calc(3 * var(--cn-unit));
+  }
+  .cn-autocomplete-control:has([data-slot="autocomplete-clear"])
+    > [data-slot="autocomplete-trigger"] {
+    display: none;
+  }
+  .cn-combobox-clear:not([data-visible]):not(.cn-selection-query-clear) {
+    display: none;
+  }
+  .cn-combobox-control:has(.cn-combobox-clear:is([data-visible], .cn-selection-query-clear))
+    .cn-combobox-trigger {
+    display: none;
+  }
+  :is(.cn-autocomplete-control, .cn-combobox-control):has(input[readonly]) .cn-selection-action {
+    color: var(--cn-text-disabled);
+  }
+  .cn-combobox-chips {
+    --chips-height: 36;
+    --chip-height: 28;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: calc(4 * var(--cn-unit));
+    width: 100%;
+    min-width: 0;
+    min-height: calc(var(--chips-height) * var(--cn-unit));
+    padding: calc(3 * var(--cn-unit));
+    border: 1px solid var(--cn-border-control);
+    border-radius: var(--cn-radius-control);
+    background: var(--cn-surface);
+    color: var(--cn-text);
+  }
+  .cn-combobox-chips:has([data-size="sm"]) {
+    --chips-height: 32;
+    --chip-height: 24;
+  }
+  .cn-combobox-chips:has([data-size="lg"]) {
+    --chips-height: 40;
+  }
+  .cn-combobox-chips:has(input:focus-visible) {
+    outline: 2px solid var(--cn-focus-color);
+    outline-offset: 2px;
+  }
+  .cn-combobox-chips:has(input[readonly]) {
+    background: var(--cn-surface-muted);
+  }
+  :is(.cn-autocomplete-control, .cn-combobox-control, .cn-combobox-chips):has(
+    input:is([aria-invalid="true"], [data-invalid])
+  ) {
+    border-color: var(--cn-status-destructive-border);
+  }
+  :is(.cn-autocomplete-control, .cn-combobox-control, .cn-combobox-chips):has(input:disabled) {
+    color: var(--cn-text-disabled);
+    border-color: var(--cn-border-disabled);
+    background: var(--cn-surface-disabled);
+  }
+  .cn-combobox-chip {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    min-width: 0;
+    min-height: calc(var(--chip-height) * var(--cn-unit));
+    padding-inline-start: calc(8 * var(--cn-unit));
+    border-radius: var(--cn-radius-item);
+    background: var(--cn-surface-selected);
+    color: var(--cn-text);
+    font-size: calc(12 * var(--cn-unit));
+    line-height: calc(18 * var(--cn-unit));
+    font-weight: 500;
+  }
+  .cn-combobox-chip-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .cn-combobox-chip-remove {
+    align-self: stretch;
+    height: auto;
+    min-height: calc(var(--chip-height) * var(--cn-unit));
+    margin-inline-start: calc(4 * var(--cn-unit));
+  }
+  .cn-combobox-chip[data-disabled] {
+    color: var(--cn-text-disabled);
+    background: var(--cn-surface-disabled);
+  }
+  .cn-combobox-chips-input {
+    flex: 1;
+    box-sizing: border-box;
+    min-width: calc(64 * var(--cn-unit));
+    width: 0;
+    height: calc(var(--chips-height) * var(--cn-unit) - 8 * var(--cn-unit));
+    padding-inline: calc(8 * var(--cn-unit));
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: calc(14 * var(--cn-unit));
+    line-height: calc(20 * var(--cn-unit));
+    outline: none;
+  }
+  .cn-combobox-chips-input::placeholder {
+    color: var(--cn-text-muted);
+    opacity: 1;
+  }
+  .cn-command-input {
+    padding: calc(8 * var(--cn-unit));
+  }
+  .cn-command-list {
+    max-height: calc(320 * var(--cn-unit));
+  }
+  .cn-command-empty:not(:empty) {
+    padding-block: calc(24 * var(--cn-unit));
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    .cn-select-trigger:not(
+        :disabled,
+        [data-disabled],
+        [aria-invalid="true"],
+        [data-invalid],
+        [data-popup-open]
+      ):hover {
+      border-color: var(--cn-border-hover);
+    }
+    .cn-selection-item:not([data-disabled], [data-selected]):hover {
+      background: var(--cn-surface-hover);
+    }
+    .cn-selection-action:not(:disabled, [data-disabled], [aria-disabled="true"]):hover {
+      background: var(--cn-surface-hover);
+      color: var(--cn-text);
+    }
+  }
+}
+@media (max-width: 40rem), (pointer: coarse) {
+  @layer components {
+    .cn-combobox-chips-input {
+      font-size: calc(16 * var(--cn-unit));
+      line-height: calc(24 * var(--cn-unit));
+    }
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    .cn-select-trigger {
+      height: max(calc(var(--selection-height) * var(--cn-unit)), 44px);
+    }
+    .cn-selection-item {
+      min-height: 44px;
+    }
+    .cn-selection-action {
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .cn-autocomplete-control:has(.cn-selection-action),
+    .cn-combobox-control:has(.cn-selection-action) {
+      min-height: 52px;
+    }
+    .cn-combobox-chip {
+      min-height: 44px;
+    }
+    .cn-combobox-chips {
+      gap: calc(8 * var(--cn-unit));
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn-select-trigger,
+  .cn-selection-popup {
+    transition: none;
+    scale: none;
+  }
+}
+@media (forced-colors: active) {
+  .cn-select-trigger:focus-visible,
+  .cn-selection-action:focus-visible,
+  .cn-combobox-chip:focus-visible,
+  .cn-combobox-chips:has(input:focus-visible) {
+    outline-color: Highlight;
+  }
+  .cn-selection-item[data-highlighted] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+  .cn-selection-item[data-selected] {
+    border-inline-start: 2px solid CanvasText;
+  }
+}

@@ -3,6 +3,8 @@
 import { Dialog as CommandDialogPrimitive } from "@base-ui/react/dialog"
 import { SearchIcon } from "lucide-react"
 import type * as React from "react"
+import "@/styles/selection.styles.css"
+
 import { cn } from "@/lib/utils"
 import {
   Autocomplete,
@@ -111,13 +113,10 @@ export function CommandInput({
   ...props
 }: React.ComponentProps<typeof AutocompleteInput>): React.ReactElement {
   return (
-    <div className="px-2.5 py-1.5">
+    <div className="cn-command-input">
       <AutocompleteInput
         autoFocus
-        className={cn(
-          "border-transparent! bg-transparent! shadow-none before:hidden has-focus-visible:ring-0",
-          className
-        )}
+        className={cn("cn-command-input-field", className)}
         placeholder={placeholder}
         size="lg"
         startAddon={<SearchIcon />}
@@ -133,7 +132,7 @@ export function CommandList({
 }: React.ComponentProps<typeof AutocompleteList>): React.ReactElement {
   return (
     <AutocompleteList
-      className={cn("not-empty:scroll-py-2 not-empty:p-2", className)}
+      className={cn("cn-command-list", className)}
       data-slot="command-list"
       {...props}
     />
@@ -146,7 +145,7 @@ export function CommandEmpty({
 }: React.ComponentProps<typeof AutocompleteEmpty>): React.ReactElement {
   return (
     <AutocompleteEmpty
-      className={cn("not-empty:py-6", className)}
+      className={cn("cn-command-empty", className)}
       data-slot="command-empty"
       {...props}
     />
@@ -193,7 +192,11 @@ export function CommandItem({
   ...props
 }: React.ComponentProps<typeof AutocompleteItem>): React.ReactElement {
   return (
-    <AutocompleteItem className={cn("py-1.5", className)} data-slot="command-item" {...props} />
+    <AutocompleteItem
+      className={cn("cn-command-item", className)}
+      data-slot="command-item"
+      {...props}
+    />
   )
 }
 
@@ -203,7 +206,7 @@ export function CommandSeparator({
 }: React.ComponentProps<typeof AutocompleteSeparator>): React.ReactElement {
   return (
     <AutocompleteSeparator
-      className={cn("my-2", className)}
+      className={cn("cn-command-separator", className)}
       data-slot="command-separator"
       {...props}
     />
@@ -215,14 +218,7 @@ export function CommandShortcut({
   ...props
 }: React.ComponentProps<"kbd">): React.ReactElement {
   return (
-    <kbd
-      className={cn(
-        "ms-auto font-medium font-sans text-muted-foreground/72 text-xs tracking-widest",
-        className
-      )}
-      data-slot="command-shortcut"
-      {...props}
-    />
+    <kbd className={cn("cn-selection-meta", className)} data-slot="command-shortcut" {...props} />
   )
 }
 

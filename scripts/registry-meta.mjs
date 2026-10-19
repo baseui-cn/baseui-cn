@@ -283,7 +283,7 @@ export const componentMeta = {
     badge: COMPONENT_BADGE,
     baseUIPrimitive: "Autocomplete",
     deps: ["@base-ui/react", "lucide-react"],
-    registryDeps: ["utils", "scroll-area"],
+    registryDeps: ["utils", "scroll-area", "input"],
   }),
   slider: defineEntry("slider", {
     section: "Form",
@@ -712,6 +712,10 @@ const componentStyles = {
   slider: "slider",
   "otp-field": "otp-field",
   toggle: "toggle",
+  select: "selection",
+  autocomplete: "selection",
+  combobox: "selection",
+  command: "selection",
 }
 for (const [name, style] of Object.entries(componentStyles)) {
   componentMeta[name].files.push({
