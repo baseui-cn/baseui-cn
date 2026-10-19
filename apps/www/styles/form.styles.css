@@ -1,0 +1,84 @@
+/* Form layout only. Validation and control association remain with Base UI. */
+@layer components {
+  .cn-form,
+  .cn-fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: calc(16 * var(--cn-unit));
+    width: 100%;
+    min-width: 0;
+  }
+  .cn-fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .cn-form > .cn-fieldset + .cn-fieldset {
+    margin-block-start: calc(8 * var(--cn-unit));
+  }
+  .cn-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(6 * var(--cn-unit));
+    min-width: 0;
+    width: 100%;
+  }
+  .cn-field-label {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(6 * var(--cn-unit));
+    color: var(--cn-text);
+    font-size: calc(14 * var(--cn-unit));
+    line-height: calc(20 * var(--cn-unit));
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+  .cn-field-item {
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--cn-unit));
+    min-width: 0;
+  }
+  .cn-field-description,
+  .cn-field-error {
+    margin: 0;
+    color: var(--cn-text-muted);
+    font-size: calc(12 * var(--cn-unit));
+    line-height: calc(18 * var(--cn-unit));
+    overflow-wrap: anywhere;
+  }
+  .cn-field-error,
+  .cn-field-label [data-slot="field-required"] {
+    color: var(--cn-status-destructive-text);
+  }
+  .cn-fieldset-legend {
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--cn-unit));
+    width: 100%;
+    padding-block: calc(6 * var(--cn-unit));
+    color: var(--cn-text);
+    font-size: calc(16 * var(--cn-unit));
+    line-height: calc(24 * var(--cn-unit));
+    font-weight: 600;
+  }
+  .cn-fieldset-legend-sm {
+    font-size: calc(14 * var(--cn-unit));
+    line-height: calc(20 * var(--cn-unit));
+    padding-block: calc(4 * var(--cn-unit));
+  }
+  .cn-fieldset-legend-lg {
+    font-size: calc(18 * var(--cn-unit));
+    line-height: calc(26 * var(--cn-unit));
+    padding-block: calc(10 * var(--cn-unit));
+  }
+  .cn-fieldset-legend-border {
+    border-block-end: 1px solid var(--cn-border);
+  }
+  :is(.cn-field, .cn-fieldset)[data-disabled]
+    :is(.cn-field-label, .cn-field-description, .cn-field-error, .cn-fieldset-legend),
+  .cn-field-label[data-disabled] {
+    color: var(--cn-text-disabled);
+  }
+}

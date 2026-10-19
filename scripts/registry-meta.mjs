@@ -692,7 +692,7 @@ export const componentMeta = {
   }),
 }
 
-const phaseOneStyles = {
+const componentStyles = {
   button: "button",
   input: "text-control",
   textarea: "text-control",
@@ -701,14 +701,40 @@ const phaseOneStyles = {
   avatar: "avatar",
   card: "surface",
   frame: "surface",
+  field: "form",
+  form: "form",
+  fieldset: "form",
+  checkbox: "choice-control",
+  "checkbox-group": "choice-control",
+  "radio-group": "choice-control",
+  switch: "choice-control",
+  "number-field": "number-field",
+  slider: "slider",
+  "otp-field": "otp-field",
+  toggle: "toggle",
 }
-for (const [name, style] of Object.entries(phaseOneStyles)) {
+for (const [name, style] of Object.entries(componentStyles)) {
   componentMeta[name].files.push({
     sourcePath: `apps/www/styles/${style}.styles.css`,
     targetPath: `styles/${style}.styles.css`,
     type: "style",
   })
 }
+
+for (const [name, styles] of Object.entries({
+  "number-field": ["text-control"],
+  toggle: ["button"],
+})) {
+  for (const style of styles)
+    componentMeta[name].files.push({
+      sourcePath: `apps/www/styles/${style}.styles.css`,
+      targetPath: `styles/${style}.styles.css`,
+      type: "style",
+    })
+}
+// Preserve the independently installable separator composition.
+componentMeta["toggle-group"].registryDeps.push("separator")
+componentMeta.fieldset.deps.push("class-variance-authority")
 
 export function buildEntry(name, files, meta, version) {
   return {

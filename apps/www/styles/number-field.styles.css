@@ -1,0 +1,152 @@
+@layer components {
+  .cn-number-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 0;
+    gap: calc(6 * var(--cn-unit));
+  }
+  /* Unlike text-only shells, steppers may be disabled at a boundary while the input stays enabled. */
+  .cn-number-group {
+    align-items: center;
+    border: 1px solid var(--cn-border-control);
+    background: var(--cn-surface);
+    transition:
+      border-color var(--cn-duration-fast) var(--cn-ease-standard),
+      background-color var(--cn-duration-fast) var(--cn-ease-standard);
+  }
+  .cn-number-group:has(input:read-only) {
+    background: var(--cn-surface-muted);
+  }
+  .cn-number-group:is([data-invalid], :has(input[aria-invalid="true"])):not([data-disabled]) {
+    border-color: var(--cn-status-destructive-border);
+  }
+  .cn-number-group:has(input:focus-visible) {
+    outline: 2px solid var(--cn-focus-color);
+    outline-offset: 2px;
+  }
+  .cn-number-group[data-disabled] {
+    background: var(--cn-surface-disabled);
+    border-color: var(--cn-border-disabled);
+    color: var(--cn-text-disabled);
+  }
+  .cn-number-group.cn-number-sm {
+    --control-height: 32;
+    --control-inset: 10;
+    --control-type: 13;
+    --control-leading: 18;
+  }
+  .cn-number-group.cn-number-lg {
+    --control-height: 40;
+    --control-inset: 14;
+  }
+  .cn-number-input {
+    flex: 1;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .cn-number-stepper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: stretch;
+    flex-shrink: 0;
+    width: calc(var(--control-height) * var(--cn-unit) - 2px);
+    padding: 0;
+    border: 0;
+    border-radius: max(0px, calc(var(--cn-radius-control) - 1px));
+    background: transparent;
+    color: var(--cn-text);
+    cursor: pointer;
+    transition: background-color var(--cn-duration-fast) var(--cn-ease-standard);
+  }
+  .cn-number-stepper svg {
+    width: calc(16 * var(--cn-unit));
+    height: calc(16 * var(--cn-unit));
+    pointer-events: none;
+  }
+  .cn-number-stepper:not(:disabled, [data-disabled], [data-readonly]):active {
+    background: var(--cn-surface-pressed);
+  }
+  .cn-number-stepper:is(:disabled, [data-disabled], [data-readonly]) {
+    color: var(--cn-text-disabled);
+    cursor: not-allowed;
+  }
+  .cn-number-group[data-readonly] .cn-number-stepper {
+    cursor: default;
+  }
+  .cn-number-stepper:focus-visible {
+    outline: 2px solid var(--cn-focus-color);
+    outline-offset: -3px;
+    z-index: 1;
+  }
+  .cn-number-scrub {
+    display: flex;
+    cursor: ew-resize;
+  }
+  .cn-number-scrub:is([data-disabled], [data-readonly]) label {
+    cursor: default;
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    .cn-number-group:not([data-disabled], [data-invalid], :has(input[aria-invalid="true"])):hover {
+      border-color: var(--cn-border-hover);
+    }
+    .cn-number-stepper:not(:disabled, [data-disabled], [data-readonly], :active):hover {
+      background: var(--cn-surface-hover);
+    }
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    /* Border + 44px independent actions, with no invisible extensions. */
+    .cn-number-group {
+      min-height: calc(46 * var(--cn-unit));
+    }
+    .cn-number-group:has(> div > .cn-number-increment + .cn-number-decrement) {
+      min-height: calc(94 * var(--cn-unit));
+    }
+    .cn-number-stepper {
+      min-width: calc(44 * var(--cn-unit));
+      min-height: calc(44 * var(--cn-unit));
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn-number-stepper,
+  .cn-number-group {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .cn-number-stepper:focus-visible,
+  .cn-number-group:has(input:focus-visible) {
+    outline-color: Highlight;
+  }
+}
+@layer components {
+  .cn-number-stepper-sm {
+    width: calc(30 * var(--cn-unit));
+  }
+  .cn-number-stepper-lg {
+    width: calc(38 * var(--cn-unit));
+  }
+  .cn-number-input-sm {
+    --control-inset: 10;
+    font-size: calc(13 * var(--cn-unit));
+    line-height: calc(18 * var(--cn-unit));
+  }
+  .cn-number-input-lg {
+    --control-inset: 14;
+    font-size: calc(14 * var(--cn-unit));
+    line-height: calc(20 * var(--cn-unit));
+  }
+}
+
+/* A disabled NumberField also owns the foreground of its composed Label. */
+:where(.cn-number-field[data-disabled] label) {
+  color: var(--cn-text-disabled);
+}

@@ -1,0 +1,233 @@
+/* Visible indicators stay compact. Associated labels supply real target space. */
+@layer components {
+  .cn-checkbox-group,
+  .cn-radio-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(8 * var(--cn-unit));
+    min-width: 0;
+  }
+  .cn-radio-group {
+    width: 100%;
+  }
+  .cn-checkbox,
+  .cn-radio,
+  .cn-switch {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: calc(16 * var(--cn-unit));
+    height: calc(16 * var(--cn-unit));
+    padding: 0;
+    border: 1px solid var(--cn-border-control);
+    border-radius: calc(4 * var(--cn-unit));
+    background: var(--cn-surface);
+    color: var(--cn-text);
+    cursor: pointer;
+    transition:
+      background-color var(--cn-duration-fast) var(--cn-ease-standard),
+      border-color var(--cn-duration-fast) var(--cn-ease-standard);
+  }
+  .cn-radio {
+    border-radius: 50%;
+  }
+  .cn-checkbox:is([data-checked], [data-indeterminate]) {
+    background: var(--cn-primary);
+    border-color: var(--cn-primary);
+    color: var(--cn-primary-foreground);
+  }
+  .cn-radio[data-checked] {
+    border-color: var(--cn-primary);
+    color: var(--cn-primary);
+  }
+  .cn-checkbox-indicator,
+  .cn-radio-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .cn-checkbox-indicator[data-unchecked]:not([data-indeterminate]) {
+    display: none;
+  }
+  .cn-checkbox-mark,
+  .cn-radio-mark {
+    display: block;
+    width: calc(12 * var(--cn-unit));
+    height: calc(12 * var(--cn-unit));
+  }
+  .cn-radio-mark {
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .cn-switch {
+    width: calc(36 * var(--cn-unit));
+    height: calc(20 * var(--cn-unit));
+    border: 0;
+    border-radius: 9999px;
+    padding: calc(2 * var(--cn-unit));
+    justify-content: flex-start;
+    background: var(--cn-border-control);
+  }
+  .cn-switch[data-checked] {
+    background: var(--cn-primary);
+  }
+  .cn-switch-thumb {
+    width: calc(16 * var(--cn-unit));
+    height: calc(16 * var(--cn-unit));
+    border-radius: 50%;
+    background: var(--cn-surface);
+    pointer-events: none;
+  }
+  .cn-switch[data-checked] .cn-switch-thumb {
+    margin-inline-start: calc(16 * var(--cn-unit));
+    background: var(--cn-primary-foreground);
+  }
+  :is(.cn-checkbox, .cn-radio, .cn-switch):not([data-disabled], [data-readonly]):active {
+    background: var(--cn-surface-pressed);
+  }
+  :is(.cn-checkbox, .cn-radio):not(
+      [data-disabled],
+      [data-readonly],
+      [data-invalid],
+      [aria-invalid="true"]
+    ):active {
+    border-color: var(--cn-border-active);
+  }
+  .cn-switch:not([data-disabled], [data-readonly], [data-checked]):active {
+    background: var(--cn-border-active);
+  }
+  :is(.cn-checkbox, .cn-switch):not([data-disabled], [data-readonly]):is(
+      [data-checked],
+      [data-indeterminate]
+    ):active {
+    background: var(--cn-primary-pressed);
+  }
+  :is(.cn-checkbox, .cn-radio, .cn-switch):is([data-readonly]) {
+    cursor: default;
+  }
+  :is(.cn-checkbox, .cn-radio, .cn-switch):is([data-invalid], [aria-invalid="true"]) {
+    border-color: var(--cn-status-destructive-border);
+  }
+  /* Switch's inset border preserves the approved 36 x 20 / 16 / 2 anatomy. */
+  .cn-switch:is([data-invalid], [aria-invalid="true"]) {
+    box-shadow: inset 0 0 0 1px var(--cn-status-destructive-border);
+  }
+  :is(.cn-checkbox, .cn-radio, .cn-switch)[data-disabled] {
+    background: var(--cn-surface-disabled);
+    border-color: var(--cn-border-disabled);
+    color: var(--cn-text-disabled);
+    cursor: not-allowed;
+  }
+  .cn-checkbox[data-disabled]:is([data-checked], [data-indeterminate]) {
+    background: var(--cn-text-disabled);
+    color: var(--cn-surface-disabled);
+  }
+  .cn-radio[data-disabled][data-checked] {
+    color: var(--cn-text-disabled);
+  }
+  .cn-switch[data-disabled] {
+    box-shadow: inset 0 0 0 1px var(--cn-border-disabled);
+  }
+  .cn-switch[data-disabled] .cn-switch-thumb {
+    background: var(--cn-text-disabled);
+  }
+  .cn-switch[data-disabled][data-checked] {
+    background: var(--cn-text-disabled);
+  }
+  .cn-switch[data-disabled][data-checked] .cn-switch-thumb {
+    background: var(--cn-surface-disabled);
+  }
+  :is(.cn-checkbox, .cn-radio, .cn-switch):focus-visible {
+    outline: 2px solid var(--cn-focus-color);
+    outline-offset: 2px;
+  }
+  :where(
+    label:has(.cn-checkbox, .cn-radio, .cn-switch),
+    .cn-field-item:has(.cn-checkbox, .cn-radio, .cn-switch),
+    *:has(> :is(.cn-checkbox, .cn-radio, .cn-switch)) > :is(div, span) > label,
+    *:has(> :is(.cn-checkbox, .cn-radio, .cn-switch)) > label
+  ) {
+    min-height: calc(24 * var(--cn-unit));
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    :is(.cn-checkbox, .cn-radio, .cn-switch):not(
+        [data-disabled],
+        [data-readonly],
+        :active,
+        [data-checked],
+        [data-indeterminate]
+      ):hover {
+      background: var(--cn-surface-hover);
+    }
+    :is(.cn-checkbox, .cn-radio):not(
+        [data-disabled],
+        [data-readonly],
+        [data-invalid],
+        [aria-invalid="true"],
+        :active
+      ):hover {
+      border-color: var(--cn-border-hover);
+    }
+    :is(.cn-checkbox, .cn-switch):not([data-disabled], [data-readonly], :active):is(
+        [data-checked],
+        [data-indeterminate]
+      ):hover {
+      background: var(--cn-primary-hover);
+    }
+    .cn-radio[data-checked]:not([data-disabled], [data-readonly], :active):hover {
+      background: var(--cn-surface-selected);
+    }
+    .cn-switch:not([data-disabled], [data-readonly], :active, [data-checked]):hover {
+      background: var(--cn-border-hover);
+    }
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    :where(
+      label:has(.cn-checkbox, .cn-radio, .cn-switch),
+      .cn-field-item:has(.cn-checkbox, .cn-radio, .cn-switch),
+      *:has(> :is(.cn-checkbox, .cn-radio, .cn-switch)) > :is(div, span) > label,
+      *:has(> :is(.cn-checkbox, .cn-radio, .cn-switch)) > label
+    ) {
+      min-height: calc(44 * var(--cn-unit));
+      min-width: calc(44 * var(--cn-unit));
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn-checkbox,
+  .cn-radio,
+  .cn-switch {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  :is(.cn-checkbox, .cn-radio, .cn-switch):focus-visible {
+    outline-color: Highlight;
+  }
+  :is(.cn-checkbox, .cn-radio, .cn-switch):is([data-checked], [data-indeterminate]) {
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+}
+/* Label's Phase 1 utility sets its own foreground. State color belongs to the
+   associated choice here, without changing Label's shared foundation. */
+:where(
+  label:has(:is(.cn-checkbox, .cn-radio, .cn-switch)[data-disabled]),
+  :is(.cn-checkbox, .cn-radio, .cn-switch)[data-disabled] ~ label,
+  :is(.cn-checkbox-group, .cn-radio-group)[data-disabled] label
+) {
+  color: var(--cn-text-disabled);
+  cursor: not-allowed;
+}

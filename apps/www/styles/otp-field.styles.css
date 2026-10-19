@@ -1,0 +1,138 @@
+@layer components {
+  .cn-otp-field {
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--cn-unit));
+    width: 100%;
+    min-width: 0;
+  }
+  .cn-otp-input {
+    --otp-width: 40;
+    --otp-height: 44;
+    --otp-type: 18;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: calc(var(--otp-width) * var(--cn-unit));
+    height: calc(var(--otp-height) * var(--cn-unit));
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--cn-border-control);
+    border-radius: var(--cn-radius-control);
+    background: var(--cn-surface);
+    color: var(--cn-text);
+    text-align: center;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: calc(var(--otp-type) * var(--cn-unit));
+    line-height: 1;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition:
+      border-color var(--cn-duration-fast) var(--cn-ease-standard),
+      background-color var(--cn-duration-fast) var(--cn-ease-standard);
+  }
+  .cn-otp-sm {
+    --otp-width: 36;
+    --otp-height: 40;
+    --otp-type: 16;
+  }
+  .cn-otp-lg {
+    --otp-width: 44;
+    --otp-height: 48;
+    --otp-type: 20;
+  }
+  .cn-otp-input::placeholder {
+    color: var(--cn-text-muted);
+    opacity: 1;
+  }
+  .cn-otp-input[data-filled] {
+    background: var(--cn-surface-selected);
+  }
+  .cn-otp-input:is(:read-only, [data-readonly]) {
+    background: var(--cn-surface-muted);
+  }
+  .cn-otp-input:is([data-invalid], [aria-invalid="true"]) {
+    border-color: var(--cn-status-destructive-border);
+  }
+  .cn-otp-input:is(:disabled, [data-disabled]) {
+    background: var(--cn-surface-disabled);
+    border-color: var(--cn-border-disabled);
+    color: var(--cn-text-disabled);
+    cursor: not-allowed;
+  }
+  .cn-otp-input:focus-visible {
+    outline: 2px solid var(--cn-focus-color);
+    outline-offset: 2px;
+  }
+  .cn-otp-separator {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--cn-text-muted);
+    width: calc(16 * var(--cn-unit));
+    font-size: calc(14 * var(--cn-unit));
+  }
+  .cn-otp-separator-sm {
+    width: calc(12 * var(--cn-unit));
+    font-size: calc(12 * var(--cn-unit));
+  }
+  .cn-otp-separator-lg {
+    width: calc(20 * var(--cn-unit));
+    font-size: calc(16 * var(--cn-unit));
+  }
+  /* Explicit consumer opt-in: six full-size slots in two rows, preserving DOM/keyboard order. */
+  .cn-otp-wrap {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    width: fit-content;
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    .cn-otp-input:not(
+        :disabled,
+        [data-disabled],
+        [data-readonly],
+        [data-invalid],
+        [aria-invalid="true"]
+      ):hover {
+      border-color: var(--cn-border-hover);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn-otp-input {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .cn-otp-input:focus-visible {
+    outline-color: Highlight;
+  }
+}
+@layer components {
+  .cn-otp-container {
+    container-type: inline-size;
+    width: 100%;
+    min-width: 0;
+    padding: calc(4 * var(--cn-unit));
+  }
+  .cn-otp-responsive {
+    width: fit-content;
+    margin-inline: auto;
+  }
+}
+@container (max-width: 23rem) {
+  @layer components {
+    .cn-otp-responsive {
+      display: grid;
+      grid-template-columns: repeat(3, max-content);
+    }
+    .cn-otp-responsive:has(> div) {
+      grid-template-columns: max-content;
+    }
+    .cn-otp-responsive > .cn-otp-separator {
+      justify-self: center;
+    }
+  }
+}

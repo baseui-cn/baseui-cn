@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Phase2SystemPreview } from "@/components/previews/phase2-system-preview"
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
@@ -331,6 +332,7 @@ function FormBuiltWithFieldPreview() {
 }
 
 export const fieldPreviewMap: Record<string, React.ComponentType> = {
+  "field-system-specimen": Phase2SystemPreview,
   field: FieldPreview,
   "field-demo": FieldPreview,
   "field-with-error": FieldWithErrorPreview,

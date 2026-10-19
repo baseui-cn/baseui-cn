@@ -16,6 +16,21 @@ for (const [name, meta] of Object.entries(componentMeta)) {
     `${name}: copies differ`
   )
   const entry = JSON.parse(copies[0])
+  assert.deepEqual(entry.dependencies.required, meta.deps, `${name}: dependency metadata differs`)
+  assert.deepEqual(
+    entry.registryDependencies,
+    meta.registryDeps,
+    `${name}: registry dependency metadata differs`
+  )
+  for (const file of entry.files) {
+    if (file.type === "style") continue
+    for (const [, style] of file.content.matchAll(/import "@\/styles\/([^"]+)"/g)) {
+      assert.ok(
+        entry.files.some((item) => item.path === `styles/${style}` && item.type === "style"),
+        `${name}: unshipped stylesheet ${style}`
+      )
+    }
+  }
   for (const file of meta.files) {
     const source = path.join(
       /^(apps|packages|scripts)\//.test(file.sourcePath) ? REPO_ROOT : UI_DIR,
