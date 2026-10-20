@@ -159,9 +159,7 @@ export async function ensureThemeCSS(
       ])
     )
     const darkDefaults = Object.fromEntries(
-      Object.entries(REQUIRED_DARK_VARS).filter(
-        ([name]) => !name.startsWith("--cn-") || !existingRootNames.has(name)
-      )
+      Object.entries(REQUIRED_DARK_VARS).filter(([name]) => !existingRootNames.has(name))
     )
 
     // Preserve all existing CSS, including customized legacy injection blocks.
@@ -169,7 +167,7 @@ export async function ensureThemeCSS(
       css += "\n\n" + themeStrategy
       changed = true
     }
-    if (!css.includes("/* baseui-cn foundation v2 */")) {
+    if (!css.includes("/* baseui-cn foundation */")) {
       css += "\n\n" + themeFoundation
       changed = true
     }

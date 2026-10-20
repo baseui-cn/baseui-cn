@@ -5,12 +5,20 @@ import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
 
 import { cn } from "@/lib/utils"
 
+import "@/styles/overlay.styles.css"
+
 function Popover({ ...props }: PopoverPrimitive.Root.Props) {
   return <PopoverPrimitive.Root data-slot="popover" {...props} />
 }
 
-function PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {
-  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />
+function PopoverTrigger({ className, ...props }: PopoverPrimitive.Trigger.Props) {
+  return (
+    <PopoverPrimitive.Trigger
+      data-slot="popover-trigger"
+      className={cn("overlay-trigger-layout", className)}
+      {...props}
+    />
+  )
 }
 
 function PopoverContent({
@@ -19,9 +27,12 @@ function PopoverContent({
   alignOffset = 0,
   side = "bottom",
   sideOffset = 4,
+  positionerProps,
   ...props
 }: PopoverPrimitive.Popup.Props &
-  Pick<PopoverPrimitive.Positioner.Props, "align" | "alignOffset" | "side" | "sideOffset">) {
+  Pick<PopoverPrimitive.Positioner.Props, "align" | "alignOffset" | "side" | "sideOffset"> & {
+    positionerProps?: Omit<PopoverPrimitive.Positioner.Props, "children">
+  }) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
@@ -30,18 +41,12 @@ function PopoverContent({
         side={side}
         sideOffset={sideOffset}
         className="isolate z-50"
+        {...positionerProps}
       >
         <PopoverPrimitive.Popup
           data-slot="popover-content"
           className={cn(
-            "bg-popover text-popover-foreground",
-            "data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0",
-            "data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 ",
-            "data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2",
-            "data-[side=top]:slide-in-from-bottom-2 ring-foreground/5 flex flex-col gap-4 rounded-xl",
-            "p-4 text-sm shadow-2xl ring-1 duration-100",
-            "data-[side=inline-start]:slide-in-from-right-2 data-[side=inline-end]:slide-in-from-left-2",
-            "z-50 w-72 origin-(--transform-origin) outline-hidden",
+            "overlay-popup-layout popover-popup-layout border border-border bg-popover text-popover-foreground",
             className
           )}
           {...props}
@@ -53,7 +58,7 @@ function PopoverContent({
 
 function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div data-slot="popover-header" className={cn("cn-popover-header", className)} {...props} />
+    <div data-slot="popover-header" className={cn("popover-header-layout", className)} {...props} />
   )
 }
 
@@ -61,7 +66,7 @@ function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
   return (
     <PopoverPrimitive.Title
       data-slot="popover-title"
-      className={cn("cn-popover-title", className)}
+      className={cn("popover-title-layout", className)}
       {...props}
     />
   )
@@ -71,7 +76,7 @@ function PopoverDescription({ className, ...props }: PopoverPrimitive.Descriptio
   return (
     <PopoverPrimitive.Description
       data-slot="popover-description"
-      className={cn("cn-popover-description", className)}
+      className={cn("popover-description-layout", className)}
       {...props}
     />
   )

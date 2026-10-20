@@ -7,16 +7,16 @@ import { cn } from "@/lib/utils"
 import "@/styles/form.styles.css"
 import { cva, type VariantProps } from "class-variance-authority"
 
-const fieldsetLegendVariants = cva("cn-fieldset-legend", {
+const fieldsetLegendVariants = cva("fieldset-legend-layout", {
   variants: {
     variant: {
-      border: "cn-fieldset-legend-border",
+      border: "fieldset-legend-border-layout",
       default: "",
     },
     size: {
-      sm: "cn-fieldset-legend-sm",
-      md: "cn-fieldset-legend-md",
-      lg: "cn-fieldset-legend-lg",
+      sm: "fieldset-legend-sm-layout",
+      md: "",
+      lg: "fieldset-legend-lg-layout",
     },
   },
   defaultVariants: {
@@ -31,7 +31,7 @@ export function Fieldset({
 }: FieldsetPrimitive.Root.Props): React.ReactElement {
   return (
     <FieldsetPrimitive.Root
-      className={cn("cn-fieldset", className)}
+      className={cn("fieldset-layout", className)}
       data-slot="fieldset"
       {...props}
     />

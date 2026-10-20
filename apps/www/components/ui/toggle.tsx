@@ -8,23 +8,34 @@ import { cn } from "@/lib/utils"
 import "@/styles/button.styles.css"
 import "@/styles/toggle.styles.css"
 
-export const toggleVariants = cva("cn-button cn-toggle", {
-  defaultVariants: {
-    size: "default",
-    variant: "default",
-  },
-  variants: {
-    size: {
-      default: "cn-button-default",
-      lg: "cn-button-lg",
-      sm: "cn-button-sm",
+export const toggleVariants = cva(
+  [
+    "button-layout toggle-layout border border-transparent text-foreground data-[pressed]:bg-accent",
+    "data-[pressed]:text-accent-foreground data-[pressed]:shadow-[inset_0_-2px_0_currentColor]",
+    "data-[pressed]:focus-visible:shadow-[inset_0_-2px_0_currentColor] disabled:border-border disabled:bg-muted",
+    "disabled:text-muted-foreground data-[disabled]:border-border data-[disabled]:bg-muted data-[disabled]:text-muted-foreground",
+    "data-[pressed]:data-[disabled]:border-border data-[pressed]:data-[disabled]:bg-muted data-[pressed]:data-[disabled]:text-muted-foreground",
+    "aria-invalid:border-destructive data-[invalid]:border-destructive focus-visible:outline-ring",
+  ],
+  {
+    defaultVariants: {
+      size: "default",
+      variant: "default",
     },
-    variant: {
-      default: "cn-button-ghost",
-      outline: "cn-button-outline",
+    variants: {
+      size: {
+        default: "",
+        lg: "button-lg-layout",
+        sm: "button-sm-layout",
+      },
+      variant: {
+        default: "bg-transparent [@media(hover:hover)]:enabled:not-data-[pressed]:hover:bg-muted",
+        outline:
+          "button-outline-layout border-input bg-background [@media(hover:hover)]:enabled:not-data-[pressed]:hover:bg-muted",
+      },
     },
-  },
-})
+  }
+)
 
 export function Toggle({
   className,

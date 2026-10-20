@@ -1,84 +1,89 @@
 /* Form layout only. Validation and control association remain with Base UI. */
 @layer components {
-  .cn-form,
-  .cn-fieldset {
+  .form-layout,
+  .fieldset-layout {
     display: flex;
     flex-direction: column;
-    gap: calc(16 * var(--cn-unit));
+    gap: calc(16 * var(--component-unit, 0.0625rem));
     width: 100%;
     min-width: 0;
   }
-  .cn-fieldset {
+  .fieldset-layout {
     margin: 0;
     padding: 0;
     border: 0;
   }
-  .cn-form > .cn-fieldset + .cn-fieldset {
-    margin-block-start: calc(8 * var(--cn-unit));
+  .form-layout > .fieldset-layout + .fieldset-layout {
+    margin-block-start: calc(8 * var(--component-unit, 0.0625rem));
   }
-  .cn-field {
+  .field-layout {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: calc(6 * var(--cn-unit));
+    gap: calc(6 * var(--component-unit, 0.0625rem));
     min-width: 0;
     width: 100%;
   }
-  .cn-field-label {
+  .field-label-layout {
     display: inline-flex;
     align-items: center;
-    gap: calc(6 * var(--cn-unit));
-    color: var(--cn-text);
-    font-size: calc(14 * var(--cn-unit));
-    line-height: calc(20 * var(--cn-unit));
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    color: var(--foreground);
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
     font-weight: 500;
     overflow-wrap: anywhere;
   }
-  .cn-field-item {
+  .field-item-layout {
     display: flex;
     align-items: center;
-    gap: calc(8 * var(--cn-unit));
+    gap: calc(8 * var(--component-unit, 0.0625rem));
     min-width: 0;
   }
-  .cn-field-description,
-  .cn-field-error {
+  .field-description-layout,
+  .field-error-layout {
     margin: 0;
-    color: var(--cn-text-muted);
-    font-size: calc(12 * var(--cn-unit));
-    line-height: calc(18 * var(--cn-unit));
+    color: var(--muted-foreground);
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
     overflow-wrap: anywhere;
   }
-  .cn-field-error,
-  .cn-field-label [data-slot="field-required"] {
-    color: var(--cn-status-destructive-text);
+  .field-error-layout,
+  .field-label-layout [data-slot="field-required"] {
+    color: var(--destructive);
   }
-  .cn-fieldset-legend {
+  .fieldset-legend-layout {
     display: flex;
     align-items: center;
-    gap: calc(8 * var(--cn-unit));
+    gap: calc(8 * var(--component-unit, 0.0625rem));
     width: 100%;
-    padding-block: calc(6 * var(--cn-unit));
-    color: var(--cn-text);
-    font-size: calc(16 * var(--cn-unit));
-    line-height: calc(24 * var(--cn-unit));
+    padding-block: calc(6 * var(--component-unit, 0.0625rem));
+    color: var(--foreground);
+    font-size: calc(16 * var(--component-unit, 0.0625rem));
+    line-height: calc(24 * var(--component-unit, 0.0625rem));
     font-weight: 600;
   }
-  .cn-fieldset-legend-sm {
-    font-size: calc(14 * var(--cn-unit));
-    line-height: calc(20 * var(--cn-unit));
-    padding-block: calc(4 * var(--cn-unit));
+  .fieldset-legend-sm-layout {
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    padding-block: calc(4 * var(--component-unit, 0.0625rem));
   }
-  .cn-fieldset-legend-lg {
-    font-size: calc(18 * var(--cn-unit));
-    line-height: calc(26 * var(--cn-unit));
-    padding-block: calc(10 * var(--cn-unit));
+  .fieldset-legend-lg-layout {
+    font-size: calc(18 * var(--component-unit, 0.0625rem));
+    line-height: calc(26 * var(--component-unit, 0.0625rem));
+    padding-block: calc(10 * var(--component-unit, 0.0625rem));
   }
-  .cn-fieldset-legend-border {
-    border-block-end: 1px solid var(--cn-border);
+  .fieldset-legend-border-layout {
+    border-block-end: 1px solid var(--border);
   }
-  :is(.cn-field, .cn-fieldset)[data-disabled]
-    :is(.cn-field-label, .cn-field-description, .cn-field-error, .cn-fieldset-legend),
-  .cn-field-label[data-disabled] {
-    color: var(--cn-text-disabled);
+  :is(.field-layout, .fieldset-layout)[data-disabled]
+    :is(
+      .field-label-layout,
+      .field-description-layout,
+      .field-error-layout,
+      .fieldset-legend-layout
+    ),
+  .field-label-layout[data-disabled] {
+    color: var(--muted-foreground);
   }
 }

@@ -33,11 +33,15 @@ export function AutocompleteInput({
 
   return (
     <AutocompletePrimitive.InputGroup
-      className="cn-input-group cn-autocomplete-control"
+      className="input-group-layout autocomplete-control-layout border border-input bg-background text-foreground"
       data-slot="autocomplete-input-group"
     >
       {startAddon && (
-        <div aria-hidden="true" className="cn-selection-start" data-slot="autocomplete-start-addon">
+        <div
+          aria-hidden="true"
+          className="selection-start-layout"
+          data-slot="autocomplete-start-addon"
+        >
           {startAddon}
         </div>
       )}
@@ -87,13 +91,16 @@ export function AutocompletePopup({
         align={align}
         alignOffset={alignOffset}
         anchor={anchor}
-        className="cn-selection-positioner"
+        className="selection-positioner-layout"
         data-slot="autocomplete-positioner"
         side={side}
         sideOffset={sideOffset}
       >
         <AutocompletePrimitive.Popup
-          className={cn("cn-selection-popup cn-autocomplete-popup", className)}
+          className={cn(
+            "selection-popup-layout border border-border bg-popover text-popover-foreground",
+            className
+          )}
           data-slot="autocomplete-popup"
           {...props}
         >
@@ -113,7 +120,10 @@ export function AutocompleteItem({
 }: AutocompletePrimitive.Item.Props): React.ReactElement {
   return (
     <AutocompletePrimitive.Item
-      className={cn("cn-selection-item", className)}
+      className={cn(
+        "selection-item-layout group/option text-popover-foreground data-[highlighted]:bg-muted data-[disabled]:text-muted-foreground",
+        className
+      )}
       data-slot="autocomplete-item"
       {...props}
     >
@@ -128,7 +138,7 @@ export function AutocompleteSeparator({
 }: AutocompletePrimitive.Separator.Props): React.ReactElement {
   return (
     <AutocompletePrimitive.Separator
-      className={cn("cn-selection-separator", className)}
+      className={cn("selection-separator-layout", className)}
       data-slot="autocomplete-separator"
       {...props}
     />
@@ -141,7 +151,7 @@ export function AutocompleteGroup({
 }: AutocompletePrimitive.Group.Props): React.ReactElement {
   return (
     <AutocompletePrimitive.Group
-      className={cn("cn-selection-group", className)}
+      className={cn("selection-group-layout", className)}
       data-slot="autocomplete-group"
       {...props}
     />
@@ -154,7 +164,7 @@ export function AutocompleteGroupLabel({
 }: AutocompletePrimitive.GroupLabel.Props): React.ReactElement {
   return (
     <AutocompletePrimitive.GroupLabel
-      className={cn("cn-selection-label", className)}
+      className={cn("selection-label-layout", className)}
       data-slot="autocomplete-group-label"
       {...props}
     />
@@ -167,7 +177,7 @@ export function AutocompleteEmpty({
 }: AutocompletePrimitive.Empty.Props): React.ReactElement {
   return (
     <AutocompletePrimitive.Empty
-      className={cn("cn-selection-empty", className)}
+      className={cn("selection-empty-layout", className)}
       data-slot="autocomplete-empty"
       {...props}
     />
@@ -192,9 +202,9 @@ export function AutocompleteList({
   ...props
 }: AutocompletePrimitive.List.Props): React.ReactElement {
   return (
-    <ScrollArea className="cn-selection-scroll h-auto" scrollbarGutter>
+    <ScrollArea className="selection-scroll-layout h-auto" scrollbarGutter>
       <AutocompletePrimitive.List
-        className={cn("cn-selection-list", className)}
+        className={cn("selection-list-layout", className)}
         data-slot="autocomplete-list"
         {...props}
       />
@@ -210,7 +220,7 @@ export function AutocompleteClear({
     <AutocompletePrimitive.Clear
       aria-label="Clear input"
       tabIndex={0}
-      className={cn("cn-selection-action", className)}
+      className={cn("selection-action-layout", className)}
       data-slot="autocomplete-clear"
       {...props}
     >
@@ -225,7 +235,7 @@ export function AutocompleteStatus({
 }: AutocompletePrimitive.Status.Props): React.ReactElement {
   return (
     <AutocompletePrimitive.Status
-      className={cn("cn-selection-status", className)}
+      className={cn("selection-status-layout", className)}
       data-slot="autocomplete-status"
       {...props}
     />
@@ -245,7 +255,7 @@ export function AutocompleteTrigger({
 }: AutocompletePrimitive.Trigger.Props): React.ReactElement {
   return (
     <AutocompletePrimitive.Trigger
-      className={cn("cn-selection-action", className)}
+      className={cn("selection-action-layout", className)}
       data-slot="autocomplete-trigger"
       {...props}
     >

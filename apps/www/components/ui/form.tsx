@@ -10,7 +10,7 @@ export function Form<TValues extends object = object>({
   className,
   ...props
 }: FormPrimitive.Props<TValues>): React.ReactElement {
-  return <FormPrimitive className={cn("cn-form", className)} data-slot="form" {...props} />
+  return <FormPrimitive className={cn("form-layout", className)} data-slot="form" {...props} />
 }
 
 export { FormPrimitive }

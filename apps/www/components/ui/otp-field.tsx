@@ -38,14 +38,14 @@ export interface OTPFieldSeparatorProps extends Omit<
 
 const OTPFieldSizeContext = React.createContext<OTPFieldSize>("default")
 
-const otpFieldRootVariants = cva("cn-otp-field")
+const otpFieldRootVariants = cva("otp-field-layout")
 
-const otpFieldInputVariants = cva("cn-otp-input", {
+const otpFieldInputVariants = cva("otp-input-layout", {
   variants: {
     size: {
-      sm: "cn-otp-sm",
-      default: "cn-otp-default",
-      lg: "cn-otp-lg",
+      sm: "otp-sm-layout",
+      default: "",
+      lg: "otp-lg-layout",
     },
   },
   defaultVariants: {
@@ -53,12 +53,12 @@ const otpFieldInputVariants = cva("cn-otp-input", {
   },
 })
 
-const otpFieldSeparatorVariants = cva("cn-otp-separator", {
+const otpFieldSeparatorVariants = cva("otp-separator-layout", {
   variants: {
     size: {
-      sm: "cn-otp-separator-sm",
-      default: "cn-otp-separator-default",
-      lg: "cn-otp-separator-lg",
+      sm: "otp-separator-sm-layout",
+      default: "",
+      lg: "otp-separator-lg-layout",
     },
   },
   defaultVariants: {

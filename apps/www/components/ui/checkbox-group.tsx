@@ -12,7 +12,7 @@ export function CheckboxGroup({
 }: CheckboxGroupPrimitive.Props): React.ReactElement {
   return (
     <CheckboxGroupPrimitive
-      className={cn("cn-checkbox-group", className)}
+      className={cn("checkbox-group-layout", className)}
       data-slot="checkbox-group"
       {...props}
     />

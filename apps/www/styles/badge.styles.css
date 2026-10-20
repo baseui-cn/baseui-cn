@@ -1,135 +1,138 @@
 @layer components {
-  .cn-badge {
+  .badge-layout {
     --badge-height: 22;
     --badge-inset: 8;
     --badge-type: 12;
-    --badge-bg: var(--cn-primary);
-    --badge-fg: var(--cn-primary-foreground);
+    --badge-bg: var(--primary);
+    --badge-fg: var(--primary-foreground);
     --badge-border: transparent;
     display: inline-flex;
     box-sizing: border-box;
     width: fit-content;
-    height: calc(var(--badge-height) * var(--cn-unit));
+    height: calc(var(--badge-height) * var(--component-unit, 0.0625rem));
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    gap: calc(4 * var(--cn-unit));
-    padding-inline: calc(var(--badge-inset) * var(--cn-unit) - 1px);
+    gap: calc(4 * var(--component-unit, 0.0625rem));
+    padding-inline: calc(var(--badge-inset) * var(--component-unit, 0.0625rem) - 1px);
     border: 1px solid var(--badge-border);
-    border-radius: var(--cn-radius-item);
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) - 2 * var(--component-unit, 0.0625rem))
+    );
     background: var(--badge-bg);
     color: var(--badge-fg);
-    font-size: calc(var(--badge-type) * var(--cn-unit));
-    line-height: calc(16 * var(--cn-unit));
+    font-size: calc(var(--badge-type) * var(--component-unit, 0.0625rem));
+    line-height: calc(16 * var(--component-unit, 0.0625rem));
     font-weight: 500;
     white-space: nowrap;
-    transition: background-color var(--cn-duration-fast) var(--cn-ease-standard);
+    transition: background-color 100ms cubic-bezier(0.2, 0, 0, 1);
   }
-  .cn-badge-sm {
+  .badge-sm-layout {
     --badge-height: 18;
     --badge-inset: 6;
     --badge-type: 11;
   }
-  .cn-badge-lg {
+  .badge-lg-layout {
     --badge-height: 26;
     --badge-inset: 10;
   }
-  .cn-badge-pill {
+  .badge-pill-layout {
     border-radius: 9999px;
   }
-  .cn-badge > svg {
-    width: calc(12 * var(--cn-unit));
-    height: calc(12 * var(--cn-unit));
+  .badge-layout > svg {
+    width: calc(12 * var(--component-unit, 0.0625rem));
+    height: calc(12 * var(--component-unit, 0.0625rem));
     pointer-events: none;
     flex-shrink: 0;
   }
-  .cn-badge-secondary {
-    --badge-bg: var(--cn-surface-muted);
-    --badge-fg: var(--cn-text);
+  .badge-secondary-layout {
+    --badge-bg: var(--muted);
+    --badge-fg: var(--foreground);
   }
-  .cn-badge-outline {
+  .badge-outline-layout {
     --badge-bg: transparent;
-    --badge-fg: var(--cn-text);
-    --badge-border: var(--cn-border);
+    --badge-fg: var(--foreground);
+    --badge-border: var(--border);
   }
-  .cn-badge-primary-outline {
+  .badge-primary-outline-layout {
     --badge-bg: transparent;
-    --badge-fg: var(--cn-primary);
-    --badge-border: var(--cn-primary);
+    --badge-fg: var(--primary);
+    --badge-border: var(--primary);
   }
-  .cn-badge-ghost {
+  .badge-ghost-layout {
     --badge-bg: transparent;
-    --badge-fg: var(--cn-text);
+    --badge-fg: var(--foreground);
   }
-  .cn-badge-destructive {
-    --badge-bg: var(--cn-status-destructive-text);
-    --badge-fg: var(--cn-status-destructive-foreground);
+  .badge-destructive-layout {
+    --badge-bg: var(--destructive);
+    --badge-fg: var(--destructive-foreground);
   }
-  .cn-badge-success {
-    --badge-bg: var(--cn-status-success-text);
-    --badge-fg: var(--cn-status-success-foreground);
+  .badge-success-layout {
+    --badge-bg: var(--success);
+    --badge-fg: var(--success-foreground);
   }
-  .cn-badge-warning {
-    --badge-bg: var(--cn-status-warning-text);
-    --badge-fg: var(--cn-status-warning-foreground);
+  .badge-warning-layout {
+    --badge-bg: var(--warning);
+    --badge-fg: var(--warning-foreground);
   }
-  .cn-badge-info {
-    --badge-bg: var(--cn-status-info-text);
-    --badge-fg: var(--cn-status-info-foreground);
+  .badge-info-layout {
+    --badge-bg: var(--info);
+    --badge-fg: var(--info-foreground);
   }
-  .cn-badge-success-outline {
-    --badge-bg: var(--cn-status-success-surface);
-    --badge-fg: var(--cn-status-success-text);
-    --badge-border: var(--cn-status-success-border);
+  .badge-success-outline-layout {
+    --badge-bg: color-mix(in srgb, var(--success) 10%, var(--card));
+    --badge-fg: var(--success);
+    --badge-border: var(--success);
   }
-  .cn-badge-warning-outline {
-    --badge-bg: var(--cn-status-warning-surface);
-    --badge-fg: var(--cn-status-warning-text);
-    --badge-border: var(--cn-status-warning-border);
+  .badge-warning-outline-layout {
+    --badge-bg: color-mix(in srgb, var(--warning) 10%, var(--card));
+    --badge-fg: var(--warning);
+    --badge-border: var(--warning);
   }
-  .cn-badge-info-outline {
-    --badge-bg: var(--cn-status-info-surface);
-    --badge-fg: var(--cn-status-info-text);
-    --badge-border: var(--cn-status-info-border);
+  .badge-info-outline-layout {
+    --badge-bg: color-mix(in srgb, var(--info) 10%, var(--card));
+    --badge-fg: var(--info);
+    --badge-border: var(--info);
   }
-  .cn-badge-primary-outline:is([data-open], [data-popup-open], [data-state="open"]) {
-    background: var(--cn-surface-selected);
+  .badge-primary-outline-layout:is([data-open], [data-popup-open], [data-state="open"]) {
+    background: var(--accent);
   }
-  .cn-badge:focus-visible {
-    outline: 2px solid var(--cn-focus-color);
+  .badge-layout:focus-visible {
+    outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
-  .cn-badge:is(:disabled, [aria-disabled="true"], [data-disabled]) {
-    background: var(--cn-surface-disabled);
-    color: var(--cn-text-disabled);
-    border-color: var(--cn-border-disabled);
+  .badge-layout:is(:disabled, [aria-disabled="true"], [data-disabled]) {
+    background: var(--muted);
+    color: var(--muted-foreground);
+    border-color: var(--border);
   }
 }
 @media (hover: hover) {
   @layer components {
-    .cn-badge:is(a, button, [role="button"]):not(
+    .badge-layout:is(a, button, [role="button"]):not(
         :disabled,
         [aria-disabled="true"],
         [data-disabled]
       ):hover {
       filter: brightness(0.96);
     }
-    .cn-badge-ghost:is(a, button, [role="button"]):not(
+    .badge-ghost-layout:is(a, button, [role="button"]):not(
         :disabled,
         [aria-disabled="true"],
         [data-disabled]
       ):hover {
-      background: var(--cn-surface-hover);
+      background: var(--muted);
     }
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cn-badge {
+  .badge-layout {
     transition: none;
   }
 }
 @media (forced-colors: active) {
-  .cn-badge:focus-visible {
+  .badge-layout:focus-visible {
     outline-color: Highlight;
   }
 }

@@ -21,7 +21,7 @@ function Slider({
 
   return (
     <SliderPrimitive.Root
-      className={cn("cn-slider", className)}
+      className={cn("slider-layout", className)}
       data-slot="slider"
       defaultValue={defaultValue}
       value={value}
@@ -30,9 +30,9 @@ function Slider({
       thumbAlignment="edge"
       {...props}
     >
-      <SliderPrimitive.Control data-slot="slider-control" className="cn-slider-control">
-        <SliderPrimitive.Track data-slot="slider-track" className="cn-slider-track">
-          <SliderPrimitive.Indicator data-slot="slider-range" className="cn-slider-range" />
+      <SliderPrimitive.Control data-slot="slider-control" className="slider-control-layout">
+        <SliderPrimitive.Track data-slot="slider-track" className="slider-track-layout">
+          <SliderPrimitive.Indicator data-slot="slider-range" className="slider-range-layout" />
         </SliderPrimitive.Track>
         {Array.from({ length: _values.length }, (_, index) => (
           <SliderPrimitive.Thumb
@@ -44,7 +44,7 @@ function Slider({
                 ? () => `${props["aria-label"]}${_values.length > 1 ? ` ${index + 1}` : ""}`
                 : undefined
             }
-            className="cn-slider-thumb"
+            className="slider-thumb-layout"
           />
         ))}
       </SliderPrimitive.Control>

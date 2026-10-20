@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Phase4SystemPreview } from "./phase4-system-preview"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -39,7 +40,9 @@ function PopoverBasicPreview() {
   return (
     <Popover>
       <PopoverTrigger render={<Button variant="outline">Open popover</Button>} />
-      <PopoverContent><p className="text-sm">Simple popover content.</p></PopoverContent>
+      <PopoverContent>
+        <p className="text-sm">Simple popover content.</p>
+      </PopoverContent>
     </Popover>
   )
 }
@@ -49,8 +52,16 @@ function PopoverPlacementPreview() {
     <div className="flex gap-2">
       {(["top", "bottom", "left", "right"] as const).map((side) => (
         <Popover key={side}>
-          <PopoverTrigger render={<Button variant="outline" size="sm">{side}</Button>} />
-          <PopoverContent side={side}><p className="text-sm">Placed on {side}</p></PopoverContent>
+          <PopoverTrigger
+            render={
+              <Button variant="outline" size="sm">
+                {side}
+              </Button>
+            }
+          />
+          <PopoverContent side={side}>
+            <p className="text-sm">Placed on {side}</p>
+          </PopoverContent>
         </Popover>
       ))}
     </div>
@@ -62,6 +73,7 @@ function PopoverWithFormPreview() {
 }
 
 export const popoverPreviewMap: Record<string, React.ComponentType> = {
+  "popover-system": Phase4SystemPreview,
   popover: PopoverPreview,
   "popover-demo": PopoverPreview,
   "popover-basic": PopoverBasicPreview,

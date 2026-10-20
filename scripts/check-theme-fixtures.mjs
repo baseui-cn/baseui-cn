@@ -24,17 +24,15 @@ const { ensureThemeCSS } = createRequire(import.meta.url)(bundle)
 const cases = {
   fresh: null,
   whitespace:
-    '@import "tailwindcss";\n@theme   inline { --color-primary: rebeccapurple; }\n:root { content: "--cn-focus-color: red; }"; }\n',
+    '@import "tailwindcss";\n@theme   inline { --color-primary: rebeccapurple; }\n:root { content: "--ring: red; }"; }\n',
   missing:
     '@import "tailwindcss";\n:root { --background: #fafafa; }\n.dark { --background: #101010; }\n',
   custom:
-    '@import "tailwindcss";\n/* baseui-cn theme */\n:root { --radius: 13px; --input: #123456; --cn-border-control: #456789; --cn-unit: .07rem; }\n.dark { --input: #abcdef; --cn-focus-color: #fedcba; }\n.custom-tail { color: rebeccapurple; }\n',
-  commented:
-    '@import "tailwindcss";\n:root { /* --cn-focus-color: red; */ --primary: rebeccapurple; }\n',
+    '@import "tailwindcss";\n/* baseui-cn theme */\n:root { --radius: 13px; --input: #123456; --customer-boundary: #456789; --customer-unit: .07rem; }\n.dark { --input: #abcdef; --ring: #fedcba; }\n.custom-tail { color: rebeccapurple; }\n',
+  commented: '@import "tailwindcss";\n:root { /* --ring: red; */ --primary: rebeccapurple; }\n',
   grouped:
-    '@import "tailwindcss";\n:root, .brand { --primary: #531783; }\n.dark, .night { --cn-text: #fffabc; }\n',
-  repeated:
-    '@import "tailwindcss";\n:root { --primary: #111222; }\n:root { --cn-focus-color: #531783; }\n',
+    '@import "tailwindcss";\n:root, .brand { --primary: #531783; }\n.dark, .night { --foreground: #fffabc; }\n',
+  repeated: '@import "tailwindcss";\n:root { --primary: #111222; }\n:root { --ring: #531783; }\n',
   layered:
     '@import "tailwindcss";\n@layer base {\n  :root { --primary: #531783; content: "} {"; }\n  .dark { --primary: #dabafa; }\n}\n',
 }
@@ -54,16 +52,17 @@ for (const [name, before] of Object.entries(cases)) {
   )
   assert.equal(await fs.readFile(file, "utf8"), first, `${name}: bytes remain identical`)
   assert.match(first, /@custom-variant dark \(&:where\(\.dark, \.dark \*\)\);/)
-  assert.match(first, /--cn-border-control:/)
-  assert.match(first, /--cn-focus-color:/)
+  assert.match(first, /--input:/)
+  assert.match(first, /--ring:/)
+  if (name === "fresh") assert.ok(!first.includes("--cn-"), "fresh theme has no V2 namespace")
   if (name === "custom") {
     for (const text of [
       "--radius: 13px",
       "--input: #123456",
-      "--cn-border-control: #456789",
-      "--cn-unit: .07rem",
+      "--customer-boundary: #456789",
+      "--customer-unit: .07rem",
       "--input: #abcdef",
-      "--cn-focus-color: #fedcba",
+      "--ring: #fedcba",
       ".custom-tail { color: rebeccapurple; }",
     ])
       assert.ok(first.includes(text), `preserved ${text}`)
@@ -71,20 +70,20 @@ for (const [name, before] of Object.entries(cases)) {
   if (["layered", "grouped"].includes(name))
     assert.equal(
       (first.match(/--primary:/g) ?? []).length,
-      2,
+      name === "grouped" ? 1 : 2,
       `${name}: must not append overriding primary defaults`
     )
   if (name === "repeated")
     assert.equal(
-      (first.match(/--cn-focus-color:/g) ?? []).length,
+      (first.match(/--ring:/g) ?? []).length,
       1,
       "root semantic override must not be shadowed by a dark default"
     )
   if (name === "custom")
     assert.equal(
-      (first.match(/--cn-border-control:/g) ?? []).length,
+      (first.match(/--customer-boundary:/g) ?? []).length,
       1,
-      "root semantic custom value applies in both modes"
+      "unknown consumer variable is preserved"
     )
   if (name === "whitespace") {
     assert.equal(
@@ -92,9 +91,9 @@ for (const [name, before] of Object.entries(cases)) {
       1,
       "preserve mapping despite whitespace"
     )
-    assert.match(first, /--cn-focus-color: var\(--ring\)/, "quoted example is not a declaration")
+    assert.match(first, /--ring: #6673e8/, "quoted example is not a declaration")
   }
-  if (name === "commented") assert.match(first, /--cn-focus-color: var\(--ring\)/)
+  if (name === "commented") assert.match(first, /--ring: #6673e8/)
   console.log(`PASS ${name}: additive merge + byte-idempotence`)
 }
 assert.equal(

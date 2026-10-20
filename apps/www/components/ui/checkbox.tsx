@@ -12,19 +12,34 @@ export function Checkbox({
 }: CheckboxPrimitive.Root.Props): React.ReactElement {
   return (
     <CheckboxPrimitive.Root
-      className={cn("cn-checkbox", className)}
+      className={cn(
+        "checkbox-layout [@media(hover:hover)]:not-data-[disabled]:not-data-[checked]:not-data-[readonly]:hover:bg-muted border",
+        "border-input bg-background text-foreground focus-visible:outline-ring aria-invalid:data-[checked]:border-destructive",
+        "aria-invalid:data-[indeterminate]:border-destructive data-[disabled]:aria-invalid:border-border",
+        "data-[disabled]:aria-invalid:data-[checked]:border-border data-[disabled]:aria-invalid:data-[indeterminate]:border-border",
+        "data-[disabled]:border-border data-[disabled]:bg-muted data-[disabled]:text-muted-foreground aria-invalid:border-destructive",
+        "data-[invalid]:border-destructive data-[checked]:border-accent-foreground data-[checked]:bg-accent",
+        "data-[checked]:text-accent-foreground data-[indeterminate]:border-accent-foreground data-[indeterminate]:bg-accent",
+        "data-[indeterminate]:text-accent-foreground data-[checked]:data-[disabled]:border-border",
+        "data-[checked]:data-[disabled]:bg-muted data-[checked]:data-[disabled]:text-muted-foreground",
+        "data-[indeterminate]:data-[disabled]:border-border data-[indeterminate]:data-[disabled]:bg-muted",
+        "data-[indeterminate]:data-[disabled]:text-muted-foreground data-[invalid]:data-[checked]:border-destructive",
+        "data-[invalid]:data-[disabled]:border-border",
+
+        className
+      )}
       data-slot="checkbox"
       {...props}
     >
       <CheckboxPrimitive.Indicator
-        className="cn-checkbox-indicator"
+        className="checkbox-indicator-layout"
         data-slot="checkbox-indicator"
         render={(props: React.ComponentProps<"span">, state: CheckboxPrimitive.Indicator.State) => (
           <span {...props}>
             {state.indeterminate ? (
               <svg
                 aria-hidden="true"
-                className="cn-checkbox-mark"
+                className="checkbox-mark-layout"
                 fill="none"
                 height="24"
                 stroke="currentColor"
@@ -40,7 +55,7 @@ export function Checkbox({
             ) : (
               <svg
                 aria-hidden="true"
-                className="cn-checkbox-mark"
+                className="checkbox-mark-layout"
                 fill="none"
                 height="24"
                 stroke="currentColor"

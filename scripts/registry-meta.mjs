@@ -716,6 +716,11 @@ const componentStyles = {
   autocomplete: "selection",
   combobox: "selection",
   command: "selection",
+  popover: "overlay",
+  tooltip: "overlay",
+  "preview-card": "overlay",
+  "dropdown-menu": "overlay",
+  menubar: "overlay",
 }
 for (const [name, style] of Object.entries(componentStyles)) {
   componentMeta[name].files.push({

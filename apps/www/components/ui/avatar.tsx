@@ -10,10 +10,10 @@ import "@/styles/avatar.styles.css"
 export type AvatarSize = "xs" | "sm" | "md" | "lg"
 
 const avatarSizeClasses: Record<AvatarSize, string> = {
-  xs: "cn-avatar-xs",
-  sm: "cn-avatar-sm",
-  md: "cn-avatar-md",
-  lg: "cn-avatar-lg",
+  xs: "avatar-xs-layout",
+  sm: "avatar-sm-layout",
+  md: "",
+  lg: "avatar-lg-layout",
 }
 
 export function Avatar({
@@ -31,9 +31,9 @@ export function Avatar({
   badgePosition?: "top-right" | "top-left" | "bottom-right" | "bottom-left"
 }): React.ReactElement {
   return (
-    <div className="cn-avatar-wrap">
+    <div className="avatar-wrap-layout">
       <AvatarPrimitive.Root
-        className={cn("cn-avatar", avatarSizeClasses[size], className)}
+        className={cn("avatar-layout", avatarSizeClasses[size], className)}
         data-size={size}
         data-slot="avatar"
         {...props}
@@ -74,13 +74,13 @@ export function AvatarFallback({
   )
 }
 
-const avatarBadgeVariants = cva("cn-avatar-marker", {
+const avatarBadgeVariants = cva("avatar-marker-layout", {
   variants: {
     variant: {
-      online: "bg-[var(--cn-status-success-text)]", // available
+      online: "bg-success", // available
       offline: "bg-muted-foreground", // neutral
-      busy: "bg-[var(--cn-status-destructive-text)]", // do not disturb
-      away: "bg-[var(--cn-status-warning-text)]", // idle/away
+      busy: "bg-destructive", // do not disturb
+      away: "bg-warning", // idle/away
     },
     badgePosition: {
       "top-right": "top-0 right-0",
@@ -118,7 +118,9 @@ export function AvatarGroup({
   className,
   ...props
 }: React.ComponentProps<"div">): React.ReactElement {
-  return <div className={cn("cn-avatar-group", className)} data-slot="avatar-group" {...props} />
+  return (
+    <div className={cn("avatar-group-layout", className)} data-slot="avatar-group" {...props} />
+  )
 }
 
 export function AvatarGroupCount({
@@ -129,7 +131,7 @@ export function AvatarGroupCount({
   return (
     <span
       className={cn(
-        "cn-avatar-count",
+        "avatar-count-layout",
         "cursor-default hover:z-10 leading-none",
         avatarSizeClasses[size],
         className

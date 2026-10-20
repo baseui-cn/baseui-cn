@@ -1,84 +1,60 @@
 @layer components {
-  .cn-toggle {
-    min-width: calc(var(--button-height) * var(--cn-unit));
+  .toggle-layout {
+    min-width: calc(var(--button-height) * var(--component-unit, 0.0625rem));
     user-select: none;
   }
   /* Persistent fill + marker remain distinguishable from an unselected hover/press. */
-  .cn-toggle[data-pressed] {
-    --button-bg: var(--cn-surface-selected);
-    --button-fg: var(--cn-text);
-    --button-pressed: var(--cn-surface-selected);
-    box-shadow: inset 0 -2px 0 currentColor;
-  }
-  .cn-toggle.cn-button-outline[data-pressed] {
-    --button-border: var(--cn-border-active);
-  }
-  .cn-toggle[data-pressed]:is(:disabled, [data-disabled]) {
-    --button-bg: var(--cn-surface-disabled);
-    --button-fg: var(--cn-text-disabled);
-    --button-border: var(--cn-border-disabled);
-  }
-  .cn-toggle:is([data-invalid], [aria-invalid="true"]):not(:disabled, [data-disabled]) {
-    border-color: var(--cn-status-destructive-border);
-  }
-  .cn-toggle-group {
+  .toggle-group-layout {
     display: flex;
     width: fit-content;
     max-width: 100%;
-    gap: calc(2 * var(--cn-unit));
+    gap: calc(2 * var(--component-unit, 0.0625rem));
   }
-  .cn-toggle-group-vertical {
+  .toggle-group-vertical-layout {
     flex-direction: column;
   }
-  .cn-toggle-group[data-variant="outline"] {
+  .toggle-group-layout[data-variant="outline"] {
     gap: 0;
   }
-  .cn-toggle-group > .cn-toggle:focus-visible {
+  .toggle-group-layout > .toggle-layout:focus-visible {
     z-index: 1;
   }
-  .cn-toggle-group[data-variant="outline"]:not(.cn-toggle-group-vertical)
-    > .cn-toggle:not(:first-child) {
+  .toggle-group-layout[data-variant="outline"]:not(.toggle-group-vertical-layout)
+    > .toggle-layout:not(:first-child) {
     border-start-start-radius: 0;
     border-end-start-radius: 0;
     border-inline-start-width: 0;
   }
-  .cn-toggle-group[data-variant="outline"]:not(.cn-toggle-group-vertical)
-    > .cn-toggle:not(:last-child) {
+  .toggle-group-layout[data-variant="outline"]:not(.toggle-group-vertical-layout)
+    > .toggle-layout:not(:last-child) {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
   }
-  .cn-toggle-group-vertical[data-variant="outline"] > .cn-toggle:not(:first-child) {
+  .toggle-group-vertical-layout[data-variant="outline"] > .toggle-layout:not(:first-child) {
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-block-start-width: 0;
   }
-  .cn-toggle-group-vertical[data-variant="outline"] > .cn-toggle:not(:last-child) {
+  .toggle-group-vertical-layout[data-variant="outline"] > .toggle-layout:not(:last-child) {
     border-end-start-radius: 0;
     border-end-end-radius: 0;
   }
-  .cn-toggle-separator {
+  .toggle-separator-layout {
     align-self: stretch;
     height: auto;
-    background: var(--cn-border-control);
     flex-shrink: 0;
   }
-  .cn-toggle-separator[data-orientation="horizontal"] {
+  .toggle-separator-layout[data-orientation="horizontal"] {
     width: 100%;
     height: 1px;
   }
 }
 /* Button's contour suppresses legacy shadows; restore the persistent marker on focus. */
-.cn-toggle[data-pressed]:focus-visible {
-  box-shadow: inset 0 -2px 0 currentColor;
-}
 @media (forced-colors: active) {
-  .cn-toggle[data-pressed] {
+  .toggle-layout[data-pressed] {
     background: Highlight;
     color: HighlightText;
     forced-color-adjust: none;
   }
 }
 /* Invalid validation boundaries survive Button's persistent/active selectors. */
-.cn-toggle:is([data-invalid], [aria-invalid="true"]):not(:disabled, [data-disabled]) {
-  border-color: var(--cn-status-destructive-border);
-}

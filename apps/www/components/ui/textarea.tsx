@@ -22,7 +22,13 @@ export function Textarea({
 }: TextareaProps): React.ReactElement {
   return (
     <span
-      className={cn("cn-textarea-control", !unstyled && "cn-text-shell", className) || undefined}
+      className={
+        cn(
+          "textarea-control-layout",
+          !unstyled && "control-shell-layout border border-input bg-background text-foreground",
+          className
+        ) || undefined
+      }
       data-size={size}
       data-slot="textarea-control"
     >
@@ -35,7 +41,7 @@ export function Textarea({
         name={props.name}
         render={(defaultProps: React.ComponentProps<"textarea">) => (
           <textarea
-            className="cn-textarea"
+            className="textarea-layout"
             data-slot="textarea"
             {...mergeProps(defaultProps, props)}
           />

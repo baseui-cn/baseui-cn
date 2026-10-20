@@ -7,12 +7,12 @@
   --rdp-focus-ring: var(--ring);
   --rdp-muted-bg: var(--muted);
   --rdp-muted-color: var(--muted-foreground);
-  --rdp-hover-bg: var(--accent);
-  --rdp-hover-color: var(--accent-foreground);
+  --rdp-hover-bg: var(--muted);
+  --rdp-hover-color: var(--foreground);
   --rdp-selected-bg: var(--primary);
   --rdp-selected-color: var(--primary-foreground);
-  --rdp-current-bg: var(--accent);
-  --rdp-current-color: var(--accent-foreground);
+  --rdp-current-bg: var(--muted);
+  --rdp-current-color: var(--foreground);
   --rdp-range-bg: var(--secondary);
   --rdp-range-color: var(--secondary-foreground);
   --rdp-radius: var(--radius, 0.5rem);

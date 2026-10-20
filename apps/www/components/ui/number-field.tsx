@@ -18,16 +18,18 @@ const NumberFieldContext = createContext<{
   size: "sm" | "default" | "lg"
 } | null>(null)
 
-const numberFieldGroupVariants = cva("cn-input-control cn-number-group", {
-  variants: { size: { sm: "cn-number-sm", default: "", lg: "cn-number-lg" } },
+const numberFieldGroupVariants = cva("input-control-layout number-group-layout", {
+  variants: { size: { sm: "number-sm-layout", default: "", lg: "number-lg-layout" } },
   defaultVariants: { size: "default" },
 })
-const numberFieldButtonVariants = cva("cn-number-stepper", {
-  variants: { size: { sm: "cn-number-stepper-sm", default: "", lg: "cn-number-stepper-lg" } },
+const numberFieldButtonVariants = cva("number-stepper-layout", {
+  variants: {
+    size: { sm: "number-stepper-sm-layout", default: "", lg: "number-stepper-lg-layout" },
+  },
   defaultVariants: { size: "default" },
 })
-const numberFieldInputVariants = cva("cn-input cn-number-input", {
-  variants: { size: { sm: "cn-number-input-sm", default: "", lg: "cn-number-input-lg" } },
+const numberFieldInputVariants = cva("input-layout number-input-layout", {
+  variants: { size: { sm: "number-input-sm-layout", default: "", lg: "number-input-lg-layout" } },
   defaultVariants: { size: "default" },
 })
 
@@ -44,7 +46,7 @@ function NumberField({
   return (
     <NumberFieldContext.Provider value={{ fieldId, size: sizeValue }}>
       <NumberFieldPrimitive.Root
-        className={cn("cn-number-field", className)}
+        className={cn("number-field-layout", className)}
         data-size={sizeValue}
         data-slot="number-field"
         id={fieldId}
@@ -91,7 +93,7 @@ function NumberFieldDecrement({
 
   return (
     <NumberFieldPrimitive.Decrement
-      className={cn(numberFieldButtonVariants({ size }), "cn-number-decrement", className)}
+      className={cn(numberFieldButtonVariants({ size }), "number-decrement-layout", className)}
       data-slot="number-field-decrement"
       tabIndex={0}
       {...props}
@@ -118,7 +120,7 @@ function NumberFieldIncrement({
 
   return (
     <NumberFieldPrimitive.Increment
-      className={cn(numberFieldButtonVariants({ size }), "cn-number-increment", className)}
+      className={cn(numberFieldButtonVariants({ size }), "number-increment-layout", className)}
       data-slot="number-field-increment"
       tabIndex={0}
       {...props}
@@ -164,7 +166,7 @@ function NumberFieldScrubArea({
 
   return (
     <NumberFieldPrimitive.ScrubArea
-      className={cn("cn-number-scrub", className)}
+      className={cn("number-scrub-layout", className)}
       data-slot="number-field-scrub-area"
       {...props}
     >

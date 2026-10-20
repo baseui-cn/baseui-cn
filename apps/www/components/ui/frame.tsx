@@ -7,7 +7,7 @@ export function Frame({ className, ...props }: React.ComponentProps<"div">): Rea
   return (
     <div
       className={cn(
-        "cn-frame",
+        "frame-layout",
 
         className
       )}
@@ -21,7 +21,7 @@ export function FramePanel({
   className,
   ...props
 }: React.ComponentProps<"div">): React.ReactElement {
-  return <div className={cn("cn-frame-panel", className)} data-slot="frame-panel" {...props} />
+  return <div className={cn("frame-panel-layout", className)} data-slot="frame-panel" {...props} />
 }
 
 export function FrameHeader({
@@ -30,7 +30,7 @@ export function FrameHeader({
 }: React.ComponentProps<"header">): React.ReactElement {
   return (
     <header
-      className={cn("flex flex-col cn-frame-footer", className)}
+      className={cn("flex flex-col frame-footer-layout", className)}
       data-slot="frame-panel-header"
       {...props}
     />
@@ -42,7 +42,7 @@ export function FrameTitle({
   ...props
 }: React.ComponentProps<"div">): React.ReactElement {
   return (
-    <div className={cn("cn-frame-title", className)} data-slot="frame-panel-title" {...props} />
+    <div className={cn("frame-title-layout", className)} data-slot="frame-panel-title" {...props} />
   )
 }
 
@@ -52,7 +52,7 @@ export function FrameDescription({
 }: React.ComponentProps<"div">): React.ReactElement {
   return (
     <div
-      className={cn("cn-surface-description", className)}
+      className={cn("surface-description-layout", className)}
       data-slot="frame-panel-description"
       {...props}
     />
@@ -65,7 +65,7 @@ export function FrameFooter({
 }: React.ComponentProps<"footer">): React.ReactElement {
   return (
     <footer
-      className={cn("cn-frame-footer", className)}
+      className={cn("frame-footer-layout", className)}
       data-slot="frame-panel-footer"
       {...props}
     />

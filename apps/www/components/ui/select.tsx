@@ -14,7 +14,7 @@ function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   return (
     <SelectPrimitive.Group
       data-slot="select-group"
-      className={cn("cn-selection-group", className)}
+      className={cn("selection-group-layout", className)}
       {...props}
     />
   )
@@ -24,7 +24,7 @@ function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
   return (
     <SelectPrimitive.Value
       data-slot="select-value"
-      className={cn("cn-select-value", className)}
+      className={cn("select-value-layout", className)}
       {...props}
     />
   )
@@ -42,12 +42,20 @@ function SelectTrigger({
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       data-size={size}
-      className={cn("cn-select-trigger", className)}
+      className={cn(
+        "select-trigger-layout border border-input bg-background text-foreground focus-visible:outline-ring",
+        "data-[popup-open]:border-foreground/60 aria-invalid:border-destructive data-[invalid]:border-destructive",
+        "data-[popup-open]:aria-invalid:border-destructive data-[popup-open]:data-[invalid]:border-destructive data-[readonly]:bg-muted",
+        "data-[disabled]:border-border data-[disabled]:bg-muted data-[disabled]:text-muted-foreground",
+        "data-[disabled]:aria-invalid:border-border data-[disabled]:data-[invalid]:border-border",
+
+        className
+      )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon
-        className="cn-select-icon"
+        className="select-icon-layout"
         render={<ChevronDownIcon aria-hidden="true" />}
       />
     </SelectPrimitive.Trigger>
@@ -76,16 +84,19 @@ function SelectContent({
         align={align}
         alignOffset={alignOffset}
         alignItemWithTrigger={alignItemWithTrigger}
-        className="cn-selection-positioner"
+        className="selection-positioner-layout"
       >
         <SelectPrimitive.Popup
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
-          className={cn("cn-selection-popup cn-select-popup", className)}
+          className={cn(
+            "selection-popup-layout select-popup-layout border border-border bg-popover text-popover-foreground",
+            className
+          )}
           {...props}
         >
           <SelectScrollUpButton />
-          <SelectPrimitive.List className="cn-selection-list">{children}</SelectPrimitive.List>
+          <SelectPrimitive.List className="selection-list-layout">{children}</SelectPrimitive.List>
           <SelectScrollDownButton />
         </SelectPrimitive.Popup>
       </SelectPrimitive.Positioner>
@@ -97,7 +108,7 @@ function SelectLabel({ className, ...props }: SelectPrimitive.GroupLabel.Props) 
   return (
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
-      className={cn("cn-selection-label", className)}
+      className={cn("selection-label-layout", className)}
       {...props}
     />
   )
@@ -107,11 +118,21 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
-      className={cn("cn-selection-item", className)}
+      className={cn(
+        "selection-item-layout group/option text-popover-foreground data-[highlighted]:bg-muted",
+        "data-[disabled]:text-muted-foreground",
+
+        className
+      )}
       {...props}
     >
-      <SelectPrimitive.ItemText className="cn-selection-text">{children}</SelectPrimitive.ItemText>
-      <span className="cn-selection-indicator" aria-hidden="true">
+      <SelectPrimitive.ItemText className="selection-text-layout">
+        {children}
+      </SelectPrimitive.ItemText>
+      <span
+        className="selection-indicator-layout text-accent-foreground group-data-[disabled]/option:text-muted-foreground"
+        aria-hidden="true"
+      >
         <SelectPrimitive.ItemIndicator>
           <CheckIcon />
         </SelectPrimitive.ItemIndicator>
@@ -124,7 +145,7 @@ function SelectSeparator({ className, ...props }: SelectPrimitive.Separator.Prop
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn("cn-selection-separator", className)}
+      className={cn("selection-separator-layout", className)}
       {...props}
     />
   )
@@ -137,7 +158,7 @@ function SelectScrollUpButton({
   return (
     <SelectPrimitive.ScrollUpArrow
       data-slot="select-scroll-up-button"
-      className={cn("cn-select-scroll cn-select-scroll-up", className)}
+      className={cn("select-scroll-layout select-scroll-up-layout", className)}
       {...props}
     >
       <ChevronUpIcon aria-hidden="true" />
@@ -152,7 +173,7 @@ function SelectScrollDownButton({
   return (
     <SelectPrimitive.ScrollDownArrow
       data-slot="select-scroll-down-button"
-      className={cn("cn-select-scroll cn-select-scroll-down", className)}
+      className={cn("select-scroll-layout select-scroll-down-layout", className)}
       {...props}
     >
       <ChevronDownIcon aria-hidden="true" />

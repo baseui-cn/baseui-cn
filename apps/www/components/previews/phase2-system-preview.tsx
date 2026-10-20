@@ -36,15 +36,15 @@ export function Phase2SystemPreview() {
       onFormSubmit={(values) => setSubmitted(JSON.stringify(values))}
       style={{
         maxWidth: 760,
-        fontSize: "calc(14 * var(--cn-unit))",
-        lineHeight: "calc(20 * var(--cn-unit))",
+        fontSize: "calc(14 * var(--component-unit,.0625rem))",
+        lineHeight: "calc(20 * var(--component-unit,.0625rem))",
       }}
     >
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
-          gap: "calc(24 * var(--cn-unit))",
+          gap: "calc(24 * var(--component-unit,.0625rem))",
         }}
       >
         <Fieldset>
@@ -157,7 +157,7 @@ export function Phase2SystemPreview() {
           </Field>
           <Field name="verification">
             <FieldLabel>Verification code</FieldLabel>
-            <OTPField length={6} className="cn-otp-wrap">
+            <OTPField length={6} className="otp-wrap-layout">
               {Array.from({ length: 6 }, (_, index) => (
                 <OTPFieldInput key={index} aria-label={`Code character ${index + 1}`} />
               ))}

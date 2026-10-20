@@ -6,25 +6,25 @@ import { cn } from "@/lib/utils"
 
 import "@/styles/badge.styles.css"
 
-const badgeVariants = cva("cn-badge", {
+const badgeVariants = cva("badge-layout", {
   variants: {
     variant: {
       default: "",
       primary: "",
-      "primary-outline": "cn-badge-primary-outline",
-      secondary: "cn-badge-secondary",
-      destructive: "cn-badge-destructive",
-      outline: "cn-badge-outline",
-      ghost: "cn-badge-ghost",
-      success: "cn-badge-success",
-      "success-outline": "cn-badge-success-outline",
-      warning: "cn-badge-warning",
-      "warning-outline": "cn-badge-warning-outline",
-      info: "cn-badge-info",
-      "info-outline": "cn-badge-info-outline",
+      "primary-outline": "badge-primary-outline-layout",
+      secondary: "badge-secondary-layout",
+      destructive: "badge-destructive-layout",
+      outline: "badge-outline-layout",
+      ghost: "badge-ghost-layout",
+      success: "badge-success-layout",
+      "success-outline": "badge-success-outline-layout",
+      warning: "badge-warning-layout",
+      "warning-outline": "badge-warning-outline-layout",
+      info: "badge-info-layout",
+      "info-outline": "badge-info-outline-layout",
     },
-    size: { sm: "cn-badge-sm", default: "", lg: "cn-badge-lg" },
-    shape: { default: "", pill: "cn-badge-pill" },
+    size: { sm: "badge-sm-layout", default: "", lg: "badge-lg-layout" },
+    shape: { default: "", pill: "badge-pill-layout" },
   },
   defaultVariants: { variant: "default", size: "default", shape: "default" },
 })

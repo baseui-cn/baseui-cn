@@ -1,8 +1,8 @@
 /* Local text-entry anatomy, shared by Input, Textarea and InputGroup. */
 @layer components {
-  .cn-input-control,
-  .cn-textarea-control,
-  .cn-input-group {
+  .input-control-layout,
+  .textarea-control-layout,
+  .input-group-layout {
     --control-height: 36;
     --control-inset: 12;
     --control-type: 14;
@@ -14,13 +14,15 @@
     box-sizing: border-box;
     width: 100%;
     min-width: 0;
-    border-radius: var(--cn-radius-control);
-    color: var(--cn-text);
-    font-size: calc(var(--control-type) * var(--cn-unit));
-    line-height: calc(var(--control-leading) * var(--cn-unit));
+    border-radius: var(--control-radius, var(--radius));
+    font-size: calc(var(--control-type) * var(--component-unit, 0.0625rem));
+    line-height: calc(var(--control-leading) * var(--component-unit, 0.0625rem));
   }
-  .cn-input-control[data-size="sm"],
-  .cn-input-group:has(.cn-input-control[data-size="sm"], .cn-textarea-control[data-size="sm"]) {
+  .input-control-layout[data-size="sm"],
+  .input-group-layout:has(
+    .input-control-layout[data-size="sm"],
+    .textarea-control-layout[data-size="sm"]
+  ) {
     --control-height: 32;
     --control-inset: 10;
     --control-type: 13;
@@ -28,56 +30,38 @@
     --textarea-min: 80;
     --textarea-block: 8;
   }
-  .cn-textarea-control[data-size="sm"] {
+  .textarea-control-layout[data-size="sm"] {
     --control-inset: 10;
     --textarea-min: 80;
     --textarea-block: 8;
   }
-  .cn-input-control[data-size="lg"],
-  .cn-textarea-control[data-size="lg"],
-  .cn-input-group:has(.cn-input-control[data-size="lg"], .cn-textarea-control[data-size="lg"]) {
+  .input-control-layout[data-size="lg"],
+  .textarea-control-layout[data-size="lg"],
+  .input-group-layout:has(
+    .input-control-layout[data-size="lg"],
+    .textarea-control-layout[data-size="lg"]
+  ) {
     --control-height: 40;
     --control-inset: 14;
     --textarea-min: 112;
     --textarea-block: 12;
   }
-  .cn-input-control {
-    height: calc(var(--control-height) * var(--cn-unit));
+  .input-control-layout {
+    height: calc(var(--control-height) * var(--component-unit, 0.0625rem));
   }
-  .cn-text-shell,
-  .cn-input-group {
-    border: 1px solid var(--cn-border-control);
-    background: var(--cn-surface);
+  .control-shell-layout,
+  .input-group-layout {
     transition:
-      border-color var(--cn-duration-fast) var(--cn-ease-standard),
-      background-color var(--cn-duration-fast) var(--cn-ease-standard);
+      border-color 100ms cubic-bezier(0.2, 0, 0, 1),
+      background-color 100ms cubic-bezier(0.2, 0, 0, 1);
   }
-  .cn-text-shell:has(:read-only),
-  .cn-input-group:has(input:read-only, textarea:read-only) {
-    background: var(--cn-surface-muted);
-  }
-  .cn-text-shell:has([aria-invalid="true"], [data-invalid]),
-  .cn-input-group:has(
-    input[aria-invalid="true"],
-    textarea[aria-invalid="true"],
-    input[data-invalid],
-    textarea[data-invalid]
-  ) {
-    border-color: var(--cn-status-destructive-border);
-  }
-  .cn-text-shell:has(input:focus-visible, textarea:focus-visible),
-  .cn-input-group:has(input:focus-visible, textarea:focus-visible) {
-    outline: 2px solid var(--cn-focus-color);
+  .control-shell-layout:has(input:focus-visible, textarea:focus-visible),
+  .input-group-layout:has(input:focus-visible, textarea:focus-visible) {
+    outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
-  .cn-text-shell:has(:disabled, [data-disabled]),
-  .cn-input-group:has(input:disabled, textarea:disabled) {
-    color: var(--cn-text-disabled);
-    background: var(--cn-surface-disabled);
-    border-color: var(--cn-border-disabled);
-  }
-  .cn-input,
-  .cn-textarea {
+  .input-layout,
+  .textarea-layout {
     box-sizing: border-box;
     width: 100%;
     min-width: 0;
@@ -87,52 +71,52 @@
     color: inherit;
     font: inherit;
     outline: none;
-    padding-inline: calc(var(--control-inset) * var(--cn-unit) - 1px);
+    padding-inline: calc(var(--control-inset) * var(--component-unit, 0.0625rem) - 1px);
   }
-  .cn-input {
+  .input-layout {
     height: 100%;
     padding-block: 0;
   }
-  .cn-input::placeholder,
-  .cn-textarea::placeholder {
-    color: var(--cn-text-muted);
+  .input-layout::placeholder,
+  .textarea-layout::placeholder {
+    color: var(--muted-foreground);
     opacity: 1;
   }
-  .cn-input:disabled,
-  .cn-textarea:disabled {
+  .input-layout:disabled,
+  .textarea-layout:disabled {
     cursor: not-allowed;
   }
-  .cn-input:disabled::placeholder,
-  .cn-textarea:disabled::placeholder {
-    color: var(--cn-text-disabled);
+  .input-layout:disabled::placeholder,
+  .textarea-layout:disabled::placeholder {
+    color: var(--muted-foreground);
   }
-  .cn-textarea-control {
-    min-height: calc(var(--textarea-min) * var(--cn-unit));
+  .textarea-control-layout {
+    min-height: calc(var(--textarea-min) * var(--component-unit, 0.0625rem));
   }
-  .cn-textarea {
+  .textarea-layout {
     field-sizing: content;
-    min-height: calc(var(--textarea-min) * var(--cn-unit) - 2px);
-    padding-block: calc(var(--textarea-block) * var(--cn-unit) - 1px);
+    min-height: calc(var(--textarea-min) * var(--component-unit, 0.0625rem) - 2px);
+    padding-block: calc(var(--textarea-block) * var(--component-unit, 0.0625rem) - 1px);
     resize: vertical;
   }
-  .cn-input[type="search"]::-webkit-search-cancel-button,
-  .cn-input[type="search"]::-webkit-search-decoration {
+  .input-layout[type="search"]::-webkit-search-cancel-button,
+  .input-layout[type="search"]::-webkit-search-decoration {
     appearance: none;
   }
-  .cn-input[type="file"] {
-    color: var(--cn-text-muted);
+  .input-layout[type="file"] {
+    color: var(--muted-foreground);
   }
-  .cn-input::file-selector-button {
-    margin-inline-end: calc(12 * var(--cn-unit));
+  .input-layout::file-selector-button {
+    margin-inline-end: calc(12 * var(--component-unit, 0.0625rem));
     background: transparent;
-    color: var(--cn-text);
+    color: var(--foreground);
     font-weight: 500;
   }
-  .cn-input-group {
+  .input-group-layout {
     align-items: center;
-    min-height: calc(var(--control-height) * var(--cn-unit));
+    min-height: calc(var(--control-height) * var(--component-unit, 0.0625rem));
   }
-  .cn-input-group > :is(.cn-input-control, .cn-textarea-control) {
+  .input-group-layout > :is(.input-control-layout, .textarea-control-layout) {
     flex: 1;
     min-width: 0;
     border: 0;
@@ -140,132 +124,151 @@
     background: transparent;
     outline: none;
   }
-  .cn-input-group > .cn-input-control {
-    height: calc(var(--control-height) * var(--cn-unit) - 2px);
+  .input-group-layout > .input-control-layout {
+    height: calc(var(--control-height) * var(--component-unit, 0.0625rem) - 2px);
   }
-  .cn-input-group .cn-textarea {
+  .input-group-layout .textarea-layout {
     resize: none;
   }
-  .cn-input-group > .cn-textarea-control {
-    min-height: calc(var(--textarea-min) * var(--cn-unit) - 2px);
+  .input-group-layout > .textarea-control-layout {
+    min-height: calc(var(--textarea-min) * var(--component-unit, 0.0625rem) - 2px);
   }
-  .cn-input-group:has([data-align="block-start"], [data-align="block-end"]) {
+  .input-group-layout:has([data-align="block-start"], [data-align="block-end"]) {
     flex-direction: column;
     align-items: stretch;
   }
-  .cn-input-group:has([data-align="inline-start"]) .cn-input {
-    padding-inline-start: calc(6 * var(--cn-unit));
+  .input-group-layout:has([data-align="inline-start"]) .input-layout {
+    padding-inline-start: calc(6 * var(--component-unit, 0.0625rem));
   }
-  .cn-input-group:has([data-align="inline-end"]) .cn-input {
-    padding-inline-end: calc(6 * var(--cn-unit));
+  .input-group-layout:has([data-align="inline-end"]) .input-layout {
+    padding-inline-end: calc(6 * var(--component-unit, 0.0625rem));
   }
-  .cn-input-group-addon {
+  .input-group-addon-layout {
     display: flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    gap: calc(6 * var(--cn-unit));
+    gap: calc(6 * var(--component-unit, 0.0625rem));
     cursor: text;
     user-select: none;
-    color: var(--cn-text-muted);
+    color: var(--muted-foreground);
   }
-  .cn-input-group-addon[data-align="inline-start"] {
+  .input-group-addon-layout[data-align="inline-start"] {
     order: -1;
-    padding-inline-start: calc(var(--control-inset) * var(--cn-unit) - 1px);
+    padding-inline-start: calc(var(--control-inset) * var(--component-unit, 0.0625rem) - 1px);
   }
-  .cn-input-group-addon[data-align="inline-end"] {
+  .input-group-addon-layout[data-align="inline-end"] {
     order: 1;
-    padding-inline-end: calc(var(--control-inset) * var(--cn-unit) - 1px);
+    padding-inline-end: calc(var(--control-inset) * var(--component-unit, 0.0625rem) - 1px);
   }
-  .cn-input-group-addon[data-align="block-start"],
-  .cn-input-group-addon[data-align="block-end"] {
+  .input-group-addon-layout[data-align="block-start"],
+  .input-group-addon-layout[data-align="block-end"] {
     width: 100%;
     justify-content: flex-start;
-    padding: calc(8 * var(--cn-unit)) calc(var(--control-inset) * var(--cn-unit) - 1px);
+    padding: calc(8 * var(--component-unit, 0.0625rem))
+      calc(var(--control-inset) * var(--component-unit, 0.0625rem) - 1px);
   }
-  .cn-input-group-addon[data-align="block-start"] {
+  .input-group-addon-layout[data-align="block-start"] {
     order: -1;
   }
-  .cn-input-group-addon[data-align="block-end"] {
+  .input-group-addon-layout[data-align="block-end"] {
     order: 1;
   }
-  .cn-input-group-addon :where(svg:not([class*="size-"])),
-  .cn-input-group-text :where(svg:not([class*="size-"])) {
-    width: calc(16 * var(--cn-unit));
-    height: calc(16 * var(--cn-unit));
+  .input-group-addon-layout :where(svg:not([class*="size-"])),
+  .input-group-text-layout :where(svg:not([class*="size-"])) {
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
     flex-shrink: 0;
   }
-  .cn-input-group-text {
+  .input-group-text-layout {
     display: flex;
     align-items: center;
-    gap: calc(6 * var(--cn-unit));
+    gap: calc(6 * var(--component-unit, 0.0625rem));
     white-space: nowrap;
-    color: var(--cn-text-muted);
+    color: var(--muted-foreground);
   }
   /* Actions consume their actual box, including focus clearance, without negative margins. */
-  .cn-input-group :is(.cn-button, button, [role="button"]) {
+  .input-group-layout :is(.button-layout, button, [role="button"]) {
     flex-shrink: 0;
   }
-  .cn-input-group > .cn-button {
-    margin: calc(3 * var(--cn-unit));
+  .input-group-layout > .button-layout {
+    margin: calc(3 * var(--component-unit, 0.0625rem));
   }
-  .cn-input-group-addon:has(button, a, [role="button"]) {
-    padding: calc(3 * var(--cn-unit));
+  .input-group-addon-layout:has(button, a, [role="button"]) {
+    padding: calc(3 * var(--component-unit, 0.0625rem));
   }
   /* Explicit legacy geometry adapter for the protected Date/Time input shells. */
-  :is(.rdp-input_surface, .tp-input_surface).cn-input-control {
+  :is(.rdp-input_surface, .tp-input_surface).input-control-layout {
     height: calc(2.25rem + 2px);
     border-radius: var(--radius);
     font-size: 1.1rem;
     line-height: 1.875rem;
   }
-  :is(.rdp-input_surface, .tp-input_surface).cn-input-control[data-size="sm"] {
+  :is(.rdp-input_surface, .tp-input_surface).input-control-layout[data-size="sm"] {
     height: calc(2rem + 2px);
   }
-  :is(.rdp-input_surface, .tp-input_surface).cn-input-control[data-size="lg"] {
+  :is(.rdp-input_surface, .tp-input_surface).input-control-layout[data-size="lg"] {
     height: calc(2.5rem + 2px);
   }
 }
 @media (min-width: 40rem) {
   @layer components {
-    :is(.rdp-input_surface, .tp-input_surface).cn-input-control {
+    :is(.rdp-input_surface, .tp-input_surface).input-control-layout {
       font-size: 0.98rem;
     }
-    :is(.rdp-input_surface, .tp-input_surface).cn-input-control[data-size="lg"] {
+    :is(.rdp-input_surface, .tp-input_surface).input-control-layout[data-size="lg"] {
       height: calc(2.125rem + 2px);
-    }
-  }
-}
-@media (hover: hover) {
-  @layer components {
-    .cn-text-shell:not(
-        :has(:disabled, [data-disabled], [aria-invalid="true"], [data-invalid])
-      ):hover,
-    .cn-input-group:not(
-        :has(input:disabled, textarea:disabled, [aria-invalid="true"], [data-invalid])
-      ):hover {
-      border-color: var(--cn-border-hover);
     }
   }
 }
 @media (max-width: 40rem), (pointer: coarse) {
   @layer components {
-    .cn-input:not(:read-only),
-    .cn-textarea:not(:read-only) {
-      font-size: calc(16 * var(--cn-unit));
-      line-height: calc(24 * var(--cn-unit));
+    .input-layout:not(:read-only),
+    .textarea-layout:not(:read-only) {
+      font-size: calc(16 * var(--component-unit, 0.0625rem));
+      line-height: calc(24 * var(--component-unit, 0.0625rem));
     }
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cn-text-shell,
-  .cn-input-group {
+  .control-shell-layout,
+  .input-group-layout {
     transition: none;
   }
 }
 @media (forced-colors: active) {
-  .cn-text-shell:has(:focus-visible),
-  .cn-input-group:has(input:focus-visible, textarea:focus-visible) {
+  .control-shell-layout:has(:focus-visible),
+  .input-group-layout:has(input:focus-visible, textarea:focus-visible) {
     outline-color: Highlight;
+  }
+}
+/* Composite value/state ownership; keep these selectors next to the layout they govern. */
+.control-shell-layout:has(:read-only),
+.input-group-layout:has(input:read-only, textarea:read-only) {
+  background: var(--muted);
+}
+.control-shell-layout:has([aria-invalid="true"], [data-invalid]),
+.input-group-layout:has(
+  input[aria-invalid="true"],
+  textarea[aria-invalid="true"],
+  input[data-invalid],
+  textarea[data-invalid]
+) {
+  border-color: var(--destructive);
+}
+.control-shell-layout:has(:disabled, [data-disabled]),
+.input-group-layout:has(input:disabled, textarea:disabled) {
+  color: var(--muted-foreground);
+  background: var(--muted);
+  border-color: var(--border);
+}
+@media (hover: hover) {
+  .control-shell-layout:not(
+      :has(:disabled, [data-disabled], [aria-invalid="true"], [data-invalid])
+    ):hover,
+  .input-group-layout:not(
+      :has(input:disabled, textarea:disabled, [aria-invalid="true"], [data-invalid])
+    ):hover {
+    border-color: color-mix(in oklab, var(--input) 75%, var(--foreground));
   }
 }

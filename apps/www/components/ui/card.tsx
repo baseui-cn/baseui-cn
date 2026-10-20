@@ -8,13 +8,13 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import "@/styles/surface.styles.css"
 
-const cardVariants = cva("cn-card", {
+const cardVariants = cva("card-layout", {
   variants: {
     variant: {
       default: "",
-      outline: "cn-card-outline",
-      elevated: "cn-card-elevated",
-      ghost: "cn-card-ghost",
+      outline: "card-outline-layout",
+      elevated: "card-elevated-layout",
+      ghost: "card-ghost-layout",
     },
   },
   defaultVariants: { variant: "default" },
@@ -48,7 +48,7 @@ export function CardFrame({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-card-frame", className),
+    className: cn("card-frame-layout", className),
     "data-slot": "card-frame",
   }
 
@@ -65,7 +65,7 @@ export function CardFrameHeader({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-card-frame-header", className),
+    className: cn("card-frame-header-layout", className),
     "data-slot": "card-frame-header",
   }
 
@@ -82,7 +82,7 @@ export function CardFrameTitle({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-card-frame-title self-center", className),
+    className: cn("card-frame-title-layout self-center", className),
     "data-slot": "card-frame-title",
   }
 
@@ -99,7 +99,7 @@ export function CardFrameDescription({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-surface-description self-center", className),
+    className: cn("surface-description-layout self-center", className),
     "data-slot": "card-frame-description",
   }
 
@@ -136,7 +136,7 @@ export function CardFrameFooter({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-card-frame-footer", className),
+    className: cn("card-frame-footer-layout", className),
     "data-slot": "card-frame-footer",
   }
 
@@ -153,7 +153,7 @@ export function CardHeader({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-card-header", className),
+    className: cn("card-header-layout", className),
     "data-slot": "card-header",
   }
 
@@ -170,7 +170,7 @@ export function CardTitle({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-surface-title", className),
+    className: cn("surface-title-layout", className),
     "data-slot": "card-title",
   }
 
@@ -187,7 +187,7 @@ export function CardDescription({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-surface-description", className),
+    className: cn("surface-description-layout", className),
     "data-slot": "card-description",
   }
 
@@ -224,7 +224,7 @@ export function CardPanel({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-card-panel", className),
+    className: cn("card-panel-layout", className),
     "data-slot": "card-panel",
   }
 
@@ -241,7 +241,7 @@ export function CardFooter({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("cn-card-footer", className),
+    className: cn("card-footer-layout", className),
     "data-slot": "card-footer",
   }
 

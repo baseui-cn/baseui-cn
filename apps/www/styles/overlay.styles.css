@@ -1,0 +1,297 @@
+/* Anchored overlays and action menus. No positioning or focus-management runtime. */
+@layer components {
+  .overlay-popup-layout {
+    --popup-shadow: 0 4px 12px rgb(17 24 39 / 0.08), 0 1px 3px rgb(17 24 39 / 0.06);
+    position: relative;
+    box-sizing: border-box;
+    max-width: var(--available-width);
+    max-height: var(--available-height);
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) + 4 * var(--component-unit, 0.0625rem))
+    );
+    box-shadow: var(--popup-shadow);
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    overflow-wrap: anywhere;
+    transform-origin: var(--transform-origin);
+    outline: none;
+    transition:
+      opacity 160ms cubic-bezier(0.16, 1, 0.3, 1),
+      scale 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .overlay-popup-layout:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    scale: 0.98;
+  }
+  .overlay-popup-layout[data-ending-style] {
+    transition-duration: 100ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  /* Group/trigger handoffs stay immediate; click opens use the V2 lifecycle.
+     Tooltip focus/delay-group transitions retain their compact instant behavior. */
+  .overlay-popup-layout:is([data-instant="group"], [data-instant="trigger-change"]),
+  .tooltip-popup-layout[data-instant],
+  .preview-popup-layout[data-instant="focus"] {
+    transition: none;
+  }
+  .popover-popup-layout,
+  .preview-popup-layout {
+    display: flex;
+    flex-direction: column;
+    gap: calc(16 * var(--component-unit, 0.0625rem));
+    width: calc(288 * var(--component-unit, 0.0625rem));
+    padding: calc(16 * var(--component-unit, 0.0625rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .preview-popup-layout {
+    width: calc(320 * var(--component-unit, 0.0625rem));
+    gap: calc(12 * var(--component-unit, 0.0625rem));
+  }
+  /* Date/Time keep their pre-Phase-4 outer frame until their dedicated review.
+     Their local styles continue to own dimensions, padding and clipping. */
+  .popover-header-layout {
+    display: flex;
+    flex-direction: column;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+  }
+  .popover-title-layout {
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    font-weight: 600;
+  }
+  .popover-description-layout {
+    color: var(--muted-foreground);
+    font-size: calc(13 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+  }
+  .overlay-trigger-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .tooltip-popup-layout {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    width: max-content;
+    max-width: min(calc(256 * var(--component-unit, 0.0625rem)), var(--available-width));
+    padding: calc(6 * var(--component-unit, 0.0625rem)) calc(8 * var(--component-unit, 0.0625rem));
+    border-radius: var(--control-radius, var(--radius));
+    box-shadow: none;
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+    scale: none;
+    transition-property: opacity;
+  }
+  .tooltip-popup-layout:is([data-starting-style], [data-ending-style]) {
+    scale: none;
+  }
+  .tooltip-arrow-layout {
+    width: calc(8 * var(--component-unit, 0.0625rem));
+    height: calc(8 * var(--component-unit, 0.0625rem));
+    background: inherit;
+    rotate: 45deg;
+    pointer-events: none;
+  }
+  .tooltip-arrow-layout[data-side="top"] {
+    bottom: calc(-4 * var(--component-unit, 0.0625rem));
+  }
+  .tooltip-arrow-layout[data-side="bottom"] {
+    top: calc(-4 * var(--component-unit, 0.0625rem));
+  }
+  .tooltip-arrow-layout[data-side="left"] {
+    right: calc(-4 * var(--component-unit, 0.0625rem));
+  }
+  .tooltip-arrow-layout[data-side="right"] {
+    left: calc(-4 * var(--component-unit, 0.0625rem));
+  }
+  .menu-popup-layout {
+    --menu-indicator: calc(16 * var(--component-unit, 0.0625rem));
+    --menu-gap: calc(8 * var(--component-unit, 0.0625rem));
+    width: var(--anchor-width);
+    min-width: min(calc(192 * var(--component-unit, 0.0625rem)), var(--available-width));
+    max-height: min(var(--available-height), calc(368 * var(--component-unit, 0.0625rem)));
+    padding: calc(4 * var(--component-unit, 0.0625rem));
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-padding-block: calc(4 * var(--component-unit, 0.0625rem));
+  }
+  .menu-sub-popup-layout {
+    width: max-content;
+  }
+  .menu-item-layout {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--menu-gap);
+    width: 100%;
+    min-width: 0;
+    min-height: calc(32 * var(--component-unit, 0.0625rem));
+    padding: calc(6 * var(--component-unit, 0.0625rem)) calc(8 * var(--component-unit, 0.0625rem));
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) - 2 * var(--component-unit, 0.0625rem))
+    );
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    font-weight: 400;
+    text-align: start;
+    cursor: default;
+    user-select: none;
+    outline: none;
+  }
+  .menu-item-content-layout {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--menu-gap);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .menu-item-content-layout > svg {
+    flex: 0 0 calc(16 * var(--component-unit, 0.0625rem));
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    pointer-events: none;
+  }
+  .menu-item-content-layout > [data-slot="menu-item-text"] {
+    flex: 1;
+    min-width: 0;
+  }
+  .menu-item-layout [data-slot="menu-item-description"] {
+    display: block;
+    color: var(--muted-foreground);
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+    font-weight: 400;
+  }
+  .menu-indicator-layout {
+    display: flex;
+    flex: 0 0 var(--menu-indicator);
+    align-items: center;
+    justify-content: center;
+    margin-inline-start: auto;
+    pointer-events: none;
+  }
+  .menu-indicator-layout svg {
+    width: calc(12 * var(--component-unit, 0.0625rem));
+    height: calc(12 * var(--component-unit, 0.0625rem));
+  }
+  .menu-indicator-layout .menu-chevron-layout {
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+  }
+  :dir(rtl) .menu-chevron-layout {
+    rotate: 180deg;
+  }
+  .menu-item-layout[data-inset="true"],
+  .menu-label-layout[data-inset="true"] {
+    padding-inline-start: calc(32 * var(--component-unit, 0.0625rem));
+  }
+  .menu-item-layout[data-disabled] {
+    cursor: not-allowed;
+  }
+  .menu-label-layout {
+    padding: calc(8 * var(--component-unit, 0.0625rem));
+    color: var(--muted-foreground);
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+    font-weight: 500;
+  }
+  .menu-shortcut-layout {
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    color: var(--muted-foreground);
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .menu-separator-layout {
+    height: 1px;
+    margin: calc(4 * var(--component-unit, 0.0625rem));
+    background: var(--border);
+  }
+  .menubar-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(4 * var(--component-unit, 0.0625rem));
+    width: fit-content;
+    max-width: 100%;
+    padding: calc(4 * var(--component-unit, 0.0625rem));
+    border-radius: var(--control-radius, var(--radius));
+  }
+  .menubar-trigger-layout {
+    display: inline-flex;
+    align-items: center;
+    min-height: calc(28 * var(--component-unit, 0.0625rem));
+    padding: calc(4 * var(--component-unit, 0.0625rem)) calc(8 * var(--component-unit, 0.0625rem));
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) - 2 * var(--component-unit, 0.0625rem))
+    );
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    font-weight: 500;
+    user-select: none;
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    .menu-item-layout {
+      min-height: 44px;
+    }
+    .overlay-trigger-layout:not(.rdp-input_trigger, .tp-input_trigger) {
+      display: inline-flex;
+      align-items: center;
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .menubar-trigger-layout {
+      min-height: 44px;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .overlay-popup-layout,
+  .overlay-popup-layout:is([data-starting-style], [data-ending-style]) {
+    transition: none;
+    scale: none;
+  }
+}
+@media (forced-colors: active) {
+  .overlay-trigger-layout:focus-visible {
+    outline-color: Highlight;
+  }
+  .menu-item-layout:is([data-highlighted], [data-popup-open]) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+@layer components {
+  .dark .overlay-popup-layout {
+    --popup-shadow: 0 6px 18px rgb(0 0 0 / 0.2);
+  }
+  .dark .menu-separator-layout {
+    background: color-mix(in oklab, var(--border) 60%, transparent);
+  }
+}
+
+.popover-popup-layout:is(.rdp-popover_content, .tp-popover_content) {
+  max-height: none;
+  border: 0;
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--foreground) 5%, transparent),
+    0 25px 50px -12px rgb(0 0 0 / 0.25);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: calc(1.25 / 0.875);
+  scale: none;
+  transition: none;
+}

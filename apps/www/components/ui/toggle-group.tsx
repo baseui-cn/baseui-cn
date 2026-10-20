@@ -25,8 +25,8 @@ export function ToggleGroup({
   return (
     <ToggleGroupPrimitive
       className={cn(
-        "cn-toggle-group",
-        orientation === "vertical" && "cn-toggle-group-vertical",
+        "toggle-group-layout",
+        orientation === "vertical" && "toggle-group-vertical-layout",
         className
       )}
       data-size={size}
@@ -77,7 +77,7 @@ export function ToggleGroupSeparator({
 } & React.ComponentProps<typeof Separator>): React.ReactElement {
   return (
     <Separator
-      className={cn("cn-toggle-separator", className)}
+      className={cn("toggle-separator-layout bg-input", className)}
       orientation={orientation}
       {...props}
     />

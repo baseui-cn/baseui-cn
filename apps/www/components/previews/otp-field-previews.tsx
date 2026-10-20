@@ -15,8 +15,13 @@ function OTPFieldDemoPreview() {
     <Field className="max-w-sm">
       <FieldLabel>Verification code</FieldLabel>
       <FieldDescription>Enter the 6-digit code we sent to your device.</FieldDescription>
-      <div className="cn-otp-container overflow-x-auto">
-        <OTPField className="cn-otp-responsive" length={6} value={value} onValueChange={setValue}>
+      <div className="otp-container-layout overflow-x-auto">
+        <OTPField
+          className="otp-responsive-layout"
+          length={6}
+          value={value}
+          onValueChange={setValue}
+        >
           {Array.from({ length: 6 }, (_, index) => (
             <OTPFieldInput
               key={index}
@@ -58,8 +63,8 @@ function OTPFieldFormPreview() {
         <FieldDescription>
           This works inside the Base UI Form wrapper and submits as a single value.
         </FieldDescription>
-        <div className="cn-otp-container overflow-x-auto">
-          <OTPField className="cn-otp-responsive" length={6} name="verificationCode">
+        <div className="otp-container-layout overflow-x-auto">
+          <OTPField className="otp-responsive-layout" length={6} name="verificationCode">
             {Array.from({ length: 6 }, (_, index) => (
               <OTPFieldInput
                 key={index}
@@ -89,9 +94,9 @@ function OTPFieldAlphanumericPreview() {
     <Field className="max-w-sm">
       <FieldLabel>Recovery code</FieldLabel>
       <FieldDescription>Use letters and numbers for backup codes such as A7C9XZ.</FieldDescription>
-      <div className="cn-otp-container overflow-x-auto">
+      <div className="otp-container-layout overflow-x-auto">
         <OTPField
-          className="cn-otp-responsive"
+          className="otp-responsive-layout"
           length={6}
           validationType="alphanumeric"
           value={value}
@@ -117,8 +122,8 @@ function OTPFieldMaskedPreview() {
     <Field className="max-w-sm">
       <FieldLabel>Access code</FieldLabel>
       <FieldDescription>Use mask to obscure the code on shared screens.</FieldDescription>
-      <div className="cn-otp-container overflow-x-auto">
-        <OTPField className="cn-otp-responsive" length={6} mask>
+      <div className="otp-container-layout overflow-x-auto">
+        <OTPField className="otp-responsive-layout" length={6} mask>
           {Array.from({ length: 6 }, (_, index) => (
             <OTPFieldInput
               key={index}
@@ -138,8 +143,8 @@ function OTPFieldGroupedPreview() {
       <FieldDescription>
         Group the slots visually when you want a 3-3 layout such as 123-456.
       </FieldDescription>
-      <div className="cn-otp-container overflow-x-auto">
-        <OTPField className="cn-otp-responsive" length={6}>
+      <div className="otp-container-layout overflow-x-auto">
+        <OTPField className="otp-responsive-layout" length={6}>
           <div className="flex gap-2">
             {Array.from({ length: 3 }, (_, index) => (
               <OTPFieldInput
@@ -167,7 +172,7 @@ function OTPFieldConnectedPreview() {
       <FieldDescription>
         Some verification flows use a single connected control with shared borders.
       </FieldDescription>
-      <div className="cn-otp-container overflow-x-auto">
+      <div className="otp-container-layout overflow-x-auto">
         <OTPField length={6} className="gap-0">
           {Array.from({ length: 6 }, (_, index) => (
             <OTPFieldInput
@@ -205,8 +210,13 @@ function OTPFieldResetPreview() {
         Clear the entered code and immediately return focus to the first slot.
       </FieldDescription>
       <div className="space-y-3">
-        <div ref={containerRef} className="cn-otp-container overflow-x-auto">
-          <OTPField className="cn-otp-responsive" length={6} value={value} onValueChange={setValue}>
+        <div ref={containerRef} className="otp-container-layout overflow-x-auto">
+          <OTPField
+            className="otp-responsive-layout"
+            length={6}
+            value={value}
+            onValueChange={setValue}
+          >
             {Array.from({ length: 6 }, (_, index) => (
               <OTPFieldInput
                 key={index}
@@ -261,8 +271,13 @@ function OTPFieldAutoSubmitPreview() {
           <FieldDescription>
             When all 6 slots are filled, the form submits automatically and shows success feedback.
           </FieldDescription>
-          <div className="cn-otp-container overflow-x-auto">
-            <OTPField length={6} name="verificationCode" autoSubmit className="cn-otp-responsive">
+          <div className="otp-container-layout overflow-x-auto">
+            <OTPField
+              length={6}
+              name="verificationCode"
+              autoSubmit
+              className="otp-responsive-layout"
+            >
               {Array.from({ length: 6 }, (_, index) => (
                 <OTPFieldInput
                   key={index}

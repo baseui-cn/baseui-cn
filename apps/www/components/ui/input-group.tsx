@@ -8,7 +8,7 @@ import { Textarea, type TextareaProps } from "@/components/ui/textarea"
 
 import "@/styles/text-control.styles.css"
 
-const inputGroupAddonVariants = cva("cn-input-group-addon", {
+const inputGroupAddonVariants = cva("input-group-addon-layout", {
   defaultVariants: { align: "inline-start" },
   variants: { align: { "block-end": "", "block-start": "", "inline-end": "", "inline-start": "" } },
 })
@@ -19,7 +19,10 @@ export function InputGroup({
 }: React.ComponentProps<"div">): React.ReactElement {
   return (
     <div
-      className={cn("cn-input-group", className)}
+      className={cn(
+        "input-group-layout border border-input bg-background text-foreground",
+        className
+      )}
       data-slot="input-group"
       role="group"
       {...props}
@@ -61,7 +64,7 @@ export function InputGroupText({
   className,
   ...props
 }: React.ComponentProps<"span">): React.ReactElement {
-  return <span className={cn("cn-input-group-text", className)} {...props} />
+  return <span className={cn("input-group-text-layout", className)} {...props} />
 }
 
 export function InputGroupInput({ className, ...props }: InputProps): React.ReactElement {

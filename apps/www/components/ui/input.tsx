@@ -22,11 +22,17 @@ export function Input({
   nativeInput = false,
   ...props
 }: InputProps): React.ReactElement {
-  const inputClassName = "cn-input"
+  const inputClassName = "input-layout"
 
   return (
     <span
-      className={cn("cn-input-control", !unstyled && "cn-text-shell", className) || undefined}
+      className={
+        cn(
+          "input-control-layout",
+          !unstyled && "control-shell-layout border border-input bg-background text-foreground",
+          className
+        ) || undefined
+      }
       data-size={size}
       data-slot="input-control"
     >

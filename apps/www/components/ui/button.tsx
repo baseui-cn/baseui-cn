@@ -9,34 +9,49 @@ import { Spinner } from "@/components/ui/spinner"
 
 import "@/styles/button.styles.css"
 
-export const buttonVariants = cva("cn-button", {
-  defaultVariants: { size: "default", variant: "default" },
-  variants: {
-    size: {
-      default: "cn-button-default",
-      md: "cn-button-md",
-      xs: "cn-button-xs",
-      sm: "cn-button-sm",
-      lg: "cn-button-lg",
-      xl: "cn-button-xl",
-      icon: "cn-button-icon",
-      "icon-xs": "cn-button-icon-xs",
-      "icon-sm": "cn-button-icon-sm",
-      "icon-lg": "cn-button-icon-lg",
-      "icon-xl": "cn-button-icon-xl",
+// Layout CSS owns measured size aliases and icon slots; theme colors live here.
+export const buttonVariants = cva(
+  [
+    "button-layout border border-transparent focus-visible:outline-ring disabled:border-border disabled:bg-muted",
+    "disabled:text-muted-foreground data-[disabled]:border-border data-[disabled]:bg-muted data-[disabled]:text-muted-foreground",
+    "aria-disabled:border-border aria-disabled:bg-muted aria-disabled:text-muted-foreground data-[loading]:text-transparent",
+  ],
+  {
+    defaultVariants: { size: "default", variant: "default" },
+    variants: {
+      size: {
+        default: "",
+        md: "",
+        xs: "button-xs-layout",
+        sm: "button-sm-layout",
+        lg: "button-lg-layout",
+        xl: "button-xl-layout",
+        icon: "button-icon-layout",
+        "icon-xs": "button-icon-xs-layout",
+        "icon-sm": "button-icon-sm-layout",
+        "icon-lg": "button-icon-lg-layout",
+        "icon-xl": "button-icon-xl-layout",
+      },
+      variant: {
+        default:
+          "bg-primary text-primary-foreground [@media(hover:hover)]:enabled:hover:bg-primary/90 enabled:active:bg-primary/95",
+        destructive:
+          "bg-destructive text-destructive-foreground [@media(hover:hover)]:enabled:hover:bg-destructive/90 enabled:active:bg-destructive/95",
+        "destructive-outline":
+          "border-destructive bg-background text-destructive [@media(hover:hover)]:enabled:hover:bg-destructive/10 enabled:active:bg-destructive/15",
+        ghost:
+          "bg-transparent text-foreground [@media(hover:hover)]:enabled:hover:bg-muted enabled:active:bg-secondary",
+        link: "bg-transparent text-foreground underline-offset-4 [@media(hover:hover)]:enabled:hover:underline enabled:active:underline",
+        outline:
+          "button-outline-layout border-input bg-background text-foreground [@media(hover:hover)]:enabled:hover:bg-muted enabled:active:bg-secondary",
+        secondary:
+          "bg-secondary text-secondary-foreground [@media(hover:hover)]:enabled:hover:bg-muted enabled:active:bg-secondary/80",
+        warning:
+          "bg-warning text-warning-foreground [@media(hover:hover)]:enabled:hover:bg-warning/90 enabled:active:bg-warning/95",
+      },
     },
-    variant: {
-      default: "cn-button-default-variant",
-      destructive: "cn-button-destructive",
-      "destructive-outline": "cn-button-destructive-outline",
-      ghost: "cn-button-ghost",
-      link: "cn-button-link",
-      outline: "cn-button-outline",
-      secondary: "cn-button-secondary",
-      warning: "cn-button-warning",
-    },
-  },
-})
+  }
+)
 
 export interface ButtonProps extends useRender.ComponentProps<"button"> {
   variant?: VariantProps<typeof buttonVariants>["variant"]
@@ -65,7 +80,7 @@ export function Button({
         {children}
         {loading && (
           <Spinner
-            className="cn-loading pointer-events-none absolute"
+            className="loading-spinner pointer-events-none absolute text-muted-foreground"
             data-slot="button-loading-indicator"
           />
         )}

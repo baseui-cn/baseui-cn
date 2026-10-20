@@ -23,12 +23,11 @@ export default function ThemingPage() {
       </div>
 
       <p className="text-sm text-muted-foreground">
-        Theme schema v{theme.schemaVersion} is generated from scripts/theme-definition.json. Init
-        and component installation add missing tokens and preserve existing values. V2 uses a
-        class-based dark variant and a rem-based pixel unit at a normal 16px root. These docs
-        temporarily bridge V2 units at their existing 14px root; copied components include their
-        local CSS through the registry. Override semantic roles with complete CSS color values;
-        status text and on-solid foregrounds are separate roles.
+        Change the standard semantic variables in your stylesheet. For example, accent controls
+        persistent selection, ring controls keyboard focus, and primary controls primary actions.
+        Init and component installation add missing variables and preserve existing values.
+        Class-based dark mode follows the application theme choice. Components include any required
+        layout CSS when installed; you do not need a separate token vocabulary.
       </p>
       {/* CSS variables */}
       <div className="flex flex-col gap-4">
@@ -116,28 +115,30 @@ export default function ThemingPage() {
           <p className="text-sm text-muted-foreground mt-1">
             Override any variable in your{" "}
             <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">:root</code>. Changes
-            propagate through compatibility aliases. Existing values are preserved during
-            installation; older themes can opt into V2 control borders and focus with
-            --cn-border-control and --cn-focus-color. Supply matching foregrounds and verify
-            contrast for custom colors.
+            propagate directly to semantic utilities. Use accent and accent-foreground together for
+            selected surfaces and markers, ring for keyboard focus, and primary with
+            primary-foreground for primary actions. Supply complete CSS colors and verify the
+            contrast of custom foreground/background pairs.
           </p>
         </div>
         <CodeBlock
-          code={`/* Blue primary */
+          code={`/* Persistent selection and its marker */
 :root {
-  --primary: hsl(221.2 83.2% 53.3%);
-  --primary-foreground: hsl(210 40% 98%);
+  --accent: #eff0ff;
+  --accent-foreground: #5961cf;
+  --ring: #6673e8;
+}
+.dark {
+  --accent: #25252e;
+  --accent-foreground: #a8aeff;
+  --ring: #9699d6;
 }
 
-/* Rounder corners */
+/* Primary actions stay independent of selection and focus */
 :root {
-  --radius: 0.75rem;
-}
-
-/* Green brand */
-:root {
-  --primary: hsl(142.1 76.2% 36.3%);
-  --primary-foreground: hsl(355.7 100% 97.3%);
+  --primary: #25272c;
+  --primary-foreground: #ffffff;
+  --radius: .375rem;
 }
 
 /* Custom status colors */
