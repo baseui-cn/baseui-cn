@@ -721,6 +721,12 @@ const componentStyles = {
   "preview-card": "overlay",
   "dropdown-menu": "overlay",
   menubar: "overlay",
+  tabs: "navigation",
+  accordion: "navigation",
+  collapsible: "navigation",
+  "navigation-menu": "navigation",
+  breadcrumb: "navigation",
+  pagination: "navigation",
 }
 for (const [name, style] of Object.entries(componentStyles)) {
   componentMeta[name].files.push({

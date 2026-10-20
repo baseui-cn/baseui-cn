@@ -6,6 +6,8 @@ import { ChevronRight, MoreHorizontal } from "lucide-react"
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 
+import "@/styles/navigation.styles.css"
+
 export function Breadcrumb({ ...props }: React.ComponentProps<"nav">): React.ReactElement {
   return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />
 }
@@ -17,7 +19,7 @@ export function BreadcrumbList({
   return (
     <ol
       className={cn(
-        "wrap-break-word flex flex-wrap items-center gap-1.5 text-muted-foreground text-sm sm:gap-2.5",
+        "breadcrumb-list-layout flex flex-wrap items-center text-muted-foreground",
         className
       )}
       data-slot="breadcrumb-list"
@@ -32,7 +34,7 @@ export function BreadcrumbItem({
 }: React.ComponentProps<"li">): React.ReactElement {
   return (
     <li
-      className={cn("inline-flex items-center gap-1.5", className)}
+      className={cn("breadcrumb-item-layout inline-flex items-center", className)}
       data-slot="breadcrumb-item"
       {...props}
     />
@@ -45,7 +47,7 @@ export function BreadcrumbLink({
   ...props
 }: useRender.ComponentProps<"a">): React.ReactElement {
   const defaultProps = {
-    className: cn("transition-colors hover:text-foreground", className),
+    className: cn("breadcrumb-link-layout [@media(hover:hover)]:hover:text-foreground", className),
     "data-slot": "breadcrumb-link",
   }
 
@@ -78,7 +80,7 @@ export function BreadcrumbSeparator({
   return (
     <li
       aria-hidden="true"
-      className={cn("opacity-80 [&>svg]:size-4", className)}
+      className={cn("breadcrumb-separator-layout", className)}
       data-slot="breadcrumb-separator"
       role="presentation"
       {...props}

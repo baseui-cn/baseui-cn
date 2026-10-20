@@ -1,0 +1,243 @@
+/* Navigation and disclosure anatomy. Base UI owns indicator, height and popup geometry. */
+@layer components {
+  .tabs-layout,
+  .tabs-list-layout {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .tabs-list-layout {
+    /* Keep the native indicator and its focus contours visible. Long lists can
+       be placed in a consumer-owned scroll container without changing the API. */
+    flex-shrink: 0;
+  }
+  .tabs-tab-layout,
+  :where(.disclosure-trigger-layout),
+  .navigation-menu-trigger-layout,
+  .navigation-menu-link-layout {
+    box-sizing: border-box;
+    border-radius: var(--control-radius, var(--radius));
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    font-weight: 500;
+    outline: none;
+    transition:
+      color 100ms,
+      background-color 100ms;
+  }
+  .tabs-tab-layout,
+  .navigation-menu-trigger-layout {
+    min-height: calc(36 * var(--component-unit, 0.0625rem));
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    padding: calc(8 * var(--component-unit, 0.0625rem)) calc(12 * var(--component-unit, 0.0625rem));
+    border: 0;
+  }
+  .tabs-tab-layout svg,
+  .disclosure-indicator-layout {
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+  .tabs-indicator-layout {
+    transition:
+      width 160ms,
+      translate 160ms;
+  }
+  .tabs-tab-layout[data-disabled],
+  .disclosure-trigger-layout:is(:disabled, [data-disabled]),
+  .navigation-menu-trigger-layout:is(:disabled, [data-disabled]) {
+    color: var(--muted-foreground);
+    cursor: not-allowed;
+  }
+  .tabs-panel-layout {
+    min-width: 0;
+    outline: none;
+  }
+  .tabs-tab-layout:focus-visible,
+  .tabs-panel-layout:focus-visible,
+  .disclosure-trigger-layout:focus-visible,
+  .navigation-menu-trigger-layout:focus-visible,
+  .breadcrumb-link-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+  .disclosure-trigger-layout:not(.button-layout) {
+    min-height: calc(36 * var(--component-unit, 0.0625rem));
+    text-align: start;
+  }
+  .accordion-trigger-layout {
+    gap: calc(16 * var(--component-unit, 0.0625rem));
+    padding-block: calc(16 * var(--component-unit, 0.0625rem));
+  }
+  .disclosure-indicator-layout,
+  .navigation-menu-chevron-layout {
+    transition: transform 160ms;
+  }
+  .disclosure-panel-layout {
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(22 * var(--component-unit, 0.0625rem));
+    transition: height 160ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .accordion-panel-content-layout {
+    padding-bottom: calc(16 * var(--component-unit, 0.0625rem));
+  }
+  .navigation-menu-list-layout {
+    gap: calc(4 * var(--component-unit, 0.0625rem));
+  }
+  .navigation-menu-content-layout {
+    box-sizing: border-box;
+    max-width: var(--available-width);
+    transition:
+      opacity 160ms,
+      translate 160ms;
+  }
+  .navigation-menu-content-layout > * {
+    max-width: 100%;
+  }
+  .navigation-menu-positioner-layout {
+    transition:
+      top 160ms,
+      left 160ms,
+      right 160ms,
+      bottom 160ms;
+  }
+  .navigation-menu-popup-layout {
+    box-sizing: border-box;
+    max-width: var(--available-width);
+    max-height: var(--available-height);
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) + 4 * var(--component-unit, 0.0625rem))
+    );
+    box-shadow:
+      0 4px 12px rgb(17 24 39 / 0.08),
+      0 1px 3px rgb(17 24 39 / 0.06);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    outline: none;
+    transition:
+      opacity 160ms,
+      width 160ms,
+      height 160ms;
+  }
+  .navigation-menu-popup-layout[data-ending-style] {
+    transition-duration: 100ms;
+  }
+  .dark .navigation-menu-popup-layout {
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.2);
+  }
+  .navigation-menu-link-layout {
+    min-height: calc(32 * var(--component-unit, 0.0625rem));
+    padding: calc(6 * var(--component-unit, 0.0625rem)) calc(8 * var(--component-unit, 0.0625rem));
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) - 2 * var(--component-unit, 0.0625rem))
+    );
+    overflow-wrap: anywhere;
+    font-weight: 400;
+  }
+  .navigation-menu-link-layout svg:not([class*="size-"]) {
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    flex-shrink: 0;
+  }
+  /* Viewport clips native content handoffs. Keep the entire focus contour inside
+     the link instead of suppressing it or letting it clip at the popup edge. */
+  .navigation-menu-link-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+    box-shadow: none;
+  }
+  .navigation-menu-link-layout[data-active] {
+    font-weight: 500;
+  }
+  .breadcrumb-list-layout {
+    gap: calc(8 * var(--component-unit, 0.0625rem));
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    overflow-wrap: anywhere;
+  }
+  .breadcrumb-item-layout {
+    min-width: 0;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+  }
+  .breadcrumb-link-layout {
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) - 2 * var(--component-unit, 0.0625rem))
+    );
+    transition: color 100ms;
+  }
+  .breadcrumb-separator-layout {
+    flex-shrink: 0;
+  }
+  .breadcrumb-separator-layout > svg {
+    width: calc(12 * var(--component-unit, 0.0625rem));
+    height: calc(12 * var(--component-unit, 0.0625rem));
+  }
+  :dir(rtl) .breadcrumb-separator-layout > svg {
+    rotate: 180deg;
+  }
+  .pagination-content-layout {
+    gap: calc(4 * var(--component-unit, 0.0625rem));
+  }
+  .pagination-link-layout[data-active="true"] {
+    font-weight: 600;
+  }
+}
+@media (hover: hover) {
+  .pagination-link-layout:not([aria-disabled="true"]):hover {
+    background: var(--muted);
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    .tabs-tab-layout,
+    .disclosure-trigger-layout,
+    .navigation-menu-trigger-layout,
+    .navigation-menu-link-layout,
+    .breadcrumb-link-layout {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    .breadcrumb-link-layout {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tabs-indicator-layout,
+  .tabs-tab-layout,
+  .disclosure-trigger-layout,
+  .disclosure-indicator-layout,
+  .disclosure-panel-layout,
+  .navigation-menu-trigger-layout,
+  .navigation-menu-link-layout,
+  .navigation-menu-chevron-layout,
+  .navigation-menu-content-layout,
+  .navigation-menu-positioner-layout,
+  .navigation-menu-popup-layout,
+  .navigation-menu-popup-layout[data-ending-style],
+  .breadcrumb-link-layout {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .tabs-tab-layout[data-active],
+  .navigation-menu-link-layout[data-active],
+  .pagination-link-layout[data-active="true"] {
+    outline: 1px solid CanvasText;
+    outline-offset: -1px;
+  }
+  .tabs-tab-layout:focus-visible,
+  .tabs-panel-layout:focus-visible,
+  .disclosure-trigger-layout:focus-visible,
+  .navigation-menu-trigger-layout:focus-visible,
+  .navigation-menu-link-layout:focus-visible,
+  .breadcrumb-link-layout:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}

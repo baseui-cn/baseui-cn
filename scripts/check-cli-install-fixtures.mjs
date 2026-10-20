@@ -354,3 +354,83 @@ for (const scenario of ["phase2", "custom", "partial", "reverse", ...phaseFive])
     `PASS Phase 5 ${scenario}: recursive install closure, sequential/shared styles, preserved custom theme/source, repeated add/init`
   )
 }
+
+// Navigation/disclosure installs independently or over earlier families.
+const phaseSix = [
+  "tabs",
+  "accordion",
+  "collapsible",
+  "navigation-menu",
+  "breadcrumb",
+  "pagination",
+  "menubar",
+]
+for (const scenario of ["phase2", "custom", "partial", "reverse", ...phaseSix]) {
+  const dir = path.join(fixtureRoot, "phase6-" + scenario)
+  await fs.mkdir(path.join(dir, "bin"), { recursive: true })
+  await fs.writeFile(path.join(dir, "package.json"), '{"name":"phase6-consumer","private":true}')
+  await fs.writeFile(path.join(dir, "bin/npm"), "#!/bin/sh\nexit 0\n", { mode: 0o755 })
+  const offline = path.join(dir, "offline.cjs")
+  await fs.writeFile(offline, 'global.fetch = async () => { throw new Error("bundled fixture") }')
+  const run = (args) =>
+    execFileSync(
+      process.execPath,
+      ["--require", offline, path.join(root, "packages/cli/dist/index.js"), ...args],
+      {
+        cwd: dir,
+        env: { ...process.env, PATH: path.join(dir, "bin") + path.delimiter + process.env.PATH },
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      }
+    )
+  run(["init", "-y", "--css", "globals.css"])
+  if (scenario === "phase2" || scenario === "custom") run(["add", ...phaseTwo, "-y"])
+  if (scenario === "partial") run(["add", "input-group", "field", "-y"])
+  if (scenario === "custom")
+    await fs.appendFile(
+      path.join(dir, "globals.css"),
+      "\n:root { --accent: #e5efe6; --radius: 9px; --primary: #245734; }\n.dark { --ring: #c5e4ff; }\n"
+    )
+  const theme = await fs.readFile(path.join(dir, "globals.css"), "utf8")
+  const order = phaseSix.includes(scenario)
+    ? [scenario]
+    : scenario === "reverse"
+      ? [...phaseSix].reverse()
+      : phaseSix
+  const preserved = new Map()
+  for (const name of order) {
+    run(["add", name, "-y"])
+    // Every imported component/helper/stylesheet must be installed recursively.
+    const seen = new Set()
+    const closure = async (file) => {
+      if (seen.has(file)) return
+      seen.add(file)
+      const source = await fs.readFile(path.join(dir, file), "utf8")
+      for (const [, dep] of source.matchAll(/(?:from|import) "@\/([^\"]+)"/g)) {
+        const target = dep.endsWith(".css") ? dep : dep + (dep.startsWith("lib/") ? ".ts" : ".tsx")
+        await fs.access(path.join(dir, target))
+        if (!target.endsWith(".css")) await closure(target)
+      }
+    }
+    await closure("components/ui/" + name + ".tsx")
+    for (const [file, content] of preserved) assert.equal(await fs.readFile(file, "utf8"), content)
+    const style = path.join(
+      dir,
+      name === "menubar" ? "styles/overlay.styles.css" : "styles/navigation.styles.css"
+    )
+    if (!preserved.has(style)) {
+      await fs.appendFile(style, "\n/* Consumer navigation customization. */\n")
+      preserved.set(style, await fs.readFile(style, "utf8"))
+    }
+  }
+  const source = path.join(dir, "components/ui/" + order[0] + ".tsx")
+  await fs.appendFile(source, "\n// Consumer navigation source.\n")
+  preserved.set(source, await fs.readFile(source, "utf8"))
+  run(["add", ...phaseSix, "-y"])
+  run(["init", "-y", "--css", "globals.css"])
+  for (const [file, content] of preserved) assert.equal(await fs.readFile(file, "utf8"), content)
+  assert.equal(await fs.readFile(path.join(dir, "globals.css"), "utf8"), theme)
+  console.log(
+    `PASS Phase 6 ${scenario}: recursive install closure, sequential/shared styles, preserved custom theme/source, repeated add/init`
+  )
+}
