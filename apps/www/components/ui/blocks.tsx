@@ -2,6 +2,8 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+import "@/styles/blocks.styles.css"
+
 export interface EmptyStateProps {
   icon?: React.ReactNode
   title: string
@@ -36,20 +38,34 @@ function EmptyState({ icon, title, description, action, className, size = "md" }
   const s = sizeConfig[size]
 
   return (
-    <div className={cn("flex flex-col items-center justify-center text-center", s.wrap, className)}>
+    <div
+      data-slot="empty-state"
+      data-size={size}
+      className={cn(
+        "empty-state-layout flex flex-col items-center justify-center text-center",
+        s.wrap,
+        className
+      )}
+    >
       {icon && (
         <div
           className={cn(
-            "flex items-center justify-center rounded-full bg-muted text-muted-foreground",
+            "empty-state-media-layout flex items-center justify-center bg-muted text-muted-foreground",
             s.icon
           )}
         >
           {icon}
         </div>
       )}
-      <div className="flex flex-col gap-1">
-        <h3 className={cn("font-semibold text-foreground", s.title)}>{title}</h3>
-        {description && <p className={cn("text-muted-foreground", s.desc)}>{description}</p>}
+      <div className="flex max-w-sm min-w-0 flex-col gap-1">
+        <h3 className={cn("empty-state-title-layout font-semibold text-foreground", s.title)}>
+          {title}
+        </h3>
+        {description && (
+          <p className={cn("empty-state-description-layout text-muted-foreground", s.desc)}>
+            {description}
+          </p>
+        )}
       </div>
       {action && <div className="mt-1">{action}</div>}
     </div>
@@ -58,7 +74,14 @@ function EmptyState({ icon, title, description, action, className, size = "md" }
 
 const EmptyStateIcons = {
   inbox: (
-    <svg className="size-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      aria-hidden="true"
+      className="size-5"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <path
         d="M3 8l7-5 7 5v9a1 1 0 01-1 1H4a1 1 0 01-1-1V8z"
         strokeLinecap="round"
@@ -68,13 +91,27 @@ const EmptyStateIcons = {
     </svg>
   ),
   search: (
-    <svg className="size-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      aria-hidden="true"
+      className="size-5"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <circle cx="8.5" cy="8.5" r="5" />
       <path d="M15 15l2.5 2.5" strokeLinecap="round" />
     </svg>
   ),
   folder: (
-    <svg className="size-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      aria-hidden="true"
+      className="size-5"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <path
         d="M3 7a2 2 0 012-2h3l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"
         strokeLinecap="round"
@@ -83,7 +120,14 @@ const EmptyStateIcons = {
     </svg>
   ),
   users: (
-    <svg className="size-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      aria-hidden="true"
+      className="size-5"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <circle cx="7" cy="7" r="3" />
       <path d="M1 17c0-3.314 2.686-6 6-6" strokeLinecap="round" />
       <circle cx="13" cy="7" r="3" />

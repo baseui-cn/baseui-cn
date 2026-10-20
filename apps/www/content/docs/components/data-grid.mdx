@@ -7,7 +7,8 @@ component: true
 <ComponentPreview name="data-grid-demo" />
 
 <Callout variant="info">
-  Use `data-grid` when you need filtering, editing, sticky headers, virtualization, or row and column movement. If you only need semantic table markup, keep using `table`.
+  Use `data-grid` when you need filtering, editing, sticky headers, virtualization, or row and
+  column movement. If you only need semantic table markup, keep using `table`.
 </Callout>
 
 ## Installation
@@ -56,3 +57,7 @@ This variant layers in pending states, optimistic updates, and rollback messagin
 - `DataGrid`, `DataGridTable`, `DataGridScrollArea`, and `DataGridPagination` for the base shell.
 - `DataGridColumnHeader`, filter, visibility, virtual, and drag-and-drop helpers for richer table behavior.
 - `DataGridEditableCell`, `DataGridEditDialog`, and `useEditableDataGrid` for inline and dialog editing flows.
+
+The copied `data.styles.css` provides V2 presentation without changing virtual row estimates, DnD measurements or editor heights. Inline focus is inset to remain visible in clipped cells. Rating supports Enter/Space, arrow keys, Home and End; filter choices are keyboard-accessible buttons. Measured grid cells retain their compact Rating targets on coarse pointers.
+
+For manual installation, copy the stylesheet included with the component source and retain its import. CLI installation includes it automatically; website CSS is not required.

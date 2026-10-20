@@ -8,11 +8,7 @@ component: true
 
 ## Installation
 
-<InstallTabs
-  slug="signup"
-  addCmd="baseui-cn add signup"
-  manualDeps="npm install zod"
-/>
+<InstallTabs slug="signup" addCmd="baseui-cn add signup" manualDeps="npm install zod" />
 
 Running the install command above also adds `components/ui/auth.tsx` and exports `SignupBlock`. The success state uses `ToastProvider`, so keep the toast provider mounted once in your root layout.
 
@@ -21,7 +17,7 @@ Running the install command above also adds `components/ui/auth.tsx` and exports
 ```tsx
 import { SignupBlock } from "@/components/ui/auth"
 
-<SignupBlock
+;<SignupBlock
   termsHref="/terms"
   privacyHref="/privacy"
   onSubmit={async ({ email }) => {
@@ -52,7 +48,10 @@ The default demo submit is intentionally production-shaped: it behaves asynchron
 ## Props
 
 <PropsTable>
-  <PropRow name="onSubmit" type="(values: SignupValues) => Promise<AuthSubmitResult<SignupFieldName> | void> | AuthSubmitResult<SignupFieldName> | void">
+  <PropRow
+    name="onSubmit"
+    type="(values: SignupValues) => Promise<AuthSubmitResult<SignupFieldName> | void> | AuthSubmitResult<SignupFieldName> | void"
+  >
     Optional submit handler. Without it, the block runs a built-in async demo success flow.
   </PropRow>
   <PropRow name="termsHref" type="string" defaultValue="'/terms'">
@@ -67,7 +66,11 @@ The default demo submit is intentionally production-shaped: it behaves asynchron
   <PropRow name="showSocial" type="boolean" defaultValue="true">
     Shows built-in social buttons when provider callbacks are supplied.
   </PropRow>
-  <PropRow name="variant" type="'default' | 'bordered' | 'elevated' | 'minimal'" defaultValue="'default'">
+  <PropRow
+    name="variant"
+    type="'default' | 'bordered' | 'elevated' | 'minimal'"
+    defaultValue="'default'"
+  >
     Controls the card presentation.
   </PropRow>
   <PropRow name="size" type="'sm' | 'md' | 'lg'" defaultValue="'md'">
@@ -80,3 +83,7 @@ The default demo submit is intentionally production-shaped: it behaves asynchron
     Overrides the success toast content used after a successful submit.
   </PropRow>
 </PropsTable>
+
+The existing Card, Input, Form, Checkbox, Button and Alert primitives own sizing, validation and feedback. Block sizes map directly to approved control sizes; copied styles include password-toggle spacing and reduced motion.
+
+For manual installation, copy the stylesheet included with the component source and retain its import. CLI installation includes it automatically; website CSS is not required.

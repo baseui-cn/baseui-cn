@@ -1,0 +1,58 @@
+/* Existing block composition; fields, actions and cards keep their primitive owners. */
+@layer components {
+  .empty-state-layout,
+  .empty-local-layout {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .empty-state-media-layout {
+    border-radius: var(--radius, 0.625rem);
+  }
+  .empty-state-title-layout {
+    font-size: calc(16 * var(--component-unit, 0.0625rem));
+    line-height: calc(24 * var(--component-unit, 0.0625rem));
+  }
+  .empty-state-description-layout {
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+  }
+  .empty-state-layout[data-size="sm"] .empty-state-title-layout {
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+  }
+  .empty-state-layout[data-size="sm"] .empty-state-description-layout {
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+  }
+  .empty-state-layout[data-size="lg"] .empty-state-title-layout {
+    font-size: calc(18 * var(--component-unit, 0.0625rem));
+    line-height: calc(26 * var(--component-unit, 0.0625rem));
+  }
+  .auth-password-input-layout .input-layout {
+    padding-inline-end: calc(48 * var(--component-unit, 0.0625rem));
+  }
+  .auth-block-layout a:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  @media (pointer: coarse) {
+    .auth-password-toggle-layout {
+      inset-inline-end: 0;
+    }
+    .auth-password-input-layout .input-layout {
+      padding-inline-end: 48px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .auth-entry-layout {
+      transform: none;
+      opacity: 1;
+      transition: none;
+    }
+  }
+  @media (forced-colors: active) {
+    .auth-block-layout a:focus-visible {
+      outline-color: Highlight;
+    }
+  }
+}

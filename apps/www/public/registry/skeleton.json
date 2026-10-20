@@ -10,7 +10,7 @@
     {
       "path": "skeleton.tsx",
       "type": "component",
-      "content": "import { cn } from \"@/lib/utils\"\n\nfunction Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn(\"animate-pulse rounded-md bg-muted\", className)}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton }\n"
+      "content": "import { cn } from \"@/lib/utils\"\n\nfunction Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn(\n        \"animate-pulse motion-reduce:animate-none rounded-[min(var(--radius,6px),6px)] bg-muted\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton }\n"
     }
   ],
   "dependencies": {
