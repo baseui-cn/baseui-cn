@@ -220,9 +220,10 @@
   }
 }
 
+/* Override the more specific animated-view and directional month rules. */
 @media (prefers-reduced-motion: reduce) {
   .rdp-shell .rdp-view_panel {
-    animation: none;
+    animation: none !important;
   }
 
   .rdp-weeks_before_enter,
@@ -233,7 +234,7 @@
   .rdp-caption_before_exit,
   .rdp-caption_after_enter,
   .rdp-caption_after_exit {
-    animation: none;
+    animation: none !important;
   }
 }
 
