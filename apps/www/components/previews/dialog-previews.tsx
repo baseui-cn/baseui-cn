@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Phase5SystemPreview } from "./phase5-system-preview"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +16,6 @@ import {
   DialogTrigger,
   sizes,
 } from "@/components/ui/dialog"
-import { ScrollArea } from "../ui/scroll-area"
 import { ToastProvider, useToast } from "@/components/ui/toast"
 
 function DialogPreview() {
@@ -81,13 +81,13 @@ function DialogScrollablePreview() {
           <DialogTitle>Long content</DialogTitle>
           <DialogDescription>Scroll to see more content inside this dialog.</DialogDescription>
         </DialogHeader>
-        <div className="space-y-3 max-h-48 overflow-y-auto pr-1">
+        <DialogBody className="max-h-48 space-y-3">
           {Array.from({ length: 10 }, (_, i) => (
             <p key={i} className="text-sm text-muted-foreground">
               Paragraph {i + 1}: Lorem ipsum dolor sit amet consectetur.
             </p>
           ))}
-        </div>
+        </DialogBody>
         <DialogFooter>
           <DialogClose render={<Button variant="outline">Close</Button>} />
         </DialogFooter>
@@ -105,19 +105,15 @@ function DialogFullscreenPreview() {
           <DialogTitle>Fullscreen dialog</DialogTitle>
           <DialogDescription>Takes up the full viewport.</DialogDescription>
         </DialogHeader>
-        <DialogBody className="p-0">
-          <ScrollArea className="h-[calc(100vh-10rem)]">
-            <div className="space-y-3 p-6">
-              {Array.from({ length: 100 }, (_, i) => (
-                <p key={i} className="text-sm text-muted-foreground">
-                  Paragraph {i + 1}: Lorem ipsum dolor sit amet consectetur.
-                </p>
-              ))}
-            </div>
-          </ScrollArea>
+        <DialogBody className="space-y-3 pb-6">
+          {Array.from({ length: 100 }, (_, i) => (
+            <p key={i} className="text-sm text-muted-foreground">
+              Paragraph {i + 1}: Lorem ipsum dolor sit amet consectetur.
+            </p>
+          ))}
         </DialogBody>
       </DialogContent>
-    </Dialog >
+    </Dialog>
   )
 }
 
@@ -126,7 +122,13 @@ function DialogSizesPreview() {
     <div className="flex flex-wrap gap-2">
       {Object.keys(sizes).map((size: string) => (
         <Dialog key={size}>
-          <DialogTrigger render={<Button variant="outline" size="sm">{size}</Button>} />
+          <DialogTrigger
+            render={
+              <Button variant="outline" size="sm">
+                {size}
+              </Button>
+            }
+          />
           <DialogContent size={size as keyof typeof sizes}>
             <DialogHeader>
               <DialogTitle>{size.toUpperCase()} dialog</DialogTitle>
@@ -188,6 +190,7 @@ function DialogWithToastPreview() {
 }
 
 export const dialogPreviewMap: Record<string, React.ComponentType> = {
+  "dialog-system": Phase5SystemPreview,
   dialog: DialogPreview,
   "dialog-demo": DialogPreview,
   "dialog-basic": DialogBasicPreview,

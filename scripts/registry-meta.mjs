@@ -731,6 +731,10 @@ for (const [name, style] of Object.entries(componentStyles)) {
 }
 
 for (const [name, styles] of Object.entries({
+  dialog: ["modal"],
+  "alert-dialog": ["modal"],
+  drawer: ["modal"],
+  command: ["modal"],
   "number-field": ["text-control"],
   toggle: ["button"],
 })) {

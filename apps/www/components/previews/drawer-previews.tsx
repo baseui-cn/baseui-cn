@@ -4,7 +4,13 @@ import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import {
   Drawer,
@@ -21,7 +27,7 @@ import { ToastProvider, useToast } from "@/components/ui/toast"
 
 function DrawerPreview() {
   return (
-    <Drawer>
+    <Drawer swipeDirection="right">
       <DrawerTrigger render={<Button variant="outline">Open Drawer</Button>} />
       <DrawerContent side="right">
         <DrawerHeader>
@@ -71,12 +77,22 @@ function DrawerPreview() {
 
 function DrawerRightPreview() {
   return (
-    <Drawer>
+    <Drawer swipeDirection="right">
       <DrawerTrigger render={<Button variant="outline">Open right</Button>} />
       <DrawerContent side="right">
-        <DrawerHeader><DrawerTitle>Right drawer</DrawerTitle></DrawerHeader>
+        <DrawerHeader>
+          <DrawerTitle>Right drawer</DrawerTitle>
+        </DrawerHeader>
         <div className="flex-1 px-6 py-4 text-sm text-muted-foreground">Content goes here.</div>
-        <DrawerFooter><DrawerClose render={<Button variant="outline" className="w-full">Close</Button>} /></DrawerFooter>
+        <DrawerFooter>
+          <DrawerClose
+            render={
+              <Button variant="outline" className="w-full">
+                Close
+              </Button>
+            }
+          />
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
@@ -84,12 +100,24 @@ function DrawerRightPreview() {
 
 function DrawerLeftPreview() {
   return (
-    <Drawer>
+    <Drawer swipeDirection="left">
       <DrawerTrigger render={<Button variant="outline">Open left</Button>} />
       <DrawerContent side="left">
-        <DrawerHeader><DrawerTitle>Left drawer</DrawerTitle></DrawerHeader>
-        <div className="flex-1 px-6 py-4 text-sm text-muted-foreground">Navigation or sidebar content.</div>
-        <DrawerFooter><DrawerClose render={<Button variant="outline" className="w-full">Close</Button>} /></DrawerFooter>
+        <DrawerHeader>
+          <DrawerTitle>Left drawer</DrawerTitle>
+        </DrawerHeader>
+        <div className="flex-1 px-6 py-4 text-sm text-muted-foreground">
+          Navigation or sidebar content.
+        </div>
+        <DrawerFooter>
+          <DrawerClose
+            render={
+              <Button variant="outline" className="w-full">
+                Close
+              </Button>
+            }
+          />
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
@@ -97,11 +125,16 @@ function DrawerLeftPreview() {
 
 function DrawerBottomSheetPreview() {
   return (
-    <Drawer>
+    <Drawer swipeDirection="down">
       <DrawerTrigger render={<Button variant="outline">Open bottom sheet</Button>} />
       <DrawerContent side="bottom">
-        <DrawerHeader><DrawerTitle>Bottom sheet</DrawerTitle><DrawerDescription>Slides up from the bottom.</DrawerDescription></DrawerHeader>
-        <div className="px-6 pb-6 text-sm text-muted-foreground">Ideal for mobile-style overlays.</div>
+        <DrawerHeader>
+          <DrawerTitle>Bottom sheet</DrawerTitle>
+          <DrawerDescription>Slides up from the bottom.</DrawerDescription>
+        </DrawerHeader>
+        <div className="px-6 pb-6 text-sm text-muted-foreground">
+          Ideal for mobile-style overlays.
+        </div>
       </DrawerContent>
     </Drawer>
   )
@@ -113,15 +146,19 @@ function DrawerWithFormPreview() {
 
 function DrawerNestedSelectPreview() {
   return (
-    <Drawer>
+    <Drawer swipeDirection="right">
       <DrawerTrigger render={<Button variant="outline">Drawer + Select</Button>} />
       <DrawerContent side="right">
-        <DrawerHeader><DrawerTitle>Settings</DrawerTitle></DrawerHeader>
+        <DrawerHeader>
+          <DrawerTitle>Settings</DrawerTitle>
+        </DrawerHeader>
         <div className="flex-1 px-6 space-y-4">
           <div className="flex flex-col gap-1.5">
             <Label>Theme</Label>
             <Select>
-              <SelectTrigger className="w-full"><SelectValue placeholder="Select theme" /></SelectTrigger>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select theme" />
+              </SelectTrigger>
               <SelectContent alignItemWithTrigger={false}>
                 <SelectItem value="light">Light</SelectItem>
                 <SelectItem value="dark">Dark</SelectItem>
@@ -130,7 +167,15 @@ function DrawerNestedSelectPreview() {
             </Select>
           </div>
         </div>
-        <DrawerFooter><DrawerClose render={<Button variant="outline" className="w-full">Close</Button>} /></DrawerFooter>
+        <DrawerFooter>
+          <DrawerClose
+            render={
+              <Button variant="outline" className="w-full">
+                Close
+              </Button>
+            }
+          />
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
@@ -150,7 +195,7 @@ function DrawerWithToastInner() {
   }
 
   return (
-    <Drawer>
+    <Drawer swipeDirection="right">
       <DrawerTrigger render={<Button variant="outline">Open drawer</Button>} />
       <DrawerContent side="right">
         <DrawerHeader>
@@ -174,7 +219,11 @@ function DrawerWithToastInner() {
         </div>
         <DrawerFooter>
           <DrawerClose
-            render={<Button variant="outline" className="w-full">Close drawer</Button>}
+            render={
+              <Button variant="outline" className="w-full">
+                Close drawer
+              </Button>
+            }
           />
         </DrawerFooter>
       </DrawerContent>
