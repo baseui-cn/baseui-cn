@@ -15,7 +15,6 @@ component: true
 ```tsx
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Info } from "lucide-react"
-
 ;<Alert>
   <Info className="size-4 text-info" />
   <AlertTitle>Heads up</AlertTitle>
@@ -40,3 +39,7 @@ Use `Alert` when the message should stay visible until the user fixes something.
 | Prop      | Type                                                             | Default     | Description                                |
 | --------- | ---------------------------------------------------------------- | ----------- | ------------------------------------------ |
 | `variant` | `"default" \| "destructive" \| "info" \| "success" \| "warning"` | `"default"` | Color theme and semantic icon of the alert |
+
+Status variants use your existing success, warning, info and destructive variables on a neutral surface. Include meaningful status text as well as an icon.
+
+For manual installation, copy the stylesheet included with the component source and retain its import. CLI installation includes it automatically; website CSS is not required.

@@ -8,11 +8,7 @@ component: true
 
 ## Installation
 
-<InstallTabs
-  slug="login"
-  addCmd="baseui-cn add login"
-  manualDeps="npm install zod"
-/>
+<InstallTabs slug="login" addCmd="baseui-cn add login" manualDeps="npm install zod" />
 
 Running the install command above adds `components/ui/auth.tsx` and exports `LoginBlock`. Because the block uses success toasts, make sure your app is wrapped once in `ToastProvider`, as shown in the toast docs.
 
@@ -21,7 +17,7 @@ Running the install command above adds `components/ui/auth.tsx` and exports `Log
 ```tsx
 import { LoginBlock } from "@/components/ui/auth"
 
-<LoginBlock
+;<LoginBlock
   onGoogleLogin={() => {}}
   onGithubLogin={() => {}}
   onSubmit={async ({ email, password }) => {
@@ -61,10 +57,17 @@ This is one of the main `baseui-cn` advantages: the same auth block works inside
 ## Props
 
 <PropsTable>
-  <PropRow name="onSubmit" type="(values: LoginValues) => Promise<AuthSubmitResult<LoginFieldName> | void> | AuthSubmitResult<LoginFieldName> | void">
+  <PropRow
+    name="onSubmit"
+    type="(values: LoginValues) => Promise<AuthSubmitResult<LoginFieldName> | void> | AuthSubmitResult<LoginFieldName> | void"
+  >
     Optional submit handler. Without it, the block runs a built-in async demo success flow.
   </PropRow>
-  <PropRow name="variant" type="'default' | 'bordered' | 'elevated' | 'minimal'" defaultValue="'default'">
+  <PropRow
+    name="variant"
+    type="'default' | 'bordered' | 'elevated' | 'minimal'"
+    defaultValue="'default'"
+  >
     Controls the card presentation.
   </PropRow>
   <PropRow name="size" type="'sm' | 'md' | 'lg'" defaultValue="'md'">
@@ -86,3 +89,7 @@ This is one of the main `baseui-cn` advantages: the same auth block works inside
     Overrides the success toast content used after a successful submit.
   </PropRow>
 </PropsTable>
+
+The existing Card, Input, Form, Button and Alert primitives own sizing, validation and feedback. Block sizes map directly to approved control sizes; copied styles include password-toggle spacing and reduced motion.
+
+For manual installation, copy the stylesheet included with the component source and retain its import. CLI installation includes it automatically; website CSS is not required.

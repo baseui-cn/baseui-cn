@@ -5,6 +5,8 @@ import { Toast as ToastPrimitive } from "@base-ui/react/toast"
 import { cn } from "@/lib/utils"
 import { X, CheckCircle2, XCircle, AlertTriangle, Info, Loader2 } from "lucide-react"
 
+import "@/styles/feedback.styles.css"
+
 type ToastPosition =
   | "top-left"
   | "top-center"
@@ -35,11 +37,13 @@ const viewportPositionStyles: Record<ToastPosition, string> = {
 }
 
 const typeIcon: Record<string, React.ReactNode> = {
-  success: <CheckCircle2 className="size-5 text-green-500 shrink-0" />,
+  success: <CheckCircle2 className="size-5 text-success shrink-0" />,
   error: <XCircle className="size-5 text-destructive shrink-0" />,
-  warning: <AlertTriangle className="size-5 text-yellow-500 shrink-0" />,
-  info: <Info className="size-5 text-blue-500 shrink-0" />,
-  loading: <Loader2 className="size-5 text-muted-foreground shrink-0 animate-spin" />,
+  warning: <AlertTriangle className="size-5 text-warning shrink-0" />,
+  info: <Info className="size-5 text-info shrink-0" />,
+  loading: (
+    <Loader2 className="size-5 text-muted-foreground shrink-0 animate-spin motion-reduce:animate-none" />
+  ),
 }
 
 function ToastViewport({
@@ -50,7 +54,7 @@ function ToastViewport({
   return (
     <ToastPrimitive.Viewport
       className={cn(
-        "fixed z-100 flex w-full max-w-sm flex-col outline-none",
+        "toast-viewport-layout fixed z-100 flex flex-col outline-none",
         viewportPositionStyles[position],
         className
       )}
@@ -68,8 +72,8 @@ const sharedRootClasses = [
   "[--height:var(--toast-frontmost-height,var(--toast-height))]",
   "absolute left-auto z-[calc(1000-var(--toast-index))] mr-0 w-full",
   "h-[var(--height)]",
-  "rounded-lg border bg-background text-foreground shadow-lg select-none bg-clip-padding p-4",
-  "[transition:transform_0.5s_cubic-bezier(0.22,1,0.36,1),opacity_0.5s,height_0.15s]",
+  "toast-root-layout border border-border bg-popover text-popover-foreground select-none bg-clip-padding",
+  "[transition:transform_220ms_ease-out,opacity_160ms_ease-out,height_160ms_ease-out] motion-reduce:transition-none",
   "data-[ending-style]:opacity-0",
   "data-[limited]:opacity-0",
   "data-[expanded]:h-[var(--toast-height)]",
@@ -118,19 +122,10 @@ function ToastRoot({ toast, className, ...props }: ToastPrimitive.Root.Props) {
   const { position } = React.useContext(ToastContext)
   const isTop = position.startsWith("top")
 
-  const typeStyles: Record<string, string> = {
-    success: "border-green-500/30",
-    error: "border-destructive/30",
-    warning: "border-yellow-500/30",
-    info: "border-blue-500/30",
-  }
-  const borderColor =
-    toast.type && toast.type in typeStyles ? typeStyles[toast.type] : "border-border"
-
   return (
     <ToastPrimitive.Root
       toast={toast}
-      className={cn(isTop ? topClasses : bottomClasses, borderColor, className)}
+      className={cn(isTop ? topClasses : bottomClasses, className)}
       {...props}
     />
   )
@@ -143,7 +138,7 @@ function ToastContent({
   return (
     <ToastPrimitive.Content
       className={cn(
-        "overflow-hidden transition-opacity [transition-duration:250ms]",
+        "overflow-hidden transition-opacity duration-160 motion-reduce:transition-none",
         "data-[behind]:pointer-events-none data-[behind]:opacity-0",
         "data-[expanded]:pointer-events-auto data-[expanded]:opacity-100",
         className
@@ -154,9 +149,7 @@ function ToastContent({
 }
 
 function ToastTitle({ className, ...props }: React.ComponentProps<typeof ToastPrimitive.Title>) {
-  return (
-    <ToastPrimitive.Title className={cn("text-sm font-semibold leading-5", className)} {...props} />
-  )
+  return <ToastPrimitive.Title className={cn("toast-title-layout", className)} {...props} />
 }
 
 function ToastDescription({
@@ -164,24 +157,12 @@ function ToastDescription({
   ...props
 }: React.ComponentProps<typeof ToastPrimitive.Description>) {
   return (
-    <ToastPrimitive.Description
-      className={cn("text-sm text-muted-foreground leading-5", className)}
-      {...props}
-    />
+    <ToastPrimitive.Description className={cn("toast-description-layout", className)} {...props} />
   )
 }
 
 function ToastAction({ className, ...props }: React.ComponentProps<typeof ToastPrimitive.Action>) {
-  return (
-    <ToastPrimitive.Action
-      className={cn(
-        "inline-flex h-8 items-center justify-center rounded-md border border-border bg-transparent px-3 text-sm font-medium transition-colors",
-        "hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring",
-        className
-      )}
-      {...props}
-    />
-  )
+  return <ToastPrimitive.Action className={cn("toast-action-layout", className)} {...props} />
 }
 
 function ToastClose({
@@ -191,12 +172,7 @@ function ToastClose({
 }: React.ComponentProps<typeof ToastPrimitive.Close>) {
   return (
     <ToastPrimitive.Close
-      className={cn(
-        "absolute top-2 right-2 rounded-md p-1 text-muted-foreground",
-        "opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100",
-        "hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring",
-        className
-      )}
+      className={cn("toast-close-layout", className)}
       aria-label="Close"
       {...props}
     >
@@ -220,7 +196,7 @@ function ToastList() {
       <ToastRoot key={toast.id} toast={toast}>
         <ToastContent className="flex items-start gap-3">
           {icon && <div className="mt-0.5">{icon}</div>}
-          <div className="flex flex-1 flex-col gap-1">
+          <div className="flex min-w-0 flex-1 flex-col gap-1 pe-6">
             <ToastTitle />
             <ToastDescription />
             {toast.actionProps && (

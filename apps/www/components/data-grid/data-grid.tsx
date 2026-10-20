@@ -11,6 +11,8 @@ import {
 
 import { cn } from "@/lib/utils"
 
+import "@/styles/data.styles.css"
+
 export type DataGridEditorKind =
   | "text"
   | "email"
@@ -290,7 +292,7 @@ function DataGrid<TData extends object>({ children, table, ...props }: DataGridP
       base: "",
       header: "",
       headerRow: "",
-      headerSticky: "sticky top-0 z-15 bg-background/90 backdrop-blur-xs",
+      headerSticky: "sticky top-0 z-15 bg-background",
       body: "",
       bodyRow: "",
       footer: "",
@@ -337,8 +339,7 @@ function DataGridContainer({
       data-slot="data-grid"
       className={cn(
         "w-full overflow-hidden",
-        border &&
-          "border-border style-vega:rounded-lg style-maia:rounded-2xl style-nova:rounded-lg style-lyra:rounded-none style-mira:rounded-lg border",
+        border && "border-border rounded-[var(--radius)] border",
         className
       )}
     >

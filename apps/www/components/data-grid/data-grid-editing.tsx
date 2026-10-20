@@ -180,7 +180,8 @@ function renderSelectField<TData extends EditableRow>({
       <SelectTrigger
         className={cn(
           "w-full px-4",
-          isInline && "rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0"
+          isInline &&
+            "data-grid-inline-control-layout rounded-none border-0 bg-transparent shadow-none"
         )}
         autoFocus={triggerAutoFocus}
         onKeyDown={onTriggerKeyDown}
@@ -230,7 +231,7 @@ function DataGridInlineSelectEditor<TData extends EditableRow>(
       <button
         type="button"
         className={cn(
-          "text-foreground hover:bg-muted/60 flex min-h-9 w-full items-center rounded-md px-2 py-1 text-left transition-colors",
+          "data-grid-edit-trigger-layout text-foreground flex min-h-9 w-full items-center rounded-md px-2 py-1 text-left transition-colors",
           !value && "text-muted-foreground"
         )}
         onClick={() => table.options.meta?.editing?.startCellEdit(row, columnId)}
@@ -326,7 +327,7 @@ function renderInlineEditor<TData extends EditableRow>({
         <button
           type="button"
           className={cn(
-            "text-foreground hover:bg-muted/60 flex w-full items-center rounded-md px-2 py-1 text-left transition-colors",
+            "data-grid-edit-trigger-layout text-foreground flex w-full items-center rounded-md px-2 py-1 text-left transition-colors",
             !value && "text-muted-foreground"
           )}
           onClick={() => table.options.meta?.editing?.startCellEdit(row, columnId)}
@@ -347,7 +348,7 @@ function renderInlineEditor<TData extends EditableRow>({
         onKeyDown={handleTextKeyDown}
         placeholder={editor.placeholder ?? "Enter a value"}
         disabled={isPending}
-        className="rounded-none"
+        className="data-grid-inline-control-layout rounded-none"
       />
     )
   }
@@ -358,7 +359,7 @@ function renderInlineEditor<TData extends EditableRow>({
         <button
           type="button"
           className={cn(
-            "text-foreground hover:bg-muted/60 flex w-full items-center rounded-md px-2 py-1 text-left transition-colors",
+            "data-grid-edit-trigger-layout text-foreground flex w-full items-center rounded-md px-2 py-1 text-left transition-colors",
             value == null && "text-muted-foreground"
           )}
           onClick={() => table.options.meta?.editing?.startCellEdit(row, columnId)}
@@ -379,7 +380,7 @@ function renderInlineEditor<TData extends EditableRow>({
         className="rounded-none"
       >
         <NumberFieldGroup
-          className="rounded-none border-0 bg-transparent shadow-none focus-within:ring-0"
+          className="data-grid-inline-control-layout rounded-none border-0 bg-transparent shadow-none"
           aria-invalid={Boolean(error)}
         >
           <NumberFieldDecrement />
@@ -484,7 +485,7 @@ function renderInlineEditor<TData extends EditableRow>({
       <div className="flex min-h-9 items-center">
         <Rating
           rating={typeof value === "number" ? value : 0}
-          editable
+          editable={!isPending}
           onRatingChange={(nextRating) => void commit(nextRating)}
         />
       </div>
@@ -495,7 +496,7 @@ function renderInlineEditor<TData extends EditableRow>({
     <button
       type="button"
       className={cn(
-        "text-foreground hover:bg-muted/60 flex w-full items-center rounded-md px-2 py-1 text-left transition-colors",
+        "data-grid-edit-trigger-layout text-foreground flex w-full items-center rounded-md px-2 py-1 text-left transition-colors",
         !value && "text-muted-foreground"
       )}
       onClick={() => table.options.meta?.editing?.startCellEdit(row, columnId)}
@@ -734,7 +735,11 @@ export function DataGridEditableCell<TData extends EditableRow, TValue = unknown
   const value = editing.getCellDraftValue(row, columnId)
 
   return (
-    <div className={cn("space-y-1", className)}>
+    <div
+      data-slot="data-grid-editable-cell"
+      aria-busy={isPending || undefined}
+      className={cn("space-y-1", className)}
+    >
       {renderInlineEditor({
         table,
         row,
@@ -755,7 +760,11 @@ export function DataGridEditableCell<TData extends EditableRow, TValue = unknown
           Saving
         </div>
       ) : null}
-      {error ? <div className="text-destructive text-xs">{error}</div> : null}
+      {error ? (
+        <div role="alert" className="text-destructive text-xs">
+          {error}
+        </div>
+      ) : null}
     </div>
   )
 }

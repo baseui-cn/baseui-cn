@@ -354,3 +354,104 @@ for (const scenario of ["phase2", "custom", "partial", "reverse", ...phaseFive])
     `PASS Phase 5 ${scenario}: recursive install closure, sequential/shared styles, preserved custom theme/source, repeated add/init`
   )
 }
+
+// Phase 7: feedback/data/blocks must install without website CSS, in either order.
+const phaseSeven = [
+  "alert",
+  "toast",
+  "progress",
+  "skeleton",
+  "spinner",
+  "item",
+  "scroll-area",
+  "table",
+  "data-grid",
+  "empty-state",
+  "login",
+  "signup",
+]
+const { componentMeta } = await import("./registry-meta.mjs")
+const phaseSevenSource = (name) =>
+  componentMeta[name].installedPath.endsWith("/*")
+    ? componentMeta[name].files[0].targetPath
+    : componentMeta[name].installedPath
+for (const scenario of ["incremental", "custom", "partial", "reverse", ...phaseSeven]) {
+  const dir = path.join(fixtureRoot, "phase7-" + scenario)
+  await fs.mkdir(path.join(dir, "bin"), { recursive: true })
+  await fs.writeFile(path.join(dir, "package.json"), '{"name":"phase7-consumer","private":true}')
+  await fs.writeFile(path.join(dir, "bin/npm"), "#!/bin/sh\nexit 0\n", { mode: 0o755 })
+  const offline = path.join(dir, "offline.cjs")
+  await fs.writeFile(offline, 'global.fetch = async () => { throw new Error("bundled fixture") }')
+  const run = (args) =>
+    execFileSync(
+      process.execPath,
+      ["--require", offline, path.join(root, "packages/cli/dist/index.js"), ...args],
+      {
+        cwd: dir,
+        env: { ...process.env, PATH: path.join(dir, "bin") + path.delimiter + process.env.PATH },
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      }
+    )
+  run(["init", "-y", "--css", "globals.css"])
+  if (["incremental", "custom"].includes(scenario))
+    run(["add", ...phaseTwo, ...phaseThree, ...phaseFour, ...phaseFive, "-y"])
+  if (scenario === "partial") run(["add", "button", "input", "card", "field", "-y"])
+  if (scenario === "custom")
+    await fs.appendFile(
+      path.join(dir, "globals.css"),
+      "\n:root { --success: #245734; --radius: 9px; --popover: #f7f4ed; }\n.dark { --ring: #c5e4ff; }\n"
+    )
+  const theme = await fs.readFile(path.join(dir, "globals.css"), "utf8")
+  const order = phaseSeven.includes(scenario)
+    ? [scenario]
+    : scenario === "reverse"
+      ? [...phaseSeven].reverse()
+      : phaseSeven
+  const preserved = new Map()
+  const closure = async (file, seen = new Set()) => {
+    if (seen.has(file)) return
+    seen.add(file)
+    const source = await fs.readFile(path.join(dir, file), "utf8")
+    for (const [, dep] of source.matchAll(/(?:from|import) "@\/([^\"]+)"/g)) {
+      let target
+      for (const suffix of dep.endsWith(".css") ? [""] : [".tsx", ".ts"]) {
+        try {
+          await fs.access(path.join(dir, dep + suffix))
+          target = dep + suffix
+          break
+        } catch {}
+      }
+      assert.ok(target, `${file}: missing copied import ${dep}`)
+      if (!target.endsWith(".css")) await closure(target, seen)
+    }
+  }
+  for (const name of order) {
+    run(["add", name, "-y"])
+    await closure(phaseSevenSource(name))
+    for (const [file, content] of preserved) assert.equal(await fs.readFile(file, "utf8"), content)
+    for (const style of ["feedback", "data", "blocks"]) {
+      const file = path.join(dir, `styles/${style}.styles.css`)
+      try {
+        await fs.access(file)
+        if (!preserved.has(file)) {
+          await fs.appendFile(file, "\n/* Consumer Phase 7 customization. */\n")
+          preserved.set(file, await fs.readFile(file, "utf8"))
+        }
+      } catch (error) {
+        if (error.code !== "ENOENT") throw error
+      }
+    }
+  }
+  const source = path.join(dir, phaseSevenSource(order[0]))
+  await fs.appendFile(source, "\n// Consumer Phase 7 source.\n")
+  preserved.set(source, await fs.readFile(source, "utf8"))
+  run(["add", ...phaseSeven, "-y"])
+  run(["init", "-y", "--css", "globals.css"])
+  for (const name of phaseSeven) await closure(phaseSevenSource(name))
+  for (const [file, content] of preserved) assert.equal(await fs.readFile(file, "utf8"), content)
+  assert.equal(await fs.readFile(path.join(dir, "globals.css"), "utf8"), theme)
+  console.log(
+    `PASS Phase 7 ${scenario}: recursive source/style closure, shared CSS/source/theme preservation, repeated add/init`
+  )
+}

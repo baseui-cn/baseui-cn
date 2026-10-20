@@ -1,0 +1,105 @@
+/* Data/list presentation. No virtual row, DnD, column width or editor height rules. */
+@layer components {
+  /* Consumers do not need the website global border reset. */
+  .table-layout :is(thead, tbody, tfoot, tr, th, td),
+  [data-slot="data-grid-table"] :is(thead, tbody, tfoot, tr, th, td) {
+    border-color: var(--border);
+  }
+  .item-layout {
+    border-radius: var(--radius, 0.625rem);
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    outline: none;
+  }
+  .item-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+  .table-layout {
+    color: var(--foreground);
+  }
+  .table-row-layout[data-state="selected"],
+  .data-grid-row-layout[data-state="selected"] {
+    background: var(--muted);
+  }
+  .data-grid-inline-control-layout:has(input:focus-visible),
+  .data-grid-inline-control-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+    box-shadow: none;
+  }
+  .data-grid-edit-trigger-layout {
+    outline: none;
+  }
+  .data-grid-edit-trigger-layout:focus-visible,
+  .data-grid-filter-option-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+    box-shadow: none;
+  }
+  .data-grid-filter-option-layout {
+    color: var(--foreground);
+    min-height: calc(32 * var(--component-unit, 0.0625rem));
+  }
+  .rating-star-layout {
+    display: block;
+    flex-shrink: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    border-radius: 2px;
+    outline: none;
+  }
+  button.rating-star-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    box-shadow: none;
+    z-index: 1;
+  }
+  .rating-star-layout svg {
+    pointer-events: none;
+  }
+  @media (hover: hover) {
+    a.item-layout:hover,
+    button.item-layout:hover,
+    .table-row-layout:not([data-state="selected"]):hover,
+    .data-grid-row-layout:not([data-state="selected"]):hover,
+    .data-grid-edit-trigger-layout:not(:disabled):hover,
+    .data-grid-filter-option-layout:hover {
+      background: var(--muted);
+    }
+  }
+  @media (pointer: coarse) {
+    .data-grid-filter-option-layout {
+      min-height: 44px;
+    }
+    /* Star targets expand in layout only outside measured grid cells. */
+    [data-slot="rating"]:not([data-slot="data-grid-table"] [data-slot="rating"])
+      button.rating-star-layout {
+      min-width: 44px;
+      min-height: 44px;
+      display: grid;
+      place-items: center;
+    }
+  }
+  @media (forced-colors: active) {
+    .item-layout:focus-visible,
+    .data-grid-inline-control-layout:has(input:focus-visible),
+    .data-grid-inline-control-layout:focus-visible,
+    .data-grid-edit-trigger-layout:focus-visible,
+    .data-grid-filter-option-layout:focus-visible,
+    button.rating-star-layout:focus-visible {
+      outline-color: Highlight;
+    }
+    .table-row-layout[data-state="selected"],
+    .data-grid-row-layout[data-state="selected"] {
+      background: Highlight;
+      color: HighlightText;
+    }
+    [data-slot="rating-star-filled"] {
+      color: Highlight;
+      fill: Highlight;
+    }
+  }
+}

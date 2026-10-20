@@ -84,8 +84,10 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
           key={i}
           size="icon-sm"
           variant="ghost"
+          aria-current={pageIndex === i ? "page" : undefined}
+          aria-label={`Page ${i + 1}`}
           className={cn(btnBaseClasses, "text-muted-foreground", {
-            "bg-accent text-accent-foreground": pageIndex === i,
+            "bg-muted text-foreground": pageIndex === i,
           })}
           onClick={() => {
             if (pageIndex !== i) {
@@ -178,7 +180,7 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
               {paginationInfo}
             </div>
             {pageCount > 1 && (
-              <div className="order-1 flex items-center space-x-1 sm:order-2">
+              <div className="order-1 flex max-w-full flex-wrap items-center justify-center gap-1 sm:order-2">
                 <Button
                   size="icon-sm"
                   variant="ghost"
