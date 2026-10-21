@@ -7,12 +7,12 @@ export const metadata: Metadata = { title: "Theming" }
 
 export default function ThemingPage() {
   return (
-    <div className="mx-auto w-full max-w-3xl flex flex-col gap-10 animate-fade-in">
+    <div className="docs-guide mx-auto w-full max-w-[72ch] flex flex-col gap-10">
       <div className="flex flex-col gap-3 pb-6 border-b border-border">
         <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
           Getting Started
         </p>
-        <h1 className="text-3xl font-bold tracking-tight">Theming</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Theming</h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           baseui-cn uses CSS custom properties for theming. Tokens are defined as raw color values
           and mapped into Tailwind utilities through{" "}

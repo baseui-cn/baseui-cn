@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./theme.generated.css";
+@import "./website.css";
 
 @theme inline {
   --color-background: var(--background);
@@ -49,7 +50,7 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 
   * {
@@ -80,23 +81,6 @@
   input[type="radio"] {
     cursor: pointer;
   }
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
 }
 
 @layer components {

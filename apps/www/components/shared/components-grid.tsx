@@ -8,13 +8,11 @@ import {
   Clock3,
   RefreshCw,
   SearchIcon,
-  Sparkles,
   TableProperties,
   XIcon,
 } from "lucide-react"
 import { CopyButton } from "@/components/shared/copy-button"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
@@ -36,7 +34,7 @@ const FILTERS: FilterDefinition[] = [
   { id: "all", label: "All", matches: () => true },
   {
     id: "command",
-    label: "AI Command",
+    label: "Command",
     featured: true,
     matches: (component) => component.name === "command",
   },
@@ -146,53 +144,26 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
 
   return (
     <>
-      <Alert className="mb-6 border-border/80 bg-muted/40">
-        <Sparkles className="size-4 text-primary" />
-        <AlertTitle className="flex flex-wrap items-center gap-2">
-          Start with the newest interactive demos
-          <Badge variant="success" size="sm" shape="pill">
-            New
-          </Badge>
-        </AlertTitle>
-        <AlertDescription>
-          <p>
-            Explore the Data Grid, optimistic editing workflow, Date Picker, and the new Time
-            Picker.
-          </p>
-          <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-            {FEATURED_INSTALLABLES.map((feature) => {
-              const Icon = feature.icon
-
-              return (
-                <Link
-                  key={feature.href}
-                  href={feature.href}
-                  className="group rounded-xl border border-border bg-background px-4 py-4 transition-colors hover:bg-accent/30"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-                        <Icon className="size-4 text-primary" />
-                        {feature.label}
-                      </div>
-                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                        {feature.description}
-                      </p>
-                    </div>
-                    <Badge variant="info-outline" size="sm" shape="pill" className="shrink-0">
-                      Demo
-                    </Badge>
-                  </div>
-                  <div className="mt-3 text-xs font-medium text-primary">
-                    {feature.cta}
-                    <ArrowRightIcon className="size-3 inline-block ml-1 transition-transform group-hover:translate-x-0.5" />
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        </AlertDescription>
-      </Alert>
+      <div className="mb-[32px] grid gap-[20px] sm:grid-cols-2 lg:grid-cols-4">
+        {FEATURED_INSTALLABLES.map((feature) => {
+          const Icon = feature.icon
+          return (
+            <Link
+              key={feature.href}
+              href={feature.href}
+              className="block border-b border-border pb-[20px] hover:text-foreground"
+            >
+              <div className="flex items-center gap-[8px] text-[14px] font-medium">
+                <Icon size={16} aria-hidden="true" />
+                {feature.label}
+              </div>
+              <p className="mt-[8px] text-[13px] leading-[20px] text-muted-foreground">
+                {feature.description}
+              </p>
+            </Link>
+          )
+        })}
+      </div>
 
       <div className="mb-6 space-y-3">
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
@@ -225,7 +196,7 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
           {FILTERS.map((filter) => (
             <Button
               size="xs"
-              className="rounded-2xl"
+              aria-pressed={activeFilter === filter.id}
               variant={activeFilter === filter.id ? "default" : "outline"}
               key={filter.id}
               onClick={() => setActiveFilter(filter.id)}
@@ -257,7 +228,7 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
           {filtered.map((component) => (
             <div
               key={component.name}
-              className="flex min-h-40 flex-col justify-between rounded-2xl border border-border/70 bg-background p-5 shadow-xs/5 transition-all hover:-translate-y-0.5 hover:border-foreground/15 hover:shadow-lg hover:shadow-black/5"
+              className="flex min-h-40 min-w-0 flex-col justify-between rounded-[10px] border border-border bg-background p-[20px]"
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-3">
@@ -281,8 +252,8 @@ export function ComponentsGrid({ components }: { components: ComponentMeta[] }) 
               </div>
 
               <div className="mt-5 space-y-3">
-                <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-muted/20 px-3 py-1">
-                  <code className="min-w-0 truncate font-mono text-[11px] text-foreground">
+                <div className="flex items-center justify-between gap-3 border-t border-border pt-[12px]">
+                  <code className="min-w-0 truncate font-mono text-[13px] text-foreground">
                     npx baseui-cn add {component.name}
                   </code>
                   <CopyButton size="icon-xs" text={`npx baseui-cn add ${component.name}`} />

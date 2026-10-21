@@ -1,3 +1,4 @@
+import { ComponentPagination } from "@/components/docs/component-pagination"
 import { notFound } from "next/navigation"
 import type React from "react"
 import { readFile } from "fs/promises"
@@ -56,12 +57,7 @@ function normalizeToc(toc: unknown): TocItem[] {
   return toc.flatMap((item) => {
     const title = readTocTitle(item)
 
-    if (
-      !item ||
-      typeof item !== "object" ||
-      !title ||
-      typeof item.url !== "string"
-    ) {
+    if (!item || typeof item !== "object" || !title || typeof item.url !== "string") {
       return []
     }
 
@@ -124,7 +120,8 @@ export async function generateMetadata({
     page?.data.title ??
     comp?.label ??
     slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
-  const description = page?.data.description ?? comp?.description ?? `${title} component for Base UI.`
+  const description =
+    page?.data.description ?? comp?.description ?? `${title} component for Base UI.`
   const url = `${siteConfig.url}/docs/components/${slug}`
 
   return {
@@ -205,11 +202,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
       />
     ),
     ComponentPreview: ({ name }: { name: string }) => (
-      <ComponentPreviewMdx
-        name={name}
-        code={sourceCode}
-        previewCode={previewSources[name] ?? ""}
-      />
+      <ComponentPreviewMdx name={name} code={sourceCode} previewCode={previewSources[name] ?? ""} />
     ),
     ComponentSource: ({ name, title: componentTitle }: { name: string; title?: string }) => (
       <ComponentSource
@@ -232,20 +225,18 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
 
   return (
     <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_13rem] xl:gap-10">
-      <article className="mx-auto w-full max-w-3xl min-w-0">
+      <article className="mx-auto w-full max-w-[80ch] min-w-0">
         <TrackComponentView component={slug} />
-
-        {toc.length > 0 && (
-          <div className="mb-6 xl:hidden">
-            <DocsTocDropdown toc={toc} />
-          </div>
-        )}
 
         <div className="mb-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
-              <h1 className="mb-2 text-3xl font-bold tracking-tight">{title}</h1>
-              {description ? <p className="text-base text-muted-foreground">{description}</p> : null}
+              <h1 className="mb-2 text-[32px] leading-[40px] font-semibold tracking-tight">
+                {title}
+              </h1>
+              {description ? (
+                <p className="text-base text-muted-foreground">{description}</p>
+              ) : null}
             </div>
             <DocsActionsMenu markdown={markdown} pageUrl={pageUrl} title={title} />
           </div>
@@ -261,14 +252,14 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
           {comp && (comp.badge || comp.tags?.length) && (
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {comp.badge ? (
-                <span className="rounded bg-foreground px-1.5 py-0.5 text-[10px] font-semibold text-background">
+                <span className="rounded bg-foreground px-1.5 py-0.5 text-[12px] font-medium text-background">
                   {comp.badge}
                 </span>
               ) : null}
               {comp.tags?.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded bg-muted px-2 py-0.5 font-mono text-[11px] text-muted-foreground"
+                  className="rounded bg-muted px-2 py-0.5 font-mono text-[12px] text-muted-foreground"
                 >
                   {tag}
                 </span>
@@ -277,10 +268,18 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
           )}
         </div>
 
-        <MDX components={components} />
+        {toc.length > 0 && (
+          <div className="mb-6 xl:hidden">
+            <DocsTocDropdown toc={toc} />
+          </div>
+        )}
+
+        <div className="docs-prose">
+          <MDX components={components} />
+        </div>
 
         {comp?.baseUIPrimitive && !comp.baseUIPrimitive.startsWith("native") && (
-          <div className="mt-12 rounded-lg border border-border bg-muted/30 p-5">
+          <div className="mt-12 border-t border-border pt-[24px]">
             <h2 className="mb-1.5 text-sm font-semibold">API Reference</h2>
             <p className="text-sm text-muted-foreground">
               See the{" "}
@@ -296,10 +295,11 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
             </p>
           </div>
         )}
+        <ComponentPagination slug={slug} />
       </article>
 
       {toc.length > 0 && (
-        <aside className="sticky top-20 hidden self-start xl:block">
+        <aside className="docs-toc sticky top-[88px] hidden self-start xl:block">
           <DocsToc toc={toc} />
         </aside>
       )}

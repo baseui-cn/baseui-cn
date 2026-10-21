@@ -7,15 +7,15 @@ export const metadata: Metadata = { title: "Installation" }
 
 export default function InstallationPage() {
   return (
-    <div className="mx-auto w-full max-w-3xl flex flex-col gap-10 animate-fade-in">
+    <div className="docs-guide mx-auto w-full max-w-[72ch] flex flex-col gap-10">
       <div className="flex flex-col gap-3 pb-6 border-b border-border">
         <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
           Getting Started
         </p>
-        <h1 className="text-3xl font-bold tracking-tight">Installation</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Installation</h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Set up baseui-cn in your Next.js or React project in two commands.
-          Works with pnpm, npm, yarn, and bun.
+          Set up baseui-cn in your Next.js or React project in two commands. Works with pnpm, npm,
+          yarn, and bun.
         </p>
       </div>
 
@@ -48,18 +48,30 @@ export default function InstallationPage() {
         </div>
         <PackageManagerTabs command="baseui-cn init" />
         <p className="text-xs text-muted-foreground mt-2">
-          Prefer a specific stylesheet? Pass <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">--css src/styles.css</code> and baseui-cn will use that path instead of guessing.
+          Prefer a specific stylesheet? Pass{" "}
+          <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">
+            --css src/styles.css
+          </code>{" "}
+          and baseui-cn will use that path instead of guessing.
         </p>
         <div className="rounded-lg border border-border divide-y divide-border text-sm">
           {[
-            ["Detects project", "Finds Next.js, src/ dir, App Router vs Pages Router automatically"],
+            [
+              "Detects project",
+              "Finds Next.js, src/ dir, App Router vs Pages Router automatically",
+            ],
             ["Installs deps", "@base-ui/react · clsx · tailwind-merge · class-variance-authority"],
-            ["CSS variables", "Prompts for your stylesheet and injects theme tokens, including destructive, success, warning, and info"],
+            [
+              "CSS variables",
+              "Prompts for your stylesheet and injects theme tokens, including destructive, success, warning, and info",
+            ],
             ["Utils", "Creates lib/utils.ts with the cn() helper"],
             ["Config", "Writes baseui-cn.json with your resolved paths"],
           ].map(([label, desc]) => (
             <div key={label} className="flex items-start gap-4 px-4 py-3">
-              <code className="font-mono text-xs text-foreground w-28 shrink-0 mt-0.5">{label}</code>
+              <code className="font-mono text-xs text-foreground w-28 shrink-0 mt-0.5">
+                {label}
+              </code>
               <span className="text-muted-foreground">{desc}</span>
             </div>
           ))}
@@ -86,8 +98,9 @@ export default function InstallationPage() {
         <div>
           <h2 className="text-base font-semibold">Step 3 — Import and use</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Components land in <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">components/ui/</code>.
-            Import and use immediately.
+            Components land in{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">components/ui/</code>
+            . Import and use immediately.
           </p>
         </div>
         <CodeBlock
@@ -119,8 +132,9 @@ export default function Page() {
         <div>
           <h2 className="text-base font-semibold">baseui-cn.json</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Created at your project root by <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">init</code>.
-            Edit to change where components, utils, and theme styles are placed.
+            Created at your project root by{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">init</code>. Edit to
+            change where components, utils, and theme styles are placed.
           </p>
         </div>
         <CodeBlock
@@ -166,8 +180,8 @@ export function cn(...inputs: ClassValue[]) {
       <div className="rounded-lg border border-border bg-muted/20 p-5">
         <p className="text-sm font-medium mb-1">Already have a design system?</p>
         <p className="text-sm text-muted-foreground">
-          baseui-cn uses the same CSS variable naming convention as other registry-style systems.
-          If you already have{" "}
+          baseui-cn uses the same CSS variable naming convention as other registry-style systems. If
+          you already have{" "}
           <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">--background</code>,{" "}
           <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">--primary</code>, etc.
           in your stylesheet, components will pick them up automatically.
@@ -175,10 +189,16 @@ export function cn(...inputs: ClassValue[]) {
       </div>
 
       <div className="flex items-center gap-4 pt-2 border-t border-border text-sm">
-        <a href="/docs/theming" className="flex items-center gap-1.5 font-medium hover:underline underline-offset-4">
+        <a
+          href="/docs/theming"
+          className="flex items-center gap-1.5 font-medium hover:underline underline-offset-4"
+        >
           Theming →
         </a>
-        <a href="/docs/llms" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground hover:underline underline-offset-4">
+        <a
+          href="/docs/llms"
+          className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground hover:underline underline-offset-4"
+        >
           LLM usage →
         </a>
       </div>
