@@ -499,7 +499,7 @@ export const componentMeta = {
       "@dnd-kit/modifiers",
       "@dnd-kit/sortable",
       "@dnd-kit/utilities",
-      "@tanstack/react-table",
+      "@tanstack/react-table@^8.21.3",
       "@tanstack/react-virtual",
       "class-variance-authority",
       "lucide-react",

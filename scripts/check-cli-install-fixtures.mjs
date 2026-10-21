@@ -549,3 +549,157 @@ for (const scenario of [
     `PASS Phase 7 ${scenario}: recursive source/style closure, shared CSS/source/theme preservation, repeated add/init`
   )
 }
+
+// Release recovery: real built CLI file behavior, including interrupted families.
+// npm remains stubbed here; release acceptance separately installs real packages.
+const registryFiles = new Map()
+const collectFiles = async (name, seen = new Set()) => {
+  if (name === "utils" || seen.has(name)) return new Map()
+  seen.add(name)
+  const entry = JSON.parse(
+    await fs.readFile(path.join(root, "packages/cli/registry", name + ".json"))
+  )
+  const files = new Map(
+    entry.files.map((file) => [
+      /^(components|hooks|styles)\//.test(file.path) ? file.path : "components/ui/" + file.path,
+      file.content,
+    ])
+  )
+  for (const dep of entry.registryDependencies)
+    for (const [file, content] of await collectFiles(dep, seen)) files.set(file, content)
+  return files
+}
+for (const name of ["data-grid", "button"]) registryFiles.set(name, await collectFiles(name))
+
+const recoveryFixture = async (name) => {
+  const dir = path.join(fixtureRoot, "release-" + name)
+  const bin = path.join(dir, "bin")
+  await fs.mkdir(bin, { recursive: true })
+  await fs.writeFile(path.join(dir, "package.json"), '{"name":"recovery-consumer","private":true}')
+  await fs.writeFile(
+    path.join(bin, "npm"),
+    '#!/usr/bin/env node\nrequire("fs").appendFileSync("npm-args.jsonl", JSON.stringify(process.argv.slice(2))+"\\n")\n',
+    { mode: 0o755 }
+  )
+  const preload = path.join(dir, "fixture.cjs")
+  const run = (args, answers = []) => {
+    // prompts is external in the actual CLI bundle, so injection exercises the
+    // real interactive decisions without depending on terminal timing.
+    return execFileSync(
+      process.execPath,
+      ["--require", preload, path.join(root, "packages/cli/dist/index.js"), ...args],
+      {
+        cwd: dir,
+        env: {
+          ...process.env,
+          PATH: bin + path.delimiter + process.env.PATH,
+          FIXTURE_PROMPT_ANSWERS: JSON.stringify(answers),
+        },
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      }
+    )
+  }
+  await fs.writeFile(
+    preload,
+    'global.fetch=async()=>{throw Error("bundled recovery fixture")};\n' +
+      `require(${JSON.stringify(path.join(root, "packages/cli/node_modules/prompts"))}).inject(JSON.parse(process.env.FIXTURE_PROMPT_ANSWERS));\n`
+  )
+  run(["init", "-y", "--css", "globals.css"])
+  return { dir, run }
+}
+
+for (const scenario of [
+  "complete",
+  "sibling",
+  "stylesheet",
+  "dependency",
+  "interrupted",
+  "interactive-reuse",
+]) {
+  const { dir, run } = await recoveryFixture(scenario)
+  const files = registryFiles.get("data-grid")
+  const primary = "components/data-grid/data-grid.tsx"
+  const survivors = new Map()
+  if (scenario !== "interrupted") run(["add", "data-grid", "-y"])
+  for (const [file, content] of scenario === "interrupted"
+    ? [[primary, files.get(primary)]]
+    : files) {
+    await fs.mkdir(path.dirname(path.join(dir, file)), { recursive: true })
+    const custom =
+      content +
+      (file.endsWith(".css")
+        ? "\n/* Consumer-owned recovery style. */\n"
+        : "\n// Consumer-owned recovery source.\n")
+    await fs.writeFile(path.join(dir, file), custom)
+    survivors.set(file, custom)
+  }
+  const missing = {
+    sibling: "components/data-grid/data-grid-table.tsx",
+    stylesheet: "styles/data.styles.css",
+    dependency: "components/ui/button.tsx",
+    "interactive-reuse": "components/data-grid/data-grid-table.tsx",
+  }[scenario]
+  if (missing) {
+    await fs.rm(path.join(dir, missing))
+    survivors.delete(missing)
+  }
+  await fs.appendFile(
+    path.join(dir, "globals.css"),
+    "\n:root { --primary: #285c48; --radius: 13px; }\n"
+  )
+  const theme = await fs.readFile(path.join(dir, "globals.css"), "utf8")
+  if (scenario === "interactive-reuse") run(["add", "data-grid"], ["reuse", false, true])
+  else run(["add", "data-grid", "-y"])
+  for (const [file, content] of files)
+    assert.equal(
+      await fs.readFile(path.join(dir, file), "utf8"),
+      survivors.get(file) ?? content,
+      `${scenario}: ${file}`
+    )
+  assert.equal(await fs.readFile(path.join(dir, "globals.css"), "utf8"), theme)
+  run(["add", "data-grid", "-y"])
+  for (const [file, content] of files)
+    assert.equal(
+      await fs.readFile(path.join(dir, file), "utf8"),
+      survivors.get(file) ?? content,
+      `${scenario}: repeat ${file}`
+    )
+  const npmCalls = await fs.readFile(path.join(dir, "npm-args.jsonl"), "utf8")
+  assert.ok(
+    npmCalls.includes("@tanstack/react-table@^8.21.3"),
+    "npm receives the supported v8 range"
+  )
+  console.log(
+    `PASS release ${scenario}: complete closure, customized survivors/theme, repeat idempotence, v8 npm spec`
+  )
+}
+
+for (const mode of ["overwrite", "update", "interactive-replace"]) {
+  const { dir, run } = await recoveryFixture(mode)
+  run(["add", "button", "-y"])
+  for (const file of registryFiles.get("button").keys())
+    await fs.appendFile(
+      path.join(dir, file),
+      file.endsWith(".css") ? "\n/* Customize. */\n" : "\n// Customize.\n"
+    )
+  if (mode === "overwrite") run(["add", "button", "-y", "--overwrite"])
+  else if (mode === "update") run(["update", "button", "-y"])
+  else run(["add", "button"], ["replace", true, true])
+  for (const [file, content] of registryFiles.get("button"))
+    assert.equal(await fs.readFile(path.join(dir, file), "utf8"), content, `${mode}: ${file}`)
+  console.log(`PASS release ${mode}: explicit requested/dependency replacement retained`)
+}
+
+{
+  const { dir, run } = await recoveryFixture("write-error")
+  await fs.writeFile(
+    path.join(dir, "styles"),
+    "An existing file blocks the required stylesheet directory."
+  )
+  assert.throws(
+    () => run(["add", "button", "-y"]),
+    (error) => error.status !== 0 && !error.stdout.includes("Done. Components")
+  )
+  console.log("PASS release write error: nonzero exit, no false successful completion")
+}

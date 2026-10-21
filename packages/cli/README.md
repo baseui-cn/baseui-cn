@@ -31,6 +31,8 @@ bunx baseui-cn add button
 
 The CLI detects existing requested and dependency component files before writing. Existing dependencies can be reused, replaced, or cancelled with reuse selected by default. If you already know you want to replace every matching requested and dependency file, use `--overwrite` with `add` or use `update`, which replaces installed files by default.
 
+With `add -y` or dependency reuse, existing source and shared styles are preserved, and missing files are restored. This also completes an interrupted multi-file installation without replacing your customizations.
+
 ## Commands
 
 ### `init`
