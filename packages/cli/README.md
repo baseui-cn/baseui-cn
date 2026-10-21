@@ -114,15 +114,13 @@ Blocks: `empty-state`, `login`, `signup`
 
 ## Maintainer release flow
 
-Package publishing can be automated from git with the included GitHub Actions workflow.
+The publish workflow accepts tags named `cli-v<version>` and supports manual dispatch. A matching tag must equal `packages/cli/package.json`. Both paths publish to npm; run them only after the hosted registry gate passes.
 
-1. Bump `packages/cli/package.json` to the release version you want.
-2. Commit and push that change to `main`.
-3. Create and push a matching git tag in the format `cli-v<version>`.
+1. Synchronize the CLI package version, CLI `--version` banner, and site release metadata. Run `pnpm build:all` to generate registry versions from the CLI manifest; leave private workspace package versions independent.
+2. Validate and approve/merge the release code, including the changelog, package, and packed consumer.
+3. Deploy baseui-cn.com with the approved website and all three registry distributions generated from that release code.
+4. Verify the hosted registry version **and bytes** against the approved local output, preferably every registry JSON. At minimum compare `index.json`, `button.json`, `data-grid.json`, a shared-CSS component such as `select.json`, a modal such as `dialog.json`, and `date-picker.json` / `time-picker.json`.
+5. Only after alignment, create/push the matching `cli-v<version>` tag and publish through the approved workflow. For 1.4.0, the tag is `cli-v1.4.0`.
+6. Run an ordinary remote-first fresh consumer using the published package. Mark the release complete only after it passes.
 
-```bash
-git tag cli-v1.0.3
-git push origin cli-v1.0.3
-```
-
-The workflow will install dependencies, build the generated registry artifacts, verify the CLI package, and publish `baseui-cn` to npm using the repository `NPM_TOKEN` secret.
+The workflow installs frozen dependencies, generates registry artifacts, checks and builds the CLI, then publishes `baseui-cn` using the repository `NPM_TOKEN`. It does not deploy or verify the hosted registry. Because the CLI is remote-first, index version equality alone cannot establish alignment; component source and shared styles must match too.

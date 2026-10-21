@@ -23,11 +23,33 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "baseui-cn-1-4-0-design-system-v2",
+    date: "October 21, 2026",
+    isoDate: "2026-10-21",
+    title: "baseui-cn 1.4.0 — Design System V2",
+    badge: "Latest",
+    summary:
+      "Design System V2 brings a Graphite and restrained Iris visual refresh, simpler theming, improved interactions, and refreshed CLI distribution and documentation on Base UI 1.9.0.",
+    notes: [
+      "Upgraded the Base UI foundation from 1.6.0 to 1.9.0 while preserving public component APIs.",
+      "Simplified theming to 26 familiar generic variables with zero public --cn-* theming vocabulary and improved dark mode.",
+      "Improved focus visibility, accessibility, and touch behavior across selection and search, overlays and menus, and navigation and disclosure components.",
+      "Refined Dialog, AlertDialog, and Drawer surfaces and interactions, plus feedback, Table, and Data Grid presentation and virtual scrolling.",
+      "Refreshed the website and documentation and corrected Date Picker reduced-motion behavior.",
+      "Constrained Data Grid CLI installation to compatible TanStack Table v8 and included the license text in the npm package.",
+      "Made repeated add restore missing files while preserving customized source and shared styles.",
+    ],
+    links: [
+      { href: "/docs/theming", label: "View theming docs" },
+      { href: "/docs/installation", label: "View installation docs" },
+    ],
+  },
+  {
     slug: "base-ui-v1-9-upgrade",
     date: "October 19, 2026",
     isoDate: "2026-10-19",
     title: "Base UI Upgraded To v1.9",
-    badge: "Latest",
+    badge: "Release",
     summary:
       "Updated the Base UI foundation from v1.6.0 to v1.9.0 while preserving existing baseui-cn component APIs and styling.",
     notes: [
@@ -37,7 +59,10 @@ export const changelogEntries: ChangelogRelease[] = [
       "Kept existing Date Picker and Time Picker behavior and styling unchanged. The preview Menu filtering API is not adopted or documented as a baseui-cn feature.",
     ],
     links: [
-      { href: "https://base-ui.com/react/overview/releases/v1-9-0", label: "Base UI v1.9 release notes" },
+      {
+        href: "https://base-ui.com/react/overview/releases/v1-9-0",
+        label: "Base UI v1.9 release notes",
+      },
       { href: "/docs/changelog", label: "Read changelog" },
     ],
   },

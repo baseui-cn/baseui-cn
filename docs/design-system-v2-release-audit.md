@@ -1,5 +1,96 @@
 # Design System V2 — final CLI and release acceptance
 
+## Final 1.4.0 release preparation — October 21, 2026
+
+**RELEASE CANDIDATE READY — awaiting hosted registry deployment/alignment before npm publication.** This is a locally validated candidate; the release is not live. No merge, push, deployment, npm publication, tag creation, or template development was performed.
+
+Preflight verified clean `feature/design-system-v2` at exactly `c835e74239be20e775acf266f592ab5daf51e310` (`fix: harden CLI release distribution`). This is the approved remediation checkpoint. The earlier NO-GO, remediation findings, and their then-current 1.3.3 evidence below are retained unchanged as historical records. This section supersedes their current-version and release-preparation status.
+
+### Version inventory and scope
+
+| Kind                              | Location / result                                                                                                                                                                                                                                                        |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Authored generator version source | `packages/cli/package.json`: **1.3.3 → 1.4.0**. `scripts/build-registry.mjs` reads this manifest.                                                                                                                                                                        |
+| Authored CLI banner               | `packages/cli/src/index.ts`: `.version("1.4.0")`; built and installed packed binaries both report **1.4.0**.                                                                                                                                                             |
+| Authored site release metadata    | `apps/www/lib/site-config.ts`: CLI **1.4.0**, with stale Base UI metadata aligned to **1.9.0**.                                                                                                                                                                          |
+| Generated distributions           | 55 JSONs each in `apps/www/public/registry/`, `packages/registry/registry/`, and `packages/cli/registry/`: 54 installables plus index. Every release version is **1.4.0**, all three distributions byte-equal.                                                           |
+| Generated package index / catalog | `packages/registry/index.json` and `apps/www/lib/__generated__/catalog.json`, including catalog entry versions, are **1.4.0**. Total: **167 generated version files**.                                                                                                   |
+| Other generation                  | Official `pnpm build:all` regenerates registry, 313 preview sources, 54 Markdown exports, and theme outputs. Preview/docs/theme bytes do not change. No generated file was hand-edited.                                                                                  |
+| Changelog                         | New dated **October 21, 2026 / 1.4.0 Design System V2** entry in `apps/www/lib/changelog.ts`, above the retained October 19 compatibility-only entry. Only the new entry is marked Latest.                                                                               |
+| Release convention                | `.github/workflows/publish-cli.yml` accepts `cli-v*` tags and manual dispatch; tagged version must match the CLI manifest. No workflow or tag changed. Updated the packaged README to document the complete deployment/alignment gate for both publishing paths.         |
+| Independent packages              | Root, website, and private registry package versions remain **0.1.0**. Lockfile unchanged: SHA-256 `258edea91e371e54449b9b316270d6d7a9c47911f8e8f1942c381a92c4e8c5ef`.                                                                                                   |
+| Historical versions               | Earlier audit evidence and unrelated dependency versions remain intact. No stale 1.3.3 release metadata remains in the current CLI, site config, indexes, catalog, or distributions.                                                                                     |
+| Protected implementation          | All **251** tracked component, style, content, and CLI source files other than the version banner remain byte-identical to the approved checkpoint. Every generated registry/catalog diff is solely replacement of version fields. No component/design or template work. |
+
+### Final local acceptance
+
+Evidence root: `/private/tmp/baseui-cn-1.4.0-rc/`. The clean verification checkout is a fresh archive of the exact approved checkpoint with the reviewed release edits applied; it started without modules. The packed consumer is separately created and uses its own real npm installation, not workspace modules.
+
+| Check                    | Result                                                                                                                                                                                                                                                                                                     |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Frozen install           | **PASS**, `CI=true pnpm install --frozen-lockfile`, pnpm 9.0.0 / Node 22.22.3, 633 packages, resolution skipped, unchanged lockfile. Also completed in the working checkout. Initial sandbox network restrictions required a network-enabled retry.                                                        |
+| TypeScript               | **PASS**, CLI and website. Website standalone check follows Fumadocs generation/production build. Packed consumer strict checks pass grid-only, final, and after recovery.                                                                                                                                 |
+| Lint                     | **PASS**, zero errors and exactly one existing Data Grid `react-hooks/exhaustive-deps` warning at `data-grid-table-virtual.tsx:368:9` (effect at line 395). Warning left unchanged.                                                                                                                        |
+| Theme                    | **PASS**, `pnpm theme:check` and all eight `pnpm theme:fixtures` families. Public theme remains 26 generic variables, zero public `--cn-*` variables.                                                                                                                                                      |
+| Generation / registry    | **PASS**, `pnpm build:all` and `pnpm registry:check`: 54 installables, 119 embedded source/style occurrences, three identical distributions. Generated output also equals the working checkout.                                                                                                            |
+| CLI build / fixtures     | **PASS**, CJS and declarations; full `pnpm cli:fixtures`, including complete re-add, sibling/style/dependency recovery, interrupted family, interactive reuse, overwrite, update, interactive replacement, and nonzero write-failure behavior. Fixtures stub npm; the packed consumer below uses real npm. |
+| Next.js production build | **PASS**, 60 generated pages. The sandbox attempt was stopped while waiting on build/network work; the normal network-enabled production build and subsequent website TypeScript check pass. No product changes were needed.                                                                               |
+| Production endpoints     | **PASS 119/119**, including all 54 component documentation routes, every registry response, docs, RSS, sitemap, robots, and llms exports. All **55 served registry JSONs** equal approved local bytes. This is local production-server proof, not public-host proof.                                       |
+| Diff / scope             | **PASS**, `git diff --check`; 167 generated files change only version fields, five authored release/changelog/README files plus this audit. No lockfile, workflow, generator, component, style, preview, or template implementation change.                                                                |
+
+### Actual local npm package
+
+`npm pack --dry-run --json` and actual `npm pack --json` pass with matching shasum and file lists. The actual tarball is `/private/tmp/baseui-cn-1.4.0-rc/baseui-cn-1.4.0.tgz`.
+
+- **60 files**, **189,944 bytes compressed**, **1,040,717 bytes unpacked**.
+- Contains LICENSE (equal to root license), README, `dist/index.js`, `dist/index.d.ts`, all 55 registry JSONs, and package metadata.
+- Contains no temporary files, QA fixtures, node_modules, private artifacts, or unrelated historical tarballs.
+- Package metadata and the installed `node_modules/.bin/baseui-cn --version` both report **1.4.0**. Installed registry and dist bytes equal approved local outputs; installed LICENSE is present and byte-equal.
+- SHA-256: `7f3a24f57d1eb799824c654c3679116c91782628d50c1e317c1c3a3016883ea4`.
+- npm shasum: `dc172a38354a4c8ce9aab359b7d2b67099e3ef31`.
+
+### Packed 1.4.0 consumer and interrupted-family recovery
+
+**PASS.** A fresh Next 16.1.7 / React 19.2.4 / Tailwind 4.2.2 app installs the actual local tarball and runs its installed CLI for `init`, `add data-grid`, `add button`, `add select`, `add dialog`, `add date-picker`, and `add time-picker`. A test-only fetch-failure preload forces deterministic bundled-registry fallback; npm remains real and unrestricted. Production remote-first code is unchanged.
+
+Data Grid automatically installs **`@tanstack/react-table@8.21.3`**, with consumer manifest **`^8.21.3`**. No dependency correction or generated source edit is needed. Grid-only and final strict TypeScript/production builds pass; all **48** installed source/style/utility files have complete local import closure, and the CLI-generated theme is preserved.
+
+Recovery then customizes valid Data Grid and Button source, shared Button CSS, and theme values; removes `data-grid-table.tsx`, `data-grid-table-virtual.tsx`, `styles/data.styles.css`, and dependency `input.tsx`; and re-runs ordinary packed `add data-grid -y`. All four missing files are restored while surviving customized files and theme remain byte-identical. Repeated add/init is byte-idempotent, with strict TypeScript and production build passing afterward.
+
+Six Chromium runtime assertions pass on the recovered packed consumer: **13 of 500** initial real rows; scroll updates the first visible row from `Person 0000` to `Person 0344` with 17 rows in the virtual window; application data updates produce `Updated Person 0344`; keyboard sorting changes the window content; and light/dark class checks at 320px preserve the custom primary color without horizontal document overflow. The first harness run expected the default primary after recovery had deliberately customized it; its corrected expectation passes, with no product change. These are local browser interaction checks, not physical-device, screen-reader, or general performance certification.
+
+Principal evidence: `checks/`, `scope-integrity.json`, `pack-dry-run.json`, `pack.json`, `package-audit.json`, `packed-install.log`, `packed-consumer-results.json`, `packed-recovery-results.json`, `routes/rc-routes.json`, and `browser/virtual-results.json` with screenshots. Temporary harnesses and consumers remain outside the repository and package.
+
+### Public release-note section — prepared for GitHub/npm announcement
+
+**baseui-cn 1.4.0**
+
+Highlights:
+
+- Base UI 1.9 foundation, upgraded from 1.6.0 with existing public component APIs preserved.
+- Design System V2 with Graphite and restrained Iris styling and improved dark mode.
+- Simpler theming with 26 familiar generic variables and zero public `--cn-*` theming vocabulary.
+- Improved focus, accessibility, touch, selection/search, overlays/menus, modal surfaces, navigation/disclosure, feedback, Table, and Data Grid interactions; corrected Date Picker reduced-motion behavior.
+- Refreshed CLI distribution: compatible TanStack Table v8 installation, included license text, and repeated add that restores missing files while preserving customized source and shared styles.
+- Refreshed website and documentation.
+
+This text is prepared release material. Publication remains gated below; it does not announce a live release.
+
+### Mandatory hosted registry release gate — not executed
+
+1. Approve/merge the release code through the authorized process.
+2. Deploy **baseui-cn.com** containing the V2 website and final **1.4.0** registry from the approved code.
+3. Verify hosted registry **version AND bytes** against that approved local output. Prefer full comparison of all **55** JSON files; at minimum compare `index.json`, `button.json`, `data-grid.json`, `select.json` (shared selection CSS), `dialog.json` (modal CSS), `date-picker.json`, and `time-picker.json`. Parse each version, compare the complete response body, and fail on non-2xx, missing files, stale content, or byte differences. An index version alone does not pass this gate.
+4. Only after alignment, create/push **`cli-v1.4.0`** and publish npm through the approved release process. Manual workflow dispatch is also publication and must obey this order.
+5. Run an ordinary **remote-first** fresh consumer of published 1.4.0, without fallback hooks, and verify the installed V2 component/style bytes and runtime behavior.
+6. Only then mark the release complete.
+
+**Current operational gate: OPEN. RELEASE CANDIDATE READY — awaiting hosted registry deployment/alignment before npm publication.** No public deployment/alignment or published-package verification is claimed.
+
+---
+
+## Historical remediation and initial audit — retained records
+
 October 21, 2026. **Current code/package decision: GO — conditional on hosted registry deployment/alignment before npm publication.** P0-1, P1-1 and P1-2 are resolved by the uncommitted remediation below. **P1-3 remains an OPEN OPERATIONAL RELEASE GATE.** Nothing is authorized for deployment or publication by this decision.
 
 Baseline HEAD remains `257d99f90b95ac54f6f88673b99499523b3858b8` on `feature/design-system-v2`. The website and component implementation are unchanged. Current CLI version remains **1.3.3**; recommended release remains **1.4.0**. No version, tag, merge, publish, deploy, push, or template work was performed.
