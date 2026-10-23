@@ -1,3 +1,92 @@
+# Final 1.4.0 RC validation — post-onboarding checkpoint
+
+October 23, 2026. **FINAL 1.4.0 RC READY — awaiting merge/deployment and hosted-registry byte alignment before npm publication.** This is local release-candidate acceptance of the visually/product-approved implementation. Release approval remains pending. This section supersedes earlier readiness dispositions; every previous NO-GO, remediation, presentation review and superseded RC record is retained below.
+
+## Checkpoint and release integrity
+
+Preflight verified exact clean HEAD **`07e52ff4e0f2d8f046dafb7449ecbcb57b0e94fb`**, `feat: add framework-aware onboarding experience`, on **`feature/design-system-v2`**. CLI package and installed binary remain **1.4.0**; website Base UI is exactly **1.9.0**. Verified 54 installables, 26 generic public theme variables, zero public `--cn-*` declarations/requirements, MIT LICENSE, framework-aware create/init/workspace onboarding, **Iris + Rounded (`iris`/`lg`, 0.75rem)** defaults, and Data Grid dependency **`@tanstack/react-table@^8.21.3`**.
+
+All requested release checks pass:
+
+```text
+CI=true pnpm install --frozen-lockfile
+pnpm theme:check
+pnpm theme:fixtures
+pnpm --filter ./apps/www exec tsc --noEmit
+pnpm --filter ./packages/cli exec tsc --noEmit
+pnpm lint
+pnpm build:all
+pnpm registry:check
+pnpm --filter ./packages/cli build
+pnpm cli:fixtures
+pnpm cli:onboarding
+pnpm --filter ./apps/www build
+git diff --check
+```
+
+Onboarding: **59/59 pass**. Lint: **zero errors, one existing Data Grid `react-hooks/exhaustive-deps` warning**, intentionally retained. The frozen install genuinely completed; its first sandboxed attempt encountered DNS restrictions and an unanswered reinstall prompt and is not counted as success. Network-enabled install/build/consumer logs are retained. No design, product, component, CLI, version, lockfile or generated-source changes were needed.
+
+## Canonical registry and packed artifact
+
+**PASS:** all three registry distributions have exactly **55 JSON files / 54 installables**, with byte-identical contents. Every index and installable version is **1.4.0**; Data Grid metadata contains the required Table v8 spec. Official generation and the CLI build leave **zero generated drift**.
+
+Canonical per-file SHA-256 manifest for later hosted comparison:
+
+- `/private/tmp/baseui-cn-1.4.0-final-rc/registry-sha256.txt` — all 55 JSON files, sorted by filename.
+- Manifest SHA-256: **`5014194b1a79084b87ead4575a5cebcaa19743e8e1414a785ed3b4ca5db3438c`**.
+- `/private/tmp/baseui-cn-1.4.0-final-rc/registry-manifest.json` — checkpoint, version, distribution paths, per-file hashes and byte lengths.
+
+`npm pack --dry-run --json` and actual local `npm pack --json` pass with matching file lists and npm shasum. A disposable writable npm cache was used after the initial default-cache permission failure.
+
+| Artifact property | Final value |
+| --- | --- |
+| Tarball | `/private/tmp/baseui-cn-1.4.0-final-rc/baseui-cn-1.4.0.tgz` |
+| Package / binary | `baseui-cn@1.4.0` / `1.4.0` |
+| Files | **60** |
+| Compressed size | **198,086 bytes** |
+| Unpacked size | **1,072,601 bytes** |
+| npm shasum (SHA-1) | `8df365a201d4eae6e3b89f8e0d0de9edc512e542` |
+| Tarball SHA-256 | **`4ec6e392cdcf587ae8fb866b6532ee28aaf1e2f237fbd090d9d74e92d6ccacbd`** |
+
+Packed and installed contents include LICENSE, README, package metadata, both dist files and all 55 registry JSON files. Installed dist/registry bytes match the final local build. External CLI requires are covered by declared dependencies. No temporary/private files, fixtures, node_modules, environment files or historical tarballs are packed.
+
+## Fresh packed consumer and customization preservation
+
+**PASS.** A completely fresh disposable existing Next **16.1.7** / React **19.2.4** application installs the actual tarball with real npm and runs **its installed `node_modules/.bin/baseui-cn`**, reporting **1.4.0**. It runs `init -y`, then individual adds for **button, select, dialog, data-grid, date-picker and time-picker**. Data Grid automatically resolves **Table 8.21.3**, with manifest spec **`^8.21.3`**. The app's own Tailwind stylesheet receives Iris/Rounded defaults and generic variables, with no public `--cn-*` requirement. **Strict TypeScript and production build pass.** Repeating all six adds preserves component, family stylesheet and theme bytes.
+
+The consumer then customizes primary, radius and Button source. `init -y` without theme flags preserves the entire customized theme and source **byte-for-byte**. Explicit `init -y --color emerald --radius xl` changes only the requested identity/radius declarations (`--primary`, `--primary-foreground`, `--accent`, `--accent-foreground`, `--ring`, `--radius`), with a harmless inserted blank line; all other CSS content and component source remain preserved. Before/after CSS is retained.
+
+A test-only preload forces the existing bundled-registry fallback **only for registry fetches**, making this acceptance use final 1.4.0 source before hosted deployment. Real npm resolution and the official scaffolder are not stubbed. Ordinary hosted remote-first acceptance remains a later release gate.
+
+## Real packed create flow and monorepo smoke
+
+**PASS.** The same installed packed binary runs:
+
+```text
+baseui-cn create next-emerald --framework next --package-manager npm \
+  --monorepo --color emerald --radius xl -y
+```
+
+The unmodified official **`create-next-app@latest`** adapter creates a real Next **16.4.2** application under `apps/web`, installs real npm dependencies and initializes baseui-cn. The generated imported stylesheet contains **Emerald / Extra (`xl`, 1rem)**. Button, Dialog and Select add successfully. The generated compiler retains **`strict: true`**. **`next typegen`, standalone `tsc --noEmit` and production build pass.** The first standalone TypeScript attempt preceded route generation and reported upstream `LayoutProps` unavailable; running the official Next type-generation prerequisite resolved it without source edits.
+
+This real npm workspace also supplies the requested monorepo smoke: root-level add automatically detects `apps/web`; repeated explicit `init --workspace apps/web -y` and `add ... --workspace apps/web -y` preserve source/theme. Dependencies are recorded in the application manifest. The root package manifest remains byte-identical, has no application dependencies, and receives no baseui config, components, source, styles or utils. Root node_modules/package-lock are the expected npm workspace installation artifacts. Earlier unchanged framework-adapter acceptance remains applicable; other scaffolders and Yarn/Bun were not rerun.
+
+## Website production acceptance
+
+**PASS: 119/119 endpoints**, served from the final local production build. This count includes the homepage, guides, all 54 component docs, all 55 registry JSON responses and retained feed/sitemap/robots/AI exports. **All 55 served registry responses equal the canonical local bytes and manifest hashes.** This is local HTTP evidence, not a hosted deployment claim.
+
+Fresh Chrome representative acceptance passes: homepage loads; Create your project opens the real Drawer; Next/npm/Emerald/Extra choices emit the truthful supported create command; existing monorepo preservation emits `npx baseui-cn@latest init --workspace apps/web`; Escape closes the Drawer and restores trigger focus. Marketing stays Iris/Rounded when setup choices change. At **390px**, homepage and open Drawer have no document overflow. No browser runtime errors occurred. Desktop/mobile screenshots are retained and the settled mobile Drawer capture was inspected. The website's approved dark-mode default is unchanged; the browser harness explicitly selects Light mode before asserting light preset values.
+
+## Evidence, final status and stop gate
+
+Evidence root: **`/private/tmp/baseui-cn-1.4.0-final-rc/`**. Principal evidence: `checks/checks.json` and command logs; `integrity.json`; both registry manifests; `pack-dry-run.json`, `pack.json`, `package-audit.json`; fresh `packed-consumer/`; `consumer-results.json`; packed install/add/type/build logs; `customization-before.css` and `customization-explicit.css`; real `create/next-emerald/`, create/typegen/type/build and workspace logs; `endpoints.json`; `browser-results.json` and desktop/mobile screenshots. Initial harness failures and corrected continuation logs are retained; they required CSS serialization/whitespace handling or official route-type generation, not implementation changes.
+
+**Final repository state:** HEAD and branch unchanged. Only this audit document is modified, **unstaged and uncommitted**; generated distributions, source, package versions and lockfile remain unchanged. No merge, deploy, publish, tag, push, template work or design changes occurred.
+
+**FINAL 1.4.0 RC READY — awaiting merge/deployment and hosted-registry byte alignment before npm publication. STOP for release approval.** Later hosted acceptance must verify all 55 complete registry responses against this canonical manifest, not only version fields or the index.
+
+---
+
 # Approved implementation baseline — landing and CLI onboarding
 
 October 23, 2026. **Visual/product approval received. RELEASE REMAINS PAUSED.** The user approved the focused landing experience, real V2 right setup Drawer, scoped theme/radius preview and CLI onboarding, and authorized the single checkpoint commit `feat: add framework-aware onboarding experience`. The commit containing this audit is the **approved implementation baseline for the next 1.4.0 release candidate**, superseding the prior RC at `761f948ba3e913164bd0c88e89f79926ffe08779`. It does not approve release, merge, deployment, tagging or publication.
