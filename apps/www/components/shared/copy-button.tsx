@@ -10,9 +10,18 @@ interface CopyButtonProps {
   size?: "icon" | "icon-xs"
   showLabel?: boolean
   onCopied?: () => void
+  label?: string
+  variant?: "default" | "ghost" | "outline"
 }
 
-export function CopyButton({ text, size = "icon", showLabel = false, onCopied }: CopyButtonProps) {
+export function CopyButton({
+  text,
+  size = "icon",
+  showLabel = false,
+  onCopied,
+  label: idleLabel = "Copy",
+  variant = "ghost",
+}: CopyButtonProps) {
   const [status, setStatus] = React.useState<"idle" | "copied" | "error">("idle")
   const timeout = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   React.useEffect(
@@ -33,13 +42,13 @@ export function CopyButton({ text, size = "icon", showLabel = false, onCopied }:
     if (timeout.current) clearTimeout(timeout.current)
     timeout.current = setTimeout(() => setStatus("idle"), 2400)
   }
-  const label = status === "copied" ? "Copied" : status === "error" ? "Copy failed" : "Copy"
+  const label = status === "copied" ? "Copied" : status === "error" ? "Copy failed" : idleLabel
   return (
     <span className="inline-flex shrink-0">
       <Button
         type="button"
         onClick={handleCopy}
-        variant="ghost"
+        variant={variant}
         size={showLabel ? "sm" : size}
         className="code-copy-button"
         aria-label={label}

@@ -14,10 +14,84 @@ export default function InstallationPage() {
         </p>
         <h1 className="text-3xl font-semibold tracking-tight">Installation</h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Set up baseui-cn in your Next.js or React project in two commands. Works with pnpm, npm,
-          yarn, and bun.
+          Create a new app or initialize an existing React project. First-class setup for Next.js,
+          TanStack Start, React Router and Vite, with npm, pnpm, Yarn and Bun.
         </p>
       </div>
+
+      <section id="new-project" className="flex flex-col gap-4">
+        <h2>Start a new project</h2>
+        <p className="text-muted-foreground">
+          The create command runs your framework’s official scaffolder, installs dependencies and
+          initializes baseui-cn. Run it without flags for guided setup.
+        </p>
+        <PackageManagerTabs command="baseui-cn@latest create my-app --framework next" />
+        <CodeBlock
+          code={`# Choose your framework
+npx baseui-cn@latest create my-app --framework tanstack-start
+npx baseui-cn@latest create my-app --framework react-router
+npx baseui-cn@latest create my-app --framework vite
+
+# Choose a package manager and workspace structure
+npx baseui-cn@latest create my-app --framework next --package-manager pnpm --monorepo
+# Your application lives in my-app/apps/web`}
+          language="bash"
+        />
+        <p className="text-sm text-muted-foreground">
+          Install the chosen package manager first. Yarn runners require Yarn 2+. New projects use
+          current upstream scaffolders; Node.js 22.12+ is recommended, and upstream runtime
+          requirements apply. Existing/custom React apps use init with their own Tailwind CSS v4
+          pipeline and @/* source alias.
+        </p>
+      </section>
+      <p className="text-sm text-muted-foreground">
+        New apps retain strict TypeScript checks and match the registry’s compiler policy:
+        noUnusedLocals and noUnusedParameters are disabled. Existing compiler settings stay yours;
+        Data Grid contains two unused bindings to clean up locally if those options are enabled.
+      </p>
+      <section id="setup-theme" className="flex flex-col gap-4">
+        <h2>Choose a theme</h2>
+        <p className="text-sm text-muted-foreground">
+          Fresh setup defaults to Iris and Rounded. Create and init accept --color and --radius.
+          Existing themes are preserved unless you explicitly pass those flags or choose new values
+          interactively.
+        </p>
+        <CodeBlock
+          code={`npx baseui-cn@latest create my-app --framework next --color emerald --radius xl
+npx baseui-cn@latest init --color iris --radius lg`}
+          language="bash"
+        />
+        <a href="/docs/theming#theme-presets" className="underline underline-offset-4">
+          View color and radius presets
+        </a>
+      </section>
+      <section id="workspaces" className="flex flex-col gap-4">
+        <h2>Existing apps and monorepos</h2>
+        <p className="text-muted-foreground">
+          Run init inside your app or at your workspace root. The CLI detects frameworks, lockfiles,
+          packageManager declarations and common workspace configurations. A single app is selected
+          automatically; multiple apps prompt for a target. Noninteractive runs with multiple apps
+          require --workspace.
+        </p>
+        <CodeBlock
+          code={`npx baseui-cn@latest init
+
+# Paths are relative to the workspace root
+npx baseui-cn@latest init --workspace apps/web
+npx baseui-cn@latest add button --workspace apps/web
+npx baseui-cn@latest update button --workspace apps/web
+
+# Choose custom component, utils and CSS paths
+npx baseui-cn@latest init --customize`}
+          language="bash"
+        />
+        <p className="text-sm text-muted-foreground">
+          Component files, utilities, configuration and dependencies belong to the selected app.
+          Shared packages/ui generation is not included. Custom workspace globs with braces/extglobs
+          or application layouts that cannot be detected should be initialized from inside the
+          application.
+        </p>
+      </section>
 
       {/* Requirements */}
       <div>
@@ -58,7 +132,7 @@ export default function InstallationPage() {
           {[
             [
               "Detects project",
-              "Finds Next.js, src/ dir, App Router vs Pages Router automatically",
+              "Finds Next.js, TanStack Start, React Router, Vite, React and application source directories",
             ],
             ["Installs deps", "@base-ui/react · clsx · tailwind-merge · class-variance-authority"],
             [

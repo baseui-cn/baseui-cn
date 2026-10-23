@@ -17,7 +17,8 @@
     "theme:check": "node scripts/build-theme.mjs --check",
     "theme:fixtures": "node scripts/check-theme-fixtures.mjs",
     "registry:check": "node scripts/check-registry-consistency.mjs",
-    "cli:fixtures": "node scripts/check-cli-install-fixtures.mjs"
+    "cli:fixtures": "node scripts/check-cli-install-fixtures.mjs",
+    "cli:onboarding": "node scripts/check-cli-onboarding.mjs"
   },
   "devDependencies": {
     "turbo": "latest",

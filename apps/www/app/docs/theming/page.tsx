@@ -29,6 +29,44 @@ export default function ThemingPage() {
         Class-based dark mode follows the application theme choice. Components include any required
         layout CSS when installed; you do not need a separate token vocabulary.
       </p>
+      <section id="theme-presets" className="flex flex-col gap-4">
+        <h2>Choose your starting theme</h2>
+        <p className="text-sm text-muted-foreground">
+          Iris is the default color identity, with Rounded (0.75rem) geometry. Choose a preset when
+          creating an app or explicitly update an existing theme. Color changes primary, accent and
+          focus variables; Graphite surfaces and semantic success, warning, info and destructive
+          colors remain independent.
+        </p>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {Object.entries(theme.presets.colors).map(([id, preset]) => (
+            <p key={id} className="text-sm">
+              <code>{id}</code> — {preset.label}
+            </p>
+          ))}
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Radius presets:{" "}
+          {Object.entries(theme.presets.radii)
+            .map(([id, preset]) => `${preset.label} (${id}: ${preset.value})`)
+            .join(" · ")}
+          .
+        </p>
+        <CodeBlock
+          code={`npx baseui-cn@latest create my-app --framework next --color iris --radius lg
+
+# Explicitly replace color and radius in an existing app
+npx baseui-cn@latest init --color emerald --radius xl
+
+# Preserve existing custom values
+npx baseui-cn@latest init -y`}
+          language="bash"
+        />
+        <p className="text-sm text-muted-foreground">
+          Repeated init without theme flags preserves existing values. Interactive reinitialization
+          offers Keep existing values first. A color flag changes only color identity; a radius flag
+          changes only radius. All values are ordinary CSS in your project, ready to edit.
+        </p>
+      </section>
       {/* CSS variables */}
       <div className="flex flex-col gap-4">
         <div>
@@ -122,23 +160,17 @@ export default function ThemingPage() {
           </p>
         </div>
         <CodeBlock
-          code={`/* Persistent selection and its marker */
+          code={`/* Example: start with Iris, then customize locally */
 :root {
-  --accent: #eff0ff;
-  --accent-foreground: #5961cf;
-  --ring: #6673e8;
+${Object.entries(theme.presets.colors.iris.light)
+  .map(([key, value]) => `  ${key}: ${value};`)
+  .join("\n")}
+  --radius: ${theme.presets.radii.lg.value};
 }
 .dark {
-  --accent: #25252e;
-  --accent-foreground: #a8aeff;
-  --ring: #9699d6;
-}
-
-/* Primary actions stay independent of selection and focus */
-:root {
-  --primary: #25272c;
-  --primary-foreground: #ffffff;
-  --radius: .375rem;
+${Object.entries(theme.presets.colors.iris.dark)
+  .map(([key, value]) => `  ${key}: ${value};`)
+  .join("\n")}
 }
 
 /* Custom status colors */

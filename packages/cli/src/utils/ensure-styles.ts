@@ -3,6 +3,12 @@ import fs from "fs-extra"
 import chalk from "chalk"
 import ora from "ora"
 import type { Config } from "./config"
+import {
+  validateThemeOptions,
+  type ThemeOptions,
+  type ColorPreset,
+  type RadiusPreset,
+} from "./theme-options"
 
 const BASEUI_CN_MARKER = "/* baseui-cn theme */"
 
@@ -12,6 +18,7 @@ import {
   themeDark as REQUIRED_DARK_VARS,
   themeStrategy,
   themeFoundation,
+  themePresets,
 } from "./theme.generated"
 
 // ── Full blocks (used only when creating from scratch) ────────────────
@@ -128,6 +135,43 @@ function mergeVarsIntoBlock(
   }
 }
 
+// Keep comments/strings out of declaration matching while retaining positions.
+function maskCSS(css: string) {
+  return css.replace(/\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, (value) =>
+    value.replace(/[^\n]/g, " ")
+  )
+}
+export async function detectExistingTheme(globalCss: string) {
+  if (!(await fs.pathExists(path.resolve(globalCss)))) return { color: false, radius: false }
+  const css = maskCSS(await fs.readFile(path.resolve(globalCss), "utf8"))
+  return {
+    color: /--(?:primary|primary-foreground|accent|accent-foreground|ring)\s*:/.test(css),
+    radius: /--radius\s*:/.test(css),
+  }
+}
+function replaceRequestedVars(css: string, selector: string, requested: Record<string, string>) {
+  for (const block of findBlocks(css, selector).reverse()) {
+    const body = css.slice(block.start, block.end)
+    const masked = maskCSS(body)
+    const edits: { start: number; end: number; value: string }[] = []
+    for (const match of masked.matchAll(/(--[\w-]+)\s*:\s*([^;{}]+)(?=;|$)/g)) {
+      const value = requested[match[1]!]
+      if (value === undefined) continue
+      const start = match.index! + match[0].indexOf(":") + 1
+      const end = match.index! + match[0].length
+      const priority = /!\s*important\s*$/i.test(masked.slice(start, end)) ? " !important" : ""
+      // Preserve declaration formatting when its value is already correct.
+      if (body.slice(start, end).trim() === value + priority) continue
+      edits.push({ start, end, value: ` ${value}${priority}` })
+    }
+    let updated = body
+    for (const edit of edits.reverse())
+      updated = updated.slice(0, edit.start) + edit.value + updated.slice(edit.end)
+    css = css.slice(0, block.start) + updated + css.slice(block.end)
+  }
+  return css
+}
+
 // ── Main entry point ──────────────────────────────────────────────────
 
 /**
@@ -141,9 +185,30 @@ function mergeVarsIntoBlock(
  */
 export async function ensureThemeCSS(
   config: Config,
-  options: { silent?: boolean } = {}
+  options: ThemeOptions & { silent?: boolean } = {}
 ): Promise<boolean> {
-  if (!config.tailwind) return false
+  validateThemeOptions(options)
+  if (!config.tailwind) {
+    if (options.color || options.radius)
+      throw new Error(
+        "Theme flags require theme CSS initialization. Enable tailwind in baseui-cn.json and omit --skip-tailwind."
+      )
+    return false
+  }
+
+  const color = themePresets.colors[(options.color ?? themePresets.defaultColor) as ColorPreset]
+  const radius =
+    themePresets.radii[(options.radius ?? themePresets.defaultRadius) as RadiusPreset].value
+  const rootVars = { ...REQUIRED_ROOT_VARS, ...color.light, "--radius": radius }
+  const darkVars = { ...REQUIRED_DARK_VARS, ...color.dark }
+  const requestedRoot: Record<string, string> = {
+    ...(options.color ? color.light : {}),
+    ...(options.radius ? { "--radius": radius } : {}),
+  }
+  const requestedDark: Record<string, string> = {
+    ...(options.color ? color.dark : {}),
+    ...(options.radius ? { "--radius": radius } : {}),
+  }
 
   const cssPath = path.resolve(config.globalCss)
   const spinner = options.silent ? null : ora("Checking theme styles...").start()
@@ -159,7 +224,9 @@ export async function ensureThemeCSS(
       ])
     )
     const darkDefaults = Object.fromEntries(
-      Object.entries(REQUIRED_DARK_VARS).filter(([name]) => !existingRootNames.has(name))
+      Object.entries({ ...darkVars, ...requestedDark }).filter(
+        ([name]) => !existingRootNames.has(name) || Object.hasOwn(requestedDark, name)
+      )
     )
 
     // Preserve all existing CSS, including customized legacy injection blocks.
@@ -192,12 +259,12 @@ export async function ensureThemeCSS(
 
     // ── Step 3: :root — merge or create ───────────────────────────
     // Respect existing blocks inside cascade layers as well as top-level CSS.
-    const rootResult = mergeVarsIntoBlock(css, ":root", REQUIRED_ROOT_VARS)
+    const rootResult = mergeVarsIntoBlock(css, ":root", rootVars)
     if (rootResult.changed) {
       css = rootResult.css
       changed = true
     } else if (!rootResult.found) {
-      css += "\n\n" + buildBlock(":root", REQUIRED_ROOT_VARS)
+      css += "\n\n" + buildBlock(":root", rootVars)
       changed = true
     }
 
@@ -216,6 +283,11 @@ export async function ensureThemeCSS(
       css += "\n\n" + UTILITIES_BLOCK
       changed = true
     }
+
+    const beforeSelection = css
+    css = replaceRequestedVars(css, ":root", requestedRoot)
+    css = replaceRequestedVars(css, ".dark", requestedDark)
+    if (css !== beforeSelection) changed = true
 
     if (changed) {
       await fs.writeFile(cssPath, css)
@@ -236,9 +308,9 @@ export async function ensureThemeCSS(
     "",
     buildBlock("@theme inline", REQUIRED_THEME_INLINE),
     "",
-    buildBlock(":root", REQUIRED_ROOT_VARS),
+    buildBlock(":root", rootVars),
     "",
-    buildBlock(".dark", REQUIRED_DARK_VARS),
+    buildBlock(".dark", { ...darkVars, ...requestedDark }),
     "",
     UTILITIES_BLOCK,
     "",

@@ -27,7 +27,7 @@ export const changelogEntries: ChangelogRelease[] = [
     date: "October 21, 2026",
     isoDate: "2026-10-21",
     title: "baseui-cn 1.4.0 — Design System V2",
-    badge: "Latest",
+    badge: "Unreleased",
     summary:
       "Design System V2 brings a Graphite and restrained Iris visual refresh, simpler theming, improved interactions, and refreshed CLI distribution and documentation on Base UI 1.9.0.",
     notes: [
@@ -38,6 +38,10 @@ export const changelogEntries: ChangelogRelease[] = [
       "Refreshed the website and documentation and corrected Date Picker reduced-motion behavior.",
       "Constrained Data Grid CLI installation to compatible TanStack Table v8 and included the license text in the npm package.",
       "Made repeated add restore missing files while preserving customized source and shared styles.",
+      "Added seven canonical theme colors and four radius presets, with Iris and Rounded defaults, live homepage previews, and explicit --color/--radius flags that preserve existing custom themes unless selected.",
+      "Added framework-aware setup for Next.js, TanStack Start, React Router, Vite, and existing React apps, with npm, pnpm, Yarn and Bun detection.",
+      "Added official-scaffolder project creation and app-scoped monorepo initialization. Yarn create commands require Yarn 2+.",
+      "Redesigned the landing experience with a working setup-command builder and component install planner. This 1.4.0 candidate remains paused for product and release review.",
     ],
     links: [
       { href: "/docs/theming", label: "View theming docs" },

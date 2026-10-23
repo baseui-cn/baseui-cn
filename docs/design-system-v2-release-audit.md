@@ -1,3 +1,97 @@
+# Approved implementation baseline — landing and CLI onboarding
+
+October 23, 2026. **Visual/product approval received. RELEASE REMAINS PAUSED.** The user approved the focused landing experience, real V2 right setup Drawer, scoped theme/radius preview and CLI onboarding, and authorized the single checkpoint commit `feat: add framework-aware onboarding experience`. The commit containing this audit is the **approved implementation baseline for the next 1.4.0 release candidate**, superseding the prior RC at `761f948ba3e913164bd0c88e89f79926ffe08779`. It does not approve release, merge, deployment, tagging or publication.
+
+Final checkpoint checks pass: website and CLI TypeScript, lint (only the accepted existing Data Grid warning), `theme:check`, `registry:check`, **59/59 onboarding tests**, Next.js production build, **119/119 local production endpoint/registry/SEO/anchor checks**, and `git diff --check`. The exact cumulative scope is **32 files** on `feature/design-system-v2`. No design or implementation changes were made for this checkpoint; the two reports only record approval and validation. All 30 other approved paths remain byte-identical to the checkpoint preflight snapshot. Nineteen approved onboarding/preset/generator/test/model paths also match the preceding capabilities, and 234 selected component/style/registry/license/lock paths match parent HEAD. Real scaffold reruns were unnecessary; retained real-consumer evidence and its limits remain applicable.
+
+The focused hero retains **Create your project / Browse components** and a quiet support row. Configuration is inside the real V2 right Drawer; alternate preview is scoped there, while marketing remains **Iris + Rounded**. The working showcase uses real components. Next.js, first-class TanStack Start, React Router, Vite, existing/custom React, single-app/monorepo and npm/pnpm/Yarn/Bun capabilities remain unchanged. Seven colors/four radii, Iris/lg defaults and existing customized-theme preservation are retained. **26 generic public variables**, **zero public `--cn-*` variables**, **Base UI 1.9.0**, **CLI 1.4.0** and **Data Grid `@tanstack/react-table@^8.21.3`** remain verified. No template work exists in this change set.
+
+**Remaining release gates:** validate and approve a new release candidate from this implementation checkpoint, then establish hosted-registry **version and complete-byte alignment** before any separately authorized tag/publication. No hosted alignment or public deployment is claimed by local checks. No merge, deploy, publish, tag, push or template work occurred. Stop after the checkpoint commit.
+
+The current inventory, fresh validation and approval disposition are in `docs/landing-cli-onboarding-report.md`, section **55**. Evidence: `/private/tmp/baseui-final-checkpoint/`; previous screenshots, browser/accessibility checks and consumer evidence remain retained. All records below are historical and superseded where they describe pending visual approval, unchanged HEAD, uncommitted status or an earlier RC's readiness.
+
+---
+
+# Current presentation review — focused hero and right setup Drawer
+
+October 23, 2026. **1.4.0 remains PAUSED; all work is uncommitted.** The approved onboarding/color/radius capabilities are unchanged. Setup now opens in the real V2 right Drawer from Create your project; the closed hero focuses on product/ownership and Browse components. Theme selection affects only a compact real-component preview inside setup. The marketing site stays Iris/Rounded. A working release workspace replaces the documentation-like install inventory.
+
+Current local acceptance: website types/lint/production build, **43 browser assertions**, touch-emulated scrolling with a stable command footer, six zero-violation axe audits, **59 onboarding tests**, and **119 endpoint/registry checks** pass. The one existing Grid lint warning remains. All baseline docs anchors/SEO metadata are retained; two internal homepage form IDs move into the closed Drawer as intended. All 19 approved CLI/preset/generator/test/model paths checked against the prior work are byte-identical. No expensive scaffold reruns were needed, and prior real-consumer evidence remains retained.
+
+The cumulative change set is **32 paths**, zero staged, on unchanged feature/design-system-v2 at `761f948ba3e913164bd0c88e89f79926ffe08779`. Full evidence and visual-review links are in report sections **47–54** and `/private/tmp/baseui-hero-drawer/`. Earlier records below remain historical. This is not an approved new release-candidate checkpoint. No commit, merge, deploy, tag, publish, push or template work occurred; all previous release gates remain.
+
+---
+
+# Latest refinement — theme color and radius (release still PAUSED)
+
+October 22, 2026. The current **uncommitted 1.4.0** candidate now includes real color/radius configuration. This section supersedes earlier current-default, artifact and file-count statements; all earlier onboarding/release evidence below remains retained. No commit, merge, deploy, tag, publish, push or template work occurred.
+
+- **Canonical presets:** seven colors (Iris default, Blue, Violet, Emerald, Orange, Rose, Neutral), four radii (Sharp/sm 0.25rem, Medium/md 0.5rem, **Rounded/lg 0.75rem default**, Extra/xl 1rem). One authored theme schema generates CLI constants, website data and CSS. The public union remains 26 generic variables; no public --cn-* variables.
+- **Real CLI configuration:** create/init accept `--color` and `--radius`. Interactive fresh setup asks for both. Existing themes default to Keep existing values; omitted flags in noninteractive init preserve customization. Explicit flags update only requested identity/radius values and remain idempotent. Semantic status colors and Graphite neutrals stay independent. Disabled CSS initialization with theme flags fails truthfully.
+- **Live homepage:** compact accessible swatches/radius controls update the command, CTAs, setup, shared components, portalled surfaces and actual theme CSS exhibit. Temporary page state is removed on navigation, with no persisted color/radius preference. Existing-project commands avoid implicit replacement flags. The radius bridge now follows the public variable; circular/pill controls and picker geometry remain deliberate exceptions.
+- **Acceptance:** 59 onboarding tests; 28 color/radius CSS matrices plus original eight fixture families; 40 live theme checks; 45 existing homepage checks; 33 component smokes; 119 production endpoints; all pass. Normal/selected/hover foreground pairs meet 4.5:1 and focus rings meet 3:1 in both modes. Final settled Iris/Emerald light/dark axe runs have zero violations; glyph/single-digit count incompletes are manually reviewed.
+- **Real consumers:** fresh official Next.js defaults, fresh TanStack Start Emerald/Extra, and pnpm/Vite Blue/Medium monorepo all pass component installation, custom source/theme preservation, explicit re-theming, repeated init, strict TypeScript and production builds. The final installed tarball additionally creates/builds a Rose/Sharp Vite app. Earlier Yarn/Bun live-execution limitations remain unchanged.
+- **Full checks:** final theme generation/check, build:all, registry:check, full existing CLI fixtures, CLI/website types, lint and Next production build pass. Lint retains the one pre-existing protected Grid warning. All baseline stable anchors/SEO metadata and served registry bytes pass. Lockfile unchanged.
+- **Scope/integrity:** 31 cumulative paths, zero staged. All original 19 work paths retained. 260 selected component/style/registry/license/lock paths match baseline HEAD. Three theme outputs are intentionally regenerated; component source and registry bytes remain unchanged. Branch/HEAD remain `feature/design-system-v2` / `761f948ba3e913164bd0c88e89f79926ffe08779`.
+
+Final local test tarball: **60 files / 198,086 compressed bytes**, SHA-256 **`4ec6e392cdcf587ae8fb866b6532ee28aaf1e2f237fbd090d9d74e92d6ccacbd`**. Evidence: `/private/tmp/baseui-theme-polish/`; prior `/private/tmp/baseui-landing-onboarding/` evidence remains untouched. The detailed report's sections **37–46** provide default/non-default screenshots, preservation guarantees, support scope and final checks.
+
+**STOP FOR FINAL VISUAL/PRODUCT REVIEW. 1.4.0 stays PAUSED.** The existing four approval gates and later hosted registry version/complete-byte alignment gate remain in force. This work is not a newly approved release-candidate checkpoint.
+
+---
+
+# Current release status — PAUSED for landing and CLI onboarding review
+
+October 22, 2026. **The previous 1.4.0 candidate at `761f948ba3e913164bd0c88e89f79926ffe08779` is superseded for review. This uncommitted work is NOT an approved release candidate.** Version remains **1.4.0**. No merge, deployment, tag, publication, push, commit or template work has occurred.
+
+Release must stay paused until all four gates pass:
+
+1. Visual/product approval of the redesigned homepage.
+2. Acceptance of the new CLI onboarding/framework flows, including the support limits below.
+3. Review of this updated audit and `docs/landing-cli-onboarding-report.md`.
+4. Approval of a new release-candidate checkpoint.
+
+The historical “ready”/“GO” decisions below apply only to their dated checkpoints. They do not authorize this candidate. After a new candidate is approved, the existing hosted-registry **version and complete-byte alignment** gate still applies before tagging or publishing.
+
+## Landing and onboarding acceptance — local results
+
+Baseline preflight: clean `feature/design-system-v2`, exact HEAD `761f948ba3e913164bd0c88e89f79926ffe08779`. HEAD and branch remain unchanged; everything is uncommitted. Evidence: `/private/tmp/baseui-landing-onboarding/`.
+
+| Area                    | Current result                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Homepage                | Complete hero redesign, working setup builder, real shared-component install planner, compact install commands, ownership/source story, component directory, Base UI foundations, live light/dark theme preview, existing blocks and final CTA. Fake project/notification form removed.                                                                                                                             |
+| New CLI API             | `create [name] --framework next\|tanstack-start\|react-router\|vite --package-manager npm\|pnpm\|yarn\|bun [--monorepo] [-y]`. Interactive missing choices; official upstream scaffolders; destination validation; fail-stop errors; no private framework templates. Yarn runner requires 2+.                                                                                                                       |
+| Existing projects       | Framework/package-manager detection; npm/pnpm/Yarn/Bun workspaces; app selection; `--workspace` for init/add/update. Ambiguous noninteractive workspace runs fail before writing. Existing compiler/bundler settings remain user-owned.                                                                                                                                                                             |
+| Automated onboarding    | **PASS 54/54**, `pnpm cli:onboarding`. Framework and package-manager detection, workspace selection/safety, 16 command combinations, validation, cancellation, failed scaffold, follow-up init, real built CLI workspace fixtures, Yarn Classic rejection and strict compiler policy. Fixture package installs are stubbed; real checks are separate.                                                               |
+| Real scaffold consumers | **PASS** official Next.js, TanStack Start, React Router and Vite creation with **npm**, installed Button/Input/Dialog, and production builds. Next/TanStack/Vite standalone TypeScript passes; React Router passes its official `typecheck` (route typegen + tsc).                                                                                                                                                  |
+| Real monorepos          | **PASS** npm + Next.js and pnpm + Vite, both under `apps/web`, real package installs and builds. npm sequence separately verifies dependency manifest placement, root safety and repeated init/add preserving custom source/CSS.                                                                                                                                                                                    |
+| Packed delivery         | **PASS** actual installed 1.4.0 tarball, LICENSE, new create API, fresh official Vite create through the installed package, Data Grid install with `@tanstack/react-table@^8.21.3`, custom source/theme preservation, TypeScript/production build and six runtime checks. Bundled fallback is forced only by a test preload; npm remains real.                                                                      |
+| Compiler integration    | Newly created apps retain `strict` and disable upstream `noUnusedLocals`/`noUnusedParameters` to match the approved registry contract. The packed Grid check exposed two pre-existing unused bindings. Approved V2 source is unchanged. Existing projects with those flags must adjust them or clean up their locally owned source. This tradeoff requires product/release review.                                  |
+| Website QA              | **PASS 45 browser checks**: 16 setup combinations, actual clipboard success/failure, validation, planner selection/search, Toast, Dialog/focus return, theme preview, keyboard, reduced-motion emulation, six widths in both themes and reachable 44px mobile Copy. Required eight desktop/tablet/mobile light/dark screenshots manually inspected; 1280/1024 and complete mobile builders also captured/inspected. |
+| Accessibility           | Final axe **zero violations** in light/dark; one incomplete contrast result for the existing keyboard-shortcut glyph. Shared root Toast context avoids duplicate notification landmarks. This is Chromium/axe and keyboard evidence, not screen-reader/device certification.                                                                                                                                        |
+| Component regression    | **PASS 33 focused production checks** across Button/Input, Select/Combobox, Command, Popover/Dropdown Menu, Dialog/Drawer, Tabs, Toast, Grid, Date/Time; includes Select commit, picker bounds/geometry, Date reduced motion and Toast lifecycle. Packed consumer adds six Grid scroll/update/sort/theme checks.                                                                                                    |
+| Install/types/lint      | **PASS** network-enabled frozen pnpm install (unchanged lockfile), website and CLI TypeScript, lint with zero errors and the one existing protected Grid exhaustive-deps warning.                                                                                                                                                                                                                                   |
+| Theme/build/registry    | **PASS** theme check, eight fixture families, official `build:all`, CLI CJS/declarations build, existing full CLI fixtures, Next 16.1.7 production build and registry consistency: 54 installables, 119 embedded source/style occurrences, three identical distributions.                                                                                                                                           |
+| Routes/SEO              | **PASS 119/119** local production endpoints. All baseline stable IDs/anchors and canonical/description/OpenGraph/Twitter metadata preserved. Registry responses equal local generated bytes. Markdown/AI exports, sitemap, robots and docs URLs unchanged.                                                                                                                                                          |
+| Source integrity        | **PASS 264 protected tracked paths**, including component families/styles, theme, registry/generated distributions, CLI license and lockfile, byte-identical to baseline. No generated output hand edits.                                                                                                                                                                                                           |
+
+### Limits and remaining gates
+
+- Real end-to-end scaffolds exercised **npm for all four frameworks**, plus **pnpm/Vite monorepo**. Yarn 2+/Bun command adapters and workspace fixtures are automated; real Yarn/Bun scaffold/install acceptance is **not claimed**.
+- Existing/custom React apps require a working Tailwind CSS v4 pipeline and `@/*` source alias. Init preserves their build configuration. New scaffolds receive the necessary aliases and Vite Tailwind integration.
+- Workspace automation handles literal paths, `*`, `**` and exclusions; brace/extglob patterns, symlinked targets and automatic shared `packages/ui` generation are not supported. Custom app layouts can initialize from inside the app.
+- Upstream `@latest` scaffolders may change. Their current help and real output were verified for this task; upstream runtime/network failures remain truthful nonzero failures with files retained for inspection.
+- Browser evidence is desktop Chromium with responsive/reduced-motion emulation. No physical mobile, Safari/WebKit, screen-reader or public-host acceptance is claimed.
+- The prior candidate tarball/hash remains historical. This work requires a fresh approved checkpoint and final package rebuild; do not publish the old RC.
+
+Current local tarball: `/private/tmp/baseui-landing-onboarding/package/baseui-cn-1.4.0.tgz`, **60 files**, **195,487 compressed bytes**, SHA-256 **`1304ffc9994a6e4441e8fe6d03411ab076be97a2a39501e34b8c183d66dd60c8`**. This is a disposable acceptance artifact, not a published or approved release.
+
+Detailed support matrix, commands, screenshots, source inventory and all 36 requested report topics are in `docs/landing-cli-onboarding-report.md`.
+
+---
+
+## Historical release records — superseded by the paused status above
+
 # Design System V2 — final CLI and release acceptance
 
 ## Final 1.4.0 release preparation — October 21, 2026

@@ -35,13 +35,12 @@
 }
 
 :root {
-  font-size: 14px; /* --radius: 0.625rem; */
+  font-size: 14px;
   --text-lg: 1.2rem;
   --text-base: 1.1rem;
   --text-sm: 0.98rem;
   --text-xs: 0.86rem;
   --spacing: 0.25rem; /* 3.5px - quarter of base font size */
-  --radius: 0.625rem;
 
   /* Docs-specific */
   --sidebar-width: 240px;

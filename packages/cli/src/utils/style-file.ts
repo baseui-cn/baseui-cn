@@ -1,6 +1,7 @@
 import path from "path"
 import fs from "fs-extra"
 import prompts from "prompts"
+import { promptOptions } from "./project"
 
 export interface StyleFileDetection {
   preferredPath: string
@@ -12,11 +13,16 @@ function unique(values: string[]) {
   return [...new Set(values)]
 }
 
-export function getStyleFileCandidates(options: { hasSrcDir: boolean; hasAppDir: boolean }) {
+export function getStyleFileCandidates(options: {
+  hasSrcDir: boolean
+  hasAppDir: boolean
+  sourceDir?: string
+}) {
   const { hasSrcDir, hasAppDir } = options
 
   return unique(
     [
+      options.sourceDir === "app" ? "app/app.css" : null,
       hasSrcDir && hasAppDir ? "src/app/globals.css" : null,
       hasAppDir ? "app/globals.css" : null,
       hasSrcDir ? "src/styles/globals.css" : null,
@@ -31,7 +37,11 @@ export function getStyleFileCandidates(options: { hasSrcDir: boolean; hasAppDir:
   )
 }
 
-export async function detectStyleFiles(options: { hasSrcDir: boolean; hasAppDir: boolean }) {
+export async function detectStyleFiles(options: {
+  hasSrcDir: boolean
+  hasAppDir: boolean
+  sourceDir?: string
+}) {
   const candidates = getStyleFileCandidates(options)
   const existingCandidates: string[] = []
 
@@ -56,18 +66,20 @@ export async function promptForStyleFile(options: {
 }) {
   const { detection, initialValue, message, missingConfiguredPath } = options
 
-  const choices = unique([initialValue, ...detection.existingCandidates, ...detection.candidates]).map(
-    (value) => ({
-      title: value,
-      description:
-        value === missingConfiguredPath
-          ? "Configured path not found. Keep this and let baseui-cn create it."
-          : detection.existingCandidates.includes(value)
-            ? "Existing stylesheet"
-            : "Suggested location",
-      value,
-    })
-  )
+  const choices = unique([
+    initialValue,
+    ...detection.existingCandidates,
+    ...detection.candidates,
+  ]).map((value) => ({
+    title: value,
+    description:
+      value === missingConfiguredPath
+        ? "Configured path not found. Keep this and let baseui-cn create it."
+        : detection.existingCandidates.includes(value)
+          ? "Existing stylesheet"
+          : "Suggested location",
+    value,
+  }))
 
   choices.push({
     title: "Enter a custom stylesheet path",
@@ -75,27 +87,33 @@ export async function promptForStyleFile(options: {
     value: "__custom__",
   })
 
-  const { styleFile } = await prompts({
-    type: "select",
-    name: "styleFile",
-    message,
-    choices,
-    initial: Math.max(
-      0,
-      choices.findIndex((choice) => choice.value === initialValue)
-    ),
-  })
+  const { styleFile } = await prompts(
+    {
+      type: "select",
+      name: "styleFile",
+      message,
+      choices,
+      initial: Math.max(
+        0,
+        choices.findIndex((choice) => choice.value === initialValue)
+      ),
+    },
+    promptOptions
+  )
 
   if (!styleFile) return initialValue
   if (styleFile !== "__custom__") return styleFile
 
-  const { customStyleFile } = await prompts({
-    type: "text",
-    name: "customStyleFile",
-    message: "Enter the stylesheet path baseui-cn should update",
-    initial: initialValue,
-    validate: (value: string) => (value.trim().length ? true : "Enter a file path"),
-  })
+  const { customStyleFile } = await prompts(
+    {
+      type: "text",
+      name: "customStyleFile",
+      message: "Enter the stylesheet path baseui-cn should update",
+      initial: initialValue,
+      validate: (value: string) => (value.trim().length ? true : "Enter a file path"),
+    },
+    promptOptions
+  )
 
   return customStyleFile || initialValue
 }

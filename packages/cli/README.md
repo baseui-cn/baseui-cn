@@ -23,6 +23,46 @@ bunx baseui-cn init
 bunx baseui-cn add button
 ```
 
+## Create a new app
+
+```bash
+npx baseui-cn@latest create my-app
+npx baseui-cn@latest create my-app --framework tanstack-start --package-manager pnpm
+npx baseui-cn@latest create my-app --framework next --monorepo
+```
+
+Supported frameworks: `next`, `tanstack-start`, `react-router`, `vite`. The CLI delegates to the current official scaffolder, installs dependencies and initializes baseui-cn. No framework templates are maintained here. Install your selected npm, pnpm, Yarn (2+), or Bun first. Current upstream runtime requirements apply; Node 22.12+ is recommended for new projects. `-y` uses defaults for unspecified framework, package manager and structure; provide a project name for noninteractive use. Existing directories are never overwritten. Failed scaffolds are retained for inspection.
+
+`--monorepo` creates the framework app under `apps/web` and a minimal workspace root. It does not create a shared UI package.
+
+## Existing apps and workspaces
+
+`init` detects Next.js, TanStack Start, React Router, Vite or generic React, plus package-manager declarations and lockfiles. At a workspace root it selects one candidate app automatically, prompts when there are multiple, and refuses ambiguous noninteractive installs. Component source, CSS, utils, config and dependencies resolve inside the app.
+
+```bash
+npx baseui-cn@latest init --workspace apps/web
+npx baseui-cn@latest add button --workspace apps/web
+npx baseui-cn@latest update button --workspace apps/web
+npx baseui-cn@latest init --customize
+```
+
+Use `--customize` to choose paths and RSC settings. Detected settings use defaults without unnecessary confirmation; multiple possible stylesheets still prompt. Repeated init preserves configured paths, custom CSS and existing utils. Existing/custom apps must already configure Tailwind CSS v4 and their `@/*` source alias; init preserves their build configuration. New scaffolds receive alias and Tailwind integration where needed. They retain strict TypeScript checking while disabling upstream `noUnusedLocals`/`noUnusedParameters` compiler lint options to match the approved registry source contract. Existing app compiler settings are not changed; Data Grid currently needs those two unused-symbol checks disabled or local cleanup of unused bindings.
+
+Workspace patterns support literal paths, `*`, `**`, and exclusions in package.json workspaces or pnpm-workspace.yaml. Brace/extglob patterns, symlink targets, shared UI generation and custom nonstandard app detection are outside automated workspace selection; run directly inside a custom app.
+
+## Theme color and radius
+
+Iris and Rounded (`lg`, `0.75rem`) are the defaults for fresh setup. New interactive setup asks for both. All presets write ordinary generic CSS variables; no proprietary public variables are added.
+
+```bash
+npx baseui-cn@latest create my-app --framework next --color emerald --radius xl
+npx baseui-cn@latest init --color blue --radius md
+```
+
+Colors: `iris`, `blue`, `violet`, `emerald`, `orange`, `rose`, `neutral`. Radius: `sm` (Sharp), `md` (Medium), `lg` (Rounded), `xl` (Extra).
+
+An existing theme is preserved unless you pass a theme flag or explicitly choose a new value interactively. Repeated noninteractive init without flags preserves custom CSS. `--color` only changes primary/accent/ring identity pairs; `--radius` only changes radius. Graphite surfaces and semantic status colors are preserved. Interactive reinitialization offers Keep existing values first.
+
 ## Core workflow
 
 1. Initialize the project once with `init`.

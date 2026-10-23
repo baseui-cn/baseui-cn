@@ -5,6 +5,8 @@ import { init } from "./commands/init"
 import { add } from "./commands/add"
 import { list } from "./commands/list"
 import { update } from "./commands/update"
+import { create } from "./commands/create"
+import { inProject } from "./utils/project"
 
 const program = new Command()
 
@@ -20,7 +22,27 @@ program
   .option("-d, --defaults", "Use default configuration", false)
   .option("--css <path>", "Stylesheet file to update with theme variables")
   .option("--skip-tailwind", "Skip Tailwind CSS configuration", false)
-  .action(init)
+  .option("--workspace <path>", "Target an application workspace relative to its root")
+  .option("--customize", "Choose component, utility, RSC and stylesheet settings")
+  .option(
+    "--color <preset>",
+    "Set theme color: iris, blue, violet, emerald, orange, rose or neutral"
+  )
+  .option("--radius <preset>", "Set radius: sm (Sharp), md (Medium), lg (Rounded), xl (Extra)")
+  .action((options) => inProject(options, () => init(options)))
+
+program
+  .command("create [name]")
+  .description(
+    "Create an application with its official framework scaffolder and initialize baseui-cn."
+  )
+  .option("--framework <framework>", "next, tanstack-start, react-router or vite")
+  .option("--package-manager <manager>", "npm, pnpm, yarn (2+) or bun")
+  .option("--monorepo", "Create a workspace with the application in apps/web")
+  .option("--color <preset>", "Theme color (default iris)")
+  .option("--radius <preset>", "Radius: sm, md, lg or xl (default lg)")
+  .option("-y, --yes", "Use defaults for unspecified framework, manager and structure")
+  .action((name, options) => create(name, options))
 
 program
   .command("add [components...]")
@@ -30,7 +52,8 @@ program
   .option("-a, --all", "Add all available components", false)
   .option("--css <path>", "Stylesheet file to update with theme variables")
   .option("-p, --path <path>", "Custom path to add components to")
-  .action(add)
+  .option("--workspace <path>", "Target an application workspace relative to its root")
+  .action((components, options) => inProject(options, () => add(components, options)))
 
 program
   .command("list")
@@ -45,6 +68,10 @@ program
   .option("-a, --all", "Update all available components", false)
   .option("--css <path>", "Stylesheet file to update with theme variables")
   .option("-p, --path <path>", "Custom path to update components in")
-  .action(update)
+  .option("--workspace <path>", "Target an application workspace relative to its root")
+  .action((components, options) => inProject(options, () => update(components, options)))
 
-program.parse()
+program.parseAsync().catch((error: Error) => {
+  console.error(`\n${error.message}\n`)
+  process.exitCode = 1
+})

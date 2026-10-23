@@ -1,8 +1,6 @@
 {
   "schemaVersion": 2,
-  "shared": {
-    "--radius": ".375rem"
-  },
+  "shared": {},
   "light": {
     "--background": "#f8f9fb",
     "--foreground": "#20242c",
@@ -10,17 +8,12 @@
     "--card-foreground": "#20242c",
     "--popover": "#ffffff",
     "--popover-foreground": "#20242c",
-    "--primary": "#25272c",
-    "--primary-foreground": "#ffffff",
     "--secondary": "#e8ecf4",
     "--secondary-foreground": "#20242c",
     "--muted": "#f4f4f5",
     "--muted-foreground": "#5e6674",
-    "--accent": "#eff0ff",
-    "--accent-foreground": "#5961cf",
     "--border": "#dedee3",
     "--input": "#7d8797",
-    "--ring": "#6673e8",
     "--destructive": "#b02a3b",
     "--destructive-foreground": "#ffffff",
     "--success": "#22673f",
@@ -37,17 +30,12 @@
     "--card-foreground": "#eeeeef",
     "--popover": "#1c1c1f",
     "--popover-foreground": "#eeeeef",
-    "--primary": "#e7e7ea",
-    "--primary-foreground": "#18181a",
     "--secondary": "#303034",
     "--secondary-foreground": "#eeeeef",
     "--muted": "#29292d",
     "--muted-foreground": "#aaaab3",
-    "--accent": "#25252e",
-    "--accent-foreground": "#a8aeff",
     "--border": "#3d3d43",
     "--input": "#6c6c75",
-    "--ring": "#9699d6",
     "--destructive": "#ff9da8",
     "--destructive-foreground": "#271217",
     "--success": "#92ddb0",
@@ -87,5 +75,148 @@
     "--radius-md": "calc(var(--radius) - 2px)",
     "--radius-lg": "var(--radius)",
     "--radius-xl": "calc(var(--radius) + 4px)"
+  },
+  "presets": {
+    "defaultColor": "iris",
+    "defaultRadius": "lg",
+    "colors": {
+      "iris": {
+        "label": "Iris",
+        "light": {
+          "--primary": "#5b55c9",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#eff0ff",
+          "--accent-foreground": "#514bb5",
+          "--ring": "#6673e8"
+        },
+        "dark": {
+          "--primary": "#a8aeff",
+          "--primary-foreground": "#18181a",
+          "--accent": "#25252e",
+          "--accent-foreground": "#b5b9ff",
+          "--ring": "#9699d6"
+        }
+      },
+      "blue": {
+        "label": "Blue",
+        "light": {
+          "--primary": "#1d4ed8",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#edf4ff",
+          "--accent-foreground": "#1d4ed8",
+          "--ring": "#3b6cde"
+        },
+        "dark": {
+          "--primary": "#93b4ff",
+          "--primary-foreground": "#121827",
+          "--accent": "#1c2536",
+          "--accent-foreground": "#a9c5ff",
+          "--ring": "#8ba9df"
+        }
+      },
+      "violet": {
+        "label": "Violet",
+        "light": {
+          "--primary": "#7c3aed",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#f5f0ff",
+          "--accent-foreground": "#6d28d9",
+          "--ring": "#8b5cf6"
+        },
+        "dark": {
+          "--primary": "#c4a8ff",
+          "--primary-foreground": "#1e142b",
+          "--accent": "#2b2238",
+          "--accent-foreground": "#d4bfff",
+          "--ring": "#a48bc9"
+        }
+      },
+      "emerald": {
+        "label": "Emerald",
+        "light": {
+          "--primary": "#066348",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#ecfdf5",
+          "--accent-foreground": "#066348",
+          "--ring": "#149671"
+        },
+        "dark": {
+          "--primary": "#6fdbb5",
+          "--primary-foreground": "#10251d",
+          "--accent": "#193129",
+          "--accent-foreground": "#8be5c3",
+          "--ring": "#6abc9f"
+        }
+      },
+      "orange": {
+        "label": "Orange",
+        "light": {
+          "--primary": "#9a450b",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#fff5e8",
+          "--accent-foreground": "#9a450b",
+          "--ring": "#ce6c26"
+        },
+        "dark": {
+          "--primary": "#f5b47a",
+          "--primary-foreground": "#2b1c11",
+          "--accent": "#35271e",
+          "--accent-foreground": "#fdc99e",
+          "--ring": "#d39b6b"
+        }
+      },
+      "rose": {
+        "label": "Rose",
+        "light": {
+          "--primary": "#be2957",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#fff0f4",
+          "--accent-foreground": "#a51d4a",
+          "--ring": "#ce4b75"
+        },
+        "dark": {
+          "--primary": "#f4a1bb",
+          "--primary-foreground": "#2a131c",
+          "--accent": "#34212a",
+          "--accent-foreground": "#ffb2ca",
+          "--ring": "#d588a2"
+        }
+      },
+      "neutral": {
+        "label": "Neutral",
+        "light": {
+          "--primary": "#25272c",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#f0f0f2",
+          "--accent-foreground": "#45454c",
+          "--ring": "#747480"
+        },
+        "dark": {
+          "--primary": "#e7e7ea",
+          "--primary-foreground": "#18181a",
+          "--accent": "#29292d",
+          "--accent-foreground": "#d1d1d6",
+          "--ring": "#a1a1aa"
+        }
+      }
+    },
+    "radii": {
+      "sm": {
+        "label": "Sharp",
+        "value": "0.25rem"
+      },
+      "md": {
+        "label": "Medium",
+        "value": "0.5rem"
+      },
+      "lg": {
+        "label": "Rounded",
+        "value": "0.75rem"
+      },
+      "xl": {
+        "label": "Extra",
+        "value": "1rem"
+      }
+    }
   }
 }

@@ -1,15 +1,30 @@
 import type { Metadata } from "next"
+import "@/styles/landing.css"
 import Link from "next/link"
 import { SiteHeader } from "@/components/shared/site-header"
 import { SiteFooter } from "@/components/shared/site-footer"
 import { HomeShowcase } from "@/components/shared/home-showcase"
-import { PackageManagerTabs } from "@/components/docs/package-manager-tabs"
-import { ComponentsGrid } from "@/components/shared/components-grid"
+import { SetupBuilder, QuickInstall, CreateProjectTrigger } from "@/components/shared/setup-builder"
+import { HomeThemeProvider } from "@/components/shared/home-theme-provider"
+import { HomeThemePreview } from "@/components/shared/home-theme-preview"
 import { latestChangelogEntry } from "@/lib/changelog"
 import { components } from "@/lib/registry"
 import { siteConfig } from "@/lib/site-config"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon } from "lucide-react"
+import { EmptyState } from "@/components/ui/blocks"
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  ArrowUpRightIcon,
+  BracesIcon,
+  CodeIcon,
+  CommandIcon,
+  FileCodeIcon,
+  FolderIcon,
+  GitBranchIcon,
+  KeyboardIcon,
+  LayersIcon,
+} from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
@@ -105,42 +120,63 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <HomeThemeProvider>
       <SiteHeader />
       <main id="main-content" tabIndex={-1} className="home-page flex-1">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(homeStructuredData) }}
         />
-        <section className="home-section">
+        <section className="home-section home-hero-section">
           <div className="home-container home-hero">
-            <div>
-              <Link href="/docs/changelog" className="home-eyebrow">
-                baseui-cn · Design System V2{" "}
-                <ArrowRightIcon className="inline size-[14px]" aria-hidden="true" />
-              </Link>
+            <div className="home-hero-copy">
+              <span className="home-eyebrow">
+                <span className="home-iris-mark" /> BASE UI · COPY-AND-OWN REACT COMPONENTS
+              </span>
               <h1>
-                Base UI components for React.
-                <br />
-                <span className="text-muted-foreground">Copy. Own. Build.</span>
+                <span className="hero-title-line">Accessible React components.</span>
+                <span>Own the source. Build your system.</span>
               </h1>
               <p className="home-description">
-                Accessible React components built with Base UI and Tailwind CSS. A shadcn-style
-                component library that puts the source in your project, ready to make your own.
+                An accessible, copy-and-own React component library built with Base UI and Tailwind
+                CSS. Bring editable source into your project and make every detail yours.
               </p>
-              <div className="mt-[28px] flex flex-wrap items-center gap-[12px]">
-                <Button size="xl" render={<Link href="/docs/components/button" />}>
-                  Explore components <ArrowRightIcon size={16} aria-hidden="true" />
-                </Button>
-                <Button size="xl" variant="outline" render={<Link href="/docs/installation" />}>
-                  Installation
+              <div className="home-hero-actions">
+                <CreateProjectTrigger />
+                <Button
+                  size="xl"
+                  variant="outline"
+                  render={<Link href="/docs/components/button" />}
+                >
+                  Browse components
                 </Button>
               </div>
-              <div className="home-stats">
-                <span>{componentCount} components</span>
-                <span>{blockCount} blocks</span>
-                <span>Open source · MIT</span>
+            </div>
+          </div>
+          <div className="home-framework-strip">
+            <div className="home-container">
+              <span>WORKS WITH</span>
+              <span>Next.js</span>
+              <span>TanStack Start</span>
+              <span>React Router</span>
+              <span>Vite</span>
+              <span>React</span>
+            </div>
+          </div>
+        </section>
+        <section className="home-section home-showcase-section">
+          <div className="home-container">
+            <div className="home-grid-heading">
+              <div>
+                <span className="home-eyebrow">01 / BUILT TO WORK TOGETHER</span>
+                <h2>Your next interface, taking shape.</h2>
+                <p className="home-description">
+                  Filter work, pick a date, edit a task. Real components, working together.
+                </p>
               </div>
+              <Link className="home-text-link" href="/docs/components/data-grid">
+                Explore data components <ArrowUpRightIcon size={15} aria-hidden="true" />
+              </Link>
             </div>
             <HomeShowcase />
           </div>
@@ -148,32 +184,95 @@ export default function HomePage() {
         <section className="home-section">
           <div className="home-container home-install">
             <div>
-              <span className="home-eyebrow">Your code, from the first command</span>
+              <span className="home-eyebrow">02 / FROM ZERO TO COMPONENT</span>
               <h2>
-                A component library.
+                Less setup.
                 <br />
-                Without the lock-in.
+                More building.
               </h2>
               <p className="home-description">
-                Initialize your project, then add only what you need. The CLI copies editable source
-                and styles into your app. Build forms, dialogs, drawers and data views on one Base
-                UI primitive layer.
+                Initialize once. Add what you need. Framework-aware setup finds your app, your
+                package manager and your workspace.
               </p>
-              <div className="mt-[24px] flex flex-wrap items-center gap-[20px] text-[14px]">
-                <Link href="/docs" className="underline underline-offset-4">
-                  Read the docs
-                </Link>
-                <Link href="/docs/theming" className="underline underline-offset-4">
-                  Theming guide
-                </Link>
+              <Link className="home-text-link" href="/docs/installation">
+                Follow the installation guide <ArrowRightIcon size={15} aria-hidden="true" />
+              </Link>
+            </div>
+            <QuickInstall />
+          </div>
+        </section>
+        <section className="home-section home-source-section">
+          <div className="home-container home-install">
+            <div>
+              <span className="home-eyebrow">03 / OWN EVERY LINE</span>
+              <h2>The source is the point.</h2>
+              <p className="home-description">
+                The CLI brings components into your project. Change the markup, adjust the styles,
+                or build something entirely new. Updates happen on your terms.
+              </p>
+              <ul className="home-source-points">
+                <li>
+                  <CheckIcon size={15} aria-hidden="true" /> Editable TypeScript and CSS
+                </li>
+                <li>
+                  <CheckIcon size={15} aria-hidden="true" /> No baseui-cn runtime package to depend
+                  on
+                </li>
+                <li>
+                  <CheckIcon size={15} aria-hidden="true" /> Base UI handles the behavior underneath
+                </li>
+              </ul>
+              <Link className="home-text-link" href="/docs">
+                How copy-and-own works <ArrowRightIcon size={15} aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="source-exhibit">
+              <div className="source-exhibit-heading">
+                <CodeIcon size={14} aria-hidden="true" /> CLI{" "}
+                <ArrowRightIcon size={13} aria-hidden="true" /> your project{" "}
+                <ArrowRightIcon size={13} aria-hidden="true" /> your source
+              </div>
+              <div className="source-tree">
+                <span>
+                  <FolderIcon size={14} aria-hidden="true" /> my-app
+                </span>
+                <span>
+                  <FolderIcon size={14} aria-hidden="true" /> components / ui
+                </span>
+                <span>
+                  <FileCodeIcon size={14} aria-hidden="true" /> button.tsx{" "}
+                  <span>YOURS TO EDIT</span>
+                </span>
+              </div>
+              <div className="source-file-label">
+                <FileCodeIcon size={14} aria-hidden="true" /> components/ui/button.tsx
+              </div>
+              <pre tabIndex={0} role="region" aria-label="Editable component source example">
+                <code>
+                  <span className="source-comment">{"// Your component. Your decisions."}</span>
+                  {"\n"}
+                  <span className="source-keyword">import</span> {"{ Button as ButtonPrimitive }"}
+                  {"\n"} <span className="source-keyword">from</span>{" "}
+                  <span className="source-string">{'"@base-ui/react/button"'}</span>
+                  {"\n\n"}
+                  <span className="source-keyword">export function</span> Button(props) {"{"}
+                  {"\n"} <span className="source-keyword">return</span> &lt;ButtonPrimitive{" "}
+                  {"{...props}"} /&gt;{"\n"}
+                  {"}"}
+                </code>
+              </pre>
+              <div className="source-exhibit-footer">
+                <GitBranchIcon size={14} aria-hidden="true" /> Tracked in your repo. Shipped with
+                your app.
               </div>
             </div>
-            <div className="grid min-w-0 gap-[16px]">
-              <PackageManagerTabs command="baseui-cn init" />
-              <PackageManagerTabs command="baseui-cn add button input dialog" />
-              <p className="text-[13px] leading-[20px] text-muted-foreground">
-                React · Next.js · Tailwind CSS v4 · TypeScript
-              </p>
+            <div className="home-source-faq">
+              {homeFaqs.map((faq) => (
+                <details key={faq.question}>
+                  <summary>{faq.question}</summary>
+                  <p>{faq.answer}</p>
+                </details>
+              ))}
             </div>
           </div>
         </section>
@@ -181,67 +280,204 @@ export default function HomePage() {
           <div className="home-container">
             <div className="home-grid-heading">
               <div>
-                <span className="home-eyebrow">The building blocks</span>
-                <h2>Find your next component</h2>
+                <span className="home-eyebrow">04 / YOUR DESIGN LANGUAGE</span>
+                <h2>A theme that speaks your language.</h2>
+                <p className="home-description">
+                  26 familiar CSS variables. Light and dark, considered together.
+                  <br className="hidden sm:block" /> No proprietary --cn-* names to learn. Just your
+                  design decisions.
+                </p>
               </div>
-              <Link
-                href="/docs/components/button"
-                className="text-[14px] underline underline-offset-4"
-              >
-                View documentation
+              <Link href="/docs/theming" className="home-text-link">
+                Explore theming <ArrowRightIcon size={15} aria-hidden="true" />
               </Link>
             </div>
-            <ComponentsGrid components={components} />
+            <HomeThemePreview />
           </div>
         </section>
         <section className="home-section">
-          <div className="home-container home-install">
-            <div>
-              <span className="home-eyebrow">Latest update</span>
-              <h2>{latestChangelogEntry.title}</h2>
-              <p className="home-description">{latestChangelogEntry.summary}</p>
-              <Link
-                href={`/docs/changelog#${latestChangelogEntry.slug}`}
-                className="mt-[20px] inline-flex min-h-[44px] items-center gap-[8px] text-[14px] underline underline-offset-4"
-              >
-                Read the changelog <ArrowRightIcon size={16} aria-hidden="true" />
+          <div className="home-container">
+            <div className="home-grid-heading">
+              <div>
+                <span className="home-eyebrow">05 / THE COMPONENT LIBRARY</span>
+                <h2>
+                  Good foundations.
+                  <br />
+                  All the way down.
+                </h2>
+              </div>
+              <Link href="/docs/components/button" className="home-text-link">
+                Browse all {componentCount} components{" "}
+                <ArrowRightIcon size={15} aria-hidden="true" />
               </Link>
             </div>
-            <div>
-              <span className="home-eyebrow">Documentation for your workflow</span>
-              <h2>
-                Readable by you.
-                <br />
-                Ready for your tools.
-              </h2>
-              <p className="home-description">
-                Use component examples, API references and Markdown exports to work with your editor
-                or AI assistant.
-              </p>
-              <Link
-                href="/docs/llms"
-                className="mt-[20px] inline-flex min-h-[44px] items-center gap-[8px] text-[14px] underline underline-offset-4"
-              >
-                LLM usage guide <ArrowRightIcon size={16} aria-hidden="true" />
-              </Link>
+            <div className="home-catalog">
+              {[
+                {
+                  title: "Inputs & choices",
+                  icon: CommandIcon,
+                  names: ["input", "select", "combobox", "command", "date-picker", "time-picker"],
+                },
+                {
+                  title: "Layers & focus",
+                  icon: LayersIcon,
+                  names: ["dialog", "drawer", "popover", "dropdown-menu", "tooltip", "toast"],
+                },
+                {
+                  title: "Structure & data",
+                  icon: BracesIcon,
+                  names: ["tabs", "accordion", "table", "data-grid", "card", "scroll-area"],
+                },
+              ].map((group) => (
+                <div key={group.title}>
+                  <h3>
+                    <group.icon size={18} aria-hidden="true" /> {group.title}
+                  </h3>
+                  {group.names.map((name) => {
+                    const c = components.find((item) => item.name === name)
+                    return c ? (
+                      <Link key={name} href={`/docs/components/${name}`}>
+                        <span>{c.label}</span>
+                        <ArrowUpRightIcon size={14} aria-hidden="true" />
+                      </Link>
+                    ) : null
+                  })}
+                </div>
+              ))}
             </div>
           </div>
         </section>
-        <section>
+        <section className="home-section home-foundation-section">
           <div className="home-container">
-            <h2>Working with Base UI components</h2>
-            <div className="home-faq">
-              {homeFaqs.map((faq) => (
-                <article key={faq.question}>
-                  <h3>{faq.question}</h3>
-                  <p>{faq.answer}</p>
-                </article>
+            <div className="home-foundation-heading">
+              <span className="home-eyebrow">06 / WHY BASE UI</span>
+              <h2>
+                The details you notice.
+                <br />
+                The foundations you trust.
+              </h2>
+              <p className="home-description">
+                Built on Base UI, the unstyled React component library from the creators of Material
+                UI and Radix. A shared behavior layer for interfaces that hold together.
+              </p>
+            </div>
+            <div className="home-foundations">
+              {[
+                {
+                  icon: KeyboardIcon,
+                  title: "Keyboard & focus",
+                  text: "Keyboard navigation, focus management and accessible semantics built into the primitives.",
+                },
+                {
+                  icon: LayersIcon,
+                  title: "Layers that cooperate",
+                  text: "Positioning, portals and dismiss behavior designed to work across menus, dialogs and popovers.",
+                },
+                {
+                  icon: CodeIcon,
+                  title: "Room to compose",
+                  text: "Unstyled primitives underneath. Your markup, styling and component composition on top.",
+                },
+              ].map((item) => (
+                <div key={item.title}>
+                  <item.icon size={20} aria-hidden="true" />
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </div>
               ))}
+            </div>
+            <a
+              href="https://base-ui.com/react/overview/about"
+              className="home-text-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Meet Base UI <ArrowUpRightIcon size={14} aria-hidden="true" />
+            </a>
+          </div>
+        </section>
+        <section className="home-section home-blocks-section">
+          <div className="home-container">
+            <div className="home-grid-heading">
+              <div>
+                <span className="home-eyebrow">07 / SKIP THE BLANK CANVAS</span>
+                <h2>A few pieces, already together.</h2>
+                <p className="home-description">
+                  {blockCount} real blocks. The same components, composed into useful starting
+                  points.
+                </p>
+              </div>
+            </div>
+            <div className="home-blocks">
+              <div className="block-live-preview">
+                <span className="source-file-label">Empty State / live block preview</span>
+                <EmptyState
+                  icon={<LayersIcon size={20} aria-hidden="true" />}
+                  title="Make room for your next idea."
+                  description="A clear next step, even when there's nothing to show."
+                  action={
+                    <Button variant="outline" render={<Link href="/docs/components/empty-state" />}>
+                      Explore this block <ArrowRightIcon size={14} aria-hidden="true" />
+                    </Button>
+                  }
+                />
+              </div>
+              <div className="home-block-list">
+                {components
+                  .filter((c) => c.type === "block")
+                  .map((block) => (
+                    <Link key={block.name} href={`/docs/components/${block.name}`}>
+                      <div>
+                        <h3>{block.label}</h3>
+                        <p>{block.description}</p>
+                        <code>{block.installedPath}</code>
+                      </div>
+                      <ArrowUpRightIcon size={17} aria-hidden="true" />
+                    </Link>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="home-section">
+          <div className="home-container home-resource-strip">
+            <Link href={`/docs/changelog#${latestChangelogEntry.slug}`}>
+              <div>
+                <span className="home-eyebrow">IN THE REPO</span>
+                <h3>{latestChangelogEntry.title}</h3>
+                <p>Follow the latest changes.</p>
+              </div>
+              <ArrowUpRightIcon size={18} aria-hidden="true" />
+            </Link>
+            <Link href="/docs/llms">
+              <div>
+                <span className="home-eyebrow">IN YOUR EDITOR</span>
+                <h3>Documentation for your workflow.</h3>
+                <p>Examples, API references and Markdown exports.</p>
+              </div>
+              <ArrowUpRightIcon size={18} aria-hidden="true" />
+            </Link>
+          </div>
+        </section>
+        <section className="home-final">
+          <div className="home-container">
+            <span className="home-eyebrow">START WITH A STRONG FOUNDATION</span>
+            <h2>
+              Build with components
+              <br />
+              you actually own.
+            </h2>
+            <div className="home-hero-actions">
+              <CreateProjectTrigger />
+              <Button size="xl" variant="outline" render={<Link href="/docs/components/button" />}>
+                Browse components
+              </Button>
             </div>
           </div>
         </section>
       </main>
       <SiteFooter />
-    </div>
+      <SetupBuilder />
+    </HomeThemeProvider>
   )
 }
