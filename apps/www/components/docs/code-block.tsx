@@ -1,61 +1,24 @@
 "use client"
 
-import * as React from "react"
-import { trackCopyCode } from "@/lib/events"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { CopyButton } from "@/components/shared/copy-button"
 
 interface CodeBlockProps {
   code: string
   language?: string
   filename?: string
+  onCopied?: () => void
 }
 
-export function CodeBlock({ code, language: _, filename }: CodeBlockProps) {
-  const [copied, setCopied] = React.useState(false)
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-    trackCopyCode("code_block")
-  }
-
+export function CodeBlock({ code, language, filename, onCopied }: CodeBlockProps) {
   return (
-    <div className="relative rounded-lg border border-border overflow-hidden bg-[#0a0a0a]">
-      {filename && (
-        <div className="flex items-center justify-between border-b border-white/10 px-5 py-2.5">
-          <span className="font-mono text-xs text-zinc-500">{filename}</span>
-        </div>
-      )}
-      <button
-        onClick={handleCopy}
-        className="absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs text-zinc-400 hover:text-zinc-200 hover:bg-white/10 transition-colors"
-        aria-label={copied ? "Copied" : "Copy"}
-      >
-        {copied ? (
-          <>
-            <svg className="h-3.5 w-3.5 text-green-400" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8l3.5 3.5 6.5-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Copied
-          </>
-        ) : (
-          <>
-            <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none">
-              <rect x="5" y="5" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M3 11V3h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Copy
-          </>
-        )}
-      </button>
-      <ScrollArea className="w-full" scrollbarGutter>
-        <pre className="min-w-max p-5 pt-10 text-[13px] leading-relaxed">
-          <code className="font-mono whitespace-pre text-[#e4e4e7]">{code}</code>
-        </pre>
-      </ScrollArea>
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-0 w-6 bg-linear-to-r from-[#0a0a0a] to-transparent opacity-0 transition-opacity md:opacity-100" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-0 w-10 bg-linear-to-l from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent md:opacity-100" />
+    <div className="docs-code-block">
+      <div className="code-toolbar">
+        <span className="min-w-0 truncate">{filename ?? language ?? "Code"}</span>
+        <CopyButton text={code} showLabel onCopied={onCopied} />
+      </div>
+      <pre tabIndex={0} aria-label={filename ? `${filename} source code` : "Source code"}>
+        <code>{code}</code>
+      </pre>
     </div>
   )
 }

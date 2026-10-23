@@ -1,0 +1,308 @@
+/* Modal shells only. Base UI owns focus, dismissal, scroll lock and gestures. */
+@layer components {
+  .modal-scrim-layout {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgb(0 0 0 / 0.32);
+    transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .dark .modal-scrim-layout {
+    background: rgb(0 0 0 / 0.48);
+  }
+  .modal-scrim-layout:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+  }
+  .modal-scrim-layout[data-ending-style] {
+    transition-duration: 160ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  .modal-surface-layout {
+    --modal-gap-top: max(16px, env(safe-area-inset-top, 0px));
+    --modal-gap-right: max(16px, env(safe-area-inset-right, 0px));
+    --modal-gap-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    --modal-gap-left: max(16px, env(safe-area-inset-left, 0px));
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 0;
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) + 6 * var(--component-unit, 0.0625rem))
+    );
+    box-shadow: 0 12px 32px rgb(0 0 0 / 0.12);
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    overflow-wrap: anywhere;
+    outline: none;
+  }
+  .dark .modal-surface-layout {
+    box-shadow: 0 12px 32px rgb(0 0 0 / 0.24);
+  }
+  .modal-popup-layout {
+    z-index: 50;
+    transition:
+      opacity 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      scale 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .modal-popup-layout:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    scale: 0.98;
+  }
+  .modal-popup-layout[data-ending-style] {
+    transition-duration: 160ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  .modal-centered-layout {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: calc(100% - var(--modal-gap-left) - var(--modal-gap-right));
+    max-height: min(
+      calc(100dvh - var(--modal-gap-top) - var(--modal-gap-bottom)),
+      calc(100% - var(--modal-gap-top) - var(--modal-gap-bottom))
+    );
+  }
+  .dialog-popup-layout {
+    display: flex;
+    flex-direction: column;
+    gap: calc(24 * var(--component-unit, 0.0625rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .dialog-fullscreen-layout {
+    position: fixed;
+    inset: var(--modal-gap-top) var(--modal-gap-right) var(--modal-gap-bottom) var(--modal-gap-left);
+  }
+  .dialog-popup-layout[data-padding="default"] {
+    padding: calc(24 * var(--component-unit, 0.0625rem));
+  }
+  .dialog-header-layout {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    padding: calc(24 * var(--component-unit, 0.0625rem)) calc(24 * var(--component-unit, 0.0625rem))
+      0;
+  }
+  .dialog-header-layout:has(~ [data-slot="dialog-close"]) {
+    padding-inline-end: calc(60 * var(--component-unit, 0.0625rem));
+  }
+  .dialog-body-layout {
+    flex: 1;
+    min-height: 0;
+    padding-inline: calc(24 * var(--component-unit, 0.0625rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  /* A supplied body owns scrolling; raw compositions fall back to the popup. */
+  .dialog-popup-layout:has(> .dialog-body-layout) {
+    overflow: hidden;
+  }
+  .dialog-footer-layout {
+    padding: 0 calc(24 * var(--component-unit, 0.0625rem))
+      calc(24 * var(--component-unit, 0.0625rem));
+  }
+  .dialog-popup-layout[data-padding="default"]
+    > :is(.dialog-header-layout, .dialog-body-layout, .dialog-footer-layout) {
+    padding: 0;
+  }
+  .dialog-popup-layout[data-padding="default"]
+    > .dialog-header-layout:has(~ [data-slot="dialog-close"]) {
+    padding-inline-end: calc(36 * var(--component-unit, 0.0625rem));
+  }
+  .modal-title-layout {
+    font-size: calc(18 * var(--component-unit, 0.0625rem));
+    line-height: calc(24 * var(--component-unit, 0.0625rem));
+    font-weight: 600;
+  }
+  .modal-description-layout {
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+  }
+  .modal-actions-layout {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column-reverse;
+    gap: calc(12 * var(--component-unit, 0.0625rem));
+  }
+  .modal-close-layout {
+    position: absolute;
+    top: calc(8 * var(--component-unit, 0.0625rem));
+    right: calc(8 * var(--component-unit, 0.0625rem));
+  }
+  .alert-dialog-popup-layout {
+    display: flex;
+    flex-direction: column;
+    gap: calc(24 * var(--component-unit, 0.0625rem));
+    max-width: calc(448 * var(--component-unit, 0.0625rem));
+    padding: calc(24 * var(--component-unit, 0.0625rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .alert-dialog-popup-layout[data-size="sm"] {
+    max-width: calc(320 * var(--component-unit, 0.0625rem));
+  }
+  .alert-dialog-header-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(8 * var(--component-unit, 0.0625rem));
+  }
+  .command-viewport-layout {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100dvh;
+    max-height: 100%;
+    padding: max(16px, 4dvh, env(safe-area-inset-top, 0px))
+      max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px))
+      max(16px, env(safe-area-inset-left, 0px));
+  }
+  .command-popup-layout {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 36rem;
+    max-height: min(26.25rem, 100%);
+    flex-shrink: 1;
+    overflow: hidden;
+  }
+  .drawer-viewport-layout {
+    height: 100dvh;
+    max-height: 100%;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+  }
+  .drawer-popup-layout {
+    position: absolute;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+      env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+    transform: translate(var(--drawer-swipe-movement-x, 0px), var(--drawer-swipe-movement-y, 0px));
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .drawer-popup-layout[data-side="right"] {
+    inset: 0 0 0 auto;
+    width: min(24rem, calc(100% - 16px));
+    height: 100%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    --drawer-exit-x: 100%;
+  }
+  .drawer-popup-layout[data-side="left"] {
+    inset: 0 auto 0 0;
+    width: min(24rem, calc(100% - 16px));
+    height: 100%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    --drawer-exit-x: -100%;
+  }
+  .drawer-popup-layout:is([data-side="top"], [data-side="bottom"]) {
+    inset-inline: 0;
+    max-height: min(calc(100dvh - 16px), calc(100% - 16px));
+    transform: translateY(
+      calc(var(--drawer-swipe-movement-y, 0px) + var(--drawer-snap-point-offset, 0px))
+    );
+  }
+  .drawer-popup-layout[data-side="bottom"] {
+    bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    --drawer-exit-y: 100%;
+  }
+  .drawer-popup-layout[data-side="top"] {
+    top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    --drawer-exit-y: -100%;
+  }
+  .drawer-popup-layout:is([data-starting-style], [data-ending-style]) {
+    transform: translate(var(--drawer-exit-x, 0px), var(--drawer-exit-y, 0px));
+  }
+  .drawer-popup-layout[data-ending-style] {
+    transition-duration: calc(160ms * var(--drawer-swipe-strength, 1));
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  .drawer-scrim-layout {
+    opacity: calc(1 - var(--drawer-swipe-progress, 0));
+  }
+  .drawer-scrim-layout:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+  }
+  .drawer-popup-layout[data-swiping],
+  .drawer-scrim-layout[data-swiping] {
+    transition: none;
+  }
+  .drawer-handle-layout {
+    flex-shrink: 0;
+    width: calc(40 * var(--component-unit, 0.0625rem));
+    height: calc(4 * var(--component-unit, 0.0625rem));
+    margin: calc(12 * var(--component-unit, 0.0625rem)) auto 0;
+    border-radius: 999px;
+  }
+  .drawer-header-layout {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    padding: calc(24 * var(--component-unit, 0.0625rem));
+  }
+  .drawer-footer-layout {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: calc(12 * var(--component-unit, 0.0625rem));
+    margin-top: auto;
+    padding: calc(24 * var(--component-unit, 0.0625rem));
+  }
+}
+@media (min-width: 40rem) {
+  @layer components {
+    .modal-actions-layout {
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+    .command-viewport-layout {
+      padding-top: max(16px, 10dvh, env(safe-area-inset-top, 0px));
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .modal-scrim-layout,
+  .modal-popup-layout,
+  .drawer-popup-layout {
+    transition: none;
+  }
+  .modal-popup-layout:is([data-starting-style], [data-ending-style]) {
+    scale: none;
+  }
+}
+/* Time Picker owns its measured mobile geometry, typography and scrolling. */
+.dialog-popup-layout.tp-dialog_content {
+  gap: 0;
+  padding: 0;
+  border-radius: calc(var(--radius) + 4px);
+  font-size: inherit;
+  line-height: inherit;
+  scale: none;
+}
+.tp-dialog_content .modal-title-layout {
+  font-size: var(--text-base, 1rem);
+  line-height: 1;
+  font-weight: 500;
+}
+.tp-dialog_content .modal-description-layout {
+  font-size: var(--text-sm, 0.875rem);
+  line-height: calc(1.25 / 0.875);
+}

@@ -1,0 +1,138 @@
+@layer components {
+  .badge-layout {
+    --badge-height: 22;
+    --badge-inset: 8;
+    --badge-type: 12;
+    --badge-bg: var(--primary);
+    --badge-fg: var(--primary-foreground);
+    --badge-border: transparent;
+    display: inline-flex;
+    box-sizing: border-box;
+    width: fit-content;
+    height: calc(var(--badge-height) * var(--component-unit, 0.0625rem));
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: calc(4 * var(--component-unit, 0.0625rem));
+    padding-inline: calc(var(--badge-inset) * var(--component-unit, 0.0625rem) - 1px);
+    border: 1px solid var(--badge-border);
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) - 2 * var(--component-unit, 0.0625rem))
+    );
+    background: var(--badge-bg);
+    color: var(--badge-fg);
+    font-size: calc(var(--badge-type) * var(--component-unit, 0.0625rem));
+    line-height: calc(16 * var(--component-unit, 0.0625rem));
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color 100ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .badge-sm-layout {
+    --badge-height: 18;
+    --badge-inset: 6;
+    --badge-type: 11;
+  }
+  .badge-lg-layout {
+    --badge-height: 26;
+    --badge-inset: 10;
+  }
+  .badge-pill-layout {
+    border-radius: 9999px;
+  }
+  .badge-layout > svg {
+    width: calc(12 * var(--component-unit, 0.0625rem));
+    height: calc(12 * var(--component-unit, 0.0625rem));
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+  .badge-secondary-layout {
+    --badge-bg: var(--muted);
+    --badge-fg: var(--foreground);
+  }
+  .badge-outline-layout {
+    --badge-bg: transparent;
+    --badge-fg: var(--foreground);
+    --badge-border: var(--border);
+  }
+  .badge-primary-outline-layout {
+    --badge-bg: transparent;
+    --badge-fg: var(--primary);
+    --badge-border: var(--primary);
+  }
+  .badge-ghost-layout {
+    --badge-bg: transparent;
+    --badge-fg: var(--foreground);
+  }
+  .badge-destructive-layout {
+    --badge-bg: var(--destructive);
+    --badge-fg: var(--destructive-foreground);
+  }
+  .badge-success-layout {
+    --badge-bg: var(--success);
+    --badge-fg: var(--success-foreground);
+  }
+  .badge-warning-layout {
+    --badge-bg: var(--warning);
+    --badge-fg: var(--warning-foreground);
+  }
+  .badge-info-layout {
+    --badge-bg: var(--info);
+    --badge-fg: var(--info-foreground);
+  }
+  .badge-success-outline-layout {
+    --badge-bg: color-mix(in srgb, var(--success) 10%, var(--card));
+    --badge-fg: var(--success);
+    --badge-border: var(--success);
+  }
+  .badge-warning-outline-layout {
+    --badge-bg: color-mix(in srgb, var(--warning) 10%, var(--card));
+    --badge-fg: var(--warning);
+    --badge-border: var(--warning);
+  }
+  .badge-info-outline-layout {
+    --badge-bg: color-mix(in srgb, var(--info) 10%, var(--card));
+    --badge-fg: var(--info);
+    --badge-border: var(--info);
+  }
+  .badge-primary-outline-layout:is([data-open], [data-popup-open], [data-state="open"]) {
+    background: var(--accent);
+  }
+  .badge-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .badge-layout:is(:disabled, [aria-disabled="true"], [data-disabled]) {
+    background: var(--muted);
+    color: var(--muted-foreground);
+    border-color: var(--border);
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    .badge-layout:is(a, button, [role="button"]):not(
+        :disabled,
+        [aria-disabled="true"],
+        [data-disabled]
+      ):hover {
+      filter: brightness(0.96);
+    }
+    .badge-ghost-layout:is(a, button, [role="button"]):not(
+        :disabled,
+        [aria-disabled="true"],
+        [data-disabled]
+      ):hover {
+      background: var(--muted);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .badge-layout {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .badge-layout:focus-visible {
+    outline-color: Highlight;
+  }
+}

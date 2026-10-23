@@ -45,6 +45,8 @@ npm install @base-ui/react class-variance-authority
 
 </CodeTabs>
 
+The CLI installs `styles/navigation.styles.css` alongside the component. For manual installation, copy that stylesheet from the registry and keep the component import. It uses the existing semantic theme variables.
+
 ## Usage
 
 ```tsx
@@ -62,11 +64,17 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 </Tabs>
 ```
 
+## System specimen
+
+Navigation and disclosure together, with controlled tabs, disclosure, page selection and the existing Menubar.
+
+<ComponentPreview name="tabs-system" />
+
 ## Examples
 
 ### Basic
 
-Standard tab navigation with the default pill variant.
+Standard tab navigation with a quiet neutral indicator.
 
 <ComponentPreview name="tabs-basic" />
 
@@ -112,4 +120,4 @@ Individual tabs can be disabled.
 
 | Prop      | Type                                 | Default     | Description                                                               |
 | --------- | ------------------------------------ | ----------- | ------------------------------------------------------------------------- |
-| `variant` | `"default" \| "underline" \| "line"` | `"default"` | Visual style of the tab list — pill/chip (default) or underline indicator |
+| `variant` | `"default" \| "underline" \| "line"` | `"default"` | Visual style of the tab list — neutral (default) or underline indicator |

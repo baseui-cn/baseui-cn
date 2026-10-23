@@ -4,13 +4,18 @@
   "label": "Form",
   "section": "Form",
   "description": "A Base UI form wrapper for submission handling, validation wiring, and consistent layout.",
-  "version": "1.3.3",
-  "baseUIVersion": "^1.6.0",
+  "version": "1.4.0",
+  "baseUIVersion": "1.9.0",
   "files": [
     {
       "path": "form.tsx",
       "type": "component",
-      "content": "\"use client\"\n\nimport { Form as FormPrimitive } from \"@base-ui/react/form\"\nimport type React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport function Form<TValues extends object = object>({\n  className,\n  ...props\n}: FormPrimitive.Props<TValues>): React.ReactElement {\n  return (\n    <FormPrimitive\n      className={cn(\"flex w-full flex-col gap-4\", className)}\n      data-slot=\"form\"\n      {...props}\n    />\n  )\n}\n\nexport { FormPrimitive }\n"
+      "content": "\"use client\"\n\nimport { Form as FormPrimitive } from \"@base-ui/react/form\"\nimport type React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nimport \"@/styles/form.styles.css\"\n\nexport function Form<TValues extends object = object>({\n  className,\n  ...props\n}: FormPrimitive.Props<TValues>): React.ReactElement {\n  return <FormPrimitive className={cn(\"form-layout\", className)} data-slot=\"form\" {...props} />\n}\n\nexport { FormPrimitive }\n"
+    },
+    {
+      "path": "styles/form.styles.css",
+      "type": "style",
+      "content": "/* Form layout only. Validation and control association remain with Base UI. */\n@layer components {\n  .form-layout,\n  .fieldset-layout {\n    display: flex;\n    flex-direction: column;\n    gap: calc(16 * var(--component-unit, 0.0625rem));\n    width: 100%;\n    min-width: 0;\n  }\n  .fieldset-layout {\n    margin: 0;\n    padding: 0;\n    border: 0;\n  }\n  .form-layout > .fieldset-layout + .fieldset-layout {\n    margin-block-start: calc(8 * var(--component-unit, 0.0625rem));\n  }\n  .field-layout {\n    display: flex;\n    flex-direction: column;\n    align-items: flex-start;\n    gap: calc(6 * var(--component-unit, 0.0625rem));\n    min-width: 0;\n    width: 100%;\n  }\n  .field-label-layout {\n    display: inline-flex;\n    align-items: center;\n    gap: calc(6 * var(--component-unit, 0.0625rem));\n    color: var(--foreground);\n    font-size: calc(14 * var(--component-unit, 0.0625rem));\n    line-height: calc(20 * var(--component-unit, 0.0625rem));\n    font-weight: 500;\n    overflow-wrap: anywhere;\n  }\n  .field-item-layout {\n    display: flex;\n    align-items: center;\n    gap: calc(8 * var(--component-unit, 0.0625rem));\n    min-width: 0;\n  }\n  .field-description-layout,\n  .field-error-layout {\n    margin: 0;\n    color: var(--muted-foreground);\n    font-size: calc(12 * var(--component-unit, 0.0625rem));\n    line-height: calc(18 * var(--component-unit, 0.0625rem));\n    overflow-wrap: anywhere;\n  }\n  .field-error-layout,\n  .field-label-layout [data-slot=\"field-required\"] {\n    color: var(--destructive);\n  }\n  .fieldset-legend-layout {\n    display: flex;\n    align-items: center;\n    gap: calc(8 * var(--component-unit, 0.0625rem));\n    width: 100%;\n    padding-block: calc(6 * var(--component-unit, 0.0625rem));\n    color: var(--foreground);\n    font-size: calc(16 * var(--component-unit, 0.0625rem));\n    line-height: calc(24 * var(--component-unit, 0.0625rem));\n    font-weight: 600;\n  }\n  .fieldset-legend-sm-layout {\n    font-size: calc(14 * var(--component-unit, 0.0625rem));\n    line-height: calc(20 * var(--component-unit, 0.0625rem));\n    padding-block: calc(4 * var(--component-unit, 0.0625rem));\n  }\n  .fieldset-legend-lg-layout {\n    font-size: calc(18 * var(--component-unit, 0.0625rem));\n    line-height: calc(26 * var(--component-unit, 0.0625rem));\n    padding-block: calc(10 * var(--component-unit, 0.0625rem));\n  }\n  .fieldset-legend-border-layout {\n    border-block-end: 1px solid var(--border);\n  }\n  :is(.field-layout, .fieldset-layout)[data-disabled]\n    :is(\n      .field-label-layout,\n      .field-description-layout,\n      .field-error-layout,\n      .fieldset-legend-layout\n    ),\n  .field-label-layout[data-disabled] {\n    color: var(--muted-foreground);\n  }\n}\n"
     }
   ],
   "dependencies": {

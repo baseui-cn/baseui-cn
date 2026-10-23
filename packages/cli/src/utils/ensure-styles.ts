@@ -3,104 +3,30 @@ import fs from "fs-extra"
 import chalk from "chalk"
 import ora from "ora"
 import type { Config } from "./config"
+import {
+  validateThemeOptions,
+  type ThemeOptions,
+  type ColorPreset,
+  type RadiusPreset,
+} from "./theme-options"
 
 const BASEUI_CN_MARKER = "/* baseui-cn theme */"
 
-// ── Required variables for each CSS block ─────────────────────────────
-
-const REQUIRED_THEME_INLINE: Record<string, string> = {
-  "--color-background": "var(--background)",
-  "--color-foreground": "var(--foreground)",
-  "--color-card": "var(--card)",
-  "--color-card-foreground": "var(--card-foreground)",
-  "--color-popover": "var(--popover)",
-  "--color-popover-foreground": "var(--popover-foreground)",
-  "--color-primary": "var(--primary)",
-  "--color-primary-foreground": "var(--primary-foreground)",
-  "--color-secondary": "var(--secondary)",
-  "--color-secondary-foreground": "var(--secondary-foreground)",
-  "--color-muted": "var(--muted)",
-  "--color-muted-foreground": "var(--muted-foreground)",
-  "--color-accent": "var(--accent)",
-  "--color-accent-foreground": "var(--accent-foreground)",
-  "--color-destructive": "var(--destructive)",
-  "--color-destructive-foreground": "var(--destructive-foreground)",
-  "--color-success": "var(--success)",
-  "--color-success-foreground": "var(--success-foreground)",
-  "--color-warning": "var(--warning)",
-  "--color-warning-foreground": "var(--warning-foreground)",
-  "--color-info": "var(--info)",
-  "--color-info-foreground": "var(--info-foreground)",
-  "--color-border": "var(--border)",
-  "--color-input": "var(--input)",
-  "--color-ring": "var(--ring)",
-  "--radius-sm": "calc(var(--radius) - 4px)",
-  "--radius-md": "calc(var(--radius) - 2px)",
-  "--radius-lg": "var(--radius)",
-  "--radius-xl": "calc(var(--radius) + 4px)",
-}
-
-const REQUIRED_ROOT_VARS: Record<string, string> = {
-  "--background": "oklch(1 0 0)",
-  "--foreground": "oklch(0.141 0 0)",
-  "--card": "oklch(1 0 0)",
-  "--card-foreground": "oklch(0.141 0 0)",
-  "--popover": "oklch(1 0 0)",
-  "--popover-foreground": "oklch(0.141 0 0)",
-  "--primary": "oklch(0.21 0 0)",
-  "--primary-foreground": "oklch(0.985 0 0)",
-  "--secondary": "oklch(0.967 0 0)",
-  "--secondary-foreground": "oklch(0.21 0 0)",
-  "--muted": "oklch(0.967 0 0)",
-  "--muted-foreground": "oklch(0.552 0 0)",
-  "--accent": "oklch(0.967 0 0)",
-  "--accent-foreground": "oklch(0.21 0 0)",
-  "--destructive": "oklch(0.577 0.245 27.325)",
-  "--destructive-foreground": "oklch(0.985 0 0)",
-  "--success": "oklch(0.627 0.154 144.33)",
-  "--success-foreground": "oklch(0.985 0 0)",
-  "--warning": "oklch(0.769 0.188 70.08)",
-  "--warning-foreground": "oklch(0.21 0 0)",
-  "--info": "oklch(0.623 0.188 259.81)",
-  "--info-foreground": "oklch(0.985 0 0)",
-  "--border": "oklch(0.922 0 0)",
-  "--input": "oklch(0.922 0 0)",
-  "--ring": "oklch(0.708 0 0)",
-  "--radius": "0.5rem",
-}
-
-const REQUIRED_DARK_VARS: Record<string, string> = {
-  "--background": "oklch(0.141 0 0)",
-  "--foreground": "oklch(0.985 0 0)",
-  "--card": "oklch(0.141 0 0)",
-  "--card-foreground": "oklch(0.985 0 0)",
-  "--popover": "oklch(0.141 0 0)",
-  "--popover-foreground": "oklch(0.985 0 0)",
-  "--primary": "oklch(0.985 0 0)",
-  "--primary-foreground": "oklch(0.21 0 0)",
-  "--secondary": "oklch(0.269 0 0)",
-  "--secondary-foreground": "oklch(0.985 0 0)",
-  "--muted": "oklch(0.269 0 0)",
-  "--muted-foreground": "oklch(0.708 0 0)",
-  "--accent": "oklch(0.269 0 0)",
-  "--accent-foreground": "oklch(0.985 0 0)",
-  "--destructive": "oklch(0.396 0.141 25.723)",
-  "--destructive-foreground": "oklch(0.985 0 0)",
-  "--success": "oklch(0.525 0.118 145.16)",
-  "--success-foreground": "oklch(0.985 0 0)",
-  "--warning": "oklch(0.645 0.149 69.84)",
-  "--warning-foreground": "oklch(0.21 0 0)",
-  "--info": "oklch(0.546 0.147 258.34)",
-  "--info-foreground": "oklch(0.985 0 0)",
-  "--border": "oklch(1 0 0 / 10%)",
-  "--input": "oklch(1 0 0 / 15%)",
-  "--ring": "oklch(0.552 0 0)",
-}
+import {
+  themeInline as REQUIRED_THEME_INLINE,
+  themeRoot as REQUIRED_ROOT_VARS,
+  themeDark as REQUIRED_DARK_VARS,
+  themeStrategy,
+  themeFoundation,
+  themePresets,
+} from "./theme.generated"
 
 // ── Full blocks (used only when creating from scratch) ────────────────
 
 function buildBlock(selector: string, vars: Record<string, string>): string {
-  const lines = Object.entries(vars).map(([k, v]) => `  ${k}: ${v};`).join("\n")
+  const lines = Object.entries(vars)
+    .map(([k, v]) => `  ${k}: ${v};`)
+    .join("\n")
   return `${selector} {\n${lines}\n}`
 }
 
@@ -122,6 +48,9 @@ const UTILITIES_BLOCK = `@layer utilities {
 function extractVarNames(blockContent: string): Set<string> {
   const vars = new Set<string>()
   const regex = /(--[\w-]+)\s*:/g
+  blockContent = blockContent
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, "")
   let m: RegExpExecArray | null
   while ((m = regex.exec(blockContent)) !== null) {
     if (m[1]) {
@@ -131,38 +60,116 @@ function extractVarNames(blockContent: string): Set<string> {
   return vars
 }
 
-/**
- * Remove any previously-appended baseui-cn injection block.
- * Our marker is always appended at the end, so we strip from there onward.
+/** Find real blocks, including indented/layered and grouped selectors.
+ * Ignore comments, quoted strings and their braces. Missing defaults go into
+ * the first matching block; values in every existing matching block win.
  */
-function stripPreviousInjection(css: string): string {
-  const idx = css.indexOf(BASEUI_CN_MARKER)
-  if (idx === -1) return css
-  return css.slice(0, idx).trimEnd() + "\n"
+function findBlocks(css: string, selector: string): Array<{ start: number; end: number }> {
+  const blocks: Array<{ start: number; end: number }> = []
+  const stack: Array<{ start: number; matches: boolean }> = []
+  let headerStart = 0
+  let quote = ""
+  let comment = false
+  for (let i = 0; i < css.length; i++) {
+    const ch = css[i]
+    if (comment) {
+      if (ch === "*" && css[i + 1] === "/") {
+        comment = false
+        i++
+      }
+      continue
+    }
+    if (quote) {
+      if (ch === "\\") {
+        i++
+        continue
+      }
+      if (ch === quote) quote = ""
+      continue
+    }
+    if (ch === "/" && css[i + 1] === "*") {
+      comment = true
+      i++
+      continue
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch
+      continue
+    }
+    if (ch === "{") {
+      const header = css
+        .slice(headerStart, i)
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+      const matches = header.split(",").some((part) => part.trim() === selector)
+      stack.push({ start: i + 1, matches })
+      headerStart = i + 1
+    } else if (ch === "}") {
+      const block = stack.pop()
+      if (block?.matches) blocks.push({ start: block.start, end: i })
+      headerStart = i + 1
+    } else if (ch === ";") headerStart = i + 1
+  }
+  return blocks.sort((a, b) => a.start - b.start)
 }
 
-/**
- * Find a CSS block matching `regex` and add any missing variables from
- * `required` into it. Returns the modified CSS and whether it changed.
- */
 function mergeVarsIntoBlock(
   css: string,
-  blockRegex: RegExp,
-  required: Record<string, string>,
-): { css: string; changed: boolean } {
-  const match = css.match(blockRegex)
-  if (!match) return { css, changed: false }
+  selector: string,
+  required: Record<string, string>
+): { css: string; changed: boolean; found: boolean } {
+  const blocks = findBlocks(css, selector)
+  const first = blocks[0]
+  if (!first) return { css, changed: false, found: false }
+  const existing = new Set(
+    blocks.flatMap(({ start, end }) => [...extractVarNames(css.slice(start, end))])
+  )
+  const missing = Object.entries(required).filter(([name]) => !existing.has(name))
+  if (!missing.length) return { css, changed: false, found: true }
+  const lines = missing.map(([name, value]) => `  ${name}: ${value};`).join("\n")
+  return {
+    css: css.slice(0, first.end) + "\n" + lines + "\n" + css.slice(first.end),
+    changed: true,
+    found: true,
+  }
+}
 
-  const [fullMatch, content] = match
-  const existing = extractVarNames(content ?? "")
-  const missing = Object.entries(required).filter(([n]) => !existing.has(n))
-
-  if (!missing.length) return { css, changed: false }
-
-  const lines = missing.map(([n, v]) => `  ${n}: ${v};`).join("\n")
-  const newBlock = fullMatch.replace(/\}\s*$/, `${lines}\n}`)
-
-  return { css: css.replace(fullMatch, newBlock), changed: true }
+// Keep comments/strings out of declaration matching while retaining positions.
+function maskCSS(css: string) {
+  return css.replace(/\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, (value) =>
+    value.replace(/[^\n]/g, " ")
+  )
+}
+export async function detectExistingTheme(globalCss: string) {
+  if (!(await fs.pathExists(path.resolve(globalCss)))) return { color: false, radius: false }
+  const css = maskCSS(await fs.readFile(path.resolve(globalCss), "utf8"))
+  return {
+    color: /--(?:primary|primary-foreground|accent|accent-foreground|ring)\s*:/.test(css),
+    radius: /--radius\s*:/.test(css),
+  }
+}
+function replaceRequestedVars(css: string, selector: string, requested: Record<string, string>) {
+  for (const block of findBlocks(css, selector).reverse()) {
+    const body = css.slice(block.start, block.end)
+    const masked = maskCSS(body)
+    const edits: { start: number; end: number; value: string }[] = []
+    for (const match of masked.matchAll(/(--[\w-]+)\s*:\s*([^;{}]+)(?=;|$)/g)) {
+      const value = requested[match[1]!]
+      if (value === undefined) continue
+      const start = match.index! + match[0].indexOf(":") + 1
+      const end = match.index! + match[0].length
+      const priority = /!\s*important\s*$/i.test(masked.slice(start, end)) ? " !important" : ""
+      // Preserve declaration formatting when its value is already correct.
+      if (body.slice(start, end).trim() === value + priority) continue
+      edits.push({ start, end, value: ` ${value}${priority}` })
+    }
+    let updated = body
+    for (const edit of edits.reverse())
+      updated = updated.slice(0, edit.start) + edit.value + updated.slice(edit.end)
+    css = css.slice(0, block.start) + updated + css.slice(block.end)
+  }
+  return css
 }
 
 // ── Main entry point ──────────────────────────────────────────────────
@@ -178,9 +185,30 @@ function mergeVarsIntoBlock(
  */
 export async function ensureThemeCSS(
   config: Config,
-  options: { silent?: boolean } = {},
+  options: ThemeOptions & { silent?: boolean } = {}
 ): Promise<boolean> {
-  if (!config.tailwind) return false
+  validateThemeOptions(options)
+  if (!config.tailwind) {
+    if (options.color || options.radius)
+      throw new Error(
+        "Theme flags require theme CSS initialization. Enable tailwind in baseui-cn.json and omit --skip-tailwind."
+      )
+    return false
+  }
+
+  const color = themePresets.colors[(options.color ?? themePresets.defaultColor) as ColorPreset]
+  const radius =
+    themePresets.radii[(options.radius ?? themePresets.defaultRadius) as RadiusPreset].value
+  const rootVars = { ...REQUIRED_ROOT_VARS, ...color.light, "--radius": radius }
+  const darkVars = { ...REQUIRED_DARK_VARS, ...color.dark }
+  const requestedRoot: Record<string, string> = {
+    ...(options.color ? color.light : {}),
+    ...(options.radius ? { "--radius": radius } : {}),
+  }
+  const requestedDark: Record<string, string> = {
+    ...(options.color ? color.dark : {}),
+    ...(options.radius ? { "--radius": radius } : {}),
+  }
 
   const cssPath = path.resolve(config.globalCss)
   const spinner = options.silent ? null : ora("Checking theme styles...").start()
@@ -188,29 +216,40 @@ export async function ensureThemeCSS(
   if (await fs.pathExists(cssPath)) {
     let css = await fs.readFile(cssPath, "utf-8")
     let changed = false
+    // An existing root semantic override may intentionally cover both themes.
+    // Do not introduce a dark default that would shadow it on .dark roots.
+    const existingRootNames = new Set(
+      findBlocks(css, ":root").flatMap(({ start, end }) => [
+        ...extractVarNames(css.slice(start, end)),
+      ])
+    )
+    const darkDefaults = Object.fromEntries(
+      Object.entries({ ...darkVars, ...requestedDark }).filter(
+        ([name]) => !existingRootNames.has(name) || Object.hasOwn(requestedDark, name)
+      )
+    )
 
-    // ── Step 1: Remove any previous baseui-cn injection ───────────
-    const stripped = stripPreviousInjection(css)
-    if (stripped !== css) {
-      css = stripped
+    // Preserve all existing CSS, including customized legacy injection blocks.
+    if (!/@custom-variant\s+dark\b/.test(css.replace(/\/\*[\s\S]*?\*\//g, ""))) {
+      css += "\n\n" + themeStrategy
+      changed = true
+    }
+    if (!css.includes("/* baseui-cn foundation */")) {
+      css += "\n\n" + themeFoundation
       changed = true
     }
 
     // ── Step 2: @theme inline — merge or create ───────────────────
-    const themeResult = mergeVarsIntoBlock(
-      css,
-      /@theme\s+inline\s*\{([^}]*)\}/,
-      REQUIRED_THEME_INLINE,
-    )
+    const themeResult = mergeVarsIntoBlock(css, "@theme inline", REQUIRED_THEME_INLINE)
     if (themeResult.changed) {
       css = themeResult.css
       changed = true
-    } else if (!/@theme\s+inline/.test(css)) {
+    } else if (!themeResult.found) {
       const themeBlock = buildBlock("@theme inline", REQUIRED_THEME_INLINE)
       if (/(?:@import\s+['"]tailwindcss['"]|@tailwind\s+base)/.test(css)) {
         css = css.replace(
           /(@import\s+['"]tailwindcss['"];?\n?|@tailwind\s+base;?\n?)/,
-          `$1\n${themeBlock}\n`,
+          `$1\n${themeBlock}\n`
         )
       } else {
         css = themeBlock + "\n\n" + css
@@ -219,31 +258,23 @@ export async function ensureThemeCSS(
     }
 
     // ── Step 3: :root — merge or create ───────────────────────────
-    // Use ^ anchor with multiline to match only top-level :root
-    const rootResult = mergeVarsIntoBlock(
-      css,
-      /^:root\s*\{([^}]*)\}/m,
-      REQUIRED_ROOT_VARS,
-    )
+    // Respect existing blocks inside cascade layers as well as top-level CSS.
+    const rootResult = mergeVarsIntoBlock(css, ":root", rootVars)
     if (rootResult.changed) {
       css = rootResult.css
       changed = true
-    } else if (!/^:root\s*\{/m.test(css)) {
-      css += "\n\n" + buildBlock(":root", REQUIRED_ROOT_VARS)
+    } else if (!rootResult.found) {
+      css += "\n\n" + buildBlock(":root", rootVars)
       changed = true
     }
 
     // ── Step 4: .dark — merge or create ───────────────────────────
-    const darkResult = mergeVarsIntoBlock(
-      css,
-      /^\.dark\s*\{([^}]*)\}/m,
-      REQUIRED_DARK_VARS,
-    )
+    const darkResult = mergeVarsIntoBlock(css, ".dark", darkDefaults)
     if (darkResult.changed) {
       css = darkResult.css
       changed = true
-    } else if (!/^\.dark\s*\{/m.test(css)) {
-      css += "\n\n" + buildBlock(".dark", REQUIRED_DARK_VARS)
+    } else if (!darkResult.found) {
+      css += "\n\n" + buildBlock(".dark", darkDefaults)
       changed = true
     }
 
@@ -252,6 +283,11 @@ export async function ensureThemeCSS(
       css += "\n\n" + UTILITIES_BLOCK
       changed = true
     }
+
+    const beforeSelection = css
+    css = replaceRequestedVars(css, ":root", requestedRoot)
+    css = replaceRequestedVars(css, ".dark", requestedDark)
+    if (css !== beforeSelection) changed = true
 
     if (changed) {
       await fs.writeFile(cssPath, css)
@@ -268,13 +304,17 @@ export async function ensureThemeCSS(
   const fresh = [
     '@import "tailwindcss";',
     "",
+    themeStrategy,
+    "",
     buildBlock("@theme inline", REQUIRED_THEME_INLINE),
     "",
-    buildBlock(":root", REQUIRED_ROOT_VARS),
+    buildBlock(":root", rootVars),
     "",
-    buildBlock(".dark", REQUIRED_DARK_VARS),
+    buildBlock(".dark", { ...darkVars, ...requestedDark }),
     "",
     UTILITIES_BLOCK,
+    "",
+    themeFoundation,
     "",
   ].join("\n")
   await fs.writeFile(cssPath, fresh)

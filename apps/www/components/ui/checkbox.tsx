@@ -4,6 +4,8 @@ import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox"
 import type React from "react"
 import { cn } from "@/lib/utils"
 
+import "@/styles/choice-control.styles.css"
+
 export function Checkbox({
   className,
   ...props
@@ -11,21 +13,33 @@ export function Checkbox({
   return (
     <CheckboxPrimitive.Root
       className={cn(
-        "relative inline-flex size-4.5 shrink-0 items-center justify-center rounded-[.25rem] border border-input bg-background not-dark:bg-clip-padding shadow-xs/5 outline-none ring-ring transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[3px] not-data-disabled:not-data-checked:not-aria-invalid:before:shadow-[0_1px_--theme(--color-black/4%)] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-background aria-invalid:border-destructive/36 focus-visible:aria-invalid:border-destructive/64 focus-visible:aria-invalid:ring-destructive/48 data-disabled:cursor-not-allowed data-disabled:opacity-64 sm:size-4 dark:not-data-checked:bg-input/32 dark:aria-invalid:ring-destructive/24 dark:not-data-disabled:not-data-checked:not-aria-invalid:before:shadow-[0_-1px_--theme(--color-white/6%)] [[data-disabled],[data-checked],[aria-invalid]]:shadow-none",
+        "checkbox-layout [@media(hover:hover)]:not-data-[disabled]:not-data-[checked]:not-data-[readonly]:hover:bg-muted border",
+        "border-input bg-background text-foreground focus-visible:outline-ring aria-invalid:data-[checked]:border-destructive",
+        "aria-invalid:data-[indeterminate]:border-destructive data-[disabled]:aria-invalid:border-border",
+        "data-[disabled]:aria-invalid:data-[checked]:border-border data-[disabled]:aria-invalid:data-[indeterminate]:border-border",
+        "data-[disabled]:border-border data-[disabled]:bg-muted data-[disabled]:text-muted-foreground aria-invalid:border-destructive",
+        "data-[invalid]:border-destructive data-[checked]:border-accent-foreground data-[checked]:bg-accent",
+        "data-[checked]:text-accent-foreground data-[indeterminate]:border-accent-foreground data-[indeterminate]:bg-accent",
+        "data-[indeterminate]:text-accent-foreground data-[checked]:data-[disabled]:border-border",
+        "data-[checked]:data-[disabled]:bg-muted data-[checked]:data-[disabled]:text-muted-foreground",
+        "data-[indeterminate]:data-[disabled]:border-border data-[indeterminate]:data-[disabled]:bg-muted",
+        "data-[indeterminate]:data-[disabled]:text-muted-foreground data-[invalid]:data-[checked]:border-destructive",
+        "data-[invalid]:data-[disabled]:border-border",
+
         className
       )}
       data-slot="checkbox"
       {...props}
     >
       <CheckboxPrimitive.Indicator
-        className="absolute -inset-px flex items-center justify-center rounded-[.25rem] text-primary-foreground data-unchecked:hidden data-checked:bg-primary data-indeterminate:text-foreground"
+        className="checkbox-indicator-layout"
         data-slot="checkbox-indicator"
         render={(props: React.ComponentProps<"span">, state: CheckboxPrimitive.Indicator.State) => (
           <span {...props}>
             {state.indeterminate ? (
               <svg
                 aria-hidden="true"
-                className="size-3.5 sm:size-3"
+                className="checkbox-mark-layout"
                 fill="none"
                 height="24"
                 stroke="currentColor"
@@ -41,7 +55,7 @@ export function Checkbox({
             ) : (
               <svg
                 aria-hidden="true"
-                className="size-3.5 sm:size-3"
+                className="checkbox-mark-layout"
                 fill="none"
                 height="24"
                 stroke="currentColor"

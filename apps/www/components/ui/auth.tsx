@@ -18,9 +18,12 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Form } from "@/components/ui/form"
+
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/toast"
 import { cn } from "@/lib/utils"
+
+import "@/styles/blocks.styles.css"
 
 export type AuthBlockVariant = "default" | "bordered" | "elevated" | "minimal"
 export type AuthBlockSize = "sm" | "md" | "lg"
@@ -128,7 +131,7 @@ const authSizeConfig = {
     title: "text-xl",
     input: "sm" as const,
     button: "sm" as const,
-    buttonClassName: "h-7.5 px-[calc(--spacing(2.5)-1px)]",
+    buttonClassName: "",
     iconButton: "icon-xs" as const,
     contentGap: "gap-4",
     footer: "text-sm",
@@ -139,9 +142,9 @@ const authSizeConfig = {
     width: "max-w-md",
     title: "text-2xl",
     input: "default" as const,
-    button: "sm" as const,
-    buttonClassName: "h-8.5 px-[calc(--spacing(3)-1px)]",
-    iconButton: "icon-xs" as const,
+    button: "default" as const,
+    buttonClassName: "",
+    iconButton: "icon-sm" as const,
     contentGap: "gap-5",
     footer: "text-sm",
     socialLabel: "Continue with",
@@ -151,8 +154,8 @@ const authSizeConfig = {
     width: "max-w-lg",
     title: "text-3xl",
     input: "lg" as const,
-    button: "default" as const,
-    buttonClassName: "h-9.5 px-[calc(--spacing(3.5)-1px)]",
+    button: "lg" as const,
+    buttonClassName: "",
     iconButton: "icon-sm" as const,
     contentGap: "gap-6",
     footer: "text-base",
@@ -203,7 +206,7 @@ function useEntryAnimation(animation: AuthBlockAnimation) {
   }, [animation])
 
   return cn(
-    "transition-all duration-300 ease-out motion-reduce:transition-none",
+    "auth-entry-layout transition-[opacity,transform] duration-220 ease-out motion-reduce:transition-none",
     animation === "fade" && (entered ? "opacity-100" : "opacity-0"),
     animation === "slide-up" && (entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"),
     animation === "scale" && (entered ? "scale-100 opacity-100" : "scale-[0.98] opacity-0")
@@ -235,7 +238,7 @@ function GoogleIcon() {
 
 function PasswordRules({ password }: { password: string }) {
   return (
-    <div className="rounded-lg border border-border bg-muted/40 p-3">
+    <div className="rounded-[var(--radius)] border border-border p-3">
       <div className="mb-2 flex items-center gap-2 text-sm font-medium text-foreground">
         <Sparkles className="size-4 text-primary" />
         Password requirements
@@ -249,7 +252,7 @@ function PasswordRules({ password }: { password: string }) {
               key={rule.label}
               className={cn(
                 "flex items-center gap-2 text-sm transition-colors",
-              satisfied ? "text-foreground" : "text-muted-foreground"
+                satisfied ? "text-foreground" : "text-muted-foreground"
               )}
             >
               {satisfied ? (
@@ -326,7 +329,7 @@ function SocialActions({
           </Button>
         ) : null}
       </div>
-      <div className="flex items-center gap-3 text-xs uppercase tracking-[0.24em] text-muted-foreground">
+      <div className="flex items-center gap-3 text-xs text-muted-foreground">
         <div className="h-px flex-1 bg-border" />
         <span>Credentials</span>
         <div className="h-px flex-1 bg-border" />
@@ -358,10 +361,10 @@ function AuthCardShell({
   const motionClassName = useEntryAnimation(animation)
 
   return (
-    <div className={cn("w-full", config.width, motionClassName, className)}>
-      <Card variant={authCardVariants[variant]} className="w-full">
+    <div className={cn("auth-block-layout w-full", config.width, motionClassName, className)}>
+      <Card variant={authCardVariants[variant]} size={config.card} className="w-full">
         <CardHeader className="gap-2">
-          <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <div className="flex size-10 items-center justify-center rounded-[var(--radius)] bg-muted text-muted-foreground">
             <Sparkles className="size-4" />
           </div>
           <CardTitle className={config.title}>{title}</CardTitle>
@@ -390,7 +393,7 @@ async function resolveLoginSubmit(onSubmit: LoginBlockProps["onSubmit"], values:
   await sleep(900)
   return {
     status: "success" as const,
-    message: "The login block is ready. Replace the demo callback with your auth action.",
+    message: "Sign-in demo completed.",
   }
 }
 
@@ -400,7 +403,7 @@ async function resolveSignupSubmit(onSubmit: SignupBlockProps["onSubmit"], value
   await sleep(900)
   return {
     status: "success" as const,
-    message: "Your signup block is wired. Plug in your signup action when you're ready.",
+    message: "Account creation demo completed.",
   }
 }
 
@@ -446,7 +449,7 @@ export function LoginBlock({
   forgotPasswordHref = "/forgot-password",
   className,
   title = "Welcome back",
-  description = "Sign in with Base UI form primitives and swap in your real auth action when you're ready.",
+  description = "Enter your details to sign in to your account.",
   variant = "default",
   size = "md",
   animation = "fade",
@@ -532,13 +535,13 @@ export function LoginBlock({
           validate={(value) => validateLoginField("email", String(value ?? ""))}
         >
           <FieldLabel>Email</FieldLabel>
-            <Input
-              name="email"
-              type="email"
-              size={config.input}
-              placeholder="you@example.com"
-              autoComplete="email"
-              disabled={loading}
+          <Input
+            name="email"
+            type="email"
+            size={config.input}
+            placeholder="you@example.com"
+            autoComplete="email"
+            disabled={loading}
             onChange={() => {
               setFormError(undefined)
               setErrors((current) => ({ ...current, email: undefined }))
@@ -563,7 +566,7 @@ export function LoginBlock({
               </a>
             ) : null}
           </div>
-          <div className="relative w-full">
+          <div className="auth-password-layout relative w-full">
             <Input
               name="password"
               type={showPassword ? "text" : "password"}
@@ -571,7 +574,7 @@ export function LoginBlock({
               placeholder="Enter your password"
               autoComplete="current-password"
               disabled={loading}
-              className="pr-11"
+              className="auth-password-input-layout"
               onChange={() => {
                 setFormError(undefined)
                 setErrors((current) => ({ ...current, password: undefined }))
@@ -581,7 +584,7 @@ export function LoginBlock({
               type="button"
               variant="ghost"
               size={config.iconButton}
-              className="absolute top-1/2 right-1 -translate-y-1/2"
+              className="auth-password-toggle-layout absolute top-1/2 right-1 -translate-y-1/2"
               onClick={() => setShowPassword((current) => !current)}
               disabled={loading}
               aria-label={showPassword ? "Hide password" : "Show password"}
@@ -614,7 +617,7 @@ export function SignupBlock({
   privacyHref = "/privacy",
   className,
   title = "Create your account",
-  description = "Ship signup with Base UI form primitives, inline validation, alert errors, and success toasts.",
+  description = "Enter your details to create an account.",
   variant = "default",
   size = "md",
   animation = "fade",
@@ -699,9 +702,7 @@ export function SignupBlock({
             title: successToast?.title ?? "Account created",
             description:
               successToast?.description ??
-              (result?.status === "success"
-                ? result.message
-                : "The signup block is ready for your production create-account action."),
+              (result?.status === "success" ? result.message : "Your account is ready."),
             type: "success",
             timeout: successToast?.timeout ?? 3500,
           })
@@ -758,7 +759,7 @@ export function SignupBlock({
           validate={(value, formValues) => validateSignupField("password", value, formValues)}
         >
           <FieldLabel>Password</FieldLabel>
-          <div className="relative w-full">
+          <div className="auth-password-layout relative w-full">
             <Input
               name="password"
               type={showPassword ? "text" : "password"}
@@ -766,7 +767,7 @@ export function SignupBlock({
               placeholder="Create a strong password"
               autoComplete="new-password"
               disabled={loading}
-              className="pr-11"
+              className="auth-password-input-layout"
               onChange={(event) => {
                 const value = event.currentTarget.value
                 setFormError(undefined)
@@ -779,7 +780,7 @@ export function SignupBlock({
               type="button"
               variant="ghost"
               size={config.iconButton}
-              className="absolute top-1/2 right-1 -translate-y-1/2"
+              className="auth-password-toggle-layout absolute top-1/2 right-1 -translate-y-1/2"
               onClick={() => setShowPassword((current) => !current)}
               disabled={loading}
               aria-label={showPassword ? "Hide password" : "Show password"}
@@ -803,7 +804,7 @@ export function SignupBlock({
           }
         >
           <FieldLabel>Confirm password</FieldLabel>
-          <div className="relative w-full">
+          <div className="auth-password-layout relative w-full">
             <Input
               name="confirmPassword"
               type={showConfirmPassword ? "text" : "password"}
@@ -811,7 +812,7 @@ export function SignupBlock({
               placeholder="Repeat your password"
               autoComplete="new-password"
               disabled={loading}
-              className="pr-11"
+              className="auth-password-input-layout"
               onChange={(event) => {
                 const value = event.currentTarget.value
                 setFormError(undefined)
@@ -823,7 +824,7 @@ export function SignupBlock({
               type="button"
               variant="ghost"
               size={config.iconButton}
-              className="absolute top-1/2 right-1 -translate-y-1/2"
+              className="auth-password-toggle-layout absolute top-1/2 right-1 -translate-y-1/2"
               onClick={() => setShowConfirmPassword((current) => !current)}
               disabled={loading}
               aria-label={
@@ -841,7 +842,7 @@ export function SignupBlock({
           className="gap-3"
           validate={(value, formValues) => validateSignupField("terms", value, formValues)}
         >
-          <label className="flex items-start gap-3 rounded-lg border border-border bg-muted/30 p-3">
+          <label className="flex items-start gap-3 rounded-[var(--radius)] border border-border p-3">
             <Checkbox
               name="terms"
               checked={signupValues.terms}
@@ -866,7 +867,7 @@ export function SignupBlock({
                 .
               </div>
               <p className="text-sm text-muted-foreground">
-                This keeps the block production-shaped without adding another form library.
+                Review the terms and privacy policy before creating your account.
               </p>
             </div>
           </label>

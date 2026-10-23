@@ -1,0 +1,156 @@
+@layer components {
+  .number-field-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 0;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+  }
+  /* Unlike text-only shells, steppers may be disabled at a boundary while the input stays enabled. */
+  .number-group-layout {
+    align-items: center;
+    border: 1px solid var(--input);
+    background: var(--card);
+    transition:
+      border-color 100ms cubic-bezier(0.2, 0, 0, 1),
+      background-color 100ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .number-group-layout:has(input:read-only) {
+    background: var(--muted);
+  }
+  .number-group-layout:is([data-invalid], :has(input[aria-invalid="true"])):not([data-disabled]) {
+    border-color: var(--destructive);
+  }
+  .number-group-layout:has(input:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .number-group-layout[data-disabled] {
+    background: var(--muted);
+    border-color: var(--border);
+    color: var(--muted-foreground);
+  }
+  .number-group-layout.number-sm-layout {
+    --control-height: 32;
+    --control-inset: 10;
+    --control-type: 13;
+    --control-leading: 18;
+  }
+  .number-group-layout.number-lg-layout {
+    --control-height: 40;
+    --control-inset: 14;
+  }
+  .number-input-layout {
+    flex: 1;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .number-stepper-layout {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: stretch;
+    flex-shrink: 0;
+    width: calc(var(--control-height) * var(--component-unit, 0.0625rem) - 2px);
+    padding: 0;
+    border: 0;
+    border-radius: max(0px, calc(var(--control-radius, var(--radius)) - 1px));
+    background: transparent;
+    color: var(--foreground);
+    cursor: pointer;
+    transition: background-color 100ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .number-stepper-layout svg {
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    pointer-events: none;
+  }
+  .number-stepper-layout:not(:disabled, [data-disabled], [data-readonly]):active {
+    background: var(--secondary);
+  }
+  .number-stepper-layout:is(:disabled, [data-disabled], [data-readonly]) {
+    color: var(--muted-foreground);
+    cursor: not-allowed;
+  }
+  .number-group-layout[data-readonly] .number-stepper-layout {
+    cursor: default;
+  }
+  .number-stepper-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -3px;
+    z-index: 1;
+  }
+  .number-scrub-layout {
+    display: flex;
+    cursor: ew-resize;
+  }
+  .number-scrub-layout:is([data-disabled], [data-readonly]) label {
+    cursor: default;
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    .number-group-layout:not(
+        [data-disabled],
+        [data-invalid],
+        :has(input[aria-invalid="true"])
+      ):hover {
+      border-color: color-mix(in oklab, var(--input) 75%, var(--foreground));
+    }
+    .number-stepper-layout:not(:disabled, [data-disabled], [data-readonly], :active):hover {
+      background: var(--muted);
+    }
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    /* Border + 44px independent actions, with no invisible extensions. */
+    .number-group-layout {
+      min-height: calc(46 * var(--component-unit, 0.0625rem));
+    }
+    .number-group-layout:has(> div > .number-increment-layout + .number-decrement-layout) {
+      min-height: calc(94 * var(--component-unit, 0.0625rem));
+    }
+    .number-stepper-layout {
+      min-width: calc(44 * var(--component-unit, 0.0625rem));
+      min-height: calc(44 * var(--component-unit, 0.0625rem));
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .number-stepper-layout,
+  .number-group-layout {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .number-stepper-layout:focus-visible,
+  .number-group-layout:has(input:focus-visible) {
+    outline-color: Highlight;
+  }
+}
+@layer components {
+  .number-stepper-sm-layout {
+    width: calc(30 * var(--component-unit, 0.0625rem));
+  }
+  .number-stepper-lg-layout {
+    width: calc(38 * var(--component-unit, 0.0625rem));
+  }
+  .number-input-sm-layout {
+    --control-inset: 10;
+    font-size: calc(13 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+  }
+  .number-input-lg-layout {
+    --control-inset: 14;
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+  }
+}
+
+/* A disabled NumberField also owns the foreground of its composed Label. */
+:where(.number-field-layout[data-disabled] label) {
+  color: var(--muted-foreground);
+}

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Phase6SystemPreview } from "./phase6-system-preview"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
@@ -140,6 +141,7 @@ function TabsDisabledPreview() {
 }
 
 export const tabsPreviewMap: Record<string, React.ComponentType> = {
+  "tabs-system": Phase6SystemPreview,
   tabs: TabsPreview,
   "tabs-demo": TabsPreview,
   "tabs-basic": TabsBasicPreview,

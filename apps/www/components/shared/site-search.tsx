@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Button } from "@/components/ui/button"
 import { SearchIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useAutocompleteFilter } from "@/components/ui/autocomplete"
@@ -45,6 +46,8 @@ const commandItems: SearchGroup[] = navSections.map((section) => ({
 export function SiteSearch() {
   const [open, setOpen] = React.useState(false)
   const router = useRouter()
+  const trigger = React.useRef<HTMLButtonElement>(null)
+  const returnFocus = React.useRef<HTMLElement | null>(null)
   const { contains } = useAutocompleteFilter({ sensitivity: "base" })
 
   const filterItem = React.useCallback(
@@ -64,7 +67,13 @@ export function SiteSearch() {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault()
         setOpen((prev) => {
-          if (!prev) trackSearchOpen("shortcut")
+          if (!prev) {
+            returnFocus.current =
+              document.activeElement instanceof HTMLElement
+                ? document.activeElement
+                : trigger.current
+            trackSearchOpen("shortcut")
+          }
           return !prev
         })
       }
@@ -84,28 +93,32 @@ export function SiteSearch() {
 
   return (
     <>
-      <button
+      <Button
+        ref={trigger}
+        variant="outline"
+        size="icon-xl"
         type="button"
         aria-label="Search documentation"
         onClick={() => {
+          returnFocus.current = trigger.current
           trackSearchOpen("click")
           setOpen(true)
         }}
-        className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-muted/30 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:h-auto md:w-auto md:gap-2 md:rounded-xl md:px-3 md:py-1.5"
+        className="site-search-trigger"
       >
         <SearchIcon className="size-3.5" aria-hidden="true" />
-        <span className="hidden lg:inline">Search components...</span>
-        <kbd className="pointer-events-none hidden h-5 select-none items-center gap-0.5 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground lg:inline-flex">
+        <span className="hidden lg:inline">Search documentation...</span>
+        <kbd className="pointer-events-none hidden h-5 select-none items-center gap-0.5 rounded border border-border bg-muted px-1.5 font-mono text-[12px] font-medium text-muted-foreground lg:inline-flex">
           <span className="text-xs">⌘</span>K
         </kbd>
-      </button>
+      </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandDialogPopup>
+        <CommandDialogPopup finalFocus={returnFocus} aria-label="Search documentation">
           <Command filter={filterItem} items={commandItems}>
-            <CommandInput placeholder="Search components..." />
+            <CommandInput placeholder="Search documentation..." />
             <CommandPanel>
-              <CommandEmpty>No components found.</CommandEmpty>
+              <CommandEmpty>No results. Try a component name or installation.</CommandEmpty>
               <CommandList>
                 {(group: SearchGroup) => (
                   <CommandGroup key={group.value} items={group.items}>

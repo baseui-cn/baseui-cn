@@ -1,0 +1,141 @@
+@layer components {
+  .button-layout {
+    --button-height: 36;
+    --button-inset: 12;
+    --button-type: 14;
+    --button-leading: 20;
+    --button-icon: 16;
+    --button-gap: 6;
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: calc(var(--button-height) * var(--component-unit, 0.0625rem));
+    gap: calc(var(--button-gap) * var(--component-unit, 0.0625rem));
+    padding-inline: calc(var(--button-inset) * var(--component-unit, 0.0625rem) - 1px);
+    border-radius: var(--control-radius, var(--radius));
+    font-size: calc(var(--button-type) * var(--component-unit, 0.0625rem));
+    line-height: calc(var(--button-leading) * var(--component-unit, 0.0625rem));
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition-property: background-color, border-color, color;
+    transition-duration: 100ms;
+    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  .button-xs-layout,
+  .button-icon-xs-layout {
+    --button-height: 28;
+    --button-inset: 8;
+    --button-type: 12;
+    --button-leading: 16;
+    --button-icon: 12;
+    --button-gap: 4;
+  }
+  .button-sm-layout,
+  .button-icon-sm-layout {
+    --button-height: 32;
+    --button-inset: 10;
+    --button-type: 13;
+    --button-leading: 18;
+  }
+  .button-lg-layout,
+  .button-icon-lg-layout {
+    --button-height: 40;
+    --button-inset: 14;
+    --button-icon: 20;
+    --button-gap: 8;
+  }
+  .button-xl-layout,
+  .button-icon-xl-layout {
+    --button-height: 44;
+    --button-inset: 16;
+    --button-type: 16;
+    --button-leading: 24;
+    --button-icon: 20;
+    --button-gap: 8;
+  }
+  .button-layout[class*="button-icon"] {
+    width: calc(var(--button-height) * var(--component-unit, 0.0625rem));
+    padding: 0;
+  }
+  .button-layout :where(svg) {
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+  .button-layout :where(svg:not([class*="size-"])) {
+    width: calc(var(--button-icon) * var(--component-unit, 0.0625rem));
+    height: calc(var(--button-icon) * var(--component-unit, 0.0625rem));
+  }
+  .button-link-layout {
+    text-underline-offset: 4px;
+  }
+
+  .button-layout:is(:disabled, [aria-disabled="true"], [data-disabled]) {
+    cursor: not-allowed;
+  }
+  .button-layout[data-loading] {
+    user-select: none;
+    transition-property: background-color, border-color;
+  }
+  .button-layout [data-slot="button-loading-indicator"] {
+    width: calc(var(--button-icon) * var(--component-unit, 0.0625rem));
+    height: calc(var(--button-icon) * var(--component-unit, 0.0625rem));
+  }
+  /* Keep the protected picker families on their existing rem scale. */
+  :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .button-layout {
+    --component-unit: 0.0625rem;
+    --control-radius: var(--radius);
+    --button-type: 15.68;
+    --button-gap: 8;
+    --button-icon: 16;
+  }
+  :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .button-icon-sm-layout {
+    --button-height: 32;
+  }
+  :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .button-icon-xs-layout {
+    --button-height: 28;
+    --button-icon: 16;
+  }
+  :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .button-sm-layout {
+    --button-gap: 6;
+  }
+}
+@media (min-width: 40rem) {
+  @layer components {
+    :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .button-icon-sm-layout {
+      --button-height: 28;
+    }
+    :is(.rdp-shell, .rdp-input, .tp-shell, .tp-input) .button-icon-xs-layout {
+      --button-height: 24;
+      --button-icon: 14;
+    }
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    .button-layout:not([class*="rdp-"], [class*="tp-"], .tp-shell *, .rdp-shell *) {
+      min-width: calc(44 * var(--component-unit, 0.0625rem));
+      min-height: calc(44 * var(--component-unit, 0.0625rem));
+    }
+  }
+}
+/* A composed trigger may still carry legacy ring utilities. The Button owns
+   the single contour; calendar's more specific intentional outline is retained. */
+:where(.button-layout):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .button-layout {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .button-layout:focus-visible {
+    outline-color: Highlight;
+  }
+}

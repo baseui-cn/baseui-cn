@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { XIcon } from "lucide-react"
 import { cva } from "class-variance-authority"
+import "@/styles/modal.styles.css"
 
 // sizes
 export const sizes = {
@@ -24,12 +25,12 @@ export const sizes = {
 }
 
 const dialogContentVariants = cva(
-  "flex flex-col fixed outline-0 z-50 border border-border bg-background p-6 shadow-lg shadow-black/5 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-xl sm:rounded-t-xl",
+  "modal-surface-layout modal-popup-layout dialog-popup-layout border border-border bg-popover text-popover-foreground",
   {
     variants: {
       variant: {
-        default: "left-[50%] top-[50%] max-w-lg translate-x-[-50%] translate-y-[-50%] w-full",
-        fullscreen: "inset-5",
+        default: "modal-centered-layout max-w-lg",
+        fullscreen: "dialog-fullscreen-layout",
       },
     },
     defaultVariants: {
@@ -58,10 +59,7 @@ function DialogOverlay({ className, ...props }: DialogPrimitive.Backdrop.Props) 
   return (
     <DialogPrimitive.Backdrop
       data-slot="dialog-overlay"
-      className={cn(
-        "fixed inset-0 z-50 bg-black/30 [backdrop-filter:blur(4px)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-        className
-      )}
+      className={cn("modal-scrim-layout", className)}
       {...props}
     />
   )
@@ -86,10 +84,10 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
+        data-padding={noPadding ? "none" : "default"}
         className={cn(
           dialogContentVariants({ variant }),
           variant !== "fullscreen" && sizes[size],
-          noPadding && "p-0",
           className
         )}
         {...props}
@@ -98,7 +96,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            render={<Button variant="ghost" className="absolute top-2 right-2" size="icon-sm" />}
+            render={<Button variant="ghost" className="modal-close-layout" size="icon-sm" />}
           >
             <XIcon />
             <span className="sr-only">Close</span>
@@ -111,11 +109,7 @@ function DialogContent({
 
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div
-      data-slot="dialog-header"
-      className={cn("flex flex-col gap-2 border-b border-border py-4 px-6", className)}
-      {...props}
-    />
+    <div data-slot="dialog-header" className={cn("dialog-header-layout", className)} {...props} />
   )
 }
 
@@ -130,10 +124,7 @@ function DialogFooter({
   return (
     <div
       data-slot="dialog-footer"
-      className={cn(
-        "flex flex-col-reverse sm:flex-row sm:space-x-2.5 sm:justify-end border-t border-border pt-5 px-6 py-4",
-        className
-      )}
+      className={cn("modal-actions-layout dialog-footer-layout", className)}
       {...props}
     >
       {children}
@@ -148,14 +139,14 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-base leading-none font-medium", className)}
+      className={cn("modal-title-layout", className)}
       {...props}
     />
   )
 }
 
 function DialogBody({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div data-slot="dialog-body" className={cn("grow px-6 py-4", className)} {...props} />
+  return <div data-slot="dialog-body" className={cn("dialog-body-layout", className)} {...props} />
 }
 
 function DialogDescription({ className, ...props }: DialogPrimitive.Description.Props) {
@@ -163,7 +154,7 @@ function DialogDescription({ className, ...props }: DialogPrimitive.Description.
     <DialogPrimitive.Description
       data-slot="dialog-description"
       className={cn(
-        "text-muted-foreground *:[a]:hover:text-foreground text-sm *:[a]:underline *:[a]:underline-offset-3",
+        "modal-description-layout text-muted-foreground *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3",
         className
       )}
       {...props}

@@ -197,3 +197,7 @@ All primitive sub-components are exported for advanced custom layouts:
 | `ToastViewport`    | The fixed viewport container. Position is driven by `ToastProvider` context                                        |
 | `ToastList`        | Renders all active toasts from the nearest manager via `useToastManager`                                           |
 | `typeIcon`         | `Record<string, React.ReactNode>` — icon map for `success`, `error`, `warning`, `info`, `loading`                  |
+
+Toast uses the existing semantic status colors on a neutral popup surface. The close action remains visible on touch devices; reduced motion preserves timers and dismissal.
+
+For manual installation, copy the stylesheet included with the component source and retain its import. CLI installation includes it automatically; website CSS is not required.

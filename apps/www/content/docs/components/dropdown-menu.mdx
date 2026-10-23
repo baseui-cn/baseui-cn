@@ -122,7 +122,12 @@ Nested menus with `DropdownMenuSub`.
 | `align`       | `"start" \| "center" \| "end"`           | `"start"`  | Alignment of the popup relative to the trigger  |
 | `alignOffset` | `number`                                 | `0`        | Offset in px along the alignment axis           |
 
+`positionerProps` forwards native Base UI Positioner options, including `anchor`, collision boundaries/padding, positioning method and refs. Options supplied there override the convenience positioning props above.
+
 ### DropdownMenuItem
+
+Items, checkboxes, radio items and submenu triggers share a content slot and a separate trailing indicator slot. Place an icon before the label and `DropdownMenuShortcut` after it. For multiline text, wrap the label in `<span data-slot="menu-item-text">` and optional supporting text in `<span data-slot="menu-item-description">`. These same slots work in Menubar items. Action names wrap; indicators stay outside the text column.
+
 
 | Prop      | Type                         | Default     | Description                                      |
 | --------- | ---------------------------- | ----------- | ------------------------------------------------ |

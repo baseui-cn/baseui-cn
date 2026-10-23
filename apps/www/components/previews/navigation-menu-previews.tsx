@@ -22,7 +22,7 @@ function NavigationMenuPreview() {
             <ul className="grid gap-2 p-3 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink
-                  className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-4 no-underline outline-none focus:shadow-md"
+                  className="flex h-full w-full select-none flex-col justify-end rounded-md bg-muted p-4 no-underline"
                   href="#"
                 >
                   <div className="mb-2 text-lg font-medium">baseui-cn</div>
@@ -46,7 +46,7 @@ function NavigationMenuPreview() {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Components</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-2 p-3 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+            <ul className="grid w-full sm:w-[400px] gap-2 p-3 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               {components.map((component) => (
                 <ListItem key={component.title} title={component.title} href="#">
                   {component.description}
@@ -56,12 +56,7 @@ function NavigationMenuPreview() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink
-            className="inline-flex h-9 w-max items-center justify-center rounded-lg bg-background px-2.5 py-1.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted"
-            href="#"
-          >
-            Documentation
-          </NavigationMenuLink>
+          <NavigationMenuLink href="#">Documentation</NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
@@ -93,9 +88,7 @@ function ListItem({
         {...props}
       >
         <div className="text-sm font-medium leading-none">{title}</div>
-        <p className="mt-1 line-clamp-2 text-sm leading-snug text-muted-foreground">
-          {children}
-        </p>
+        <p className="mt-1 line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
       </NavigationMenuLink>
     </li>
   )

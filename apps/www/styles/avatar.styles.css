@@ -1,0 +1,64 @@
+@layer components {
+  .avatar-layout,
+  .avatar-count-layout {
+    --avatar-size: 40;
+    --avatar-type: 14;
+    --avatar-marker: 8;
+    position: relative;
+    display: inline-flex;
+    width: calc(var(--avatar-size) * var(--component-unit, 0.0625rem));
+    height: calc(var(--avatar-size) * var(--component-unit, 0.0625rem));
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    background: var(--muted);
+    color: var(--foreground);
+    font-size: calc(var(--avatar-type) * var(--component-unit, 0.0625rem));
+    line-height: 1;
+    font-weight: 500;
+    vertical-align: middle;
+    user-select: none;
+  }
+  .avatar-xs-layout {
+    --avatar-size: 24;
+    --avatar-type: 11;
+    --avatar-marker: 6;
+  }
+  .avatar-sm-layout {
+    --avatar-size: 32;
+    --avatar-type: 12;
+    --avatar-marker: 6;
+  }
+  .avatar-lg-layout {
+    --avatar-size: 48;
+    --avatar-type: 16;
+  }
+  .avatar-wrap-layout {
+    position: relative;
+    display: inline-flex;
+  }
+  .avatar-marker-layout {
+    position: absolute;
+    width: calc(8 * var(--component-unit, 0.0625rem));
+    height: calc(8 * var(--component-unit, 0.0625rem));
+    border-radius: 9999px;
+    outline: 2px solid var(--card);
+  }
+  .avatar-wrap-layout:has(.avatar-xs-layout, .avatar-sm-layout) .avatar-marker-layout {
+    width: calc(6 * var(--component-unit, 0.0625rem));
+    height: calc(6 * var(--component-unit, 0.0625rem));
+  }
+  .avatar-group-layout {
+    display: flex;
+    align-items: center;
+  }
+  .avatar-group-layout > :not(:first-child) {
+    margin-inline-start: calc(-8 * var(--component-unit, 0.0625rem));
+  }
+  .avatar-group-layout :is(.avatar-layout, .avatar-count-layout) {
+    outline: 2px solid var(--card);
+  }
+}

@@ -23,6 +23,46 @@ bunx baseui-cn init
 bunx baseui-cn add button
 ```
 
+## Create a new app
+
+```bash
+npx baseui-cn@latest create my-app
+npx baseui-cn@latest create my-app --framework tanstack-start --package-manager pnpm
+npx baseui-cn@latest create my-app --framework next --monorepo
+```
+
+Supported frameworks: `next`, `tanstack-start`, `react-router`, `vite`. The CLI delegates to the current official scaffolder, installs dependencies and initializes baseui-cn. No framework templates are maintained here. Install your selected npm, pnpm, Yarn (2+), or Bun first. Current upstream runtime requirements apply; Node 22.12+ is recommended for new projects. `-y` uses defaults for unspecified framework, package manager and structure; provide a project name for noninteractive use. Existing directories are never overwritten. Failed scaffolds are retained for inspection.
+
+`--monorepo` creates the framework app under `apps/web` and a minimal workspace root. It does not create a shared UI package.
+
+## Existing apps and workspaces
+
+`init` detects Next.js, TanStack Start, React Router, Vite or generic React, plus package-manager declarations and lockfiles. At a workspace root it selects one candidate app automatically, prompts when there are multiple, and refuses ambiguous noninteractive installs. Component source, CSS, utils, config and dependencies resolve inside the app.
+
+```bash
+npx baseui-cn@latest init --workspace apps/web
+npx baseui-cn@latest add button --workspace apps/web
+npx baseui-cn@latest update button --workspace apps/web
+npx baseui-cn@latest init --customize
+```
+
+Use `--customize` to choose paths and RSC settings. Detected settings use defaults without unnecessary confirmation; multiple possible stylesheets still prompt. Repeated init preserves configured paths, custom CSS and existing utils. Existing/custom apps must already configure Tailwind CSS v4 and their `@/*` source alias; init preserves their build configuration. New scaffolds receive alias and Tailwind integration where needed. They retain strict TypeScript checking while disabling upstream `noUnusedLocals`/`noUnusedParameters` compiler lint options to match the approved registry source contract. Existing app compiler settings are not changed; Data Grid currently needs those two unused-symbol checks disabled or local cleanup of unused bindings.
+
+Workspace patterns support literal paths, `*`, `**`, and exclusions in package.json workspaces or pnpm-workspace.yaml. Brace/extglob patterns, symlink targets, shared UI generation and custom nonstandard app detection are outside automated workspace selection; run directly inside a custom app.
+
+## Theme color and radius
+
+Iris and Rounded (`lg`, `0.75rem`) are the defaults for fresh setup. New interactive setup asks for both. All presets write ordinary generic CSS variables; no proprietary public variables are added.
+
+```bash
+npx baseui-cn@latest create my-app --framework next --color emerald --radius xl
+npx baseui-cn@latest init --color blue --radius md
+```
+
+Colors: `iris`, `blue`, `violet`, `emerald`, `orange`, `rose`, `neutral`. Radius: `sm` (Sharp), `md` (Medium), `lg` (Rounded), `xl` (Extra).
+
+An existing theme is preserved unless you pass a theme flag or explicitly choose a new value interactively. Repeated noninteractive init without flags preserves custom CSS. `--color` only changes primary/accent/ring identity pairs; `--radius` only changes radius. Graphite surfaces and semantic status colors are preserved. Interactive reinitialization offers Keep existing values first.
+
 ## Core workflow
 
 1. Initialize the project once with `init`.
@@ -30,6 +70,8 @@ bunx baseui-cn add button
 3. Run `update` later to replace previously installed files with the latest registry versions.
 
 The CLI detects existing requested and dependency component files before writing. Existing dependencies can be reused, replaced, or cancelled with reuse selected by default. If you already know you want to replace every matching requested and dependency file, use `--overwrite` with `add` or use `update`, which replaces installed files by default.
+
+With `add -y` or dependency reuse, existing source and shared styles are preserved, and missing files are restored. This also completes an interrupted multi-file installation without replacing your customizations.
 
 ## Commands
 
@@ -112,15 +154,13 @@ Blocks: `empty-state`, `login`, `signup`
 
 ## Maintainer release flow
 
-Package publishing can be automated from git with the included GitHub Actions workflow.
+The publish workflow accepts tags named `cli-v<version>` and supports manual dispatch. A matching tag must equal `packages/cli/package.json`. Both paths publish to npm; run them only after the hosted registry gate passes.
 
-1. Bump `packages/cli/package.json` to the release version you want.
-2. Commit and push that change to `main`.
-3. Create and push a matching git tag in the format `cli-v<version>`.
+1. Synchronize the CLI package version, CLI `--version` banner, and site release metadata. Run `pnpm build:all` to generate registry versions from the CLI manifest; leave private workspace package versions independent.
+2. Validate and approve/merge the release code, including the changelog, package, and packed consumer.
+3. Deploy baseui-cn.com with the approved website and all three registry distributions generated from that release code.
+4. Verify the hosted registry version **and bytes** against the approved local output, preferably every registry JSON. At minimum compare `index.json`, `button.json`, `data-grid.json`, a shared-CSS component such as `select.json`, a modal such as `dialog.json`, and `date-picker.json` / `time-picker.json`.
+5. Only after alignment, create/push the matching `cli-v<version>` tag and publish through the approved workflow. For 1.4.0, the tag is `cli-v1.4.0`.
+6. Run an ordinary remote-first fresh consumer using the published package. Mark the release complete only after it passes.
 
-```bash
-git tag cli-v1.0.3
-git push origin cli-v1.0.3
-```
-
-The workflow will install dependencies, build the generated registry artifacts, verify the CLI package, and publish `baseui-cn` to npm using the repository `NPM_TOKEN` secret.
+The workflow installs frozen dependencies, generates registry artifacts, checks and builds the CLI, then publishes `baseui-cn` using the repository `NPM_TOKEN`. It does not deploy or verify the hosted registry. Because the CLI is remote-first, index version equality alone cannot establish alignment; component source and shared styles must match too.

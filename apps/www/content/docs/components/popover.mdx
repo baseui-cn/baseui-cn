@@ -70,6 +70,12 @@ import {
 </Popover>
 ```
 
+## System specimen
+
+Popover, Tooltip, Preview Card, Dropdown Menu and Menubar share the V2 anchored surface vocabulary. Use the controls to compare form nesting, persistent menu choices and submenus. Tooltip help is supplementary; each action keeps a visible label.
+
+<ComponentPreview name="popover-system" />
+
 ## Examples
 
 ### Basic
@@ -100,3 +106,5 @@ Popover positioned on different sides.
 | `sideOffset`  | `number`                                 | `4`        | Distance in px between the popover and the trigger |
 | `align`       | `"start" \| "center" \| "end"`           | `"center"` | Alignment relative to the trigger                  |
 | `alignOffset` | `number`                                 | `0`        | Offset in px along the alignment axis              |
+
+`positionerProps` forwards native Base UI Positioner options, including `anchor`, collision boundaries/padding, positioning method and refs. Options supplied there override the convenience positioning props above.

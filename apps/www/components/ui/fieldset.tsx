@@ -3,18 +3,20 @@
 import { Fieldset as FieldsetPrimitive } from "@base-ui/react/fieldset"
 import type React from "react"
 import { cn } from "@/lib/utils"
+
+import "@/styles/form.styles.css"
 import { cva, type VariantProps } from "class-variance-authority"
 
-const fieldsetLegendVariants = cva("font-semibold text-foreground flex items-center gap-2", {
+const fieldsetLegendVariants = cva("fieldset-legend-layout", {
   variants: {
     variant: {
-      border: "border-b border-border",
+      border: "fieldset-legend-border-layout",
       default: "",
     },
     size: {
-      sm: "text-sm py-1",
-      md: "text-base py-1.5",
-      lg: "text-lg py-2.5",
+      sm: "fieldset-legend-sm-layout",
+      md: "",
+      lg: "fieldset-legend-lg-layout",
     },
   },
   defaultVariants: {
@@ -27,7 +29,13 @@ export function Fieldset({
   className,
   ...props
 }: FieldsetPrimitive.Root.Props): React.ReactElement {
-  return <FieldsetPrimitive.Root className={className} data-slot="fieldset" {...props} />
+  return (
+    <FieldsetPrimitive.Root
+      className={cn("fieldset-layout", className)}
+      data-slot="fieldset"
+      {...props}
+    />
+  )
 }
 export function FieldsetLegend({
   className,

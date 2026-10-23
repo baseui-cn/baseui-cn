@@ -5,8 +5,18 @@ import { cva, type VariantProps } from "class-variance-authority"
 import type React from "react"
 import { cn } from "@/lib/utils"
 
+import "@/styles/button.styles.css"
+import "@/styles/toggle.styles.css"
+
 export const toggleVariants = cva(
-  "relative inline-flex shrink-0 cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium text-base text-foreground outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 data-pressed:bg-input/64 data-pressed:text-accent-foreground sm:text-sm [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:-mx-0.5 [&_svg]:shrink-0",
+  [
+    "button-layout toggle-layout border border-transparent text-foreground data-[pressed]:bg-accent",
+    "data-[pressed]:text-accent-foreground data-[pressed]:shadow-[inset_0_-2px_0_currentColor]",
+    "data-[pressed]:focus-visible:shadow-[inset_0_-2px_0_currentColor] disabled:border-border disabled:bg-muted",
+    "disabled:text-muted-foreground data-[disabled]:border-border data-[disabled]:bg-muted data-[disabled]:text-muted-foreground",
+    "data-[pressed]:data-[disabled]:border-border data-[pressed]:data-[disabled]:bg-muted data-[pressed]:data-[disabled]:text-muted-foreground",
+    "aria-invalid:border-destructive data-[invalid]:border-destructive focus-visible:outline-ring",
+  ],
   {
     defaultVariants: {
       size: "default",
@@ -14,14 +24,14 @@ export const toggleVariants = cva(
     },
     variants: {
       size: {
-        default: "h-9 min-w-9 px-[calc(--spacing(2)-1px)] sm:h-8 sm:min-w-8",
-        lg: "h-10 min-w-10 px-[calc(--spacing(2.5)-1px)] sm:h-9 sm:min-w-9",
-        sm: "h-8 min-w-8 px-[calc(--spacing(1.5)-1px)] sm:h-7 sm:min-w-7",
+        default: "",
+        lg: "button-lg-layout",
+        sm: "button-sm-layout",
       },
       variant: {
-        default: "border-transparent",
+        default: "bg-transparent [@media(hover:hover)]:enabled:not-data-[pressed]:hover:bg-muted",
         outline:
-          "border-input bg-background not-dark:bg-clip-padding shadow-xs/5 not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:data-pressed:bg-input dark:hover:bg-input/64 dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/6%)] dark:not-disabled:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/2%)] [:disabled,:active,[data-pressed]]:shadow-none",
+          "button-outline-layout border-input bg-background [@media(hover:hover)]:enabled:not-data-[pressed]:hover:bg-muted",
       },
     },
   }

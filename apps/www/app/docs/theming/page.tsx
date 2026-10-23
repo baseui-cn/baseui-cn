@@ -1,4 +1,5 @@
 import { CodeBlock } from "@/components/docs/code-block"
+import theme from "@/lib/__generated__/theme.json"
 import type { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
@@ -6,12 +7,12 @@ export const metadata: Metadata = { title: "Theming" }
 
 export default function ThemingPage() {
   return (
-    <div className="mx-auto w-full max-w-3xl flex flex-col gap-10 animate-fade-in">
+    <div className="docs-guide mx-auto w-full max-w-[72ch] flex flex-col gap-10">
       <div className="flex flex-col gap-3 pb-6 border-b border-border">
         <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
           Getting Started
         </p>
-        <h1 className="text-3xl font-bold tracking-tight">Theming</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Theming</h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           baseui-cn uses CSS custom properties for theming. Tokens are defined as raw color values
           and mapped into Tailwind utilities through{" "}
@@ -21,76 +22,70 @@ export default function ThemingPage() {
         </p>
       </div>
 
+      <p className="text-sm text-muted-foreground">
+        Change the standard semantic variables in your stylesheet. For example, accent controls
+        persistent selection, ring controls keyboard focus, and primary controls primary actions.
+        Init and component installation add missing variables and preserve existing values.
+        Class-based dark mode follows the application theme choice. Components include any required
+        layout CSS when installed; you do not need a separate token vocabulary.
+      </p>
+      <section id="theme-presets" className="flex flex-col gap-4">
+        <h2>Choose your starting theme</h2>
+        <p className="text-sm text-muted-foreground">
+          Iris is the default color identity, with Rounded (0.75rem) geometry. Choose a preset when
+          creating an app or explicitly update an existing theme. Color changes primary, accent and
+          focus variables; Graphite surfaces and semantic success, warning, info and destructive
+          colors remain independent.
+        </p>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {Object.entries(theme.presets.colors).map(([id, preset]) => (
+            <p key={id} className="text-sm">
+              <code>{id}</code> — {preset.label}
+            </p>
+          ))}
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Radius presets:{" "}
+          {Object.entries(theme.presets.radii)
+            .map(([id, preset]) => `${preset.label} (${id}: ${preset.value})`)
+            .join(" · ")}
+          .
+        </p>
+        <CodeBlock
+          code={`npx baseui-cn@latest create my-app --framework next --color iris --radius lg
+
+# Explicitly replace color and radius in an existing app
+npx baseui-cn@latest init --color emerald --radius xl
+
+# Preserve existing custom values
+npx baseui-cn@latest init -y`}
+          language="bash"
+        />
+        <p className="text-sm text-muted-foreground">
+          Repeated init without theme flags preserves existing values. Interactive reinitialization
+          offers Keep existing values first. A color flag changes only color identity; a radius flag
+          changes only radius. All values are ordinary CSS in your project, ready to edit.
+        </p>
+      </section>
       {/* CSS variables */}
       <div className="flex flex-col gap-4">
         <div>
           <h2 className="text-base font-semibold">CSS variables</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Added to your configured stylesheet, such as <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">app/globals.css</code> or <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">src/styles.css</code>, by{" "}
-            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">npx baseui-cn init</code>.
+            Added to your configured stylesheet, such as{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">
+              app/globals.css
+            </code>{" "}
+            or{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">src/styles.css</code>
+            , by{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">
+              npx baseui-cn init
+            </code>
+            .
           </p>
         </div>
-        <CodeBlock
-          filename="app/globals.css"
-          code={`@layer base {
-  :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.141 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.141 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.141 0 0);
-    --primary: oklch(0.21 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.967 0 0);
-    --secondary-foreground: oklch(0.21 0 0);
-    --muted: oklch(0.967 0 0);
-    --muted-foreground: oklch(0.552 0 0);
-    --accent: oklch(0.967 0 0);
-    --accent-foreground: oklch(0.21 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.985 0 0);
-    --success: oklch(0.627 0.154 144.33);
-    --success-foreground: oklch(0.985 0 0);
-    --warning: oklch(0.769 0.188 70.08);
-    --warning-foreground: oklch(0.21 0 0);
-    --info: oklch(0.623 0.188 259.81);
-    --info-foreground: oklch(0.985 0 0);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: oklch(0.141 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.141 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.141 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.985 0 0);
-    --primary-foreground: oklch(0.21 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.396 0.141 25.723);
-    --destructive-foreground: oklch(0.985 0 0);
-    --success: oklch(0.525 0.118 145.16);
-    --success-foreground: oklch(0.985 0 0);
-    --warning: oklch(0.645 0.149 69.84);
-    --warning-foreground: oklch(0.21 0 0);
-    --info: oklch(0.546 0.147 258.34);
-    --info-foreground: oklch(0.985 0 0);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.552 0 0);
-  }
-}`}
-        />
+        <CodeBlock filename="app/globals.css" code={theme.css} />
         <div className="rounded-lg border border-border bg-muted/20 p-4 text-sm text-muted-foreground">
           `destructive`, `success`, `warning`, and `info` are all first-class semantic tokens. Use
           them for badges, toasts, alerts, and status-heavy surfaces instead of hard-coding raw
@@ -103,9 +98,14 @@ export default function ThemingPage() {
         <div>
           <h2 className="text-base font-semibold">Tailwind v4 theme mapping</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Add this <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">@theme</code> block
-            so utilities like <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">bg-primary</code> and{" "}
-            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">text-muted-foreground</code> resolve to your variables.
+            Add this{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">@theme</code> block
+            so utilities like{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">bg-primary</code> and{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">
+              text-muted-foreground
+            </code>{" "}
+            resolve to your variables.
           </p>
         </div>
         <CodeBlock
@@ -151,26 +151,26 @@ export default function ThemingPage() {
         <div>
           <h2 className="text-base font-semibold">Customizing your theme</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Override any variable in your <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">:root</code>.
-            Changes propagate to every component automatically.
+            Override any variable in your{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">:root</code>. Changes
+            propagate directly to semantic utilities. Use accent and accent-foreground together for
+            selected surfaces and markers, ring for keyboard focus, and primary with
+            primary-foreground for primary actions. Supply complete CSS colors and verify the
+            contrast of custom foreground/background pairs.
           </p>
         </div>
         <CodeBlock
-          code={`/* Blue primary */
+          code={`/* Example: start with Iris, then customize locally */
 :root {
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
+${Object.entries(theme.presets.colors.iris.light)
+  .map(([key, value]) => `  ${key}: ${value};`)
+  .join("\n")}
+  --radius: ${theme.presets.radii.lg.value};
 }
-
-/* Rounder corners */
-:root {
-  --radius: 0.75rem;
-}
-
-/* Green brand */
-:root {
-  --primary: 142.1 76.2% 36.3%;
-  --primary-foreground: 355.7 100% 97.3%;
+.dark {
+${Object.entries(theme.presets.colors.iris.dark)
+  .map(([key, value]) => `  ${key}: ${value};`)
+  .join("\n")}
 }
 
 /* Custom status colors */
@@ -190,9 +190,19 @@ export default function ThemingPage() {
         <div>
           <h2 className="text-base font-semibold">Dark mode</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Uses the <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">.dark</code> class strategy.
-            Add the class to your <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">&lt;html&gt;</code> element.
-            We recommend <a href="https://github.com/pacocoursey/next-themes" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">next-themes</a> for automatic system preference detection.
+            Uses the <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">.dark</code>{" "}
+            class strategy. Add the class to your{" "}
+            <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">&lt;html&gt;</code>{" "}
+            element. We recommend{" "}
+            <a
+              href="https://github.com/pacocoursey/next-themes"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              next-themes
+            </a>{" "}
+            for automatic system preference detection.
           </p>
         </div>
         <CodeBlock
@@ -219,7 +229,8 @@ export default function RootLayout({ children }) {
         <div>
           <h2 className="text-base font-semibold">Base UI data attributes</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Base UI applies these attributes to components. Use them in Tailwind for state-based styling.
+            Base UI applies these attributes to components. Use them in Tailwind for state-based
+            styling.
           </p>
         </div>
         <div className="rounded-lg border border-border divide-y divide-border text-sm font-mono">
@@ -279,10 +290,16 @@ className="data-highlighted:bg-accent data-highlighted:text-accent-foreground"`}
       </div>
 
       <div className="flex items-center gap-4 pt-2 border-t border-border text-sm">
-        <a href="/docs/installation" className="text-muted-foreground hover:text-foreground hover:underline underline-offset-4">
+        <a
+          href="/docs/installation"
+          className="text-muted-foreground hover:text-foreground hover:underline underline-offset-4"
+        >
           ← Installation
         </a>
-        <a href="/docs/llms" className="flex items-center gap-1.5 font-medium hover:underline underline-offset-4">
+        <a
+          href="/docs/llms"
+          className="flex items-center gap-1.5 font-medium hover:underline underline-offset-4"
+        >
           LLM usage →
         </a>
       </div>

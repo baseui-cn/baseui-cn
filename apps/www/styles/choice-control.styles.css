@@ -1,0 +1,138 @@
+/* Visible indicators stay compact. Associated labels supply real target space. */
+@layer components {
+  .checkbox-group-layout,
+  .radio-group-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(8 * var(--component-unit, 0.0625rem));
+    min-width: 0;
+  }
+  .radio-group-layout {
+    width: 100%;
+  }
+  .checkbox-layout,
+  .radio-layout,
+  .switch-layout {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    padding: 0;
+    border-radius: calc(4 * var(--component-unit, 0.0625rem));
+    cursor: pointer;
+    transition:
+      background-color 100ms cubic-bezier(0.2, 0, 0, 1),
+      border-color 100ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .radio-layout {
+    border-radius: 50%;
+  }
+  .checkbox-indicator-layout,
+  .radio-indicator-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .checkbox-indicator-layout[data-unchecked]:not([data-indeterminate]) {
+    display: none;
+  }
+  .checkbox-mark-layout,
+  .radio-mark-layout {
+    display: block;
+    width: calc(12 * var(--component-unit, 0.0625rem));
+    height: calc(12 * var(--component-unit, 0.0625rem));
+  }
+  .radio-mark-layout {
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .switch-layout {
+    width: calc(36 * var(--component-unit, 0.0625rem));
+    height: calc(20 * var(--component-unit, 0.0625rem));
+    border-radius: 9999px;
+    padding: calc(2 * var(--component-unit, 0.0625rem));
+    justify-content: flex-start;
+  }
+  .switch-thumb-layout {
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .switch-layout[data-checked] .switch-thumb-layout {
+    margin-inline-start: calc(16 * var(--component-unit, 0.0625rem));
+  }
+  :is(.checkbox-layout, .radio-layout, .switch-layout):is([data-readonly]) {
+    cursor: default;
+  }
+  /* Switch's inset border preserves the approved 36 x 20 / 16 / 2 anatomy. */
+  .switch-layout:is([data-invalid], [aria-invalid="true"]) {
+    box-shadow: inset 0 0 0 1px var(--destructive);
+  }
+  :is(.checkbox-layout, .radio-layout, .switch-layout)[data-disabled] {
+    cursor: not-allowed;
+  }
+  .switch-layout[data-disabled] {
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+  :is(.checkbox-layout, .radio-layout, .switch-layout):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  :where(
+    label:has(.checkbox-layout, .radio-layout, .switch-layout),
+    .field-item-layout:has(.checkbox-layout, .radio-layout, .switch-layout),
+    *:has(> :is(.checkbox-layout, .radio-layout, .switch-layout)) > :is(div, span) > label,
+    *:has(> :is(.checkbox-layout, .radio-layout, .switch-layout)) > label
+  ) {
+    min-height: calc(24 * var(--component-unit, 0.0625rem));
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    :where(
+      label:has(.checkbox-layout, .radio-layout, .switch-layout),
+      .field-item-layout:has(.checkbox-layout, .radio-layout, .switch-layout),
+      *:has(> :is(.checkbox-layout, .radio-layout, .switch-layout)) > :is(div, span) > label,
+      *:has(> :is(.checkbox-layout, .radio-layout, .switch-layout)) > label
+    ) {
+      min-height: calc(44 * var(--component-unit, 0.0625rem));
+      min-width: calc(44 * var(--component-unit, 0.0625rem));
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .checkbox-layout,
+  .radio-layout,
+  .switch-layout {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  :is(.checkbox-layout, .radio-layout, .switch-layout):focus-visible {
+    outline-color: Highlight;
+  }
+  :is(.checkbox-layout, .radio-layout, .switch-layout):is([data-checked], [data-indeterminate]) {
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+}
+/* Label's Phase 1 utility sets its own foreground. State color belongs to the
+   associated choice here, without changing Label's shared foundation. */
+:where(
+  label:has(:is(.checkbox-layout, .radio-layout, .switch-layout)[data-disabled]),
+  :is(.checkbox-layout, .radio-layout, .switch-layout)[data-disabled] ~ label,
+  :is(.checkbox-group-layout, .radio-group-layout)[data-disabled] label
+) {
+  color: var(--muted-foreground);
+  cursor: not-allowed;
+}

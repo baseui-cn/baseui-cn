@@ -28,6 +28,10 @@ import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@/components/ui/otp-
 </OTPField>
 ```
 
+### Narrow six-slot layouts
+
+Slots retain their selected size. For a narrow container, opt into `className="otp-wrap-layout"` on `OTPField` to arrange six slots in two rows of three without shrinking them. DOM order, paste, and keyboard flow remain unchanged. For a layout that switches to two rows only in a narrow container, wrap `OTPField` in `className="otp-container-layout"` and use `className="otp-responsive-layout"` on the field. The connected single-row example scrolls within its container. For a single row, reserve 280px at the default size (six 40px slots plus five 8px gaps); `sm` needs 256px and `lg` needs 304px.
+
 ## Examples
 
 ### Form integration

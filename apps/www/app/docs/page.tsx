@@ -7,16 +7,15 @@ export const metadata: Metadata = { title: "Introduction" }
 
 export default function DocsPage() {
   return (
-    <div className="mx-auto w-full max-w-3xl flex flex-col gap-10 animate-fade-in">
+    <div className="docs-guide mx-auto w-full max-w-[72ch] flex flex-col gap-10">
       <div className="flex flex-col gap-3 pb-6 border-b border-border">
         <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
           Getting Started
         </p>
-        <h1 className="text-3xl font-bold tracking-tight">Introduction</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Introduction</h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          baseui-cn is a Base UI-first open component registry with a
-          shadcn-style developer experience. Copy components into your project,
-          own the code, style with Tailwind.
+          baseui-cn is a Base UI-first open component registry with a shadcn-style developer
+          experience. Copy components into your project, own the code, style with Tailwind.
         </p>
       </div>
 
@@ -24,8 +23,7 @@ export default function DocsPage() {
       <div className="flex flex-col gap-4">
         <h2 className="text-base font-semibold">What it is</h2>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Every interactive component — dialogs, drawers, selects, tooltips,
-          menus — is built on{" "}
+          Every interactive component — dialogs, drawers, selects, tooltips, menus — is built on{" "}
           <a
             href="https://base-ui.com"
             target="_blank"
@@ -34,14 +32,13 @@ export default function DocsPage() {
           >
             Base UI
           </a>
-          . One library, one overlay system, one portal. No conflicts when
-          composing components inside each other.
+          . One library, one overlay system, one portal. No conflicts when composing components
+          inside each other.
         </p>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Base UI&apos;s Drawer became stable in v1.3.0 (March 2026). That
-          closed the last gap — so Select, Combobox, Tooltip, and Drawer all
-          share the same portal system. Nesting floating components inside a
-          Drawer just works.
+          Base UI&apos;s Drawer became stable in v1.3.0 (March 2026). That closed the last gap — so
+          Select, Combobox, Tooltip, and Drawer all share the same portal system. Nesting floating
+          components inside a Drawer just works.
         </p>
       </div>
 
@@ -54,10 +51,7 @@ export default function DocsPage() {
               "Base UI only",
               "Every interactive primitive is from @base-ui/react. One library, one overlay system.",
             ],
-            [
-              "Tailwind CSS",
-              "Styled with Tailwind v4. No CSS-in-JS, no runtime style injection.",
-            ],
+            ["Tailwind CSS", "Styled with Tailwind v4. No CSS-in-JS, no runtime style injection."],
             [
               "You own the code",
               "Components are copied into your project. Edit freely. No version lock-in.",
@@ -66,10 +60,7 @@ export default function DocsPage() {
               "shadcn-compatible tokens",
               "Same CSS variable names — --background, --primary, etc. Themes transfer directly.",
             ],
-            [
-              "RSC-aware",
-              '"use client" only where required. Works with Next.js App Router.',
-            ],
+            ["RSC-aware", '"use client" only where required. Works with Next.js App Router.'],
             [
               "LLM-ready",
               "First-class llms.txt for AI coding assistants. Works with Cursor, Windsurf, and Claude.",
@@ -96,21 +87,15 @@ export default function DocsPage() {
             <PackageManagerTabs command="baseui-cn init" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground mb-2">
-              2. Add components:
-            </p>
+            <p className="text-sm text-muted-foreground mb-2">2. Add components:</p>
             <PackageManagerTabs command="baseui-cn add button drawer select" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground mb-2">
-              3. Or add everything at once:
-            </p>
+            <p className="text-sm text-muted-foreground mb-2">3. Or add everything at once:</p>
             <PackageManagerTabs command="baseui-cn add --all" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground mb-2">
-              4. Import and use:
-            </p>
+            <p className="text-sm text-muted-foreground mb-2">4. Import and use:</p>
             <CodeBlock
               language="tsx"
               code={`import { Button } from "@/components/ui/button"
@@ -155,8 +140,8 @@ export function Example() {
           Base UI uses the render prop, not asChild
         </p>
         <p className="text-sm text-amber-800 dark:text-amber-300/80 mb-3">
-          If you&apos;re coming from Radix UI or shadcn, the trigger pattern is
-          different. Base UI uses a{" "}
+          If you&apos;re coming from Radix UI or shadcn, the trigger pattern is different. Base UI
+          uses a{" "}
           <code className="font-mono text-xs bg-amber-100 dark:bg-amber-900/40 px-1.5 py-0.5 rounded">
             render
           </code>{" "}

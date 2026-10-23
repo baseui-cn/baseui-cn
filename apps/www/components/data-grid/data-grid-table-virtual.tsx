@@ -364,10 +364,8 @@ function DataGridTableVirtual<TData>({
     ...virtualizerOptionsRest,
   }) as DataGridTableVirtualizerInstance
 
-  const virtualItems = useMemo(
-    () => (isVirtualizationEnabled ? virtualizer.getVirtualItems() : []),
-    [isVirtualizationEnabled, virtualizer]
-  )
+  // The virtualizer instance is stable; its visible window changes on scroll/measurement.
+  const virtualItems = isVirtualizationEnabled ? virtualizer.getVirtualItems() : []
   const totalSize = isVirtualizationEnabled ? virtualizer.getTotalSize() : 0
   const measureRowRef =
     isVirtualizationEnabled && customMeasureElement

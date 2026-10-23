@@ -5,6 +5,8 @@ import { useRender } from "@base-ui/react/use-render"
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
 import type * as React from "react"
 import { cn } from "@/lib/utils"
+
+import "@/styles/navigation.styles.css"
 import { type Button, buttonVariants } from "@/components/ui/button"
 
 export function Pagination({
@@ -27,7 +29,10 @@ export function PaginationContent({
 }: React.ComponentProps<"ul">): React.ReactElement {
   return (
     <ul
-      className={cn("flex flex-row items-center gap-1", className)}
+      className={cn(
+        "pagination-content-layout flex flex-row flex-wrap items-center justify-center",
+        className
+      )}
       data-slot="pagination-content"
       {...props}
     />
@@ -55,6 +60,7 @@ export function PaginationLink({
     className: render
       ? className
       : cn(
+          "pagination-link-layout",
           buttonVariants({
             size,
             variant: isActive ? "outline" : "ghost",

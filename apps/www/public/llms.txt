@@ -1,7 +1,7 @@
 # baseui-cn
 
 > A Base UI-first open component registry with shadcn-style developer experience.
-> 40+ components built exclusively on @base-ui/react (v1.3.0+).
+> 40+ components built exclusively on @base-ui/react (v1.9.0).
 > Tailwind CSS for styling. No other UI library. No Vaul. No Radix UI.
 
 ## What it is

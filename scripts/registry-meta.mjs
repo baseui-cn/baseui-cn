@@ -29,7 +29,7 @@ export const SECTION_ORDER = [
 ]
 
 const COMPONENT_BADGE = "New"
-const BASE_UI_VERSION = "^1.6.0"
+const BASE_UI_VERSION = "1.9.0"
 
 function slugToLabel(name) {
   return name.replace(/-/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())
@@ -104,13 +104,14 @@ export const componentMeta = {
     description: "An image element with a fallback for representing the user.",
     tags: ["display", "primitive"],
     baseUIPrimitive: "Avatar",
-    deps: ["@base-ui/react"],
+    deps: ["@base-ui/react", "class-variance-authority"],
     registryDeps: ["utils"],
   }),
   card: defineEntry("card", {
     section: "Display",
     description: "A container for grouping related content and actions.",
     tags: ["display", "layout"],
+    deps: ["@base-ui/react", "class-variance-authority"],
     registryDeps: ["utils"],
   }),
   item: defineEntry("item", {
@@ -282,7 +283,7 @@ export const componentMeta = {
     badge: COMPONENT_BADGE,
     baseUIPrimitive: "Autocomplete",
     deps: ["@base-ui/react", "lucide-react"],
-    registryDeps: ["utils", "scroll-area"],
+    registryDeps: ["utils", "scroll-area", "input"],
   }),
   slider: defineEntry("slider", {
     section: "Form",
@@ -361,6 +362,7 @@ export const componentMeta = {
     section: "Form",
     description: "A composite input component with addons, icons, and buttons.",
     tags: ["form", "composite"],
+    deps: ["class-variance-authority"],
     registryDeps: ["utils", "button", "input", "textarea"],
   }),
 
@@ -497,7 +499,7 @@ export const componentMeta = {
       "@dnd-kit/modifiers",
       "@dnd-kit/sortable",
       "@dnd-kit/utilities",
-      "@tanstack/react-table",
+      "@tanstack/react-table@^8.21.3",
       "@tanstack/react-virtual",
       "class-variance-authority",
       "lucide-react",
@@ -689,6 +691,78 @@ export const componentMeta = {
     ],
   }),
 }
+
+const componentStyles = {
+  button: "button",
+  input: "text-control",
+  textarea: "text-control",
+  "input-group": "text-control",
+  badge: "badge",
+  alert: "feedback",
+  toast: "feedback",
+  progress: "feedback",
+  item: "data",
+  table: "data",
+  "data-grid": "data",
+  "empty-state": "blocks",
+  login: "blocks",
+  signup: "blocks",
+  avatar: "avatar",
+  card: "surface",
+  frame: "surface",
+  field: "form",
+  form: "form",
+  fieldset: "form",
+  checkbox: "choice-control",
+  "checkbox-group": "choice-control",
+  "radio-group": "choice-control",
+  switch: "choice-control",
+  "number-field": "number-field",
+  slider: "slider",
+  "otp-field": "otp-field",
+  toggle: "toggle",
+  select: "selection",
+  autocomplete: "selection",
+  combobox: "selection",
+  command: "selection",
+  popover: "overlay",
+  tooltip: "overlay",
+  "preview-card": "overlay",
+  "dropdown-menu": "overlay",
+  menubar: "overlay",
+  tabs: "navigation",
+  accordion: "navigation",
+  collapsible: "navigation",
+  "navigation-menu": "navigation",
+  breadcrumb: "navigation",
+  pagination: "navigation",
+}
+for (const [name, style] of Object.entries(componentStyles)) {
+  componentMeta[name].files.push({
+    sourcePath: `apps/www/styles/${style}.styles.css`,
+    targetPath: `styles/${style}.styles.css`,
+    type: "style",
+  })
+}
+
+for (const [name, styles] of Object.entries({
+  dialog: ["modal"],
+  "alert-dialog": ["modal"],
+  drawer: ["modal"],
+  command: ["modal"],
+  "number-field": ["text-control"],
+  toggle: ["button"],
+})) {
+  for (const style of styles)
+    componentMeta[name].files.push({
+      sourcePath: `apps/www/styles/${style}.styles.css`,
+      targetPath: `styles/${style}.styles.css`,
+      type: "style",
+    })
+}
+// Preserve the independently installable separator composition.
+componentMeta["toggle-group"].registryDeps.push("separator")
+componentMeta.fieldset.deps.push("class-variance-authority")
 
 export function buildEntry(name, files, meta, version) {
   return {

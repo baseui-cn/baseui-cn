@@ -1,0 +1,274 @@
+/* Local text-entry anatomy, shared by Input, Textarea and InputGroup. */
+@layer components {
+  .input-control-layout,
+  .textarea-control-layout,
+  .input-group-layout {
+    --control-height: 36;
+    --control-inset: 12;
+    --control-type: 14;
+    --control-leading: 20;
+    --textarea-min: 96;
+    --textarea-block: 10;
+    position: relative;
+    display: inline-flex;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border-radius: var(--control-radius, var(--radius));
+    font-size: calc(var(--control-type) * var(--component-unit, 0.0625rem));
+    line-height: calc(var(--control-leading) * var(--component-unit, 0.0625rem));
+  }
+  .input-control-layout[data-size="sm"],
+  .input-group-layout:has(
+    .input-control-layout[data-size="sm"],
+    .textarea-control-layout[data-size="sm"]
+  ) {
+    --control-height: 32;
+    --control-inset: 10;
+    --control-type: 13;
+    --control-leading: 18;
+    --textarea-min: 80;
+    --textarea-block: 8;
+  }
+  .textarea-control-layout[data-size="sm"] {
+    --control-inset: 10;
+    --textarea-min: 80;
+    --textarea-block: 8;
+  }
+  .input-control-layout[data-size="lg"],
+  .textarea-control-layout[data-size="lg"],
+  .input-group-layout:has(
+    .input-control-layout[data-size="lg"],
+    .textarea-control-layout[data-size="lg"]
+  ) {
+    --control-height: 40;
+    --control-inset: 14;
+    --textarea-min: 112;
+    --textarea-block: 12;
+  }
+  .input-control-layout {
+    height: calc(var(--control-height) * var(--component-unit, 0.0625rem));
+  }
+  .control-shell-layout,
+  .input-group-layout {
+    transition:
+      border-color 100ms cubic-bezier(0.2, 0, 0, 1),
+      background-color 100ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .control-shell-layout:has(input:focus-visible, textarea:focus-visible),
+  .input-group-layout:has(input:focus-visible, textarea:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .input-layout,
+  .textarea-layout {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    outline: none;
+    padding-inline: calc(var(--control-inset) * var(--component-unit, 0.0625rem) - 1px);
+  }
+  .input-layout {
+    height: 100%;
+    padding-block: 0;
+  }
+  .input-layout::placeholder,
+  .textarea-layout::placeholder {
+    color: var(--muted-foreground);
+    opacity: 1;
+  }
+  .input-layout:disabled,
+  .textarea-layout:disabled {
+    cursor: not-allowed;
+  }
+  .input-layout:disabled::placeholder,
+  .textarea-layout:disabled::placeholder {
+    color: var(--muted-foreground);
+  }
+  .textarea-control-layout {
+    min-height: calc(var(--textarea-min) * var(--component-unit, 0.0625rem));
+  }
+  .textarea-layout {
+    field-sizing: content;
+    min-height: calc(var(--textarea-min) * var(--component-unit, 0.0625rem) - 2px);
+    padding-block: calc(var(--textarea-block) * var(--component-unit, 0.0625rem) - 1px);
+    resize: vertical;
+  }
+  .input-layout[type="search"]::-webkit-search-cancel-button,
+  .input-layout[type="search"]::-webkit-search-decoration {
+    appearance: none;
+  }
+  .input-layout[type="file"] {
+    color: var(--muted-foreground);
+  }
+  .input-layout::file-selector-button {
+    margin-inline-end: calc(12 * var(--component-unit, 0.0625rem));
+    background: transparent;
+    color: var(--foreground);
+    font-weight: 500;
+  }
+  .input-group-layout {
+    align-items: center;
+    min-height: calc(var(--control-height) * var(--component-unit, 0.0625rem));
+  }
+  .input-group-layout > :is(.input-control-layout, .textarea-control-layout) {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    outline: none;
+  }
+  .input-group-layout > .input-control-layout {
+    height: calc(var(--control-height) * var(--component-unit, 0.0625rem) - 2px);
+  }
+  .input-group-layout .textarea-layout {
+    resize: none;
+  }
+  .input-group-layout > .textarea-control-layout {
+    min-height: calc(var(--textarea-min) * var(--component-unit, 0.0625rem) - 2px);
+  }
+  .input-group-layout:has([data-align="block-start"], [data-align="block-end"]) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .input-group-layout:has([data-align="inline-start"]) .input-layout {
+    padding-inline-start: calc(6 * var(--component-unit, 0.0625rem));
+  }
+  .input-group-layout:has([data-align="inline-end"]) .input-layout {
+    padding-inline-end: calc(6 * var(--component-unit, 0.0625rem));
+  }
+  .input-group-addon-layout {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    cursor: text;
+    user-select: none;
+    color: var(--muted-foreground);
+  }
+  .input-group-addon-layout[data-align="inline-start"] {
+    order: -1;
+    padding-inline-start: calc(var(--control-inset) * var(--component-unit, 0.0625rem) - 1px);
+  }
+  .input-group-addon-layout[data-align="inline-end"] {
+    order: 1;
+    padding-inline-end: calc(var(--control-inset) * var(--component-unit, 0.0625rem) - 1px);
+  }
+  .input-group-addon-layout[data-align="block-start"],
+  .input-group-addon-layout[data-align="block-end"] {
+    width: 100%;
+    justify-content: flex-start;
+    padding: calc(8 * var(--component-unit, 0.0625rem))
+      calc(var(--control-inset) * var(--component-unit, 0.0625rem) - 1px);
+  }
+  .input-group-addon-layout[data-align="block-start"] {
+    order: -1;
+  }
+  .input-group-addon-layout[data-align="block-end"] {
+    order: 1;
+  }
+  .input-group-addon-layout :where(svg:not([class*="size-"])),
+  .input-group-text-layout :where(svg:not([class*="size-"])) {
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    flex-shrink: 0;
+  }
+  .input-group-text-layout {
+    display: flex;
+    align-items: center;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    white-space: nowrap;
+    color: var(--muted-foreground);
+  }
+  /* Actions consume their actual box, including focus clearance, without negative margins. */
+  .input-group-layout :is(.button-layout, button, [role="button"]) {
+    flex-shrink: 0;
+  }
+  .input-group-layout > .button-layout {
+    margin: calc(3 * var(--component-unit, 0.0625rem));
+  }
+  .input-group-addon-layout:has(button, a, [role="button"]) {
+    padding: calc(3 * var(--component-unit, 0.0625rem));
+  }
+  /* Explicit legacy geometry adapter for the protected Date/Time input shells. */
+  :is(.rdp-input_surface, .tp-input_surface).input-control-layout {
+    height: calc(2.25rem + 2px);
+    border-radius: var(--radius);
+    font-size: 1.1rem;
+    line-height: 1.875rem;
+  }
+  :is(.rdp-input_surface, .tp-input_surface).input-control-layout[data-size="sm"] {
+    height: calc(2rem + 2px);
+  }
+  :is(.rdp-input_surface, .tp-input_surface).input-control-layout[data-size="lg"] {
+    height: calc(2.5rem + 2px);
+  }
+}
+@media (min-width: 40rem) {
+  @layer components {
+    :is(.rdp-input_surface, .tp-input_surface).input-control-layout {
+      font-size: 0.98rem;
+    }
+    :is(.rdp-input_surface, .tp-input_surface).input-control-layout[data-size="lg"] {
+      height: calc(2.125rem + 2px);
+    }
+  }
+}
+@media (max-width: 40rem), (pointer: coarse) {
+  @layer components {
+    .input-layout:not(:read-only),
+    .textarea-layout:not(:read-only) {
+      font-size: calc(16 * var(--component-unit, 0.0625rem));
+      line-height: calc(24 * var(--component-unit, 0.0625rem));
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .control-shell-layout,
+  .input-group-layout {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .control-shell-layout:has(:focus-visible),
+  .input-group-layout:has(input:focus-visible, textarea:focus-visible) {
+    outline-color: Highlight;
+  }
+}
+/* Composite value/state ownership; keep these selectors next to the layout they govern. */
+.control-shell-layout:has(:read-only),
+.input-group-layout:has(input:read-only, textarea:read-only) {
+  background: var(--muted);
+}
+.control-shell-layout:has([aria-invalid="true"], [data-invalid]),
+.input-group-layout:has(
+  input[aria-invalid="true"],
+  textarea[aria-invalid="true"],
+  input[data-invalid],
+  textarea[data-invalid]
+) {
+  border-color: var(--destructive);
+}
+.control-shell-layout:has(:disabled, [data-disabled]),
+.input-group-layout:has(input:disabled, textarea:disabled) {
+  color: var(--muted-foreground);
+  background: var(--muted);
+  border-color: var(--border);
+}
+@media (hover: hover) {
+  .control-shell-layout:not(
+      :has(:disabled, [data-disabled], [aria-invalid="true"], [data-invalid])
+    ):hover,
+  .input-group-layout:not(
+      :has(input:disabled, textarea:disabled, [aria-invalid="true"], [data-invalid])
+    ):hover {
+    border-color: color-mix(in oklab, var(--input) 75%, var(--foreground));
+  }
+}

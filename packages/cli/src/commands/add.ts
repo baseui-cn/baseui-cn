@@ -31,6 +31,7 @@ interface InstallState {
   requestedColliding: string[]
   dependencyColliding: string[]
   fresh: string[]
+  incomplete: string[]
 }
 
 type DependencyConflictAction = "reuse" | "replace" | "cancel"
@@ -193,13 +194,24 @@ export async function installComponents(components: string[], options: InstallOp
     return
   }
 
-  const toInstall = await resolveInstallTargets(
+  const selected = await resolveInstallTargets(
     installState,
     componentEntries,
     config,
     options,
     dependencyAction
   )
+
+  // Replacement is authorized only by the existing overwrite/prompt flow.
+  // Reused families still need any missing source and shared styles restored.
+  const replacingComponents = new Set(
+    selected.filter(
+      (name) =>
+        installState.requestedColliding.includes(name) ||
+        installState.dependencyColliding.includes(name)
+    )
+  )
+  const toInstall = [...new Set([...selected, ...installState.incomplete])]
 
   if (!toInstall.length) {
     console.log()
@@ -248,6 +260,16 @@ export async function installComponents(components: string[], options: InstallOp
 
       for (const file of component.files) {
         const filePath = resolveInstallFilePath(file.path, config.componentsPath, options.path)
+        // Preserve each existing consumer-owned file, including shared files
+        // and survivors of an interrupted family. Explicit replacement still
+        // refreshes all files belonging to the selected component.
+        if (
+          !options.overwrite &&
+          !replacingComponents.has(componentName) &&
+          (await fs.pathExists(filePath))
+        ) {
+          continue
+        }
         await fs.ensureDir(path.dirname(filePath))
         await fs.writeFile(filePath, file.content)
       }
@@ -257,7 +279,7 @@ export async function installComponents(components: string[], options: InstallOp
       )
     } catch (err) {
       spinner.fail(`Failed to ${options.mode === "update" ? "update" : "add"} ${componentName}`)
-      console.log(chalk.dim(`  ${err}`))
+      throw err
     }
   }
 
@@ -297,6 +319,7 @@ async function partitionInstallState(
   const requestedColliding: string[] = []
   const dependencyColliding: string[] = []
   const fresh: string[] = []
+  const incomplete: string[] = []
 
   for (const name of components) {
     const component = componentEntries.get(name)
@@ -310,8 +333,9 @@ async function partitionInstallState(
         fs.pathExists(resolveInstallFilePath(file.path, config.componentsPath, customPath))
       )
     )
+    if (existingFiles.some((exists) => !exists)) incomplete.push(name)
 
-    if (existingFiles.some(Boolean)) {
+    if (component.files.some((file, index) => file.type !== "style" && existingFiles[index])) {
       if (requestedComponents.has(name)) {
         requestedColliding.push(name)
       } else {
@@ -322,7 +346,7 @@ async function partitionInstallState(
     }
   }
 
-  return { requestedColliding, dependencyColliding, fresh }
+  return { requestedColliding, dependencyColliding, fresh, incomplete }
 }
 
 async function resolveDependencyConflicts(
@@ -362,7 +386,7 @@ async function resolveDependencyConflicts(
     choices: [
       {
         title: "Reuse existing files",
-        description: "Keep project customizations and install only missing components.",
+        description: "Keep project customizations and install only missing files.",
         value: "reuse",
       },
       {
@@ -401,7 +425,7 @@ async function resolveInstallTargets(
   if (!requestedColliding.length || options.yes) {
     if (requestedColliding.length && options.yes) {
       console.log()
-      console.log(chalk.dim("Existing target files detected (skipping without --overwrite):"))
+      console.log(chalk.dim("Existing target files detected (preserving without --overwrite):"))
       requestedColliding.forEach((component) => console.log(chalk.dim(`  - ${component}`)))
     }
     return installable

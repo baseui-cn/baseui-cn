@@ -4,13 +4,13 @@
   "label": "Label",
   "section": "Form",
   "description": "Accessible form label with required indicator.",
-  "version": "1.3.3",
-  "baseUIVersion": "^1.6.0",
+  "version": "1.4.0",
+  "baseUIVersion": "1.9.0",
   "files": [
     {
       "path": "label.tsx",
       "type": "component",
-      "content": "\"use client\"\n\nimport { mergeProps } from \"@base-ui/react/merge-props\"\nimport { useRender } from \"@base-ui/react/use-render\"\nimport type React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport function Label({\n  className,\n  render,\n  ...props\n}: useRender.ComponentProps<\"label\">): React.ReactElement {\n  const defaultProps = {\n    className: cn(\n      \"inline-flex items-center gap-2 font-medium text-base/4.5 text-foreground sm:text-sm/4\",\n      className\n    ),\n    \"data-slot\": \"label\",\n  }\n\n  return useRender({\n    defaultTagName: \"label\",\n    props: mergeProps<\"label\">(defaultProps, props),\n    render,\n  })\n}\n"
+      "content": "\"use client\"\n\nimport { mergeProps } from \"@base-ui/react/merge-props\"\nimport { useRender } from \"@base-ui/react/use-render\"\nimport type React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport function Label({\n  className,\n  render,\n  ...props\n}: useRender.ComponentProps<\"label\">): React.ReactElement {\n  const defaultProps = {\n    className: cn(\n      \"inline-flex items-center gap-[calc(6*var(--component-unit,.0625rem))] font-medium text-[length:calc(14*var(--component-unit,.0625rem))] leading-[calc(20*var(--component-unit,.0625rem))] text-foreground\",\n      className\n    ),\n    \"data-slot\": \"label\",\n  }\n\n  return useRender({\n    defaultTagName: \"label\",\n    props: mergeProps<\"label\">(defaultProps, props),\n    render,\n  })\n}\n"
     }
   ],
   "dependencies": {

@@ -20,6 +20,8 @@ component: true
   manualDeps="npm install @base-ui/react lucide-react"
 />
 
+For manual installation, copy the styles declared in the registry entry, including `styles/modal.styles.css`. The modal shell shares its scrim and boundary with Dialog; search and results remain one integrated palette.
+
 ## Usage
 
 ```tsx
@@ -36,7 +38,6 @@ import {
   CommandList,
   CommandPanel,
 } from "@/components/ui/command"
-
 ;<CommandDialog open={open} onOpenChange={setOpen}>
   <CommandDialogPopup>
     <Command items={groups}>

@@ -5,13 +5,15 @@ import type React from "react"
 import { cva } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
+import "@/styles/avatar.styles.css"
+
 export type AvatarSize = "xs" | "sm" | "md" | "lg"
 
 const avatarSizeClasses: Record<AvatarSize, string> = {
-  xs: "size-6 text-[11px]",
-  sm: "size-8 text-xs",
-  md: "size-10 text-xs",
-  lg: "size-12 text-sm",
+  xs: "avatar-xs-layout",
+  sm: "avatar-sm-layout",
+  md: "",
+  lg: "avatar-lg-layout",
 }
 
 export function Avatar({
@@ -29,13 +31,9 @@ export function Avatar({
   badgePosition?: "top-right" | "top-left" | "bottom-right" | "bottom-left"
 }): React.ReactElement {
   return (
-    <div className="relative">
+    <div className="avatar-wrap-layout">
       <AvatarPrimitive.Root
-        className={cn(
-          "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden rounded-full border border-border/70 bg-background align-middle font-medium text-foreground shadow-xs",
-          avatarSizeClasses[size],
-          className
-        )}
+        className={cn("avatar-layout", avatarSizeClasses[size], className)}
         data-size={size}
         data-slot="avatar"
         {...props}
@@ -67,7 +65,7 @@ export function AvatarFallback({
   return (
     <AvatarPrimitive.Fallback
       className={cn(
-        "flex size-full items-center justify-center rounded-full bg-muted text-current",
+        "flex size-full items-center justify-center rounded-[inherit] text-current",
         className
       )}
       data-slot="avatar-fallback"
@@ -76,29 +74,26 @@ export function AvatarFallback({
   )
 }
 
-const avatarBadgeVariants = cva(
-  "absolute size-2 rounded-full outline-2 outline-background ring-1 ring-background/60",
-  {
-    variants: {
-      variant: {
-        online: "bg-success", // available
-        offline: "bg-muted-foreground", // neutral
-        busy: "bg-destructive", // do not disturb
-        away: "bg-warning", // idle/away
-      },
-      badgePosition: {
-        "top-right": "top-0 right-0",
-        "top-left": "top-0 left-0",
-        "bottom-right": "bottom-0 end-0",
-        "bottom-left": "bottom-0 start-0",
-      },
+const avatarBadgeVariants = cva("avatar-marker-layout", {
+  variants: {
+    variant: {
+      online: "bg-success", // available
+      offline: "bg-muted-foreground", // neutral
+      busy: "bg-destructive", // do not disturb
+      away: "bg-warning", // idle/away
     },
-    defaultVariants: {
-      variant: "online",
-      badgePosition: "top-right",
+    badgePosition: {
+      "top-right": "top-0 right-0",
+      "top-left": "top-0 left-0",
+      "bottom-right": "bottom-0 end-0",
+      "bottom-left": "bottom-0 start-0",
     },
-  }
-)
+  },
+  defaultVariants: {
+    variant: "online",
+    badgePosition: "top-right",
+  },
+})
 
 export function AvatarBadge({
   className,
@@ -124,14 +119,7 @@ export function AvatarGroup({
   ...props
 }: React.ComponentProps<"div">): React.ReactElement {
   return (
-    <div
-      className={cn(
-        "flex items-center -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background",
-        className
-      )}
-      data-slot="avatar-group"
-      {...props}
-    />
+    <div className={cn("avatar-group-layout", className)} data-slot="avatar-group" {...props} />
   )
 }
 
@@ -143,7 +131,7 @@ export function AvatarGroupCount({
   return (
     <span
       className={cn(
-        "relative inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground ring-2 ring-background",
+        "avatar-count-layout",
         "cursor-default hover:z-10 leading-none",
         avatarSizeClasses[size],
         className

@@ -48,7 +48,6 @@ npm install class-variance-authority
 ```tsx
 import { EmptyState, EmptyStateIcons } from "@/components/ui/blocks"
 import { Button } from "@/components/ui/button"
-
 ;<EmptyState
   icon={EmptyStateIcons.folder}
   title="No projects yet"
@@ -67,8 +66,15 @@ Use `className="border border-dashed"` for a dashed container style.
 
 ## API
 
-### EmptyStateMedia
+### EmptyState
 
-| Prop      | Type                  | Default     | Description                                                                     |
-| --------- | --------------------- | ----------- | ------------------------------------------------------------------------------- |
-| `variant` | `"default" \| "icon"` | `"default"` | `"icon"` wraps content in a small muted rounded box; `"default"` is transparent |
+The registry block lives in `components/ui/blocks.tsx`. The local composable Empty helpers are separate APIs.
+
+| Prop          | Type                   | Default  | Description                      |
+| ------------- | ---------------------- | -------- | -------------------------------- |
+| `title`       | `string`               | Required | Empty state heading.             |
+| `description` | `string`               | —        | Supporting guidance.             |
+| `icon`        | `ReactNode`            | —        | Optional decorative media.       |
+| `action`      | `ReactNode`            | —        | Compose approved Button actions. |
+| `size`        | `"sm" \| "md" \| "lg"` | `"md"`   | Content spacing and type size.   |
+| `className`   | `string`               | —        | Container customization.         |

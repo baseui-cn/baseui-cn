@@ -6,54 +6,59 @@ import { cva } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+import "@/styles/otp-field.styles.css"
+
 type OTPFieldSize = "sm" | "default" | "lg"
 
-export interface OTPFieldProps
-  extends Omit<OTPFieldPrimitive.Root.Props, "className" | "autoSubmit" | "onValueChange"> {
+export interface OTPFieldProps extends Omit<
+  OTPFieldPrimitive.Root.Props,
+  "className" | "autoSubmit" | "onValueChange"
+> {
   className?: string
   size?: OTPFieldSize
   autoSubmit?: boolean
   onValueChange?: OTPFieldPrimitive.Root.Props["onValueChange"]
 }
 
-export interface OTPFieldInputProps
-  extends Omit<OTPFieldPrimitive.Input.Props, "className" | "size"> {
+export interface OTPFieldInputProps extends Omit<
+  OTPFieldPrimitive.Input.Props,
+  "className" | "size"
+> {
   className?: string
   size?: OTPFieldSize
 }
 
-export interface OTPFieldSeparatorProps
-  extends Omit<OTPFieldPrimitive.Separator.Props, "className"> {
+export interface OTPFieldSeparatorProps extends Omit<
+  OTPFieldPrimitive.Separator.Props,
+  "className"
+> {
   className?: string
   size?: OTPFieldSize
 }
 
 const OTPFieldSizeContext = React.createContext<OTPFieldSize>("default")
 
-const otpFieldRootVariants = cva("flex w-full items-center gap-2")
+const otpFieldRootVariants = cva("otp-field-layout")
 
-const otpFieldInputVariants = cva(
-  "box-border m-0 rounded-xl border border-input bg-background text-center font-mono font-semibold uppercase text-foreground shadow-xs/5 outline-none transition-[border-color,box-shadow,background-color,color,opacity] placeholder:text-muted-foreground/50 data-[filled]:bg-accent/30 focus-visible:border-ring focus-visible:ring-ring/20 focus-visible:ring-3 data-[invalid]:border-destructive data-[invalid]:ring-destructive/20 disabled:cursor-not-allowed disabled:opacity-50",
-  {
-    variants: {
-      size: {
-        sm: "h-10 w-9 text-base",
-        default: "h-11 w-10 text-lg",
-        lg: "h-12 w-11 text-xl",
-      },
-    },
-    defaultVariants: {
-      size: "default",
-    },
-  }
-)
-
-const otpFieldSeparatorVariants = cva("flex items-center justify-center text-muted-foreground", {
+const otpFieldInputVariants = cva("otp-input-layout", {
   variants: {
     size: {
-      sm: "w-3 text-xs",
-      default: "w-4 text-sm",
-      lg: "w-5 text-base",
+      sm: "otp-sm-layout",
+      default: "",
+      lg: "otp-lg-layout",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+})
+
+const otpFieldSeparatorVariants = cva("otp-separator-layout", {
+  variants: {
+    size: {
+      sm: "otp-separator-sm-layout",
+      default: "",
+      lg: "otp-separator-lg-layout",
     },
   },
   defaultVariants: {

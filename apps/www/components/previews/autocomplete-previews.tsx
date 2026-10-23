@@ -9,6 +9,7 @@ import {
   AutocompleteItem,
   AutocompleteList,
   AutocompletePopup,
+  AutocompleteStatus,
 } from "@/components/ui/autocomplete"
 import { Spinner } from "@/components/ui/spinner"
 
@@ -215,7 +216,10 @@ function AutocompleteAsyncPreview() {
           startAddon={loading ? <Spinner /> : <SearchIcon />}
         />
         <AutocompletePopup>
-          <AutocompleteEmpty>No packages found.</AutocompleteEmpty>
+          <AutocompleteStatus>
+            {loading ? "Searching packages…" : `${results.length} packages found`}
+          </AutocompleteStatus>
+          <AutocompleteEmpty>{loading ? null : "No packages found."}</AutocompleteEmpty>
           <AutocompleteList>
             {(item) => (
               <AutocompleteItem key={item} value={item}>

@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 2,
+  "css": "@custom-variant dark (&:where(.dark, .dark *));\n\n@theme inline {\n  --color-background: var(--background);\n  --color-foreground: var(--foreground);\n  --color-card: var(--card);\n  --color-card-foreground: var(--card-foreground);\n  --color-popover: var(--popover);\n  --color-popover-foreground: var(--popover-foreground);\n  --color-primary: var(--primary);\n  --color-primary-foreground: var(--primary-foreground);\n  --color-secondary: var(--secondary);\n  --color-secondary-foreground: var(--secondary-foreground);\n  --color-muted: var(--muted);\n  --color-muted-foreground: var(--muted-foreground);\n  --color-accent: var(--accent);\n  --color-accent-foreground: var(--accent-foreground);\n  --color-border: var(--border);\n  --color-input: var(--input);\n  --color-ring: var(--ring);\n  --color-destructive: var(--destructive);\n  --color-destructive-foreground: var(--destructive-foreground);\n  --color-success: var(--success);\n  --color-success-foreground: var(--success-foreground);\n  --color-warning: var(--warning);\n  --color-warning-foreground: var(--warning-foreground);\n  --color-info: var(--info);\n  --color-info-foreground: var(--info-foreground);\n  --radius-sm: calc(var(--radius) - 4px);\n  --radius-md: calc(var(--radius) - 2px);\n  --radius-lg: var(--radius);\n  --radius-xl: calc(var(--radius) + 4px);\n}\n\n:root {\n  --radius: 0.75rem;\n  --background: #f8f9fb;\n  --foreground: #20242c;\n  --card: #ffffff;\n  --card-foreground: #20242c;\n  --popover: #ffffff;\n  --popover-foreground: #20242c;\n  --secondary: #e8ecf4;\n  --secondary-foreground: #20242c;\n  --muted: #f4f4f5;\n  --muted-foreground: #5e6674;\n  --border: #dedee3;\n  --input: #7d8797;\n  --destructive: #b02a3b;\n  --destructive-foreground: #ffffff;\n  --success: #22673f;\n  --success-foreground: #ffffff;\n  --warning: #875300;\n  --warning-foreground: #ffffff;\n  --info: #2457b2;\n  --info-foreground: #ffffff;\n  --primary: #5b55c9;\n  --primary-foreground: #ffffff;\n  --accent: #eff0ff;\n  --accent-foreground: #514bb5;\n  --ring: #6673e8;\n}\n\n.dark {\n  --background: #101011;\n  --foreground: #eeeeef;\n  --card: #171718;\n  --card-foreground: #eeeeef;\n  --popover: #1c1c1f;\n  --popover-foreground: #eeeeef;\n  --secondary: #303034;\n  --secondary-foreground: #eeeeef;\n  --muted: #29292d;\n  --muted-foreground: #aaaab3;\n  --border: #3d3d43;\n  --input: #6c6c75;\n  --destructive: #ff9da8;\n  --destructive-foreground: #271217;\n  --success: #92ddb0;\n  --success-foreground: #12251a;\n  --warning: #f4c876;\n  --warning-foreground: #281d0c;\n  --info: #a4c4ff;\n  --info-foreground: #13213b;\n  --primary: #a8aeff;\n  --primary-foreground: #18181a;\n  --accent: #25252e;\n  --accent-foreground: #b5b9ff;\n  --ring: #9699d6;\n}\n\n/* baseui-cn foundation */\n@layer base {\n  :root { color-scheme: light; }\n  .dark { color-scheme: dark; }\n}\n@keyframes loading-spin { to { transform: rotate(360deg); } }\n@utility loading-spinner { animation: loading-spin 1s linear infinite; }\n@media (prefers-reduced-motion: reduce) {\n  .loading-spinner { animation: none; }\n}\n",
+  "presets": {
+    "defaultColor": "iris",
+    "defaultRadius": "lg",
+    "colors": {
+      "iris": {
+        "label": "Iris",
+        "light": {
+          "--primary": "#5b55c9",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#eff0ff",
+          "--accent-foreground": "#514bb5",
+          "--ring": "#6673e8"
+        },
+        "dark": {
+          "--primary": "#a8aeff",
+          "--primary-foreground": "#18181a",
+          "--accent": "#25252e",
+          "--accent-foreground": "#b5b9ff",
+          "--ring": "#9699d6"
+        }
+      },
+      "blue": {
+        "label": "Blue",
+        "light": {
+          "--primary": "#1d4ed8",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#edf4ff",
+          "--accent-foreground": "#1d4ed8",
+          "--ring": "#3b6cde"
+        },
+        "dark": {
+          "--primary": "#93b4ff",
+          "--primary-foreground": "#121827",
+          "--accent": "#1c2536",
+          "--accent-foreground": "#a9c5ff",
+          "--ring": "#8ba9df"
+        }
+      },
+      "violet": {
+        "label": "Violet",
+        "light": {
+          "--primary": "#7c3aed",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#f5f0ff",
+          "--accent-foreground": "#6d28d9",
+          "--ring": "#8b5cf6"
+        },
+        "dark": {
+          "--primary": "#c4a8ff",
+          "--primary-foreground": "#1e142b",
+          "--accent": "#2b2238",
+          "--accent-foreground": "#d4bfff",
+          "--ring": "#a48bc9"
+        }
+      },
+      "emerald": {
+        "label": "Emerald",
+        "light": {
+          "--primary": "#066348",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#ecfdf5",
+          "--accent-foreground": "#066348",
+          "--ring": "#149671"
+        },
+        "dark": {
+          "--primary": "#6fdbb5",
+          "--primary-foreground": "#10251d",
+          "--accent": "#193129",
+          "--accent-foreground": "#8be5c3",
+          "--ring": "#6abc9f"
+        }
+      },
+      "orange": {
+        "label": "Orange",
+        "light": {
+          "--primary": "#9a450b",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#fff5e8",
+          "--accent-foreground": "#9a450b",
+          "--ring": "#ce6c26"
+        },
+        "dark": {
+          "--primary": "#f5b47a",
+          "--primary-foreground": "#2b1c11",
+          "--accent": "#35271e",
+          "--accent-foreground": "#fdc99e",
+          "--ring": "#d39b6b"
+        }
+      },
+      "rose": {
+        "label": "Rose",
+        "light": {
+          "--primary": "#be2957",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#fff0f4",
+          "--accent-foreground": "#a51d4a",
+          "--ring": "#ce4b75"
+        },
+        "dark": {
+          "--primary": "#f4a1bb",
+          "--primary-foreground": "#2a131c",
+          "--accent": "#34212a",
+          "--accent-foreground": "#ffb2ca",
+          "--ring": "#d588a2"
+        }
+      },
+      "neutral": {
+        "label": "Neutral",
+        "light": {
+          "--primary": "#25272c",
+          "--primary-foreground": "#ffffff",
+          "--accent": "#f0f0f2",
+          "--accent-foreground": "#45454c",
+          "--ring": "#747480"
+        },
+        "dark": {
+          "--primary": "#e7e7ea",
+          "--primary-foreground": "#18181a",
+          "--accent": "#29292d",
+          "--accent-foreground": "#d1d1d6",
+          "--ring": "#a1a1aa"
+        }
+      }
+    },
+    "radii": {
+      "sm": {
+        "label": "Sharp",
+        "value": "0.25rem"
+      },
+      "md": {
+        "label": "Medium",
+        "value": "0.5rem"
+      },
+      "lg": {
+        "label": "Rounded",
+        "value": "0.75rem"
+      },
+      "xl": {
+        "label": "Extra",
+        "value": "1rem"
+      }
+    }
+  },
+  "light": {
+    "--radius": "0.75rem",
+    "--background": "#f8f9fb",
+    "--foreground": "#20242c",
+    "--card": "#ffffff",
+    "--card-foreground": "#20242c",
+    "--popover": "#ffffff",
+    "--popover-foreground": "#20242c",
+    "--secondary": "#e8ecf4",
+    "--secondary-foreground": "#20242c",
+    "--muted": "#f4f4f5",
+    "--muted-foreground": "#5e6674",
+    "--border": "#dedee3",
+    "--input": "#7d8797",
+    "--destructive": "#b02a3b",
+    "--destructive-foreground": "#ffffff",
+    "--success": "#22673f",
+    "--success-foreground": "#ffffff",
+    "--warning": "#875300",
+    "--warning-foreground": "#ffffff",
+    "--info": "#2457b2",
+    "--info-foreground": "#ffffff",
+    "--primary": "#5b55c9",
+    "--primary-foreground": "#ffffff",
+    "--accent": "#eff0ff",
+    "--accent-foreground": "#514bb5",
+    "--ring": "#6673e8"
+  },
+  "dark": {
+    "--background": "#101011",
+    "--foreground": "#eeeeef",
+    "--card": "#171718",
+    "--card-foreground": "#eeeeef",
+    "--popover": "#1c1c1f",
+    "--popover-foreground": "#eeeeef",
+    "--secondary": "#303034",
+    "--secondary-foreground": "#eeeeef",
+    "--muted": "#29292d",
+    "--muted-foreground": "#aaaab3",
+    "--border": "#3d3d43",
+    "--input": "#6c6c75",
+    "--destructive": "#ff9da8",
+    "--destructive-foreground": "#271217",
+    "--success": "#92ddb0",
+    "--success-foreground": "#12251a",
+    "--warning": "#f4c876",
+    "--warning-foreground": "#281d0c",
+    "--info": "#a4c4ff",
+    "--info-foreground": "#13213b",
+    "--primary": "#a8aeff",
+    "--primary-foreground": "#18181a",
+    "--accent": "#25252e",
+    "--accent-foreground": "#b5b9ff",
+    "--ring": "#9699d6"
+  }
+}

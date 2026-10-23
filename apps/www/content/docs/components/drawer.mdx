@@ -37,13 +37,18 @@ npm install @base-ui/react
 
 <ComponentSource name="drawer" title="components/ui/drawer.tsx" />
 
-<Step>Update the import paths to match your project setup.</Step>
+<Step>
+  Copy `styles/modal.styles.css` from the registry entry alongside the component, then update the
+  import paths to match your project setup.
+</Step>
 
 </Steps>
 
 </TabsContent>
 
 </CodeTabs>
+
+The `side` prop controls placement. Set the matching `swipeDirection` on `Drawer`: `right`, `left`, `down` for bottom, or `up` for top. The popup owns scrolling; long content and footer actions remain reachable inside it. The wrapper includes Base UI’s gesture viewport.
 
 ## Usage
 
@@ -61,7 +66,7 @@ import {
 ```
 
 ```tsx
-<Drawer>
+<Drawer swipeDirection="right">
   <DrawerTrigger>Open Drawer</DrawerTrigger>
   <DrawerContent side="right">
     <DrawerHeader>

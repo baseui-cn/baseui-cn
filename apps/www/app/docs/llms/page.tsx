@@ -7,15 +7,16 @@ export const metadata: Metadata = { title: "LLM Usage" }
 
 export default function LLMsPage() {
   return (
-    <div className="mx-auto w-full max-w-3xl flex flex-col gap-10 animate-fade-in">
+    <div className="docs-guide mx-auto w-full max-w-[72ch] flex flex-col gap-10">
       <div className="flex flex-col gap-3 pb-6 border-b border-border">
         <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
           Getting Started
         </p>
-        <h1 className="text-3xl font-bold tracking-tight">LLM Usage</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">LLM Usage</h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          baseui-cn ships a first-class <code className="font-mono text-sm bg-muted px-1.5 py-0.5 rounded">llms.txt</code> manifest
-          designed for AI coding assistants — Cursor, Windsurf, GitHub Copilot, and Claude.
+          baseui-cn ships a first-class{" "}
+          <code className="font-mono text-sm bg-muted px-1.5 py-0.5 rounded">llms.txt</code>{" "}
+          manifest designed for AI coding assistants — Cursor, Windsurf, GitHub Copilot, and Claude.
         </p>
       </div>
 
@@ -25,14 +26,22 @@ export default function LLMsPage() {
         <div className="rounded-lg border border-border divide-y divide-border text-sm">
           {[
             ["Components", "Every component, its import path, and which Base UI primitive it uses"],
-            ["Render prop", "Base UI uses render prop on triggers — not asChild. Agents are told explicitly."],
+            [
+              "Render prop",
+              "Base UI uses render prop on triggers — not asChild. Agents are told explicitly.",
+            ],
             ["Portal system", "All overlays share one Base UI portal — no z-index wrappers needed"],
             ["Do NOT use", "Agents are told never to suggest Vaul, @radix-ui/*, or cmdk"],
-            ["Data attributes", "data-[open], data-[checked], data-[highlighted] etc. for state styling"],
+            [
+              "Data attributes",
+              "data-[open], data-[checked], data-[highlighted] etc. for state styling",
+            ],
             ["Base UI docs", "Links to base-ui.com/llms.txt for full primitive API reference"],
           ].map(([label, desc]) => (
             <div key={label} className="flex items-start gap-4 px-4 py-3">
-              <code className="font-mono text-xs text-foreground w-32 shrink-0 mt-0.5">{label}</code>
+              <code className="font-mono text-xs text-foreground w-32 shrink-0 mt-0.5">
+                {label}
+              </code>
               <span className="text-muted-foreground">{desc}</span>
             </div>
           ))}
@@ -44,7 +53,8 @@ export default function LLMsPage() {
         <div>
           <h2 className="text-base font-semibold">Using with Cursor</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Add baseui-cn to your Cursor docs index so it has full context when generating component code.
+            Add baseui-cn to your Cursor docs index so it has full context when generating component
+            code.
           </p>
         </div>
         <CodeBlock
@@ -57,8 +67,9 @@ export default function LLMsPage() {
 }`}
         />
         <p className="text-sm text-muted-foreground">
-          Both manifests are indexed. Cursor then understands both the baseui-cn wrapper
-          layer (import paths, component API) and the underlying Base UI primitive layer (props, data attributes).
+          Both manifests are indexed. Cursor then understands both the baseui-cn wrapper layer
+          (import paths, component API) and the underlying Base UI primitive layer (props, data
+          attributes).
         </p>
       </div>
 
@@ -132,8 +143,9 @@ Rules:
       <div className="flex flex-col gap-4">
         <h2 className="text-base font-semibold">Example — what an agent generates</h2>
         <p className="text-sm text-muted-foreground">
-          With the manifest loaded, ask: <em>&quot;Add a settings drawer with a theme selector inside&quot;</em>.
-          The agent produces correct baseui-cn code:
+          With the manifest loaded, ask:{" "}
+          <em>&quot;Add a settings drawer with a theme selector inside&quot;</em>. The agent
+          produces correct baseui-cn code:
         </p>
         <CodeBlock
           code={`import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
@@ -168,10 +180,16 @@ export function SettingsDrawer() {
       </div>
 
       <div className="flex items-center gap-4 pt-2 border-t border-border text-sm">
-        <a href="/docs/theming" className="text-muted-foreground hover:text-foreground hover:underline underline-offset-4">
+        <a
+          href="/docs/theming"
+          className="text-muted-foreground hover:text-foreground hover:underline underline-offset-4"
+        >
           ← Theming
         </a>
-        <a href="/docs/components/button" className="flex items-center gap-1.5 font-medium hover:underline underline-offset-4">
+        <a
+          href="/docs/components/button"
+          className="flex items-center gap-1.5 font-medium hover:underline underline-offset-4"
+        >
           Components →
         </a>
       </div>

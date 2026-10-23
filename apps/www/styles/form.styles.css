@@ -1,0 +1,89 @@
+/* Form layout only. Validation and control association remain with Base UI. */
+@layer components {
+  .form-layout,
+  .fieldset-layout {
+    display: flex;
+    flex-direction: column;
+    gap: calc(16 * var(--component-unit, 0.0625rem));
+    width: 100%;
+    min-width: 0;
+  }
+  .fieldset-layout {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .form-layout > .fieldset-layout + .fieldset-layout {
+    margin-block-start: calc(8 * var(--component-unit, 0.0625rem));
+  }
+  .field-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    min-width: 0;
+    width: 100%;
+  }
+  .field-label-layout {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    color: var(--foreground);
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+  .field-item-layout {
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--component-unit, 0.0625rem));
+    min-width: 0;
+  }
+  .field-description-layout,
+  .field-error-layout {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+    overflow-wrap: anywhere;
+  }
+  .field-error-layout,
+  .field-label-layout [data-slot="field-required"] {
+    color: var(--destructive);
+  }
+  .fieldset-legend-layout {
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--component-unit, 0.0625rem));
+    width: 100%;
+    padding-block: calc(6 * var(--component-unit, 0.0625rem));
+    color: var(--foreground);
+    font-size: calc(16 * var(--component-unit, 0.0625rem));
+    line-height: calc(24 * var(--component-unit, 0.0625rem));
+    font-weight: 600;
+  }
+  .fieldset-legend-sm-layout {
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    padding-block: calc(4 * var(--component-unit, 0.0625rem));
+  }
+  .fieldset-legend-lg-layout {
+    font-size: calc(18 * var(--component-unit, 0.0625rem));
+    line-height: calc(26 * var(--component-unit, 0.0625rem));
+    padding-block: calc(10 * var(--component-unit, 0.0625rem));
+  }
+  .fieldset-legend-border-layout {
+    border-block-end: 1px solid var(--border);
+  }
+  :is(.field-layout, .fieldset-layout)[data-disabled]
+    :is(
+      .field-label-layout,
+      .field-description-layout,
+      .field-error-layout,
+      .fieldset-legend-layout
+    ),
+  .field-label-layout[data-disabled] {
+    color: var(--muted-foreground);
+  }
+}

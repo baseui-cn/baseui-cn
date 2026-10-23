@@ -1,0 +1,545 @@
+/* Selection/search anatomy. Public theme roles remain owned by the V2 foundation. */
+@layer components {
+  .select-trigger-layout {
+    --selection-height: 36;
+    --selection-inset: 12;
+    --selection-type: 14;
+    --selection-leading: 20;
+    display: inline-flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+    height: calc(var(--selection-height) * var(--component-unit, 0.0625rem));
+    padding: 0 calc(var(--selection-inset) * var(--component-unit, 0.0625rem) - 1px);
+    border-radius: var(--control-radius, var(--radius));
+    font-size: calc(var(--selection-type) * var(--component-unit, 0.0625rem));
+    line-height: calc(var(--selection-leading) * var(--component-unit, 0.0625rem));
+    font-weight: 500;
+    text-align: start;
+    transition:
+      border-color 100ms cubic-bezier(0.2, 0, 0, 1),
+      background-color 100ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .select-trigger-layout[data-size="sm"] {
+    --selection-height: 32;
+    --selection-inset: 10;
+    --selection-type: 13;
+    --selection-leading: 18;
+  }
+  .select-trigger-layout[data-size="lg"] {
+    --selection-height: 40;
+    --selection-inset: 14;
+  }
+  .select-value-layout {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: calc(6 * var(--component-unit, 0.0625rem));
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: start;
+  }
+  .select-trigger-layout[data-placeholder] {
+    color: var(--muted-foreground);
+    font-weight: 400;
+  }
+  .select-icon-layout {
+    flex-shrink: 0;
+    color: var(--muted-foreground);
+  }
+  .select-trigger-layout svg,
+  .combobox-trigger-layout svg,
+  .selection-start-layout svg,
+  .selection-item-layout :where(svg:not([class*="size-"])) {
+    flex-shrink: 0;
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    pointer-events: none;
+  }
+  .select-trigger-layout[data-popup-open],
+  :is(.autocomplete-control-layout, .combobox-control-layout):has(input[data-popup-open]),
+  .combobox-chips-layout:has(input[data-popup-open]) {
+    border-color: color-mix(in oklab, var(--input) 60%, var(--foreground));
+  }
+  .select-trigger-layout:is([aria-invalid="true"], [data-invalid]) {
+    border-color: var(--destructive);
+  }
+  .select-trigger-layout[data-readonly] {
+    background: var(--muted);
+  }
+  .select-trigger-layout:is(:disabled, [data-disabled]) {
+    color: var(--muted-foreground);
+    background: var(--muted);
+    border-color: var(--border);
+    cursor: not-allowed;
+  }
+  .select-trigger-layout:is(:disabled, [data-disabled]) .select-icon-layout {
+    color: inherit;
+  }
+  .select-trigger-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .selection-positioner-layout {
+    isolation: isolate;
+    z-index: 50;
+  }
+  .selection-popup-layout {
+    --popup-shadow: 0 4px 12px rgb(17 24 39 / 0.08), 0 1px 3px rgb(17 24 39 / 0.06);
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: min(calc(144 * var(--component-unit, 0.0625rem)), var(--available-width));
+    width: var(--anchor-width);
+    max-width: var(--available-width);
+    max-height: min(var(--available-height), calc(368 * var(--component-unit, 0.0625rem)));
+    overflow: hidden;
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) + 4 * var(--component-unit, 0.0625rem))
+    );
+    box-shadow: var(--popup-shadow);
+    transform-origin: var(--transform-origin);
+    transition:
+      opacity 160ms cubic-bezier(0.16, 1, 0.3, 1),
+      scale 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .selection-popup-layout:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    scale: 0.98;
+  }
+  .selection-popup-layout[data-ending-style] {
+    transition-duration: 100ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  /* Item-aligned Select positioning measures the popup; do not scale that geometry. */
+  .select-popup-layout[data-align-trigger="true"] {
+    scale: none;
+    transition: opacity 100ms;
+  }
+  .select-popup-layout {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .selection-list-layout {
+    box-sizing: border-box;
+    min-height: 0;
+    padding: calc(4 * var(--component-unit, 0.0625rem));
+    scroll-padding-block: calc(4 * var(--component-unit, 0.0625rem));
+    outline: none;
+  }
+  .selection-scroll-layout {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+  .selection-scroll-layout > [data-slot="scroll-area-viewport"] {
+    flex: 1;
+    min-height: 0;
+    max-height: inherit;
+  }
+  .combobox-list-layout {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .combobox-popup-layout > .input-group-layout {
+    margin: calc(4 * var(--component-unit, 0.0625rem));
+    flex-shrink: 0;
+  }
+  .selection-item-layout {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--component-unit, 0.0625rem));
+    min-width: 0;
+    min-height: calc(32 * var(--component-unit, 0.0625rem));
+    width: 100%;
+    padding: calc(6 * var(--component-unit, 0.0625rem)) calc(8 * var(--component-unit, 0.0625rem));
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) - 2 * var(--component-unit, 0.0625rem))
+    );
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    font-weight: 400;
+    overflow-wrap: anywhere;
+    cursor: default;
+    user-select: none;
+    outline: none;
+  }
+  .selection-text-layout {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: calc(8 * var(--component-unit, 0.0625rem));
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .selection-indicator-layout {
+    display: flex;
+    flex: 0 0 calc(16 * var(--component-unit, 0.0625rem));
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    margin-inline-start: auto;
+  }
+  .selection-indicator-layout svg {
+    width: calc(12 * var(--component-unit, 0.0625rem));
+    height: calc(12 * var(--component-unit, 0.0625rem));
+  }
+  [data-check-position="left"] > .selection-indicator-layout {
+    order: -1;
+    margin-inline-start: 0;
+  }
+  .selection-item-layout[data-disabled] {
+    pointer-events: none;
+  }
+  .selection-group-layout + .selection-group-layout {
+    margin-block-start: calc(4 * var(--component-unit, 0.0625rem));
+  }
+  .selection-label-layout {
+    padding: calc(8 * var(--component-unit, 0.0625rem));
+    color: var(--muted-foreground);
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+    font-weight: 500;
+  }
+  .selection-meta-layout {
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    color: var(--muted-foreground);
+    font-family: inherit;
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+    font-weight: 400;
+  }
+  .selection-separator-layout {
+    height: 1px;
+    margin: calc(4 * var(--component-unit, 0.0625rem));
+    background: var(--border);
+    pointer-events: none;
+  }
+  .selection-empty-layout,
+  .selection-status-layout {
+    padding: calc(12 * var(--component-unit, 0.0625rem));
+    color: var(--muted-foreground);
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    overflow-wrap: anywhere;
+  }
+  .selection-empty-layout {
+    text-align: center;
+  }
+  .selection-empty-layout:empty,
+  .selection-status-layout:empty {
+    margin: 0;
+    padding: 0;
+  }
+  .selection-status-layout {
+    flex-shrink: 0;
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+  }
+  .select-scroll-layout {
+    position: sticky;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(24 * var(--component-unit, 0.0625rem));
+    width: 100%;
+    background: var(--popover);
+  }
+  .select-scroll-up-layout {
+    top: 0;
+  }
+  .select-scroll-down-layout {
+    bottom: 0;
+  }
+  .select-scroll-layout svg {
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+  }
+  .selection-start-layout {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding-inline-start: calc(11 * var(--component-unit, 0.0625rem));
+    color: var(--muted-foreground);
+    pointer-events: none;
+  }
+  .autocomplete-control-layout:has(.selection-start-layout) .input-layout {
+    padding-inline-start: calc(6 * var(--component-unit, 0.0625rem));
+  }
+  .selection-action-layout {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: calc(28 * var(--component-unit, 0.0625rem));
+    height: calc(28 * var(--component-unit, 0.0625rem));
+    padding: 0;
+    border: 0;
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) - 2 * var(--component-unit, 0.0625rem))
+    );
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: pointer;
+  }
+  .selection-action-layout svg {
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    pointer-events: none;
+  }
+  /* Inset contours stay complete inside compact composite boundaries. */
+  .selection-action-layout:focus-visible,
+  .combobox-chip-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+  }
+  .selection-action-layout:is(:disabled, [data-disabled], [aria-disabled="true"]) {
+    color: var(--muted-foreground);
+    cursor: default;
+  }
+  .autocomplete-control-layout > .selection-action-layout {
+    margin-inline-end: calc(3 * var(--component-unit, 0.0625rem));
+  }
+  .autocomplete-control-layout:has([data-slot="autocomplete-clear"])
+    > [data-slot="autocomplete-trigger"] {
+    display: none;
+  }
+  .combobox-clear-layout:not([data-visible]):not(.selection-query-clear-layout) {
+    display: none;
+  }
+  .combobox-control-layout:has(
+      .combobox-clear-layout:is([data-visible], .selection-query-clear-layout)
+    )
+    .combobox-trigger-layout {
+    display: none;
+  }
+  :is(.autocomplete-control-layout, .combobox-control-layout):has(input[readonly])
+    .selection-action-layout {
+    color: var(--muted-foreground);
+  }
+  .combobox-chips-layout {
+    --chips-height: 36;
+    --chip-height: 28;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: calc(4 * var(--component-unit, 0.0625rem));
+    width: 100%;
+    min-width: 0;
+    min-height: calc(var(--chips-height) * var(--component-unit, 0.0625rem));
+    padding: calc(3 * var(--component-unit, 0.0625rem));
+    border: 1px solid var(--input);
+    border-radius: var(--control-radius, var(--radius));
+    background: var(--card);
+    color: var(--foreground);
+  }
+  .combobox-chips-layout:has([data-size="sm"]) {
+    --chips-height: 32;
+    --chip-height: 24;
+  }
+  .combobox-chips-layout:has([data-size="lg"]) {
+    --chips-height: 40;
+  }
+  .combobox-chips-layout:has(input:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .combobox-chips-layout:has(input[readonly]) {
+    background: var(--muted);
+  }
+  :is(.autocomplete-control-layout, .combobox-control-layout, .combobox-chips-layout):has(
+    input:is([aria-invalid="true"], [data-invalid])
+  ) {
+    border-color: var(--destructive);
+  }
+  :is(.autocomplete-control-layout, .combobox-control-layout, .combobox-chips-layout):has(
+    input:disabled
+  ) {
+    color: var(--muted-foreground);
+    border-color: var(--border);
+    background: var(--muted);
+  }
+  .combobox-chip-layout {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    min-width: 0;
+    min-height: calc(var(--chip-height) * var(--component-unit, 0.0625rem));
+    padding-inline-start: calc(8 * var(--component-unit, 0.0625rem));
+    border-radius: max(
+      0px,
+      calc(var(--control-radius, var(--radius)) - 2 * var(--component-unit, 0.0625rem))
+    );
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+    line-height: calc(18 * var(--component-unit, 0.0625rem));
+    font-weight: 500;
+  }
+  .combobox-chip-text-layout {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .combobox-chip-remove-layout {
+    align-self: stretch;
+    height: auto;
+    min-height: calc(var(--chip-height) * var(--component-unit, 0.0625rem));
+    margin-inline-start: calc(4 * var(--component-unit, 0.0625rem));
+  }
+  .combobox-chips-input-layout {
+    flex: 1;
+    box-sizing: border-box;
+    min-width: calc(64 * var(--component-unit, 0.0625rem));
+    width: 0;
+    height: calc(
+      var(--chips-height) * var(--component-unit, 0.0625rem) - 8 * var(--component-unit, 0.0625rem)
+    );
+    padding-inline: calc(8 * var(--component-unit, 0.0625rem));
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+    line-height: calc(20 * var(--component-unit, 0.0625rem));
+    outline: none;
+  }
+  .combobox-chips-input-layout::placeholder {
+    color: var(--muted-foreground);
+    opacity: 1;
+  }
+  .command-input-layout {
+    padding: calc(8 * var(--component-unit, 0.0625rem)) calc(8 * var(--component-unit, 0.0625rem))
+      calc(8 * var(--component-unit, 0.0625rem) - 1px);
+    box-sizing: border-box;
+    flex-shrink: 0;
+    border-block-end: 1px solid var(--border);
+  }
+  .command-list-layout {
+    max-height: calc(320 * var(--component-unit, 0.0625rem));
+  }
+  .command-empty-layout:not(:empty) {
+    padding-block: calc(24 * var(--component-unit, 0.0625rem));
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    .select-trigger-layout:not(
+        :disabled,
+        [data-disabled],
+        [aria-invalid="true"],
+        [data-invalid],
+        [data-popup-open]
+      ):hover {
+      border-color: color-mix(in oklab, var(--input) 75%, var(--foreground));
+    }
+    .selection-action-layout:not(:disabled, [data-disabled], [aria-disabled="true"]):hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+  }
+}
+@media (max-width: 40rem), (pointer: coarse) {
+  @layer components {
+    .combobox-chips-input-layout {
+      font-size: calc(16 * var(--component-unit, 0.0625rem));
+      line-height: calc(24 * var(--component-unit, 0.0625rem));
+    }
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    .select-trigger-layout {
+      height: max(calc(var(--selection-height) * var(--component-unit, 0.0625rem)), 44px);
+    }
+    .selection-item-layout {
+      min-height: 44px;
+    }
+    .selection-action-layout {
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .autocomplete-control-layout:has(.selection-action-layout),
+    .combobox-control-layout:has(.selection-action-layout) {
+      min-height: 52px;
+    }
+    .combobox-chip-layout {
+      min-height: 44px;
+    }
+    .combobox-chips-layout {
+      gap: calc(8 * var(--component-unit, 0.0625rem));
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .select-trigger-layout,
+  .selection-popup-layout {
+    transition: none;
+    scale: none;
+  }
+}
+@media (forced-colors: active) {
+  .select-trigger-layout:focus-visible,
+  .selection-action-layout:focus-visible,
+  .combobox-chip-layout:focus-visible,
+  .combobox-chips-layout:has(input:focus-visible) {
+    outline-color: Highlight;
+  }
+  .selection-item-layout[data-highlighted] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+@layer components {
+  .dark .selection-popup-layout {
+    --popup-shadow: 0 6px 18px rgb(0 0 0 / 0.2);
+  }
+  .dark .selection-separator-layout {
+    background: color-mix(in oklab, var(--border) 60%, transparent);
+  }
+  .dark .command-input-layout {
+    border-block-end-color: color-mix(in oklab, var(--border) 60%, transparent);
+  }
+}
+
+/* Command is one surface. This scope removes the ordinary composite input chrome
+   without changing Autocomplete's behavior or other text-entry consumers. */
+
+.command-input-layout .input-group-layout {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+  outline: none;
+}
+
+.command-input-layout .input-control-layout {
+  height: calc(var(--control-height) * var(--component-unit, 0.0625rem));
+}
+
+.command-input-layout:has(input:focus-visible) {
+  border-block-end-color: var(--ring);
+}
+@media (forced-colors: active) {
+  .command-input-layout:has(input:focus-visible) {
+    border-block-end-color: Highlight;
+  }
+}

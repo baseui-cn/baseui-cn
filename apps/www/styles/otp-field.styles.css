@@ -1,0 +1,138 @@
+@layer components {
+  .otp-field-layout {
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--component-unit, 0.0625rem));
+    width: 100%;
+    min-width: 0;
+  }
+  .otp-input-layout {
+    --otp-width: 40;
+    --otp-height: 44;
+    --otp-type: 18;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: calc(var(--otp-width) * var(--component-unit, 0.0625rem));
+    height: calc(var(--otp-height) * var(--component-unit, 0.0625rem));
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--input);
+    border-radius: var(--control-radius, var(--radius));
+    background: var(--card);
+    color: var(--foreground);
+    text-align: center;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: calc(var(--otp-type) * var(--component-unit, 0.0625rem));
+    line-height: 1;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition:
+      border-color 100ms cubic-bezier(0.2, 0, 0, 1),
+      background-color 100ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .otp-sm-layout {
+    --otp-width: 36;
+    --otp-height: 40;
+    --otp-type: 16;
+  }
+  .otp-lg-layout {
+    --otp-width: 44;
+    --otp-height: 48;
+    --otp-type: 20;
+  }
+  .otp-input-layout::placeholder {
+    color: var(--muted-foreground);
+    opacity: 1;
+  }
+  .otp-input-layout[data-filled] {
+    background: var(--muted);
+  }
+  .otp-input-layout:is(:read-only, [data-readonly]) {
+    background: var(--muted);
+  }
+  .otp-input-layout:is([data-invalid], [aria-invalid="true"]) {
+    border-color: var(--destructive);
+  }
+  .otp-input-layout:is(:disabled, [data-disabled]) {
+    background: var(--muted);
+    border-color: var(--border);
+    color: var(--muted-foreground);
+    cursor: not-allowed;
+  }
+  .otp-input-layout:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .otp-separator-layout {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted-foreground);
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    font-size: calc(14 * var(--component-unit, 0.0625rem));
+  }
+  .otp-separator-sm-layout {
+    width: calc(12 * var(--component-unit, 0.0625rem));
+    font-size: calc(12 * var(--component-unit, 0.0625rem));
+  }
+  .otp-separator-lg-layout {
+    width: calc(20 * var(--component-unit, 0.0625rem));
+    font-size: calc(16 * var(--component-unit, 0.0625rem));
+  }
+  /* Explicit consumer opt-in: six full-size slots in two rows, preserving DOM/keyboard order. */
+  .otp-wrap-layout {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    width: fit-content;
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    .otp-input-layout:not(
+        :disabled,
+        [data-disabled],
+        [data-readonly],
+        [data-invalid],
+        [aria-invalid="true"]
+      ):hover {
+      border-color: color-mix(in oklab, var(--input) 75%, var(--foreground));
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .otp-input-layout {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .otp-input-layout:focus-visible {
+    outline-color: Highlight;
+  }
+}
+@layer components {
+  .otp-container-layout {
+    container-type: inline-size;
+    width: 100%;
+    min-width: 0;
+    padding: calc(4 * var(--component-unit, 0.0625rem));
+  }
+  .otp-responsive-layout {
+    width: fit-content;
+    margin-inline: auto;
+  }
+}
+@container (max-width: 23rem) {
+  @layer components {
+    .otp-responsive-layout {
+      display: grid;
+      grid-template-columns: repeat(3, max-content);
+    }
+    .otp-responsive-layout:has(> div) {
+      grid-template-columns: max-content;
+    }
+    .otp-responsive-layout > .otp-separator-layout {
+      justify-self: center;
+    }
+  }
+}

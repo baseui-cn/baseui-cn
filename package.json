@@ -12,7 +12,13 @@
     "docs:markdown": "node scripts/build-doc-markdown.mjs",
     "previews:build": "node scripts/build-preview-sources.mjs",
     "previews:watch": "node scripts/watch-preview-sources.mjs",
-    "build:all": "node scripts/build-registry.mjs && node scripts/build-preview-sources.mjs && node scripts/build-doc-markdown.mjs"
+    "build:all": "node scripts/build-registry.mjs && node scripts/build-preview-sources.mjs && node scripts/build-doc-markdown.mjs",
+    "theme:build": "node scripts/build-theme.mjs",
+    "theme:check": "node scripts/build-theme.mjs --check",
+    "theme:fixtures": "node scripts/check-theme-fixtures.mjs",
+    "registry:check": "node scripts/check-registry-consistency.mjs",
+    "cli:fixtures": "node scripts/check-cli-install-fixtures.mjs",
+    "cli:onboarding": "node scripts/check-cli-onboarding.mjs"
   },
   "devDependencies": {
     "turbo": "latest",

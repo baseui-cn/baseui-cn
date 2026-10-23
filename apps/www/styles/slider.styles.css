@@ -1,0 +1,109 @@
+@layer components {
+  .slider-layout {
+    width: 100%;
+    min-width: 0;
+  }
+  .slider-layout[data-orientation="vertical"] {
+    height: 100%;
+    width: auto;
+  }
+  .slider-control-layout {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: calc(24 * var(--component-unit, 0.0625rem));
+    touch-action: none;
+    user-select: none;
+  }
+  .slider-control-layout[data-orientation="vertical"] {
+    flex-direction: column;
+    width: calc(24 * var(--component-unit, 0.0625rem));
+    height: 100%;
+    min-height: calc(140 * var(--component-unit, 0.0625rem));
+  }
+  .slider-track-layout {
+    position: relative;
+    width: 100%;
+    height: calc(4 * var(--component-unit, 0.0625rem));
+    border-radius: 9999px;
+    background: var(--input);
+  }
+  .slider-track-layout[data-orientation="vertical"] {
+    width: calc(4 * var(--component-unit, 0.0625rem));
+    height: 100%;
+    flex-grow: 1;
+  }
+  .slider-range-layout {
+    height: 100%;
+    border-radius: inherit;
+    background: var(--primary);
+  }
+  .slider-range-layout[data-orientation="vertical"] {
+    width: 100%;
+    height: auto;
+  }
+  .slider-thumb-layout {
+    box-sizing: border-box;
+    width: calc(16 * var(--component-unit, 0.0625rem));
+    height: calc(16 * var(--component-unit, 0.0625rem));
+    border: 1px solid color-mix(in oklab, var(--input) 60%, var(--foreground));
+    border-radius: 50%;
+    background: var(--card);
+    cursor: grab;
+  }
+  .slider-thumb-layout[data-dragging] {
+    background: var(--secondary);
+    cursor: grabbing;
+  }
+  .slider-thumb-layout:has(input:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .slider-thumb-layout input {
+    outline: none;
+  }
+  .slider-layout[data-invalid] .slider-track-layout {
+    background: var(--destructive);
+  }
+  .slider-thumb-layout[data-invalid] {
+    border-color: var(--destructive);
+  }
+  .slider-layout[data-disabled] .slider-track-layout {
+    background: var(--border);
+  }
+  .slider-layout[data-disabled] .slider-range-layout {
+    background: var(--muted-foreground);
+  }
+  .slider-thumb-layout[data-disabled] {
+    border-color: var(--border);
+    background: var(--muted);
+    cursor: not-allowed;
+  }
+}
+@media (hover: hover) {
+  @layer components {
+    .slider-thumb-layout:not([data-disabled], [data-dragging]):hover {
+      background: var(--muted);
+    }
+  }
+}
+@media (pointer: coarse) {
+  @layer components {
+    .slider-control-layout {
+      height: calc(44 * var(--component-unit, 0.0625rem));
+    }
+    .slider-control-layout[data-orientation="vertical"] {
+      width: calc(44 * var(--component-unit, 0.0625rem));
+    }
+  }
+}
+@media (forced-colors: active) {
+  .slider-thumb-layout:has(input:focus-visible) {
+    outline-color: Highlight;
+  }
+  .slider-range-layout {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+}

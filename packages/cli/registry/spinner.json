@@ -4,13 +4,13 @@
   "label": "Spinner",
   "section": "Display",
   "description": "An animated loading spinner indicator.",
-  "version": "1.3.3",
-  "baseUIVersion": "^1.6.0",
+  "version": "1.4.0",
+  "baseUIVersion": "1.9.0",
   "files": [
     {
       "path": "spinner.tsx",
       "type": "component",
-      "content": "import { cn } from \"@/lib/utils\";\nimport { Loader2Icon } from \"lucide-react\";\n\nfunction Spinner({ className, ...props }: React.ComponentProps<\"svg\">) {\n    return (\n        <Loader2Icon\n            role=\"status\"\n            aria-label=\"Loading\"\n            className={cn(\"size-4 animate-spin\", className)}\n            {...props}\n        />\n    );\n}\n\nexport { Spinner };\n"
+      "content": "import { cn } from \"@/lib/utils\"\nimport { Loader2Icon } from \"lucide-react\"\n\nfunction Spinner({ className, ...props }: React.ComponentProps<\"svg\">) {\n  return (\n    <Loader2Icon\n      role=\"status\"\n      aria-label=\"Loading\"\n      className={cn(\"size-4 shrink-0 animate-spin motion-reduce:animate-none\", className)}\n      {...props}\n    />\n  )\n}\n\nexport { Spinner }\n"
     }
   ],
   "dependencies": {

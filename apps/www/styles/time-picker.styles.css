@@ -7,8 +7,8 @@
   --tp-focus-ring: var(--ring);
   --tp-muted-bg: var(--muted);
   --tp-muted-color: var(--muted-foreground);
-  --tp-hover-bg: var(--accent);
-  --tp-hover-color: var(--accent-foreground);
+  --tp-hover-bg: var(--muted);
+  --tp-hover-color: var(--foreground);
   --tp-selected-bg: var(--primary);
   --tp-selected-color: var(--primary-foreground);
   --tp-radius: var(--radius, 0.5rem);
