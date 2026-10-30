@@ -54,8 +54,8 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
 
   const btnBaseClasses = "size-7 p-0 text-sm"
   const btnArrowClasses = btnBaseClasses + " rtl:transform rtl:rotate-180"
-  const pageIndex = table.getState().pagination.pageIndex
-  const pageSize = table.getState().pagination.pageSize
+  const pageIndex = table.store.state.pagination.pageIndex
+  const pageSize = table.store.state.pagination.pageSize
   const from = pageIndex * pageSize + 1
   const to = Math.min((pageIndex + 1) * pageSize, recordCount)
   const pageCount = table.getPageCount()
@@ -157,7 +157,7 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
                 table.setPageSize(newPageSize)
               }}
             >
-              <SelectTrigger className="w-14" size="sm">
+              <SelectTrigger aria-label="Rows per page" className="w-14" size="sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent side="top" className="min-w-18">

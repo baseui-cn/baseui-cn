@@ -2,6 +2,9 @@
   "name": "@baseui-cn/www",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,7 +18,7 @@
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "@tanstack/react-table": "^8.21.3",
+    "@tanstack/react-table": "^9.2.8",
     "@tanstack/react-virtual": "^3.13.23",
     "@vercel/analytics": "^2.0.1",
     "class-variance-authority": "^0.7.1",

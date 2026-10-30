@@ -7,16 +7,14 @@ import { DataGridColumnHeader } from "@/components/data-grid/data-grid-column-he
 import { DataGridPagination } from "@/components/data-grid/data-grid-pagination"
 import { DataGridScrollArea } from "@/components/data-grid/data-grid-scroll-area"
 import { DataGridTable } from "@/components/data-grid/data-grid-table"
+import { createExcelFilterFn } from "@/components/data-grid/data-grid-filter-client"
 import {
-  type ColumnDef,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   type PaginationState,
   type SortingState,
-  useReactTable,
+  useTable,
 } from "@tanstack/react-table"
+import type { DataGridColumnDef } from "@/components/data-grid/table-features"
+import { dataGridFeatures } from "@/components/data-grid/table-features"
 
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -235,7 +233,7 @@ export function Pattern() {
     }
   }
 
-  const columns = useMemo<ColumnDef<IData>[]>(
+  const columns = useMemo<DataGridColumnDef<IData>[]>(
     () => [
       {
         id: "drag",
@@ -247,13 +245,19 @@ export function Pattern() {
         accessorKey: "name",
         id: "name",
         header: ({ column }) => (
-          <DataGridColumnHeader title="Staff" column={column} className="px-4 py-2" />
+          <DataGridColumnHeader
+            title="Staff"
+            column={column}
+            filterType="text"
+            className="px-4 py-2"
+          />
         ),
         size: 100,
         enablePinning: true,
         enableResizing: true,
         enableSorting: true,
         enableHiding: false,
+        filterFn: createExcelFilterFn<IData>(),
         cell: ({ row }) => {
           return (
             <div className="flex items-center gap-3">
@@ -280,7 +284,9 @@ export function Pattern() {
       {
         accessorKey: "role",
         id: "role",
-        header: ({ column }) => <DataGridColumnHeader title="Occupation" column={column} />,
+        header: ({ column }) => (
+          <DataGridColumnHeader title="Occupation" column={column} filterType="text" />
+        ),
         cell: ({ row }) => {
           return (
             <div className="space-y-0.5">
@@ -294,6 +300,7 @@ export function Pattern() {
         enableResizing: true,
         enableSorting: true,
         enableHiding: false,
+        filterFn: createExcelFilterFn<IData>(),
         meta: {
           cellClassName: "px-4 py-2",
         },
@@ -301,7 +308,9 @@ export function Pattern() {
       {
         accessorKey: "status",
         id: "status",
-        header: ({ column }) => <DataGridColumnHeader title="Status" column={column} />,
+        header: ({ column }) => (
+          <DataGridColumnHeader title="Status" column={column} filterType="text" />
+        ),
         cell: ({ row }) => {
           const status = row.original.status
 
@@ -313,6 +322,7 @@ export function Pattern() {
         },
         size: 100,
         enableResizing: false,
+        filterFn: createExcelFilterFn<IData>(),
         meta: {
           cellClassName: "px-4 py-2",
         },
@@ -321,7 +331,8 @@ export function Pattern() {
     []
   )
 
-  const table = useReactTable({
+  const table = useTable({
+    features: dataGridFeatures,
     columns,
     data: demoData,
     pageCount: Math.ceil((demoData?.length || 0) / pagination.pageSize),
@@ -333,10 +344,6 @@ export function Pattern() {
     columnResizeMode: "onChange",
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
   })
 
   return (

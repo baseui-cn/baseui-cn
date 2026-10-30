@@ -561,7 +561,7 @@ const collectFiles = async (name, seen = new Set()) => {
   )
   const files = new Map(
     entry.files.map((file) => [
-      /^(components|hooks|styles)\//.test(file.path) ? file.path : "components/ui/" + file.path,
+      /^(components|hooks|types|styles)\//.test(file.path) ? file.path : "components/ui/" + file.path,
       file.content,
     ])
   )
@@ -667,11 +667,11 @@ for (const scenario of [
     )
   const npmCalls = await fs.readFile(path.join(dir, "npm-args.jsonl"), "utf8")
   assert.ok(
-    npmCalls.includes("@tanstack/react-table@^8.21.3"),
-    "npm receives the supported v8 range"
+    npmCalls.includes("@tanstack/react-table@^9.2.8"),
+    "npm receives the supported v9 range"
   )
   console.log(
-    `PASS release ${scenario}: complete closure, customized survivors/theme, repeat idempotence, v8 npm spec`
+    `PASS release ${scenario}: complete closure, customized survivors/theme, repeat idempotence, v9 pnpm/npm spec`
   )
 }
 

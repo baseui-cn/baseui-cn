@@ -23,6 +23,9 @@
     "registry",
     "README.md"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "node ../../scripts/build-registry.mjs && tsup",
     "dev": "tsup --watch",

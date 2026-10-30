@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react"
 import { Badge } from "@/components/ui/badge"
-import { type Column } from "@tanstack/react-table"
+import type { RowData } from "@tanstack/react-table"
+import type { DataGridColumn } from "@/components/data-grid/table-features"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -11,8 +12,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Separator } from "@/components/ui/separator"
 import { CheckIcon, CirclePlusIcon } from "lucide-react"
 
-interface DataGridColumnFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>
+interface DataGridColumnFilterProps<TData extends RowData, TValue> {
+  column?: DataGridColumn<TData, TValue>
   title?: string
   options: {
     label: string
@@ -21,7 +22,7 @@ interface DataGridColumnFilterProps<TData, TValue> {
   }[]
 }
 
-function DataGridColumnFilter<TData, TValue>({
+function DataGridColumnFilter<TData extends RowData, TValue>({
   column,
   title,
   options,

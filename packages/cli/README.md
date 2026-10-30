@@ -164,3 +164,21 @@ The publish workflow accepts tags named `cli-v<version>` and supports manual dis
 6. Run an ordinary remote-first fresh consumer using the published package. Mark the release complete only after it passes.
 
 The workflow installs frozen dependencies, generates registry artifacts, checks and builds the CLI, then publishes `baseui-cn` using the repository `NPM_TOKEN`. It does not deploy or verify the hosted registry. Because the CLI is remote-first, index version equality alone cannot establish alignment; component source and shared styles must match too.
+
+### Runtime
+
+The published CLI supports Node 18+. Init, list, non-Grid add/update commands and
+create remain available; current upstream scaffolders retain their own runtime
+requirements. Repository/website development requires Node 20.9+.
+
+Data Grid uses TanStack Table v9 (`@tanstack/react-table@^9.2.8`) and requires
+Node 20+ with an ES2022-capable application runtime. Add/update checks the selected
+components and dependency closure before init, source/CSS/config writes or package
+installation. On Node <20, `add data-grid`, `update data-grid` and either `--all`
+operation including Data Grid fail as a whole with the current Node version and
+an upgrade/retry command. No components are silently skipped or partially installed.
+Use named compatible components on Node 18, or upgrade Node and retry.
+
+This feature remains suitable for a future 1.5.0 release; it does not globally drop
+CLI Node 18 support. A future CLI-wide runtime drop is a separate compatibility and
+versioning decision. The integration version is unchanged at 1.4.0.
