@@ -499,10 +499,12 @@ export const componentMeta = {
       "@dnd-kit/modifiers",
       "@dnd-kit/sortable",
       "@dnd-kit/utilities",
-      "@tanstack/react-table@^8.21.3",
+      "@tanstack/react-table@^9.2.8",
       "@tanstack/react-virtual",
       "class-variance-authority",
+      "clsx",
       "lucide-react",
+      "tailwind-merge",
     ],
     registryDeps: [
       "utils",
@@ -511,6 +513,7 @@ export const componentMeta = {
       "card",
       "checkbox",
       "dialog",
+      "date-picker",
       "dropdown-menu",
       "field",
       "input",
@@ -525,6 +528,7 @@ export const componentMeta = {
       "spinner",
       "switch",
       "textarea",
+      "tooltip",
     ],
     files: [
       {
@@ -532,8 +536,24 @@ export const componentMeta = {
         targetPath: "components/data-grid/data-grid.tsx",
       },
       {
+        sourcePath: "apps/www/components/data-grid/table-features.ts",
+        targetPath: "components/data-grid/table-features.ts",
+      },
+      {
         sourcePath: "apps/www/components/data-grid/data-grid-column-filter.tsx",
         targetPath: "components/data-grid/data-grid-column-filter.tsx",
+      },
+      {
+        sourcePath: "apps/www/components/data-grid/data-grid-filter-menu.tsx",
+        targetPath: "components/data-grid/data-grid-filter-menu.tsx",
+      },
+      {
+        sourcePath: "apps/www/components/data-grid/data-grid-filter-client.ts",
+        targetPath: "components/data-grid/data-grid-filter-client.ts",
+      },
+      {
+        sourcePath: "apps/www/components/data-grid/data-grid-filter-server.ts",
+        targetPath: "components/data-grid/data-grid-filter-server.ts",
       },
       {
         sourcePath: "apps/www/components/data-grid/data-grid-column-header.tsx",
@@ -546,6 +566,10 @@ export const componentMeta = {
       {
         sourcePath: "apps/www/components/data-grid/data-grid-editing.tsx",
         targetPath: "components/data-grid/data-grid-editing.tsx",
+      },
+      {
+        sourcePath: "apps/www/components/data-grid/data-grid-inline-editor.tsx",
+        targetPath: "components/data-grid/data-grid-inline-editor.tsx",
       },
       {
         sourcePath: "apps/www/components/data-grid/data-grid-pagination.tsx",
@@ -568,12 +592,28 @@ export const componentMeta = {
         targetPath: "components/data-grid/data-grid-table-dnd-rows.tsx",
       },
       {
+        sourcePath: "apps/www/components/data-grid/data-grid-table-dnd-combined.tsx",
+        targetPath: "components/data-grid/data-grid-table-dnd-combined.tsx",
+      },
+      {
         sourcePath: "apps/www/components/data-grid/data-grid-table-virtual.tsx",
         targetPath: "components/data-grid/data-grid-table-virtual.tsx",
       },
       {
         sourcePath: "apps/www/hooks/use-editable-data-grid.ts",
         targetPath: "hooks/use-editable-data-grid.ts",
+      },
+      {
+        sourcePath: "apps/www/hooks/use-data-grid-feature-data.ts",
+        targetPath: "hooks/use-data-grid-feature-data.ts",
+      },
+      {
+        sourcePath: "apps/www/types/data-grid-data-source.ts",
+        targetPath: "types/data-grid-data-source.ts",
+      },
+      {
+        sourcePath: "apps/www/types/data-grid-filter.ts",
+        targetPath: "types/data-grid-filter.ts",
       },
       {
         sourcePath: "apps/www/components/ui/rating.tsx",

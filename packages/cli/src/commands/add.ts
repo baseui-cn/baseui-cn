@@ -48,6 +48,7 @@ function resolveInstallFilePath(
   if (
     normalizedPath.startsWith("components/") ||
     normalizedPath.startsWith("hooks/") ||
+    normalizedPath.startsWith("types/") ||
     normalizedPath.startsWith("styles/")
   ) {
     return path.resolve(projectSourceRoot, normalizedPath)
@@ -69,7 +70,62 @@ export async function add(
   return installComponents(components, { ...options, mode: "add" })
 }
 
+function assertDataGridRuntime(components: readonly string[], mode: InstallMode) {
+  if (components.includes("data-grid") && Number(process.versions.node.split(".")[0]) < 20) {
+    throw new Error(
+      "Data Grid requires Node.js 20 or newer because it uses TanStack Table v9.\n" +
+        `Current Node.js: ${process.version}\n\n` +
+        `Upgrade Node.js and run:\n  baseui-cn ${mode} data-grid`
+    )
+  }
+}
+
 export async function installComponents(components: string[], options: InstallOptions) {
+  // Select and check the complete install before init, config/CSS writes or package installation.
+  if (options.all) {
+    const registry = await fetchRegistry()
+    components = registry.components.map((component) => component.name)
+    console.log()
+    console.log(
+      chalk.bold(
+        `${options.mode === "update" ? "Updating" : "Adding"} all ${components.length} components...`
+      )
+    )
+    console.log()
+  }
+
+  if (!components.length) {
+    const registry = await fetchRegistry()
+
+    const { selected } = await prompts({
+      type: "multiselect",
+      name: "selected",
+      message:
+        options.mode === "update"
+          ? "Which components would you like to update?"
+          : "Which components would you like to add?",
+      choices: registry.components.map((component) => ({
+        title: component.type === "block" ? `[block] ${component.name}` : component.name,
+        description: component.description,
+        value: component.name,
+      })),
+      hint: "Space to select | Enter to confirm | A to select all",
+    })
+
+    if (!selected?.length) {
+      console.log(
+        chalk.dim(`No components selected${options.mode === "update" ? " for update" : ""}.`)
+      )
+      return
+    }
+
+    components = selected
+  }
+
+  assertDataGridRuntime(components, options.mode)
+  const allComponents = await resolveComponentDependencies(components)
+  assertDataGridRuntime(allComponents, options.mode)
+
   let config = await getConfig()
 
   if (!config) {
@@ -112,55 +168,12 @@ export async function installComponents(components: string[], options: InstallOp
     }
   }
 
-  if (options.all) {
-    const registry = await fetchRegistry()
-    components = registry.components.map((component) => component.name)
-    console.log()
-    console.log(
-      chalk.bold(
-        `${options.mode === "update" ? "Updating" : "Adding"} all ${components.length} components...`
-      )
-    )
-    console.log()
-  }
-
-  if (!components.length) {
-    const registry = await fetchRegistry()
-
-    const { selected } = await prompts({
-      type: "multiselect",
-      name: "selected",
-      message:
-        options.mode === "update"
-          ? "Which components would you like to update?"
-          : "Which components would you like to add?",
-      choices: registry.components.map((component) => ({
-        title: component.type === "block" ? `[block] ${component.name}` : component.name,
-        description: component.description,
-        value: component.name,
-      })),
-      hint: "Space to select | Enter to confirm | A to select all",
-    })
-
-    if (!selected?.length) {
-      console.log(
-        chalk.dim(`No components selected${options.mode === "update" ? " for update" : ""}.`)
-      )
-      return
-    }
-
-    components = selected
-  }
-
   const requestedComponents = new Set(components)
   const resolveSpinner = ora("Resolving dependencies...").start()
-  let allComponents: string[]
   const componentEntries = new Map<string, ComponentEntry>()
   let installState: InstallState
 
   try {
-    allComponents = await resolveComponentDependencies(components)
-
     for (const name of allComponents) {
       componentEntries.set(name, await fetchComponent(name))
     }

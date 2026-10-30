@@ -23,7 +23,12 @@ import {
   DataGridTableViewport,
   getDataGridTableRowSections,
 } from "@/components/data-grid/data-grid-table"
-import { flexRender, type HeaderGroup, type Row, type Table } from "@tanstack/react-table"
+import { flexRender, type RowData } from "@tanstack/react-table"
+import type {
+  DataGridHeaderGroup,
+  DataGridRow,
+  DataGridTable,
+} from "@/components/data-grid/table-features"
 import {
   useVirtualizer,
   type VirtualItem,
@@ -44,18 +49,18 @@ type DataGridTableVirtualizerInstance = Virtualizer<
   HTMLTableRowElement
 >
 
-type DataGridTableVirtualizerOptions<TData> = Omit<
+type DataGridTableVirtualizerOptions<TData extends RowData> = Omit<
   VirtualizerOptions<HTMLElement, HTMLTableRowElement>,
   "count" | "estimateSize" | "getItemKey" | "getScrollElement"
 > & {
-  estimateSize?: (index: number, row: Row<TData>) => number
-  getItemKey?: (index: number, row: Row<TData>) => string | number
+  estimateSize?: (index: number, row: DataGridRow<TData>) => number
+  getItemKey?: (index: number, row: DataGridRow<TData>) => string | number
   getScrollElement?: (
     elements: DataGridTableVirtualScrollElements
   ) => HTMLElement | null
 }
 
-interface DataGridTableVirtualProps<TData> {
+interface DataGridTableVirtualProps<TData extends RowData> {
   height?: number | string
   estimateSize?: number
   overscan?: number
@@ -68,12 +73,12 @@ interface DataGridTableVirtualProps<TData> {
   virtualizerOptions?: DataGridTableVirtualizerOptions<TData>
 }
 
-interface VirtualBodyProps<TData> {
-  table: Table<TData>
+interface VirtualBodyProps<TData extends RowData> {
+  table: DataGridTable<TData>
   columnCount: number
-  topRows: Row<TData>[]
-  centerRows: Row<TData>[]
-  bottomRows: Row<TData>[]
+  topRows: DataGridRow<TData>[]
+  centerRows: DataGridRow<TData>[]
+  bottomRows: DataGridRow<TData>[]
   virtualItems: VirtualItem[]
   totalSize: number
   isVirtualizationEnabled: boolean
@@ -82,6 +87,7 @@ interface VirtualBodyProps<TData> {
   hasMore?: boolean
   loadingMoreMessage: ReactNode
   allRowsLoadedMessage: ReactNode
+  indexAttribute: string
   measureRowRef?: (element: HTMLTableRowElement | null) => void
 }
 
@@ -125,7 +131,7 @@ function DataGridTableVirtualStatusRow({
   )
 }
 
-function DataGridTableVirtualBody<TData>({
+function DataGridTableVirtualBody<TData extends RowData>({
   table,
   columnCount,
   topRows,
@@ -140,6 +146,7 @@ function DataGridTableVirtualBody<TData>({
   loadingMoreMessage,
   allRowsLoadedMessage,
   measureRowRef,
+  indexAttribute,
 }: VirtualBodyProps<TData>) {
   const totalRows = topRows.length + centerRows.length + bottomRows.length
 
@@ -195,7 +202,10 @@ function DataGridTableVirtualBody<TData>({
         <DataGridTableRenderedRow
           key={row.id}
           row={row}
-          rowRef={measureRowRef}
+          rowRef={measureRowRef ? (element) => {
+            if (element) element.setAttribute(indexAttribute, String(virtualRow.index))
+            measureRowRef(element)
+          } : undefined}
         />
       )
     })
@@ -265,10 +275,10 @@ function DataGridTableVirtualBody<TData>({
  */
 const MemoizedVirtualBody = memo(
   DataGridTableVirtualBody,
-  (_prev, next) => !!next.table.getState().columnSizingInfo.isResizingColumn
+  (_prev, next) => !!next.table.store.state.columnResizing.isResizingColumn
 ) as typeof DataGridTableVirtualBody
 
-function DataGridTableVirtual<TData>({
+function DataGridTableVirtual<TData extends RowData>({
   height,
   estimateSize = 48,
   overscan = 10,
@@ -280,7 +290,7 @@ function DataGridTableVirtual<TData>({
   fetchMoreOffset = 0,
   virtualizerOptions,
 }: DataGridTableVirtualProps<TData>) {
-  const { table, props } = useDataGrid()
+  const { table, props, scrollToRowRef } = useDataGrid<TData>()
   const { topRows, centerRows, bottomRows } = getDataGridTableRowSections(
     table,
     props.tableLayout?.rowsPinnable
@@ -364,11 +374,23 @@ function DataGridTableVirtual<TData>({
     ...virtualizerOptionsRest,
   }) as DataGridTableVirtualizerInstance
 
-  // The virtualizer instance is stable; its visible window changes on scroll/measurement.
+  // The instance is stable while its visible window changes on scroll.
+  // Intentionally read the live window: memoizing by instance reintroduces stale rows.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const virtualItems = isVirtualizationEnabled ? virtualizer.getVirtualItems() : []
+  useEffect(() => {
+    const scrollToRow = (rowId: string) => {
+      const index = centerRows.findIndex((row) => row.id === rowId)
+      if (index >= 0) virtualizer.scrollToIndex(index, { align: "auto" })
+    }
+    scrollToRowRef.current = scrollToRow
+    return () => {
+      if (scrollToRowRef.current === scrollToRow) scrollToRowRef.current = null
+    }
+  }, [centerRows, scrollToRowRef, virtualizer])
   const totalSize = isVirtualizationEnabled ? virtualizer.getTotalSize() : 0
   const measureRowRef =
-    isVirtualizationEnabled && customMeasureElement
+    isVirtualizationEnabled
       ? virtualizer.measureElement
       : undefined
   const resolvedFetchMoreOffset = useMemo(
@@ -418,7 +440,7 @@ function DataGridTableVirtual<TData>({
           <DataGridTableHead>
             {table
               .getHeaderGroups()
-              .map((headerGroup: HeaderGroup<TData>, index: number) => (
+              .map((headerGroup: DataGridHeaderGroup<TData>, index: number) => (
                 <DataGridTableHeadRow headerGroup={headerGroup} key={index}>
                   {headerGroup.headers.map((header, hIndex) => {
                     const { column } = header
@@ -471,6 +493,7 @@ function DataGridTableVirtual<TData>({
             hasMore={hasMore}
             loadingMoreMessage={loadingMoreMessage}
             allRowsLoadedMessage={allRowsLoadedMessage}
+            indexAttribute={virtualizer.options.indexAttribute}
             measureRowRef={measureRowRef}
           />
         </DataGridTableBody>

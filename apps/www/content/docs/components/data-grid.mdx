@@ -61,3 +61,125 @@ This variant layers in pending states, optimistic updates, and rollback messagin
 The copied `data.styles.css` provides V2 presentation without changing virtual row estimates, DnD measurements or editor heights. Inline focus is inset to remain visible in clipped cells. Rating supports Enter/Space, arrow keys, Home and End; filter choices are keyboard-accessible buttons. Measured grid cells retain their compact Rating targets on coarse pointers.
 
 For manual installation, copy the stylesheet included with the component source and retain its import. CLI installation includes it automatically; website CSS is not required.
+
+### Feature Toggle Demo
+
+<ComponentPreview name="data-grid-features" />
+
+Feature controls are built into `DataGrid` and can be enabled in any grid with the optional
+`featureControls` prop:
+
+```tsx
+<DataGrid
+  table={table}
+  recordCount={rows.length}
+  featureControls={{
+    features: [
+      { id: "inlineEditing", label: "Inline editing", checked: inlineEditing },
+      { id: "columnPinning", label: "Column pinning", checked: columnPinning },
+    ],
+    onFeatureChange: (feature, checked) => {
+      if (feature === "inlineEditing") setInlineEditing(checked)
+      if (feature === "columnPinning") setColumnPinning(checked)
+    },
+  }}
+>
+  <DataGridTable />
+</DataGrid>
+```
+
+Use the **Table features** dropdown above the table to turn Excel-like filters, inline
+editing, row pinning, row reordering, column pinning, menu-based column reordering, and
+column drag-and-drop on or off independently. The demo uses the existing DataGrid filter
+menus and editing metadata, along with the Base UI CN table and drag-and-drop primitives.
+
+The rows are provided by a frontend-only data source with a typed query and mutation
+contract. Its mock implementation serves the full dataset for TanStack's client-side
+filtering, sorting, and pagination. A server-backed implementation can use the same query
+contract for server-side filtering, sorting, and pagination without changing the table's
+feature controls or column definitions.
+
+## TanStack Table v9
+
+Requires Node 20+ and an ES2022-capable runtime. The site requires Node 20.9+ (Next.js).
+The CLI installs `@tanstack/react-table@^9.2.8`; the integration lockfile resolves 9.3.1.
+Use `useTable` with the exported `dataGridFeatures` and `DataGridColumnDef<TData>` types:
+
+```tsx
+import { useTable } from "@tanstack/react-table"
+import { dataGridFeatures, type DataGridColumnDef } from "@/components/data-grid/table-features"
+
+const table = useTable({ features: dataGridFeatures, columns, data })
+```
+
+The feature object explicitly registers selection, visibility, sizing/resizing, ordering,
+pinning, filtering/faceting, sorting, pagination and expansion with their row models and
+built-in filter/sort functions. Column pinning uses logical `start` / `end`, including in
+RTL. Unpin a column before dragging it; pinned rows cannot be reordered. Combined DnD
+namespaces row/column IDs internally and returns original IDs in callbacks.
+
+## Excel Filters And Server Queries
+
+Text comparisons trim and ignore case: contains, notContains, equals, notEquals,
+startsWith, endsWith, blank and notBlank. Blank includes null, undefined and whitespace.
+Numbers support `=`, `>`, `<`, `>=` and `<=`; empty/null values never become zero. Dates use
+validated `YYYY-MM-DD` calendar keys: before/after exclude the boundary, on matches the
+day, between includes both ends. Invalid calendar/leap dates and reversed ranges are
+rejected. ISO timestamp row values compare their written calendar date; Date objects
+use local calendar fields. No locale date strings are parsed.
+
+`DataGridFilterMenu` accepts `type="text" | "number" | "date"`. `DataGridActiveFilters`
+shows operator/value labels, individual remove buttons and Clear all. Apply validates;
+Clear removes the entire column filter. Blank operators clear an obsolete text draft.
+
+`serializeDataGridQuery` produces JSON containing `{ pagination: { pageIndex, pageSize },
+sorting: [{ id, desc }], columnFilters: [{ id, value: { type, operator, value,
+secondValue? } }] }`. Values are strings, date ranges use secondValue, and no client
+function is serialized. Invalid operators/values/pagination fail before transport.
+This serializer is specifically for Excel filters; existing facet arrays remain usable
+with the existing facet component and a consumer-defined server contract.
+
+For server processing set `manualFiltering`, `manualSorting`, and `manualPagination`,
+pass server rows/total/pageCount, and send the query to the server. The server must
+validate operators, allowlisted column IDs, authorization, limits and values again.
+The UI does not implement a backend or claim a server query executed.
+
+## Editing And Navigation
+
+The existing `DataGridEditableCell`, `DataGridEditDialog`, metadata renderers and
+`useEditableDataGrid` remain supported. Enter commits, Escape cancels; Tab/Shift+Tab
+commit then move to the next/previous visible editable cell. Invalid or failed saves
+retain the editor. Dialog-only fields are excluded from inline traversal. Pending cells
+cannot submit twice or navigate. Navigation follows pinned/center row order in the current page. The virtual renderer
+scrolls an offscreen target into view before activating it.
+Checkbox, switch and rating retain their immediate-change behavior. The standalone
+`DataGridInlineEditor` adds text, number, select and calendar date input, using canonical
+controls and the same commit/cancel/navigation contract.
+
+Optimistic edits show pending/error state and roll back on failure. Responses only
+replace the optimistic row they started from: a refresh, deletion or replacement of
+that row is preserved. Updates to one row are serialized while its save is pending.
+
+## Data Sources And Preferences
+
+`DataGridFeatureDataSource<TData>` describes getRows, updateRow, reorderRows,
+get/saveRowPinning and get/saveColumnState. Column preferences are ordered by orderRank
+and use logical pinPosition `start | end | null`; row moves identify previous/next IDs.
+`useDataGridFeatureData` loads preferences before declaring readiness, reports row,
+preference and mutation errors, and ignores obsolete load responses after a source,
+query or refresh change. In client mode it fetches all rows and lets TanStack process
+them; server mode passes the supplied query through. Memoize the source and query.
+
+The feature preview uses an in-memory mock that retains preferences on rerender and
+data refresh. Durable storage and backend conflict/version checks belong to the data
+source. Mutation callbacks must await authoritative saves and handle rollback/errors.
+
+## Virtualization And Feature Combinations
+
+`DataGridTableVirtual` measures rows and reads the visible window on every render;
+pinned rows render separately from the virtual center. Sorting, filtering, selection,
+pagination, resizing and editing use the same table state. Infinite mode exposes
+fetch-more pending/error/retry/all-loaded states. The combined DnD renderer is a
+separate, nonvirtual renderer; virtual DnD is not supported. Column drag handles are
+restricted to unpinned columns and row handles to unpinned rows. Stable getRowId values
+are required for persisted state, edits, row measurement and reorder callbacks.

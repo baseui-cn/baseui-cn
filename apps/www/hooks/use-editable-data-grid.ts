@@ -1,10 +1,11 @@
 "use client"
 
-import { type Dispatch, type SetStateAction, useCallback, useMemo, useState } from "react"
+import { type Dispatch, type SetStateAction, useCallback, useMemo, useRef, useState } from "react"
 import {
   type DataGridColumnEditor,
   type DataGridEditingTableMeta,
 } from "@/components/data-grid/data-grid"
+import { isValidDate } from "@/components/data-grid/data-grid-filter-client"
 import { type RowData } from "@tanstack/react-table"
 
 type EditableRow = RowData
@@ -116,6 +117,8 @@ export function useEditableDataGrid<TData extends EditableRow>({
   onSaveRow,
   onError,
 }: UseEditableDataGridOptions<TData>): DataGridEditingTableMeta<TData> {
+  // Immediate row locks prevent double submits before React renders pending state.
+  const pendingOperations = useRef(new Set<string>())
   const [activeCell, setActiveCell] = useState<{
     rowId: string
     columnId: string
@@ -193,8 +196,11 @@ export function useEditableDataGrid<TData extends EditableRow>({
         return `${fieldLabel} is required.`
       }
 
+      if (editor.kind === "date" && !isEmptyValue(value) &&
+          (typeof value !== "string" || !isValidDate(value))) return `${fieldLabel} must be a valid date.`
+
       if (editor.kind === "number" && value !== undefined && value !== null) {
-        if (typeof value !== "number" || Number.isNaN(value)) {
+        if (typeof value !== "number" || !Number.isFinite(value)) {
           return `${fieldLabel} must be a valid number.`
         }
 
@@ -243,7 +249,7 @@ export function useEditableDataGrid<TData extends EditableRow>({
   const startCellEdit = useCallback(
     (row: TData, columnId: string) => {
       const rowId = getRowId(row)
-      if (pendingRows[rowId]) {
+      if (pendingRows[rowId] || pendingOperations.current.has(rowId)) {
         return
       }
 
@@ -264,7 +270,7 @@ export function useEditableDataGrid<TData extends EditableRow>({
   const cancelCellEdit = useCallback(
     (rowId?: string, columnId?: string) => {
       const target = rowId && columnId ? { rowId, columnId } : activeCell
-      if (!target) {
+      if (!target || pendingOperations.current.has(target.rowId)) {
         return
       }
 
@@ -299,15 +305,25 @@ export function useEditableDataGrid<TData extends EditableRow>({
       const cellKey = getCellKey(rowId, columnId)
       const editor = getEditor(columnId)
 
-      if (!editor || pendingRows[rowId] || pendingCells[cellKey]) {
+      if (!editor || editor.dialogOnly || pendingOperations.current.has(rowId) || pendingRows[rowId] || pendingCells[cellKey]) {
         return false
       }
 
-      const currentRow = findRowById(rowId) ?? row
+      const currentRow = findRowById(rowId)
+      if (!currentRow) {
+        setCellErrors((errors) => ({ ...errors, [cellKey]: "This row is no longer available." }))
+        return false
+      }
       const rawValue =
-        value !== undefined ? value : (cellDrafts[cellKey] ?? getRecordValue(currentRow, columnId))
-      const parsedValue = parseValue(editor, rawValue, currentRow)
-      const validationError = validateValue(columnId, editor, parsedValue, currentRow)
+        value !== undefined ? value : (cellKey in cellDrafts ? cellDrafts[cellKey] : getRecordValue(currentRow, columnId))
+      let parsedValue: unknown
+      let validationError: string | null
+      try {
+        parsedValue = parseValue(editor, rawValue, currentRow)
+        validationError = validateValue(columnId, editor, parsedValue, currentRow)
+      } catch (error) {
+        validationError = normalizeErrorMessage(error, "Invalid value.")
+      }
 
       if (validationError) {
         setCellErrors((currentErrors) => ({
@@ -328,6 +344,7 @@ export function useEditableDataGrid<TData extends EditableRow>({
         return true
       }
 
+      pendingOperations.current.add(rowId)
       setPendingCells((currentPendingCells) => ({
         ...currentPendingCells,
         [cellKey]: true,
@@ -349,7 +366,8 @@ export function useEditableDataGrid<TData extends EditableRow>({
             nextRow,
           })) ?? nextRow
 
-        setData((currentRows) => replaceRow(currentRows, rowId, getRowId, savedRow))
+        setData((currentRows) => currentRows.map((entry) =>
+          getRowId(entry) === rowId && entry === nextRow ? savedRow : entry))
         clearCellState(rowId, columnId)
         setActiveCell((currentCell) =>
           currentCell?.rowId === rowId && currentCell?.columnId === columnId ? null : currentCell
@@ -362,7 +380,8 @@ export function useEditableDataGrid<TData extends EditableRow>({
           `${editor.label ?? humanizeColumnId(columnId)} could not be saved.`
         )
 
-        setData((currentRows) => replaceRow(currentRows, rowId, getRowId, currentRow))
+        setData((currentRows) => currentRows.map((entry) =>
+          getRowId(entry) === rowId && entry === nextRow ? currentRow : entry))
         setCellErrors((currentErrors) => ({
           ...currentErrors,
           [cellKey]: message,
@@ -377,6 +396,7 @@ export function useEditableDataGrid<TData extends EditableRow>({
 
         return false
       } finally {
+        pendingOperations.current.delete(rowId)
         setPendingCells((currentPendingCells) => ({
           ...currentPendingCells,
           [cellKey]: false,
@@ -402,7 +422,7 @@ export function useEditableDataGrid<TData extends EditableRow>({
   const openDialog = useCallback(
     (row: TData) => {
       const rowId = getRowId(row)
-      if (pendingRows[rowId]) {
+      if (pendingRows[rowId] || pendingOperations.current.has(rowId)) {
         return
       }
 
@@ -453,7 +473,7 @@ export function useEditableDataGrid<TData extends EditableRow>({
     }
 
     const currentRow = findRowById(dialogRowId)
-    if (!currentRow || pendingRows[dialogRowId]) {
+    if (!currentRow || pendingRows[dialogRowId] || pendingOperations.current.has(dialogRowId)) {
       return false
     }
 
@@ -465,9 +485,15 @@ export function useEditableDataGrid<TData extends EditableRow>({
         continue
       }
 
-      const rawValue = dialogDraft[id as keyof TData] ?? getRecordValue(currentRow, id)
-      const parsedValue = parseValue(editor, rawValue, currentRow)
-      const validationError = validateValue(id, editor, parsedValue, currentRow)
+      const rawValue = id in dialogDraft ? dialogDraft[id as keyof TData] : getRecordValue(currentRow, id)
+      let parsedValue: unknown
+      let validationError: string | null
+      try {
+        parsedValue = parseValue(editor, rawValue, currentRow)
+        validationError = validateValue(id, editor, parsedValue, currentRow)
+      } catch (error) {
+        validationError = normalizeErrorMessage(error, "Invalid value.")
+      }
 
       if (validationError) {
         nextErrors[id] = validationError
@@ -483,6 +509,7 @@ export function useEditableDataGrid<TData extends EditableRow>({
 
     setDialogErrors({})
     setDialogMessage(null)
+    pendingOperations.current.add(dialogRowId)
     setPendingRows((currentPendingRows) => ({
       ...currentPendingRows,
       [dialogRowId]: true,
@@ -498,14 +525,18 @@ export function useEditableDataGrid<TData extends EditableRow>({
           nextRow,
         })) ?? nextRow
 
-      setData((currentRows) => replaceRow(currentRows, dialogRowId, getRowId, savedRow))
-      closeDialog()
+      setData((currentRows) => currentRows.map((entry) =>
+        getRowId(entry) === dialogRowId && entry === nextRow ? savedRow : entry))
+      setDialogRowId(null)
+      setDialogDraft(null)
+      setDialogMessage(null)
 
       return true
     } catch (error) {
       const message = normalizeErrorMessage(error, "The record could not be saved.")
 
-      setData((currentRows) => replaceRow(currentRows, dialogRowId, getRowId, currentRow))
+      setData((currentRows) => currentRows.map((entry) =>
+        getRowId(entry) === dialogRowId && entry === nextRow ? currentRow : entry))
       setDialogMessage(message)
       onError?.(error, {
         source: "dialog",
@@ -516,13 +547,13 @@ export function useEditableDataGrid<TData extends EditableRow>({
 
       return false
     } finally {
+      pendingOperations.current.delete(dialogRowId)
       setPendingRows((currentPendingRows) => ({
         ...currentPendingRows,
         [dialogRowId]: false,
       }))
     }
   }, [
-    closeDialog,
     dialogDraft,
     dialogRowId,
     editorColumns,
@@ -566,7 +597,8 @@ export function useEditableDataGrid<TData extends EditableRow>({
 
   const getCellDraftValue = useCallback(
     (row: TData, columnId: string) =>
-      cellDrafts[getCellKey(getRowId(row), columnId)] ?? getRecordValue(row, columnId),
+      getCellKey(getRowId(row), columnId) in cellDrafts
+        ? cellDrafts[getCellKey(getRowId(row), columnId)] : getRecordValue(row, columnId),
     [cellDrafts, getRowId]
   )
 

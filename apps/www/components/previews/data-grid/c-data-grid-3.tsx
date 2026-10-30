@@ -14,17 +14,17 @@ import { DataGridPagination } from "@/components/data-grid/data-grid-pagination"
 import { DataGridScrollArea } from "@/components/data-grid/data-grid-scroll-area"
 import { DataGridTable } from "@/components/data-grid/data-grid-table"
 import {
-  type ColumnDef,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
+  type ColumnVisibilityState,
   type PaginationState,
-  type Row,
   type SortingState,
-  type Table,
-  useReactTable,
-  type VisibilityState,
+  useTable,
 } from "@tanstack/react-table"
+import type {
+  DataGridColumnDef,
+  DataGridRow,
+  DataGridTable as DataGridTableInstance,
+} from "@/components/data-grid/table-features"
+import { dataGridFeatures } from "@/components/data-grid/table-features"
 import { useToast } from "@/components/ui/toast"
 
 import { Button } from "@/components/ui/button"
@@ -200,7 +200,13 @@ function normalizeTeamMember(row: TeamMember) {
   }
 }
 
-function ActionsCell({ row, table }: { row: Row<TeamMember>; table: Table<TeamMember> }) {
+function ActionsCell({
+  row,
+  table,
+}: {
+  row: DataGridRow<TeamMember>
+  table: DataGridTableInstance<TeamMember>
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -227,7 +233,7 @@ export function PatternEdit2() {
     pageSize: 5,
   })
   const [sorting, setSorting] = useState<SortingState>([{ id: "name", desc: false }])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+  const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
     notes: false,
   })
   const [failNextSave, setFailNextSave] = useState(false)
@@ -252,7 +258,7 @@ export function PatternEdit2() {
     }
   }, [failNextSave])
 
-  const columns = useMemo<ColumnDef<TeamMember>[]>(
+  const columns = useMemo<DataGridColumnDef<TeamMember>[]>(
     () => [
       {
         accessorKey: "name",
@@ -468,7 +474,8 @@ export function PatternEdit2() {
   })
   const isGridPending = editing.isGridPending()
 
-  const table = useReactTable({
+  const table = useTable({
+    features: dataGridFeatures,
     data,
     columns,
     pageCount: Math.ceil(data.length / pagination.pageSize),
@@ -485,9 +492,6 @@ export function PatternEdit2() {
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
   })
 
   return (

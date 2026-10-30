@@ -212,3 +212,18 @@ The generic `--font-body` and `--font-heading` tokens remain editable in consume
 semantic h1–h6 headings use their respective tokens. Inputs inherit body typography; code,
 monospace content and icons are not targeted by the heading rule. Explicit consumer selectors
 can still override semantic heading defaults.
+
+### Runtime
+
+The published CLI supports Node 18+. Init, list, non-Grid add/update commands and
+create remain available; current upstream scaffolders retain their own runtime
+requirements. Repository/website development requires Node 20.9+.
+
+Data Grid uses TanStack Table v9 (`@tanstack/react-table@^9.2.8`) and requires
+Node 20+ with an ES2022-capable application runtime. Add/update checks the selected
+components and dependency closure before init, source/CSS/config writes or package
+installation. On Node <20, `add data-grid`, `update data-grid` and either `--all`
+operation including Data Grid fail as a whole with the current Node version and
+an upgrade/retry command. No components are silently skipped or partially installed.
+Use named compatible components on Node 18, or upgrade Node and retry.
+

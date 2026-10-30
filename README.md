@@ -125,3 +125,17 @@ When adding or updating a component:
 ## License
 
 MIT
+
+## Runtime compatibility
+
+Develop the website with Node 20.9+ and pnpm 9. The published CLI supports Node 18+
+for init, list, ordinary add/update commands and compatible upstream create flows.
+Data Grid v9 alone requires Node 20+ and an ES2022-capable application runtime.
+An add/update whose selection or dependency closure includes Data Grid rejects
+Node <20 before project writes or dependency installation. `--all` rejects the
+whole operation when Data Grid is included; it does not silently skip the Grid.
+Install named compatible components instead, or upgrade Node and retry.
+The Grid registry uses `@tanstack/react-table@^9.2.8` (integration lockfile: 9.3.1).
+This keeps the feature suitable for a future 1.5.0 release without globally dropping
+CLI Node 18 compatibility. Any future CLI-wide runtime drop needs its own explicit
+compatibility/versioning decision. Versions remain 1.4.0 pending review.
