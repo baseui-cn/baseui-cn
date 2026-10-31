@@ -13,7 +13,7 @@ const program = new Command()
 program
   .name("baseui-cn")
   .description("Add Base UI components to your React app - one command at a time.")
-  .version("1.4.0")
+  .version("1.4.1")
 
 program
   .command("init")

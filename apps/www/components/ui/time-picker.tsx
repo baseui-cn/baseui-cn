@@ -1187,6 +1187,9 @@ function TimePickerListColumn({
   selected: number
 }) {
   const { format, disabled, selectUnit, optionDisabled, classNames } = useTimePickerContext()
+  const enabledOptions = options.filter((option) => !disabled && !optionDisabled(option, view))
+  const entryOption = enabledOptions.includes(selected) ? selected : enabledOptions[0]
+
   return (
     <div className={cn("tp-list_column", classNames?.listColumn)}>
       <div className="tp-list_label">{label}</div>
@@ -1199,8 +1202,8 @@ function TimePickerListColumn({
               type="button"
               role="option"
               aria-selected={isSelected}
-              disabled={disabled || optionDisabled(option, view)}
-              tabIndex={isSelected ? 0 : -1}
+              disabled={!enabledOptions.includes(option)}
+              tabIndex={option === entryOption ? 0 : -1}
               className={cn("tp-list_option", classNames?.listOption)}
               data-selected={isSelected || undefined}
               onKeyDown={handleOptionKeyDown}

@@ -160,7 +160,7 @@ The publish workflow accepts tags named `cli-v<version>` and supports manual dis
 2. Validate and approve/merge the release code, including the changelog, package, and packed consumer.
 3. Deploy baseui-cn.com with the approved website and all three registry distributions generated from that release code.
 4. Verify the hosted registry version **and bytes** against the approved local output, preferably every registry JSON. At minimum compare `index.json`, `button.json`, `data-grid.json`, a shared-CSS component such as `select.json`, a modal such as `dialog.json`, and `date-picker.json` / `time-picker.json`.
-5. Only after alignment, create/push the matching `cli-v<version>` tag and publish through the approved workflow. For 1.4.0, the tag is `cli-v1.4.0`.
+5. Only after alignment, create/push the matching `cli-v<version>` tag and publish through the approved workflow. For 1.4.1, the tag is `cli-v1.4.1`.
 6. Run an ordinary remote-first fresh consumer using the published package. Mark the release complete only after it passes.
 
 The workflow installs frozen dependencies, generates registry artifacts, checks and builds the CLI, then publishes `baseui-cn` using the repository `NPM_TOKEN`. It does not deploy or verify the hosted registry. Because the CLI is remote-first, index version equality alone cannot establish alignment; component source and shared styles must match too.
