@@ -23,11 +23,25 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "baseui-cn-1-4-1-time-picker-keyboard-fix",
+    date: "October 31, 2026",
+    isoDate: "2026-10-31",
+    title: "baseui-cn 1.4.1 — Time Picker keyboard entry",
+    badge: "Release",
+    summary:
+      "Restored keyboard entry into Free Time Picker list columns when the selected value is disabled.",
+    notes: [
+      "Enabled selected options retain keyboard entry; disabled selections fall back to the first enabled option, and fully disabled columns have no false tab stop.",
+      "Focus fallback preserves the controlled value and only explicit activation requests a value change. Public APIs, styling, geometry, clock mode, and Date Picker behavior are unchanged.",
+    ],
+    links: [{ href: "/docs/components/time-picker", label: "View Time Picker docs" }],
+  },
+  {
     slug: "baseui-cn-1-4-0-design-system-v2",
     date: "October 21, 2026",
     isoDate: "2026-10-21",
     title: "baseui-cn 1.4.0 — Design System V2",
-    badge: "Unreleased",
+    badge: "Release",
     summary:
       "Design System V2 brings a Graphite and restrained Iris visual refresh, simpler theming, improved interactions, and refreshed CLI distribution and documentation on Base UI 1.9.0.",
     notes: [
