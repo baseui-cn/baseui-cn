@@ -1528,8 +1528,13 @@
   margin-top: 12px;
 }
 
-/* Existing V2 Drawer, with one scrolling configuration region and stable footer. */
+/* Landing-only V2 Drawer composition: one scroll region and reachable actions. */
 .project-setup-drawer[data-side="right"] {
+  position: fixed;
+  inset: var(--setup-viewport-top, 0px) 0 auto auto;
+  height: var(--setup-viewport-height, 100dvh);
+  max-height: var(--setup-viewport-height, 100dvh);
+  padding: 0;
   width: min(500px, calc(100vw - 24px));
   max-width: 100%;
   overflow: hidden;
@@ -1541,7 +1546,8 @@
   justify-content: space-between;
   gap: 12px;
   flex-shrink: 0;
-  padding: 22px 20px 20px 24px;
+  padding: max(22px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) 20px
+    max(24px, env(safe-area-inset-left));
   border-bottom: 1px solid var(--border);
 }
 .project-setup-header [class*="modal-title"] {
@@ -1568,13 +1574,18 @@
   box-shadow: none;
   overflow: hidden;
 }
-.project-setup-drawer .setup-body {
-  display: block;
+.project-setup-drawer .setup-scroll {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
-  padding: 22px 24px 18px;
+  scroll-padding-block: 12px;
+}
+.project-setup-drawer .setup-body {
+  display: block;
+  overflow: visible;
+  padding: 22px max(24px, env(safe-area-inset-right)) 18px max(24px, env(safe-area-inset-left));
 }
 .setup-group {
   display: grid;
@@ -1626,8 +1637,7 @@
   display: block;
 }
 .project-setup-drawer .setup-output {
-  flex-shrink: 0;
-  padding: 12px 24px max(18px, env(safe-area-inset-bottom));
+  padding: 12px max(24px, env(safe-area-inset-right)) 18px max(24px, env(safe-area-inset-left));
   background: var(--background);
   box-shadow: 0 -6px 18px #00000003;
 }
@@ -1635,11 +1645,17 @@
   min-height: 24px;
 }
 .project-setup-drawer .setup-output pre {
+  overflow: visible;
   font-size: 11px;
   line-height: 20px;
   padding-block: 10px 14px;
 }
 .setup-output-actions {
+  flex-shrink: 0;
+  padding: 12px max(24px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom))
+    max(24px, env(safe-area-inset-left));
+  border-top: 1px solid var(--border);
+  background: var(--background);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -2141,10 +2157,11 @@
     border-left: 0;
   }
   .project-setup-header {
-    padding: max(16px, env(safe-area-inset-top)) 14px 16px 20px;
+    padding: max(16px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) 16px
+      max(20px, env(safe-area-inset-left));
   }
   .project-setup-drawer .setup-body {
-    padding: 18px 20px;
+    padding: 18px max(20px, env(safe-area-inset-right)) 18px max(20px, env(safe-area-inset-left));
   }
   .project-setup-drawer .setup-field,
   .project-setup-drawer .setup-framework,
@@ -2172,8 +2189,9 @@
     min-height: 44px;
     height: 44px;
   }
-  .project-setup-drawer .setup-output {
-    padding-inline: 20px;
+  .project-setup-drawer .setup-output,
+  .project-setup-drawer .setup-output-actions {
+    padding-inline: max(20px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-right));
   }
   .project-setup-drawer .setup-output-actions button {
     min-height: 44px;
@@ -2250,8 +2268,9 @@
     font-size: 11px;
   }
   .project-setup-drawer .setup-body,
-  .project-setup-drawer .setup-output {
-    padding-inline: 16px;
+  .project-setup-drawer .setup-output,
+  .project-setup-drawer .setup-output-actions {
+    padding-inline: max(16px, env(safe-area-inset-left)) max(16px, env(safe-area-inset-right));
   }
 }
 .release-avatar {
@@ -2325,28 +2344,6 @@
   color: var(--primary-foreground);
 }
 @media (max-width: 767px) {
-  .project-setup-drawer .setup-group[aria-labelledby="setup-configuration"] .setup-field,
-  .project-setup-drawer .setup-framework,
-  .project-setup-drawer .setup-name {
-    display: grid;
-    grid-template-columns: 90px minmax(0, 1fr);
-    gap: 10px;
-    align-items: center;
-  }
-  .project-setup-drawer .setup-group[aria-labelledby="setup-configuration"] .setup-field legend {
-    float: left;
-    width: 90px;
-    padding-block: 12px;
-  }
-  .project-setup-drawer .setup-framework > label,
-  .project-setup-drawer .setup-name > label {
-    margin-bottom: 0;
-  }
-  .project-setup-drawer .setup-name > label span {
-    display: block;
-  }
-}
-@media (max-width: 767px) {
   .home-framework-strip span:first-child {
     text-align: center;
   }
@@ -2364,5 +2361,26 @@
   .home-framework-strip .home-container {
     padding-inline: 16px;
     gap: 10px;
+  }
+}
+
+/* Keep the form usable when a landscape viewport or keyboard reduces height. */
+@media (max-height: 500px) {
+  .project-setup-header {
+    padding-block: max(10px, env(safe-area-inset-top)) 10px;
+  }
+  .project-setup-drawer .setup-output-actions {
+    padding-block: 8px max(8px, env(safe-area-inset-bottom));
+  }
+}
+@media (pointer: coarse) {
+  .project-setup-drawer .setup-choices [data-slot="button"],
+  .project-setup-drawer .theme-swatch-button[data-slot="button"],
+  .project-setup-drawer .setup-output-actions button,
+  .project-setup-drawer .setup-preview-heading > button {
+    min-height: 44px;
+  }
+  .project-setup-drawer .setup-preview-heading > button {
+    min-width: 44px;
   }
 }

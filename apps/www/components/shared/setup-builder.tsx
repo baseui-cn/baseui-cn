@@ -130,6 +130,23 @@ function StartingThemePreview() {
   )
 }
 export function SetupBuilder() {
+  // The keyboard can shrink/pan the visual viewport without changing 100dvh.
+  // Keep this landing composition inside it; Base UI still owns modal behavior.
+  const viewportRef = React.useCallback((node: HTMLDivElement | null) => {
+    const viewport = window.visualViewport
+    if (!node || !viewport) return
+    const update = () => {
+      node.style.setProperty("--setup-viewport-height", `${viewport.height}px`)
+      node.style.setProperty("--setup-viewport-top", `${viewport.offsetTop}px`)
+    }
+    update()
+    viewport.addEventListener("resize", update)
+    viewport.addEventListener("scroll", update)
+    return () => {
+      viewport.removeEventListener("resize", update)
+      viewport.removeEventListener("scroll", update)
+    }
+  }, [])
   const preview = useHomeTheme()
   const [input, setInput] = React.useState<SetupInput>({
     framework: "next",
@@ -145,7 +162,7 @@ export function SetupBuilder() {
     input.projectMode === "new" ? { ...input, color: preview.color, radius: preview.radius } : input
   )
   return (
-    <DrawerContent side="right" className="project-setup-drawer">
+    <DrawerContent ref={viewportRef} side="right" className="project-setup-drawer">
       <DrawerHeader className="project-setup-header">
         <div>
           <DrawerTitle>Create your project</DrawerTitle>
@@ -158,212 +175,219 @@ export function SetupBuilder() {
         </DrawerClose>
       </DrawerHeader>
       <div className="setup-builder" role="group" aria-label="Build your setup command">
-        <div className="setup-body">
-          <section className="setup-group" aria-labelledby="setup-configuration">
-            <h3 id="setup-configuration">Configuration</h3>
-            <div className="setup-framework">
-              <label id="framework-label">Framework</label>
-              <Select
-                value={input.framework}
-                items={Object.fromEntries(frameworkOptions.map((f) => [f.value, f.label]))}
-                onValueChange={(value) => {
-                  if (value)
-                    setInput((previous) => ({
-                      ...previous,
-                      framework: value,
-                      projectMode: value === "react" ? "existing" : previous.projectMode,
-                    }))
-                }}
-              >
-                <SelectTrigger aria-labelledby="framework-label" className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {frameworkOptions.map((f) => (
-                    <SelectItem key={f.value} value={f.value}>
-                      {f.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <Choices
-              label="Project"
-              value={input.projectMode}
-              choices={
-                input.framework === "react"
-                  ? [{ value: "existing", label: "Existing project" }]
-                  : [
-                      { value: "new", label: "New project" },
-                      { value: "existing", label: "Existing project" },
-                    ]
-              }
-              onChange={(value) => set("projectMode", value)}
-            />
-            <Choices
-              label="Structure"
-              value={input.structure}
-              choices={[
-                { value: "single", label: "Single app" },
-                { value: "monorepo", label: "Monorepo" },
-              ]}
-              onChange={(value) => set("structure", value)}
-            />
-            <Choices
-              label="Package manager"
-              value={input.packageManager}
-              choices={setupManagers.map((value) => ({ value, label: value }))}
-              onChange={(value) => set("packageManager", value)}
-            />
-          </section>
-          <section className="setup-group" aria-labelledby="setup-appearance">
-            <h3 id="setup-appearance">Appearance</h3>
-            <fieldset className="setup-field setup-color-field">
-              <legend>Theme color</legend>
-              <div className="setup-swatches">
-                {Object.entries(themePresets.colors).map(([id, preset]) => (
-                  <Button
-                    key={id}
-                    type="button"
-                    variant="ghost"
-                    className="theme-swatch-button"
-                    aria-label={`${preset.label} theme`}
-                    title={preset.label}
-                    aria-pressed={preview.color === id}
-                    onClick={() => {
-                      preview.setColor(id as ColorPreset)
-                      set("color", id as ColorPreset)
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor: preset.light["--primary"],
-                        color: preset.light["--primary-foreground"],
+        <div
+          className="setup-scroll"
+          role="region"
+          aria-label="Project configuration and generated command"
+          tabIndex={0}
+        >
+          <div className="setup-body">
+            <section className="setup-group" aria-labelledby="setup-configuration">
+              <h3 id="setup-configuration">Configuration</h3>
+              <div className="setup-framework">
+                <label id="framework-label">Framework</label>
+                <Select
+                  value={input.framework}
+                  items={Object.fromEntries(frameworkOptions.map((f) => [f.value, f.label]))}
+                  onValueChange={(value) => {
+                    if (value)
+                      setInput((previous) => ({
+                        ...previous,
+                        framework: value,
+                        projectMode: value === "react" ? "existing" : previous.projectMode,
+                      }))
+                  }}
+                >
+                  <SelectTrigger aria-labelledby="framework-label" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {frameworkOptions.map((f) => (
+                      <SelectItem key={f.value} value={f.value}>
+                        {f.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Choices
+                label="Project"
+                value={input.projectMode}
+                choices={
+                  input.framework === "react"
+                    ? [{ value: "existing", label: "Existing project" }]
+                    : [
+                        { value: "new", label: "New project" },
+                        { value: "existing", label: "Existing project" },
+                      ]
+                }
+                onChange={(value) => set("projectMode", value)}
+              />
+              <Choices
+                label="Structure"
+                value={input.structure}
+                choices={[
+                  { value: "single", label: "Single app" },
+                  { value: "monorepo", label: "Monorepo" },
+                ]}
+                onChange={(value) => set("structure", value)}
+              />
+              <Choices
+                label="Package manager"
+                value={input.packageManager}
+                choices={setupManagers.map((value) => ({ value, label: value }))}
+                onChange={(value) => set("packageManager", value)}
+              />
+            </section>
+            <section className="setup-group" aria-labelledby="setup-appearance">
+              <h3 id="setup-appearance">Appearance</h3>
+              <fieldset className="setup-field setup-color-field">
+                <legend>Theme color</legend>
+                <div className="setup-swatches">
+                  {Object.entries(themePresets.colors).map(([id, preset]) => (
+                    <Button
+                      key={id}
+                      type="button"
+                      variant="ghost"
+                      className="theme-swatch-button"
+                      aria-label={`${preset.label} theme`}
+                      title={preset.label}
+                      aria-pressed={preview.color === id}
+                      onClick={() => {
+                        preview.setColor(id as ColorPreset)
+                        set("color", id as ColorPreset)
                       }}
                     >
-                      {preview.color === id && <CheckIcon size={12} aria-hidden="true" />}
-                    </span>
-                  </Button>
-                ))}
-              </div>
-            </fieldset>
-            <Choices
-              label="Radius"
-              value={preview.radius}
-              choices={Object.entries(themePresets.radii).map(([value, preset]) => ({
-                value: value as RadiusPreset,
-                label: preset.label,
-              }))}
-              onChange={(value) => {
-                preview.setRadius(value)
-                set("radius", value)
-              }}
-            />
-            <StartingThemePreview />
-            {input.projectMode === "existing" && (
-              <p className="setup-theme-safety">
-                {input.color || input.radius ? (
-                  <>
-                    Selected theme values will replace existing CSS.{" "}
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setInput((previous) => ({
-                          ...previous,
-                          color: undefined,
-                          radius: undefined,
-                        }))
-                      }
-                    >
-                      Preserve existing theme
-                    </button>
-                  </>
-                ) : (
-                  "Your existing theme is preserved. Choose a color or radius to explicitly change it."
-                )}
-              </p>
-            )}
-          </section>
-          {(input.projectMode === "new" || input.structure === "monorepo") && (
-            <section className="setup-group" aria-labelledby="setup-project-details">
-              <h3 id="setup-project-details">
-                {input.projectMode === "new" ? "Your project" : "Workspace"}
-              </h3>
-              {input.projectMode === "new" ? (
-                <div className="setup-name">
-                  <label htmlFor="setup-project">Project name</label>
-                  <Input
-                    id="setup-project"
-                    value={input.projectName}
-                    onChange={(e) => set("projectName", e.target.value)}
-                    spellCheck={false}
-                    autoComplete="off"
-                    aria-invalid={!!command.error}
-                    aria-describedby={command.error ? "setup-error" : undefined}
-                  />
+                      <span
+                        style={{
+                          backgroundColor: preset.light["--primary"],
+                          color: preset.light["--primary-foreground"],
+                        }}
+                      >
+                        {preview.color === id && <CheckIcon size={12} aria-hidden="true" />}
+                      </span>
+                    </Button>
+                  ))}
                 </div>
-              ) : (
-                <div className="setup-name">
-                  <label htmlFor="setup-workspace">
-                    Workspace <span>(optional)</span>
-                  </label>
-                  <Input
-                    id="setup-workspace"
-                    value={input.workspace}
-                    onChange={(e) => set("workspace", e.target.value)}
-                    placeholder="Choose in CLI, or enter apps/web"
-                    spellCheck={false}
-                    autoComplete="off"
-                    aria-invalid={!!command.error}
-                    aria-describedby={command.error ? "setup-error" : undefined}
-                  />
-                </div>
+              </fieldset>
+              <Choices
+                label="Radius"
+                value={preview.radius}
+                choices={Object.entries(themePresets.radii).map(([value, preset]) => ({
+                  value: value as RadiusPreset,
+                  label: preset.label,
+                }))}
+                onChange={(value) => {
+                  preview.setRadius(value)
+                  set("radius", value)
+                }}
+              />
+              <StartingThemePreview />
+              {input.projectMode === "existing" && (
+                <p className="setup-theme-safety">
+                  {input.color || input.radius ? (
+                    <>
+                      Selected theme values will replace existing CSS.{" "}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setInput((previous) => ({
+                            ...previous,
+                            color: undefined,
+                            radius: undefined,
+                          }))
+                        }
+                      >
+                        Preserve existing theme
+                      </button>
+                    </>
+                  ) : (
+                    "Your existing theme is preserved. Choose a color or radius to explicitly change it."
+                  )}
+                </p>
               )}
             </section>
-          )}
-          <p className="setup-caption" aria-live="polite">
-            {command.description}
-          </p>
-        </div>
-        <div className="setup-output">
-          <div className="setup-output-label">
-            <span>
-              <TerminalIcon size={14} aria-hidden="true" /> Generated command
-            </span>
-            <span>{input.packageManager}</span>
-          </div>
-          {command.error ? (
-            <p id="setup-error" role="status" className="setup-error">
-              {command.error}
-            </p>
-          ) : (
-            <pre tabIndex={0} role="region" aria-label="Setup command">
-              <code>{command.primary}</code>
-            </pre>
-          )}
-          <div className="setup-output-actions">
-            {!command.error && (
-              <CopyButton
-                key={command.primary}
-                text={command.primary}
-                showLabel
-                label="Copy command"
-                variant="default"
-              />
+            {(input.projectMode === "new" || input.structure === "monorepo") && (
+              <section className="setup-group" aria-labelledby="setup-project-details">
+                <h3 id="setup-project-details">
+                  {input.projectMode === "new" ? "Your project" : "Workspace"}
+                </h3>
+                {input.projectMode === "new" ? (
+                  <div className="setup-name">
+                    <label htmlFor="setup-project">Project name</label>
+                    <Input
+                      id="setup-project"
+                      value={input.projectName}
+                      onChange={(e) => set("projectName", e.target.value)}
+                      spellCheck={false}
+                      autoComplete="off"
+                      aria-invalid={!!command.error}
+                      aria-describedby={command.error ? "setup-error" : undefined}
+                    />
+                  </div>
+                ) : (
+                  <div className="setup-name">
+                    <label htmlFor="setup-workspace">
+                      Workspace <span>(optional)</span>
+                    </label>
+                    <Input
+                      id="setup-workspace"
+                      value={input.workspace}
+                      onChange={(e) => set("workspace", e.target.value)}
+                      placeholder="Choose in CLI, or enter apps/web"
+                      spellCheck={false}
+                      autoComplete="off"
+                      aria-invalid={!!command.error}
+                      aria-describedby={command.error ? "setup-error" : undefined}
+                    />
+                  </div>
+                )}
+              </section>
             )}
-            <DrawerClose render={<Button variant="outline" />}>Done</DrawerClose>
+            <p className="setup-caption" aria-live="polite">
+              {command.description}
+            </p>
           </div>
-          {!command.error && command.followUp && (
-            <details className="setup-follow-up">
-              <summary>
-                Then, {input.projectMode === "new" ? "start your app" : "add a component"}
-              </summary>
-              <div>
-                <code>{command.followUp}</code>
-                <CopyButton key={command.followUp} text={command.followUp} />
-              </div>
-            </details>
+          <div className="setup-output">
+            <div className="setup-output-label">
+              <span>
+                <TerminalIcon size={14} aria-hidden="true" /> Generated command
+              </span>
+              <span>{input.packageManager}</span>
+            </div>
+            {command.error ? (
+              <p id="setup-error" role="status" className="setup-error">
+                {command.error}
+              </p>
+            ) : (
+              <pre data-base-ui-swipe-ignore tabIndex={0} role="region" aria-label="Setup command">
+                <code>{command.primary}</code>
+              </pre>
+            )}
+            {!command.error && command.followUp && (
+              <details className="setup-follow-up">
+                <summary data-base-ui-swipe-ignore>
+                  Then, {input.projectMode === "new" ? "start your app" : "add a component"}
+                </summary>
+                <div>
+                  <code>{command.followUp}</code>
+                  <CopyButton key={command.followUp} text={command.followUp} />
+                </div>
+              </details>
+            )}
+          </div>
+        </div>
+        <div className="setup-output-actions">
+          {!command.error && (
+            <CopyButton
+              key={command.primary}
+              text={command.primary}
+              showLabel
+              label="Copy command"
+              variant="default"
+            />
           )}
+          <DrawerClose render={<Button variant="outline" />}>Done</DrawerClose>
         </div>
       </div>
     </DrawerContent>
