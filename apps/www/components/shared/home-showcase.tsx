@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Field, FieldLabel } from "@/components/ui/field"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Select,
@@ -221,41 +222,45 @@ export function HomeShowcase() {
               <DialogTrigger render={<Button />}>
                 <PlusIcon size={15} aria-hidden="true" /> New task
               </DialogTrigger>
-              <DialogContent noPadding={false}>
+              <DialogContent
+                size="sm"
+                noPadding={false}
+                render={
+                  <form
+                    onSubmit={(event) => {
+                      event.preventDefault()
+                      if (!newTitle.trim()) return
+                      setItems((previous) => [
+                        ...previous,
+                        {
+                          id: `UI-${101 + previous.length}`,
+                          title: newTitle.trim(),
+                          owner: "Avery",
+                          category: "Product",
+                          complete: false,
+                          description: "A new task added to this local example.",
+                        },
+                      ])
+                      setNewTitle("")
+                      setNewOpen(false)
+                      toast.add({
+                        title: "Task added",
+                        description: "Your release plan has a new task.",
+                        type: "success",
+                      })
+                    }}
+                  />
+                }
+              >
                 <DialogHeader>
                   <DialogTitle>Add a task</DialogTitle>
                   <DialogDescription>
                     Try the workflow. Changes stay in this example.
                   </DialogDescription>
                 </DialogHeader>
-                <form
-                  onSubmit={(event) => {
-                    event.preventDefault()
-                    if (!newTitle.trim()) return
-                    setItems((previous) => [
-                      ...previous,
-                      {
-                        id: `UI-${101 + previous.length}`,
-                        title: newTitle.trim(),
-                        owner: "Avery",
-                        category: "Product",
-                        complete: false,
-                        description: "A new task added to this local example.",
-                      },
-                    ])
-                    setNewTitle("")
-                    setNewOpen(false)
-                    toast.add({
-                      title: "Task added",
-                      description: "Your release plan has a new task.",
-                      type: "success",
-                    })
-                  }}
-                >
-                  <DialogBody>
-                    <label className="release-form-label" htmlFor="release-new-task">
-                      Task name
-                    </label>
+                <DialogBody className="overflow-visible">
+                  <Field>
+                    <FieldLabel htmlFor="release-new-task">Task name</FieldLabel>
                     <Input
                       id="release-new-task"
                       value={newTitle}
@@ -264,16 +269,16 @@ export function HomeShowcase() {
                       required
                       autoComplete="off"
                     />
-                  </DialogBody>
-                  <DialogFooter>
-                    <DialogClose render={<Button variant="outline" type="button" />}>
-                      Cancel
-                    </DialogClose>
-                    <Button type="submit" disabled={!newTitle.trim()}>
-                      Add task
-                    </Button>
-                  </DialogFooter>
-                </form>
+                  </Field>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogClose render={<Button variant="outline" type="button" />}>
+                    Cancel
+                  </DialogClose>
+                  <Button type="submit" disabled={!newTitle.trim()}>
+                    Add task
+                  </Button>
+                </DialogFooter>
               </DialogContent>
             </Dialog>
           </div>
