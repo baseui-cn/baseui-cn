@@ -1,0 +1,606 @@
+{
+  "registryOrigin": "http://127.0.0.1:64308",
+  "candidateSha256": "d61de9e84944584fc0ca45429f6bcaffa4b97794a6f327d6511ba496db9f065a",
+  "registryRequests": [
+    "/baseui-cn",
+    "/baseui-cn/-/candidate.tgz",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn/-/candidate.tgz",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn/-/candidate.tgz",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn",
+    "/baseui-cn"
+  ],
+  "results": [
+    {
+      "id": "next-pnpm-single",
+      "input": {
+        "projectMode": "new",
+        "structure": "single",
+        "projectName": "next-pnpm-single",
+        "workspace": "apps/web",
+        "color": "emerald",
+        "radius": "xl",
+        "id": "next-pnpm-single",
+        "framework": "next",
+        "packageManager": "pnpm",
+        "bodyFont": "inter",
+        "headingFont": "space-grotesk"
+      },
+      "command": "pnpm dlx baseui-cn@latest create next-pnpm-single --framework next --package-manager pnpm --color emerald --radius xl --body-font inter --heading-font space-grotesk",
+      "root": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-pnpm-single-parent/next-pnpm-single",
+      "app": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-pnpm-single-parent/next-pnpm-single",
+      "log": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-pnpm-single.log",
+      "passed": true,
+      "rendered": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "light",
+            "values": {
+              "--primary": "#066348",
+              "--border": "#dedee3",
+              "--input": "#7d8797",
+              "--ring": "#149671",
+              "--radius": "1rem",
+              "--font-body": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Space Grotesk Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "\"Geist Mono\", \"Geist Mono Fallback\""
+          },
+          {
+            "mode": "dark",
+            "values": {
+              "--primary": "#6fdbb5",
+              "--border": "#3d3d43",
+              "--input": "#6c6c75",
+              "--ring": "#6abc9f",
+              "--radius": "1rem",
+              "--font-body": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Space Grotesk Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "\"Geist Mono\", \"Geist Mono Fallback\""
+          }
+        ],
+        "fontRequests": [
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/07a39a8a4660cc7c-s.p.0r6juujl39pe6.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/605ce01b664af129-s.p.0wgildi0cnwt9.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/space-grotesk-latin-wght-normal.092gko6h6levo.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/inter-latin-wght-normal.0gsaq8ukbf34m.woff2",
+            "status": 200
+          }
+        ],
+        "errors": []
+      },
+      "preserveCommand": "pnpm dlx baseui-cn@latest init",
+      "cssPath": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-pnpm-single-parent/next-pnpm-single/src/app/globals.css",
+      "cssSha256": "0f93a5f6492b0c681904e66eff09238b3b382ac9a6292d69719cb810b4001a79",
+      "fontDependencies": {
+        "@fontsource-variable/inter": "5.3.0",
+        "@fontsource-variable/space-grotesk": "5.3.0"
+      }
+    },
+    {
+      "id": "next-npm-single",
+      "input": {
+        "projectMode": "new",
+        "structure": "single",
+        "projectName": "next-npm-single",
+        "workspace": "apps/web",
+        "color": "emerald",
+        "radius": "xl",
+        "id": "next-npm-single",
+        "framework": "next",
+        "packageManager": "npm",
+        "bodyFont": "geist",
+        "headingFont": "manrope"
+      },
+      "command": "npx baseui-cn@latest create next-npm-single --framework next --package-manager npm --color emerald --radius xl --body-font geist --heading-font manrope",
+      "root": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-single-parent/next-npm-single",
+      "app": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-single-parent/next-npm-single",
+      "log": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-single.log",
+      "passed": true,
+      "rendered": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "light",
+            "values": {
+              "--primary": "#066348",
+              "--border": "#dedee3",
+              "--input": "#7d8797",
+              "--ring": "#149671",
+              "--radius": "1rem",
+              "--font-body": "\"Geist Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Manrope Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "\"Geist Mono\", \"Geist Mono Fallback\""
+          },
+          {
+            "mode": "dark",
+            "values": {
+              "--primary": "#6fdbb5",
+              "--border": "#3d3d43",
+              "--input": "#6c6c75",
+              "--ring": "#6abc9f",
+              "--radius": "1rem",
+              "--font-body": "\"Geist Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Manrope Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "\"Geist Mono\", \"Geist Mono Fallback\""
+          }
+        ],
+        "fontRequests": [
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/07a39a8a4660cc7c-s.p.0r6juujl39pe6.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/605ce01b664af129-s.p.0wgildi0cnwt9.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/manrope-latin-wght-normal.1p_a2k8qd5zhp.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/geist-latin-wght-normal.20f3xrkj613ah.woff2",
+            "status": 200
+          }
+        ],
+        "errors": []
+      },
+      "preserveCommand": "npx baseui-cn@latest init",
+      "cssPath": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-single-parent/next-npm-single/src/app/globals.css",
+      "cssSha256": "124444ad82c36d7120ebb5d4814f01a211cd17c677d99e89ccfe1fec983297b0",
+      "fontDependencies": {
+        "@fontsource-variable/geist": "5.3.0",
+        "@fontsource-variable/manrope": "5.3.0"
+      }
+    },
+    {
+      "id": "start-pnpm-single",
+      "input": {
+        "projectMode": "new",
+        "structure": "single",
+        "projectName": "start-pnpm-single",
+        "workspace": "apps/web",
+        "color": "emerald",
+        "radius": "xl",
+        "id": "start-pnpm-single",
+        "framework": "tanstack-start",
+        "packageManager": "pnpm",
+        "bodyFont": "roboto",
+        "headingFont": "montserrat"
+      },
+      "command": "pnpm dlx baseui-cn@latest create start-pnpm-single --framework tanstack-start --package-manager pnpm --color emerald --radius xl --body-font roboto --heading-font montserrat",
+      "root": "/private/tmp/baseui-create-theme-evidence/consumers-complete/start-pnpm-single-parent/start-pnpm-single",
+      "app": "/private/tmp/baseui-create-theme-evidence/consumers-complete/start-pnpm-single-parent/start-pnpm-single",
+      "log": "/private/tmp/baseui-create-theme-evidence/consumers-complete/start-pnpm-single.log",
+      "passed": true,
+      "rendered": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "light",
+            "values": {
+              "--primary": "#066348",
+              "--border": "#dedee3",
+              "--input": "#7d8797",
+              "--ring": "#149671",
+              "--radius": "1rem",
+              "--font-body": "\"Roboto Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Montserrat Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace"
+          },
+          {
+            "mode": "dark",
+            "values": {
+              "--primary": "#6fdbb5",
+              "--border": "#3d3d43",
+              "--input": "#6c6c75",
+              "--ring": "#6abc9f",
+              "--radius": "1rem",
+              "--font-body": "\"Roboto Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Montserrat Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace"
+          }
+        ],
+        "fontRequests": [
+          {
+            "url": "http://127.0.0.1:3195/assets/montserrat-latin-wght-normal-l_AIctKy.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/assets/roboto-latin-wght-normal-ccAYIvAh.woff2",
+            "status": 200
+          }
+        ],
+        "errors": []
+      },
+      "preserveCommand": "pnpm dlx baseui-cn@latest init",
+      "cssPath": "/private/tmp/baseui-create-theme-evidence/consumers-complete/start-pnpm-single-parent/start-pnpm-single/src/styles.css",
+      "cssSha256": "4163abcef6079ab1cc61f8f94ed577c2f2cbe9e7f064b1e10582a15d2891d6a7",
+      "fontDependencies": {
+        "@fontsource-variable/montserrat": "5.3.0",
+        "@fontsource-variable/roboto": "5.3.0"
+      }
+    },
+    {
+      "id": "router-yarn-single",
+      "input": {
+        "projectMode": "new",
+        "structure": "single",
+        "projectName": "router-yarn-single",
+        "workspace": "apps/web",
+        "color": "emerald",
+        "radius": "xl",
+        "id": "router-yarn-single",
+        "framework": "react-router",
+        "packageManager": "yarn",
+        "bodyFont": "manrope",
+        "headingFont": "poppins"
+      },
+      "command": "yarn dlx baseui-cn@latest create router-yarn-single --framework react-router --package-manager yarn --color emerald --radius xl --body-font manrope --heading-font poppins",
+      "root": "/private/tmp/baseui-create-theme-evidence/consumers-complete/router-yarn-single-parent/router-yarn-single",
+      "app": "/private/tmp/baseui-create-theme-evidence/consumers-complete/router-yarn-single-parent/router-yarn-single",
+      "log": "/private/tmp/baseui-create-theme-evidence/consumers-complete/router-yarn-single.log",
+      "passed": true,
+      "rendered": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "light",
+            "values": {
+              "--primary": "#066348",
+              "--border": "#dedee3",
+              "--input": "#7d8797",
+              "--ring": "#149671",
+              "--radius": "1rem",
+              "--font-body": "\"Manrope Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Poppins\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace"
+          },
+          {
+            "mode": "dark",
+            "values": {
+              "--primary": "#6fdbb5",
+              "--border": "#3d3d43",
+              "--input": "#6c6c75",
+              "--ring": "#6abc9f",
+              "--radius": "1rem",
+              "--font-body": "\"Manrope Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Poppins\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace"
+          }
+        ],
+        "fontRequests": [
+          {
+            "url": "http://127.0.0.1:3195/assets/poppins-latin-400-normal-cpxAROuN.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/assets/poppins-latin-600-normal-zEkxB9Mr.woff2",
+            "status": 200
+          }
+        ],
+        "errors": []
+      },
+      "preserveCommand": "yarn dlx baseui-cn@latest init",
+      "cssPath": "/private/tmp/baseui-create-theme-evidence/consumers-complete/router-yarn-single-parent/router-yarn-single/app/app.css",
+      "cssSha256": "14f1aacee802f54d23d483c333ad28d8166d701298fd9d0b317b56a1d6e34349",
+      "fontDependencies": {
+        "@fontsource-variable/manrope": "5.3.0",
+        "@fontsource/poppins": "5.3.0"
+      }
+    },
+    {
+      "id": "vite-bun-single",
+      "input": {
+        "projectMode": "new",
+        "structure": "single",
+        "projectName": "vite-bun-single",
+        "workspace": "apps/web",
+        "color": "emerald",
+        "radius": "xl",
+        "id": "vite-bun-single",
+        "framework": "vite",
+        "packageManager": "bun",
+        "bodyFont": "system",
+        "headingFont": "inter"
+      },
+      "command": "bunx baseui-cn@latest create vite-bun-single --framework vite --package-manager bun --color emerald --radius xl --body-font system --heading-font inter",
+      "root": "/private/tmp/baseui-create-theme-evidence/consumers-bun-final/vite-bun-single-parent/vite-bun-single",
+      "app": "/private/tmp/baseui-create-theme-evidence/consumers-bun-final/vite-bun-single-parent/vite-bun-single",
+      "log": "/private/tmp/baseui-create-theme-evidence/consumers-bun-final/vite-bun-single.log",
+      "passed": true,
+      "rendered": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "light",
+            "values": {
+              "--primary": "#066348",
+              "--border": "#dedee3",
+              "--input": "#7d8797",
+              "--ring": "#149671",
+              "--radius": "1rem",
+              "--font-body": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "ui-monospace, Consolas, monospace"
+          },
+          {
+            "mode": "dark",
+            "values": {
+              "--primary": "#6fdbb5",
+              "--border": "#3d3d43",
+              "--input": "#6c6c75",
+              "--ring": "#6abc9f",
+              "--radius": "1rem",
+              "--font-body": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "ui-monospace, Consolas, monospace"
+          }
+        ],
+        "fontRequests": [
+          {
+            "url": "http://127.0.0.1:3196/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+            "status": 200
+          }
+        ],
+        "errors": []
+      },
+      "preserveCommand": "bunx baseui-cn@latest init",
+      "cssPath": "/private/tmp/baseui-create-theme-evidence/consumers-bun-final/vite-bun-single-parent/vite-bun-single/src/index.css",
+      "cssSha256": "71076c1a3df644fd9904763b50ca211732fd60c27a96e2908a549ca650750455",
+      "fontDependencies": {
+        "@fontsource-variable/inter": "5.3.0"
+      }
+    },
+    {
+      "id": "vite-pnpm-monorepo",
+      "input": {
+        "projectMode": "new",
+        "structure": "monorepo",
+        "projectName": "vite-pnpm-monorepo",
+        "workspace": "apps/web",
+        "color": "emerald",
+        "radius": "xl",
+        "id": "vite-pnpm-monorepo",
+        "framework": "vite",
+        "packageManager": "pnpm",
+        "bodyFont": "inter",
+        "headingFont": "inter"
+      },
+      "command": "pnpm dlx baseui-cn@latest create vite-pnpm-monorepo --framework vite --package-manager pnpm --monorepo --color emerald --radius xl --body-font inter --heading-font inter",
+      "root": "/private/tmp/baseui-create-theme-evidence/consumers-complete/vite-pnpm-monorepo-parent/vite-pnpm-monorepo",
+      "app": "/private/tmp/baseui-create-theme-evidence/consumers-complete/vite-pnpm-monorepo-parent/vite-pnpm-monorepo/apps/web",
+      "log": "/private/tmp/baseui-create-theme-evidence/consumers-complete/vite-pnpm-monorepo.log",
+      "passed": true,
+      "rendered": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "light",
+            "values": {
+              "--primary": "#066348",
+              "--border": "#dedee3",
+              "--input": "#7d8797",
+              "--ring": "#149671",
+              "--radius": "1rem",
+              "--font-body": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "ui-monospace, Consolas, monospace"
+          },
+          {
+            "mode": "dark",
+            "values": {
+              "--primary": "#6fdbb5",
+              "--border": "#3d3d43",
+              "--input": "#6c6c75",
+              "--ring": "#6abc9f",
+              "--radius": "1rem",
+              "--font-body": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "ui-monospace, Consolas, monospace"
+          }
+        ],
+        "fontRequests": [
+          {
+            "url": "http://127.0.0.1:3195/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+            "status": 200
+          }
+        ],
+        "errors": []
+      },
+      "preserveCommand": "pnpm dlx baseui-cn@latest init --workspace apps/web",
+      "cssPath": "/private/tmp/baseui-create-theme-evidence/consumers-complete/vite-pnpm-monorepo-parent/vite-pnpm-monorepo/apps/web/src/index.css",
+      "cssSha256": "57fce8ddca6345f2f2b8da733db5b2fc4852e0921f6a0778d022181875157bbc",
+      "fontDependencies": {
+        "@fontsource-variable/inter": "5.3.0"
+      }
+    },
+    {
+      "id": "next-npm-existing",
+      "input": {
+        "projectMode": "existing",
+        "structure": "single",
+        "projectName": "next-npm-existing",
+        "workspace": "apps/web",
+        "color": "emerald",
+        "radius": "xl",
+        "id": "next-npm-existing",
+        "framework": "next",
+        "packageManager": "npm",
+        "bodyFont": "system",
+        "headingFont": "system"
+      },
+      "command": "npx baseui-cn@latest init --color emerald --radius xl --body-font system --heading-font system",
+      "root": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-existing-parent",
+      "app": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-existing-parent",
+      "log": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-existing.log",
+      "passed": true,
+      "rendered": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "light",
+            "values": {
+              "--primary": "#066348",
+              "--border": "#dedee3",
+              "--input": "#7d8797",
+              "--ring": "#149671",
+              "--radius": "1rem",
+              "--font-body": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "\"Geist Mono\", \"Geist Mono Fallback\""
+          },
+          {
+            "mode": "dark",
+            "values": {
+              "--primary": "#6fdbb5",
+              "--border": "#3d3d43",
+              "--input": "#6c6c75",
+              "--ring": "#6abc9f",
+              "--radius": "1rem",
+              "--font-body": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "\"Geist Mono\", \"Geist Mono Fallback\""
+          }
+        ],
+        "fontRequests": [
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/07a39a8a4660cc7c-s.p.0r6juujl39pe6.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/605ce01b664af129-s.p.0wgildi0cnwt9.woff2",
+            "status": 200
+          }
+        ],
+        "errors": []
+      },
+      "preserveCommand": "npx baseui-cn@latest init",
+      "cssPath": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-existing-parent/src/app/globals.css",
+      "cssSha256": "99b0cf574d7f573432db3e451008a30f2d10fa7c985171249c4dda7532bccdb7",
+      "fontDependencies": {}
+    },
+    {
+      "id": "next-npm-existing-monorepo",
+      "input": {
+        "projectMode": "existing",
+        "structure": "monorepo",
+        "projectName": "next-npm-existing-monorepo",
+        "workspace": "apps/web",
+        "color": "emerald",
+        "radius": "xl",
+        "id": "next-npm-existing-monorepo",
+        "framework": "next",
+        "packageManager": "npm",
+        "bodyFont": "inter",
+        "headingFont": "space-grotesk"
+      },
+      "command": "npx baseui-cn@latest init --workspace apps/web --color emerald --radius xl --body-font inter --heading-font space-grotesk",
+      "root": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-existing-monorepo-parent",
+      "app": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-existing-monorepo-parent/apps/web",
+      "log": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-existing-monorepo.log",
+      "passed": true,
+      "rendered": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "light",
+            "values": {
+              "--primary": "#066348",
+              "--border": "#dedee3",
+              "--input": "#7d8797",
+              "--ring": "#149671",
+              "--radius": "1rem",
+              "--font-body": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Space Grotesk Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "\"Geist Mono\", \"Geist Mono Fallback\""
+          },
+          {
+            "mode": "dark",
+            "values": {
+              "--primary": "#6fdbb5",
+              "--border": "#3d3d43",
+              "--input": "#6c6c75",
+              "--ring": "#6abc9f",
+              "--radius": "1rem",
+              "--font-body": "\"Inter Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+              "--font-heading": "\"Space Grotesk Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            },
+            "code": "\"Geist Mono\", \"Geist Mono Fallback\""
+          }
+        ],
+        "fontRequests": [
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/07a39a8a4660cc7c-s.p.0r6juujl39pe6.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/605ce01b664af129-s.p.0wgildi0cnwt9.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/space-grotesk-latin-wght-normal.092gko6h6levo.woff2",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:3195/_next/static/media/inter-latin-wght-normal.0gsaq8ukbf34m.woff2",
+            "status": 200
+          }
+        ],
+        "errors": []
+      },
+      "preserveCommand": "npx baseui-cn@latest init --workspace apps/web",
+      "cssPath": "/private/tmp/baseui-create-theme-evidence/consumers-complete/next-npm-existing-monorepo-parent/apps/web/src/app/globals.css",
+      "cssSha256": "0f93a5f6492b0c681904e66eff09238b3b382ac9a6292d69719cb810b4001a79",
+      "fontDependencies": {
+        "@fontsource-variable/inter": "5.3.0",
+        "@fontsource-variable/space-grotesk": "5.3.0"
+      }
+    }
+  ],
+  "qualificationRuns": [
+    "consumers-complete/results.json (7 final candidate cells)",
+    "consumers-bun-final/results.json (isolated Bun cache; attested final CLI bytes)"
+  ]
+}

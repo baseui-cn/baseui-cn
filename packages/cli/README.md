@@ -164,3 +164,51 @@ The publish workflow accepts tags named `cli-v<version>` and supports manual dis
 6. Run an ordinary remote-first fresh consumer using the published package. Mark the release complete only after it passes.
 
 The workflow installs frozen dependencies, generates registry artifacts, checks and builds the CLI, then publishes `baseui-cn` using the repository `NPM_TOKEN`. It does not deploy or verify the hosted registry. Because the CLI is remote-first, index version equality alone cannot establish alignment; component source and shared styles must match too.
+
+## Create versus initialize
+
+```bash
+# Create a new application (new directory)
+pnpm dlx baseui-cn@latest create my-app --framework next --package-manager pnpm
+
+# Create a new monorepo (new root, application in apps/web)
+pnpm dlx baseui-cn@latest create my-app --framework next --package-manager pnpm --monorepo
+
+# Initialize an existing application, from inside the application
+pnpm dlx baseui-cn@latest init
+
+# Initialize an existing member; run from the existing workspace root
+pnpm dlx baseui-cn@latest init --workspace apps/web
+```
+
+`--workspace` always targets an existing workspace member. It never takes a new project name.
+Create supports `next`, `tanstack-start`, `react-router`, `vite` and npm, pnpm, Yarn 2+, Bun.
+
+## Appearance and typography
+
+```bash
+pnpm dlx baseui-cn@latest create my-app --framework next --package-manager pnpm --color iris --radius lg --body-font inter --heading-font space-grotesk
+pnpm dlx baseui-cn@latest init --color emerald --radius xl --body-font geist --heading-font montserrat
+```
+
+- `--color`: iris, blue, violet, emerald, orange, rose, neutral. Explicit selection owns the complete light/dark palette, including border, input and ring. There is no independent border flag.
+- `--radius`: sm (Sharp), md (Medium), lg (Rounded), xl (Extra), including derived control radii.
+- `--body-font`: system, inter, geist, manrope, roboto.
+- `--heading-font`: system, inter, geist, manrope, montserrat, poppins, space-grotesk.
+
+New apps default to Iris, Rounded and system typography. Existing `init` preserves typography
+when flags are omitted; interactive setup defaults each font to “Keep existing typography”.
+Unknown/custom setups are preserved. Each font can be changed independently.
+
+Non-system fonts use pinned Fontsource 5.3.0 npm packages, imported in the app's own global CSS.
+Inter, Geist, Manrope, Roboto, Montserrat and Space Grotesk use `@fontsource-variable/*` normal
+faces; Poppins has no variable package and uses `@fontsource/poppins` normal weights 400–900.
+Packages include OFL-1.1 licenses. Fonts are bundled/self-hosted by the consumer, with no
+baseui-cn.com or Google Fonts runtime dependency. Equal font choices deduplicate dependencies
+and imports. System installs nothing. Existing font imports/dependencies are never removed.
+Add extra styles or weights in your own app as needed.
+
+The generic `--font-body` and `--font-heading` tokens remain editable in consumer CSS. Body and
+semantic h1–h6 headings use their respective tokens. Inputs inherit body typography; code,
+monospace content and icons are not targeted by the heading rule. Explicit consumer selectors
+can still override semantic heading defaults.

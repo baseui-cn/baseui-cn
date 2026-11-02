@@ -4,6 +4,7 @@ import chalk from "chalk"
 import ora from "ora"
 import prompts from "prompts"
 import execa from "execa"
+import { fontDependencies } from "../utils/typography"
 import { detectPackageManager } from "../utils/package-manager"
 import { getConfig, writeConfig } from "../utils/config"
 import { ensureThemeCSS, detectExistingTheme } from "../utils/ensure-styles"
@@ -27,6 +28,8 @@ export async function init(options: {
   customize?: boolean
   color?: string
   radius?: string
+  bodyFont?: string
+  headingFont?: string
 }) {
   validateThemeOptions(options)
   console.log()
@@ -40,6 +43,8 @@ export async function init(options: {
     !options.defaults &&
     !options.color &&
     !options.radius &&
+    !options.bodyFont &&
+    !options.headingFont &&
     process.stdin.isTTY
   ) {
     const { proceed } = await prompts(
@@ -142,7 +147,10 @@ export async function init(options: {
     await detectExistingTheme(config.globalCss),
     !!process.stdin.isTTY && !options.yes && !options.defaults
   )
-  if (!config.tailwind && (themeOptions.color || themeOptions.radius)) {
+  if (
+    !config.tailwind &&
+    (themeOptions.color || themeOptions.radius || themeOptions.bodyFont || themeOptions.headingFont)
+  ) {
     throw new Error(
       "Theme flags require theme CSS initialization. Enable tailwind in baseui-cn.json and omit --skip-tailwind."
     )
@@ -157,6 +165,13 @@ export async function init(options: {
       "clsx",
       "tailwind-merge",
     ])
+    const fonts = fontDependencies(themeOptions)
+    if (fonts.length)
+      await execa(pm, [
+        pm === "npm" ? "install" : "add",
+        pm === "npm" || pm === "pnpm" ? "--save-exact" : "--exact",
+        ...fonts,
+      ])
     depsSpinner.succeed("Dependencies installed")
   } catch (error) {
     depsSpinner.fail("Failed to install dependencies")

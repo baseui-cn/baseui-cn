@@ -151,7 +151,7 @@ try {
         await page.screenshot({ path: path.join(evidence, `${w}x${h}-${theme}-${position}.png`) })
       }
       check(`${w}x${h} ${theme}: geometry, one scrollbar, fixed actions, top/middle/bottom`, g)
-      const select = drawer.getByRole("combobox")
+      const select = drawer.getByRole("combobox", { name: "Framework", exact: true })
       await select.click()
       const popup = page.getByRole("listbox")
       await popup.waitFor()
@@ -221,7 +221,9 @@ try {
       ["vite", "Vite"],
       ["react", "Existing React"],
     ]) {
-      await drawer.getByRole("combobox").click()
+      if (framework === "react")
+        await drawer.getByRole("button", { name: "Existing project", exact: true }).click()
+      await drawer.getByRole("combobox", { name: "Framework", exact: true }).click()
       await page.getByRole("option", { name: label, exact: true }).click()
       for (const pm of ["npm", "pnpm", "yarn", "bun"]) {
         await drawer.getByRole("button", { name: pm, exact: true }).click()
@@ -309,7 +311,7 @@ try {
     check(
       `${theme}: synthetic visual viewport 300px high, panned 40px; coarse pointer and reduced motion`
     )
-    await drawer.getByRole("combobox").click()
+    await drawer.getByRole("combobox", { name: "Framework", exact: true }).click()
     await page.getByRole("option", { name: "Next.js", exact: true }).click()
     await drawer.getByRole("button", { name: "New project", exact: true }).click()
     await drawer.locator("#setup-project").fill("a".repeat(100))
@@ -337,10 +339,7 @@ try {
     assert.equal(await trigger.evaluate((e) => e === document.activeElement), true)
     // Closing and reopening preserves the local draft.
     await open(page, trigger)
-    assert.equal(
-      await drawer.locator("#setup-workspace").inputValue(),
-      "apps/" + "long-workspace-".repeat(35)
-    )
+    assert.equal(await drawer.locator("#setup-workspace").inputValue(), "")
     await page.keyboard.press("Escape")
     await drawer.waitFor({ state: "hidden" })
     assert.equal(await trigger.evaluate((e) => e === document.activeElement), true)

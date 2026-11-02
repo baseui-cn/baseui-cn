@@ -1,0 +1,6 @@
+{
+  "command": "pnpm dlx baseui-cn@latest init --workspace my-app-online",
+  "copied": "pnpm dlx baseui-cn@latest init --workspace my-app-online",
+  "title": "Create your project",
+  "existing": "true"
+}

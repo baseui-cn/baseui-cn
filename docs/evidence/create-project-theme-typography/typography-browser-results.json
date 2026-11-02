@@ -1,0 +1,45 @@
+{
+  "results": [
+    {
+      "width": 1440,
+      "height": 900,
+      "mode": "light",
+      "passed": true,
+      "fonts": 12,
+      "colors": 7,
+      "radii": 4,
+      "command": "pnpm dlx baseui-cn@latest create my-app-online --framework next --package-manager pnpm --monorepo --color iris --radius lg --body-font inter --heading-font space-grotesk"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "mode": "dark",
+      "passed": true,
+      "fonts": 12,
+      "colors": 7,
+      "radii": 4,
+      "command": "pnpm dlx baseui-cn@latest create my-app-online --framework next --package-manager pnpm --monorepo --color iris --radius lg --body-font inter --heading-font space-grotesk"
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "mode": "light",
+      "passed": true,
+      "fonts": 12,
+      "colors": 7,
+      "radii": 4,
+      "command": "pnpm dlx baseui-cn@latest create my-app-online --framework next --package-manager pnpm --monorepo --color iris --radius lg --body-font inter --heading-font space-grotesk"
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "mode": "dark",
+      "passed": true,
+      "fonts": 12,
+      "colors": 7,
+      "radii": 4,
+      "command": "pnpm dlx baseui-cn@latest create my-app-online --framework next --package-manager pnpm --monorepo --color iris --radius lg --body-font inter --heading-font space-grotesk"
+    }
+  ],
+  "errors": []
+}

@@ -51,6 +51,18 @@ await fs.copyFile(
   path.join(repo, "apps/www/lib/__generated__/theme.json"),
   path.join(compiled, "__generated__/theme.json")
 )
+for (const name of ["typography-presets"]) {
+  await fs.writeFile(
+    path.join(compiled, name + ".js"),
+    ts.transpileModule(await fs.readFile(path.join(repo, "apps/www/lib", name + ".ts"), "utf8"), {
+      compilerOptions: { module: ts.ModuleKind.CommonJS, esModuleInterop: true },
+    }).outputText
+  )
+}
+await fs.copyFile(
+  path.join(repo, "apps/www/lib/__generated__/typography.json"),
+  path.join(compiled, "__generated__/typography.json")
+)
 const setup = require(path.join(compiled, "setup.js"))
 let count = 0
 async function check(name, run) {
@@ -491,7 +503,12 @@ await check("theme defaults and explicit create selections reach follow-up init"
     },
     cwd
   )
-  assert.deepEqual(theme, { color: "rose", radius: "sm" })
+  assert.deepEqual(theme, {
+    color: "rose",
+    radius: "sm",
+    bodyFont: "system",
+    headingFont: "system",
+  })
 })
 await check(
   "interactive color/radius questions select new values or preserve existing values",
@@ -500,19 +517,19 @@ await check(
     const questions = themeOptions.themeQuestions({})
     assert.equal(questions[0].choices[questions[0].initial].value, presets.defaultColor)
     assert.equal(questions[1].choices[questions[1].initial].value, presets.defaultRadius)
-    prompts.inject(["blue", "md"])
+    prompts.inject(["blue", "md", "keep", "keep"])
     assert.deepEqual(
       await themeOptions.chooseThemeOptions({}, { color: false, radius: false }, true),
-      { color: "blue", radius: "md" }
+      { color: "blue", radius: "md", bodyFont: undefined, headingFont: undefined }
     )
-    prompts.inject(["keep", "keep"])
+    prompts.inject(["keep", "keep", "keep", "keep"])
     assert.deepEqual(
       await themeOptions.chooseThemeOptions({}, { color: true, radius: true }, true),
-      { color: undefined, radius: undefined }
+      { color: undefined, radius: undefined, bodyFont: undefined, headingFont: undefined }
     )
     assert.deepEqual(
       await themeOptions.chooseThemeOptions({}, { color: true, radius: true }, false),
-      { color: undefined, radius: undefined }
+      { color: undefined, radius: undefined, bodyFont: undefined, headingFont: undefined }
     )
     const plan = await creator.resolveCreatePlan("my-app", {}, async () => ({
       framework: "tanstack-start",
@@ -552,7 +569,7 @@ await check("all framework/runner/color/radius commands exactly use supported CL
           }
           assert.equal(
             setup.setupCommand(input).primary,
-            `${setup.packageInvocation(manager)} baseui-cn@latest create my-app --framework ${framework} --package-manager ${manager} --color ${color} --radius ${radius}`
+            `${setup.packageInvocation(manager)} baseui-cn@latest create my-app --framework ${framework} --package-manager ${manager} --color ${color} --radius ${radius} --body-font system --heading-font system`
           )
           assert.equal(
             setup.setupCommand({ ...input, projectMode: "existing" }).primary,
@@ -606,7 +623,10 @@ await check(
     assert.ok(changed.includes("--primary: " + presets.colors.emerald.dark["--primary"]))
     assert.ok(changed.includes("--radius: 13px"))
     assert.ok(changed.includes("--radius: 19px"))
-    assert.ok(changed.includes("--success: #123456"))
+    assert.ok(
+      !changed.includes("--success: #123456"),
+      "explicit color replaces the complete palette"
+    )
     run(["init", "--radius", "xl"])
     changed = await fs.readFile(file, "utf8")
     assert.ok(!changed.includes("--radius: 13px"))
