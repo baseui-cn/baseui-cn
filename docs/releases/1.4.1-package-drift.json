@@ -1,0 +1,1290 @@
+{
+  "schema": 1,
+  "classification": ["B: package.json member bytes", "F: npm vs pnpm packer"],
+  "approved": {
+    "bytes": 198149,
+    "sha256": "929569083c0caf3aea2b01189bcb9cedd013b8d065e50c432bcb96f39bc4a6a7",
+    "sha1": "6efe42b5ac183f42a7f855bd7978caa66eae8084",
+    "gzipHeaderHex": "1f8b08000000000002ff",
+    "tarSha256": "36aa3a3dbdb221c0a1435b032fe12a31c64c5e4f71c3054a824de1e0b82bd083"
+  },
+  "localNpmPack": {
+    "bytes": 198149,
+    "sha256": "929569083c0caf3aea2b01189bcb9cedd013b8d065e50c432bcb96f39bc4a6a7",
+    "sha1": "6efe42b5ac183f42a7f855bd7978caa66eae8084",
+    "gzipHeaderHex": "1f8b08000000000002ff",
+    "tarSha256": "36aa3a3dbdb221c0a1435b032fe12a31c64c5e4f71c3054a824de1e0b82bd083"
+  },
+  "localPnpmPack": {
+    "bytes": 199634,
+    "sha256": "90ddcc22a80b10533672e2894f407fcba262a37fe288ced6d0fdec55b3a5addd",
+    "sha1": "c648b869c06f510d4e1caf35ec297351316f0b88",
+    "gzipHeaderHex": "1f8b0800000000000013",
+    "tarSha256": "937b6b0e6e5464ce97695685dc4489bd9fdc15bceec626e122cd161098623381"
+  },
+  "reconstructedLinuxPnpmPack": {
+    "bytes": 199634,
+    "sha256": "8d7b9f51101cd874410be9b5c200a82c848efe237969d2379f730808276b752e",
+    "sha1": "8bc3222f1048faaf9283c5af21681d6f89b13a8a",
+    "gzipHeaderHex": "1f8b0800000000000003",
+    "tarSha256": "937b6b0e6e5464ce97695685dc4489bd9fdc15bceec626e122cd161098623381"
+  },
+  "ciLoggedSha1": "8bc3222f1048faaf9283c5af21681d6f89b13a8a",
+  "ciSha1Reproduced": true,
+  "approvedEqualsLocalNpmPack": true,
+  "npmComparison": {
+    "memberOrderEqual": true,
+    "memberNamesEqual": true,
+    "members": [
+      {
+        "name": "package/LICENSE",
+        "contentEqual": true,
+        "approvedSha256": "f8a9d4645ba0aa149540271a56bd6ddabe137760a27c14c83670464b6e768395",
+        "comparedSha256": "f8a9d4645ba0aa149540271a56bd6ddabe137760a27c14c83670464b6e768395",
+        "approvedBytes": 1066,
+        "comparedBytes": 1066,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/README.md",
+        "contentEqual": true,
+        "approvedSha256": "c669e67f838d9cbb8f6b7377288c11db28e46b501d76fe65a6fa162510283c24",
+        "comparedSha256": "c669e67f838d9cbb8f6b7377288c11db28e46b501d76fe65a6fa162510283c24",
+        "approvedBytes": 8833,
+        "comparedBytes": 8833,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/dist/index.d.ts",
+        "contentEqual": true,
+        "approvedSha256": "a59c47872b71f12589942892464e764c0db350c20b72228645615cc36e0a0725",
+        "comparedSha256": "a59c47872b71f12589942892464e764c0db350c20b72228645615cc36e0a0725",
+        "approvedBytes": 20,
+        "comparedBytes": 20,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/dist/index.js",
+        "contentEqual": true,
+        "approvedSha256": "645fab0dec04c83d7de36deffd701fa0791d847d8605091821ff7e0a8033e7a8",
+        "comparedSha256": "645fab0dec04c83d7de36deffd701fa0791d847d8605091821ff7e0a8033e7a8",
+        "approvedBytes": 65559,
+        "comparedBytes": 65559,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/package.json",
+        "contentEqual": true,
+        "approvedSha256": "dd7e376dee4550b0b6aacd775d5edab7d49fc1c79c48043f0648c2eeda13e544",
+        "comparedSha256": "dd7e376dee4550b0b6aacd775d5edab7d49fc1c79c48043f0648c2eeda13e544",
+        "approvedBytes": 1036,
+        "comparedBytes": 1036,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/accordion.json",
+        "contentEqual": true,
+        "approvedSha256": "da567d432bf0f93fa3e453115a8dfbd69ef3aafa0ea95a0ef7eab9d27e601de7",
+        "comparedSha256": "da567d432bf0f93fa3e453115a8dfbd69ef3aafa0ea95a0ef7eab9d27e601de7",
+        "approvedBytes": 10762,
+        "comparedBytes": 10762,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/alert-dialog.json",
+        "contentEqual": true,
+        "approvedSha256": "17308d9420be0ffb138b3407ac2261172e2e194d5158bb50f87b390e2c6b748d",
+        "comparedSha256": "17308d9420be0ffb138b3407ac2261172e2e194d5158bb50f87b390e2c6b748d",
+        "approvedBytes": 14858,
+        "comparedBytes": 14858,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/alert.json",
+        "contentEqual": true,
+        "approvedSha256": "a16b3b6bcea5b64c0a4c7d6e62fdab87dbcf3cfe02c78ca54952fcf22faa6876",
+        "comparedSha256": "a16b3b6bcea5b64c0a4c7d6e62fdab87dbcf3cfe02c78ca54952fcf22faa6876",
+        "approvedBytes": 9408,
+        "comparedBytes": 9408,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/autocomplete.json",
+        "contentEqual": true,
+        "approvedSha256": "267a54fd1263ae3fb99c72ed754dfc253466ec9ed2f584eb3432c4836b2c3111",
+        "comparedSha256": "267a54fd1263ae3fb99c72ed754dfc253466ec9ed2f584eb3432c4836b2c3111",
+        "approvedBytes": 26024,
+        "comparedBytes": 26024,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/avatar.json",
+        "contentEqual": true,
+        "approvedSha256": "c601b7d11f5f8c245995e87d0aa2d90e9db962128f1291206e3ef0f036a206c0",
+        "comparedSha256": "c601b7d11f5f8c245995e87d0aa2d90e9db962128f1291206e3ef0f036a206c0",
+        "approvedBytes": 6394,
+        "comparedBytes": 6394,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/badge.json",
+        "contentEqual": true,
+        "approvedSha256": "d3f1ef1e5a9f522279a899673694467cfec0b260554b1fa80d90cd30999589e1",
+        "comparedSha256": "d3f1ef1e5a9f522279a899673694467cfec0b260554b1fa80d90cd30999589e1",
+        "approvedBytes": 6378,
+        "comparedBytes": 6378,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/breadcrumb.json",
+        "contentEqual": true,
+        "approvedSha256": "488fe8174953a436edea638da4276c8aa9c18ecc791728bd11ffb0151f1f80ae",
+        "comparedSha256": "488fe8174953a436edea638da4276c8aa9c18ecc791728bd11ffb0151f1f80ae",
+        "approvedBytes": 11024,
+        "comparedBytes": 11024,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/button.json",
+        "contentEqual": true,
+        "approvedSha256": "3de7b2f3943a816816a0d91c373acffec9c4dff67cf568e4995ab4af53f2d489",
+        "comparedSha256": "3de7b2f3943a816816a0d91c373acffec9c4dff67cf568e4995ab4af53f2d489",
+        "approvedBytes": 9147,
+        "comparedBytes": 9147,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/card.json",
+        "contentEqual": true,
+        "approvedSha256": "8276d83fc57eabc42a7e3e63002568ca9da2d01dce2bd75a0575c079bd7d5bc0",
+        "comparedSha256": "8276d83fc57eabc42a7e3e63002568ca9da2d01dce2bd75a0575c079bd7d5bc0",
+        "approvedBytes": 12770,
+        "comparedBytes": 12770,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/checkbox-group.json",
+        "contentEqual": true,
+        "approvedSha256": "fb8f9133ce332294584178dc557b6cad998de3faace486790f16520d6a28dbba",
+        "comparedSha256": "fb8f9133ce332294584178dc557b6cad998de3faace486790f16520d6a28dbba",
+        "approvedBytes": 6016,
+        "comparedBytes": 6016,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/checkbox.json",
+        "contentEqual": true,
+        "approvedSha256": "296506f9ce596eb2a43af63b1afcbf6d4d101efa937a9a5c53b9c367b10230ec",
+        "comparedSha256": "296506f9ce596eb2a43af63b1afcbf6d4d101efa937a9a5c53b9c367b10230ec",
+        "approvedBytes": 8835,
+        "comparedBytes": 8835,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/collapsible.json",
+        "contentEqual": true,
+        "approvedSha256": "afa3f3375a7c820c4dea1c583d920c46c83edf7d9161eb27d7dd52018f2ebbf3",
+        "comparedSha256": "afa3f3375a7c820c4dea1c583d920c46c83edf7d9161eb27d7dd52018f2ebbf3",
+        "approvedBytes": 9641,
+        "comparedBytes": 9641,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/combobox.json",
+        "contentEqual": true,
+        "approvedSha256": "a9db933d90ab80bd50508a1613b9f87644afdec6cdb37596052901143a37ea7e",
+        "comparedSha256": "a9db933d90ab80bd50508a1613b9f87644afdec6cdb37596052901143a37ea7e",
+        "approvedBytes": 30441,
+        "comparedBytes": 30441,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/command.json",
+        "contentEqual": true,
+        "approvedSha256": "5a005d86c888f972b55b4e272d0bc44edca7b8037a7779910881da86ea09c8a5",
+        "comparedSha256": "5a005d86c888f972b55b4e272d0bc44edca7b8037a7779910881da86ea09c8a5",
+        "approvedBytes": 34156,
+        "comparedBytes": 34156,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/data-grid.json",
+        "contentEqual": true,
+        "approvedSha256": "c7f2d62c68ed59e4557fe5708ef2d6a4a7e23184cb829d6d32de89f02a7b0e57",
+        "comparedSha256": "c7f2d62c68ed59e4557fe5708ef2d6a4a7e23184cb829d6d32de89f02a7b0e57",
+        "approvedBytes": 177644,
+        "comparedBytes": 177644,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/date-picker.json",
+        "contentEqual": true,
+        "approvedSha256": "7eceff0291528ea38cc908483b9ffe399e007da3f4d3e8ab010439bc460308ea",
+        "comparedSha256": "7eceff0291528ea38cc908483b9ffe399e007da3f4d3e8ab010439bc460308ea",
+        "approvedBytes": 78596,
+        "comparedBytes": 78596,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/dialog.json",
+        "contentEqual": true,
+        "approvedSha256": "e4ac009f6e2ea3181d0f3e655fc59bbc3b88f78a18a3fc40aeaa18dd8517c5e3",
+        "comparedSha256": "e4ac009f6e2ea3181d0f3e655fc59bbc3b88f78a18a3fc40aeaa18dd8517c5e3",
+        "approvedBytes": 15483,
+        "comparedBytes": 15483,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/drawer.json",
+        "contentEqual": true,
+        "approvedSha256": "b089219bd5426b245c83cd968730e70e89e68f56ad66fd04bc7cd30a8455b1d7",
+        "comparedSha256": "b089219bd5426b245c83cd968730e70e89e68f56ad66fd04bc7cd30a8455b1d7",
+        "approvedBytes": 14217,
+        "comparedBytes": 14217,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/dropdown-menu.json",
+        "contentEqual": true,
+        "approvedSha256": "fb568bb97ed72eac85706067ae155cba1902f66f9f70376529ba677471924288",
+        "comparedSha256": "fb568bb97ed72eac85706067ae155cba1902f66f9f70376529ba677471924288",
+        "approvedBytes": 19629,
+        "comparedBytes": 19629,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/empty-state.json",
+        "contentEqual": true,
+        "approvedSha256": "7b02169a4171be7374723ea1f0ea3ae39b5e034ed55424cc8bc66d4221ccb19e",
+        "comparedSha256": "7b02169a4171be7374723ea1f0ea3ae39b5e034ed55424cc8bc66d4221ccb19e",
+        "approvedBytes": 6039,
+        "comparedBytes": 6039,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/field.json",
+        "contentEqual": true,
+        "approvedSha256": "f3d5a276b39a00dcd2d684eb979d6c632469affd3e804a79883770dd480bd9cb",
+        "comparedSha256": "f3d5a276b39a00dcd2d684eb979d6c632469affd3e804a79883770dd480bd9cb",
+        "approvedBytes": 5236,
+        "comparedBytes": 5236,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/fieldset.json",
+        "contentEqual": true,
+        "approvedSha256": "98156d4d409890e617ebd7667f3e22c66cc2080da21221ea86daede7a10910e3",
+        "comparedSha256": "98156d4d409890e617ebd7667f3e22c66cc2080da21221ea86daede7a10910e3",
+        "approvedBytes": 4888,
+        "comparedBytes": 4888,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/form.json",
+        "contentEqual": true,
+        "approvedSha256": "21aebd22820314b4585d60387691f1da4195a2584cd424e6fbc5cc524dc50728",
+        "comparedSha256": "21aebd22820314b4585d60387691f1da4195a2584cd424e6fbc5cc524dc50728",
+        "approvedBytes": 3973,
+        "comparedBytes": 3973,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/frame.json",
+        "contentEqual": true,
+        "approvedSha256": "6f49366d3c95df465053867bcc12ae6b25a1c6596aa690938edcffe2b17ee467",
+        "comparedSha256": "6f49366d3c95df465053867bcc12ae6b25a1c6596aa690938edcffe2b17ee467",
+        "approvedBytes": 8380,
+        "comparedBytes": 8380,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/index.json",
+        "contentEqual": true,
+        "approvedSha256": "29d161da1e3aa58540ad56ee38e9e99858231594f008939986138bb958b95b8b",
+        "comparedSha256": "29d161da1e3aa58540ad56ee38e9e99858231594f008939986138bb958b95b8b",
+        "approvedBytes": 12689,
+        "comparedBytes": 12689,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/input-group.json",
+        "contentEqual": true,
+        "approvedSha256": "cfccb9d2abe14a69936837a794b78eee4e297ac4bd4bbd408acdc99f4d7f7ede",
+        "comparedSha256": "cfccb9d2abe14a69936837a794b78eee4e297ac4bd4bbd408acdc99f4d7f7ede",
+        "approvedBytes": 12448,
+        "comparedBytes": 12448,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/input.json",
+        "contentEqual": true,
+        "approvedSha256": "c525c0113677ae41dbb7c49aba2efaaabd3747ee860edee63663c8838404719a",
+        "comparedSha256": "c525c0113677ae41dbb7c49aba2efaaabd3747ee860edee63663c8838404719a",
+        "approvedBytes": 11427,
+        "comparedBytes": 11427,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/item.json",
+        "contentEqual": true,
+        "approvedSha256": "fb01539984c50c050d9342631dedebfc5409d10f459ef2dcc07924037efa7057",
+        "comparedSha256": "fb01539984c50c050d9342631dedebfc5409d10f459ef2dcc07924037efa7057",
+        "approvedBytes": 9037,
+        "comparedBytes": 9037,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/label.json",
+        "contentEqual": true,
+        "approvedSha256": "076bfdc00b7953be2b9fa467caae4f6641c9c0786be5cf465578ef2393eebad3",
+        "comparedSha256": "076bfdc00b7953be2b9fa467caae4f6641c9c0786be5cf465578ef2393eebad3",
+        "approvedBytes": 1313,
+        "comparedBytes": 1313,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/login.json",
+        "contentEqual": true,
+        "approvedSha256": "8759269f96c1bbe5507b994c55d50b68f735350dcf72561e038b4e66bf5b9871",
+        "comparedSha256": "8759269f96c1bbe5507b994c55d50b68f735350dcf72561e038b4e66bf5b9871",
+        "approvedBytes": 58847,
+        "comparedBytes": 58847,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/menubar.json",
+        "contentEqual": true,
+        "approvedSha256": "b49da182f061a0ab32318abcb61182118a933ad47076c3ba34fd9735769c4cb8",
+        "comparedSha256": "b49da182f061a0ab32318abcb61182118a933ad47076c3ba34fd9735769c4cb8",
+        "approvedBytes": 15874,
+        "comparedBytes": 15874,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/navigation-menu.json",
+        "contentEqual": true,
+        "approvedSha256": "67a0acf733b1c4738742618d6bb1e052a4545c6c026dc50f65f35d753c9e72fa",
+        "comparedSha256": "67a0acf733b1c4738742618d6bb1e052a4545c6c026dc50f65f35d753c9e72fa",
+        "approvedBytes": 14132,
+        "comparedBytes": 14132,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/number-field.json",
+        "contentEqual": true,
+        "approvedSha256": "0ae8e09759527a02a87343230f3f8c21cc786b9946ae365acda74854526f935f",
+        "comparedSha256": "0ae8e09759527a02a87343230f3f8c21cc786b9946ae365acda74854526f935f",
+        "approvedBytes": 20951,
+        "comparedBytes": 20951,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/otp-field.json",
+        "contentEqual": true,
+        "approvedSha256": "874ad31c9ea2f1439de34e59cf640f64c59d269bfe066922217ee48cf0fd060c",
+        "comparedSha256": "874ad31c9ea2f1439de34e59cf640f64c59d269bfe066922217ee48cf0fd060c",
+        "approvedBytes": 9388,
+        "comparedBytes": 9388,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/pagination.json",
+        "contentEqual": true,
+        "approvedSha256": "3bf2491a0d359080168ee596bf161b7ce454c301bcbe51f399c73b83594a055b",
+        "comparedSha256": "3bf2491a0d359080168ee596bf161b7ce454c301bcbe51f399c73b83594a055b",
+        "approvedBytes": 11763,
+        "comparedBytes": 11763,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/popover.json",
+        "contentEqual": true,
+        "approvedSha256": "a9a67b9ebe136dddb5195981a8f8f09aaedc98e901324fe783db032ab91803ea",
+        "comparedSha256": "a9a67b9ebe136dddb5195981a8f8f09aaedc98e901324fe783db032ab91803ea",
+        "approvedBytes": 13343,
+        "comparedBytes": 13343,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/preview-card.json",
+        "contentEqual": true,
+        "approvedSha256": "730ee24419695090aef8d17e082c63593533ce64dc42f2de798adc553cfc5891",
+        "comparedSha256": "730ee24419695090aef8d17e082c63593533ce64dc42f2de798adc553cfc5891",
+        "approvedBytes": 12682,
+        "comparedBytes": 12682,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/progress.json",
+        "contentEqual": true,
+        "approvedSha256": "31dd7574494e8d1f795f8fe7d0c21f16c3254fc0b6884e9eb1115bfb21e27a8e",
+        "comparedSha256": "31dd7574494e8d1f795f8fe7d0c21f16c3254fc0b6884e9eb1115bfb21e27a8e",
+        "approvedBytes": 9562,
+        "comparedBytes": 9562,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/radio-group.json",
+        "contentEqual": true,
+        "approvedSha256": "8482c17596680897cc25d43a7add72a3080bef1265a0e1723ba06ed7e3555964",
+        "comparedSha256": "8482c17596680897cc25d43a7add72a3080bef1265a0e1723ba06ed7e3555964",
+        "approvedBytes": 7475,
+        "comparedBytes": 7475,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/scroll-area.json",
+        "contentEqual": true,
+        "approvedSha256": "0ad26d22d83c6b510d4d8e76d0b35dafff21c5a82a9c7b8b9c613a7b153388df",
+        "comparedSha256": "0ad26d22d83c6b510d4d8e76d0b35dafff21c5a82a9c7b8b9c613a7b153388df",
+        "approvedBytes": 3188,
+        "comparedBytes": 3188,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/select.json",
+        "contentEqual": true,
+        "approvedSha256": "e410dec3e93d49b0e5953c89b5a85aa7248f8435c254ac49146bc5695e053c36",
+        "comparedSha256": "e410dec3e93d49b0e5953c89b5a85aa7248f8435c254ac49146bc5695e053c36",
+        "approvedBytes": 23839,
+        "comparedBytes": 23839,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/separator.json",
+        "contentEqual": true,
+        "approvedSha256": "58d21457c869b6e6ed0348151b6f7541d1cb9ac05480808841529b7edc58bd2c",
+        "comparedSha256": "58d21457c869b6e6ed0348151b6f7541d1cb9ac05480808841529b7edc58bd2c",
+        "approvedBytes": 1177,
+        "comparedBytes": 1177,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/signup.json",
+        "contentEqual": true,
+        "approvedSha256": "d9ef3649e7d80470b4eaecc4ec106de3291f10953c29ffe19a407c38e774c513",
+        "comparedSha256": "d9ef3649e7d80470b4eaecc4ec106de3291f10953c29ffe19a407c38e774c513",
+        "approvedBytes": 58862,
+        "comparedBytes": 58862,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/skeleton.json",
+        "contentEqual": true,
+        "approvedSha256": "3b02ebdfdf752a9d981c8ce97893aa25300e3bb653bcd78af02f1e3b07f3e82c",
+        "comparedSha256": "3b02ebdfdf752a9d981c8ce97893aa25300e3bb653bcd78af02f1e3b07f3e82c",
+        "approvedBytes": 925,
+        "comparedBytes": 925,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/slider.json",
+        "contentEqual": true,
+        "approvedSha256": "e5987eb6f44e1f2335f4f06f2cd5edb35f02828c0a5f3d0195afeece7f9dc3ec",
+        "comparedSha256": "e5987eb6f44e1f2335f4f06f2cd5edb35f02828c0a5f3d0195afeece7f9dc3ec",
+        "approvedBytes": 5409,
+        "comparedBytes": 5409,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/spinner.json",
+        "contentEqual": true,
+        "approvedSha256": "0bc004980e6dd87838b3fb625ba8333a4bb1a79c415205ec62ba87e0c792c227",
+        "comparedSha256": "0bc004980e6dd87838b3fb625ba8333a4bb1a79c415205ec62ba87e0c792c227",
+        "approvedBytes": 953,
+        "comparedBytes": 953,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/switch.json",
+        "contentEqual": true,
+        "approvedSha256": "060c51ee3ab519fd24d4ac2722c7b35ad88075ce13c709cb5ce87441543e03a9",
+        "comparedSha256": "060c51ee3ab519fd24d4ac2722c7b35ad88075ce13c709cb5ce87441543e03a9",
+        "approvedBytes": 6407,
+        "comparedBytes": 6407,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/table.json",
+        "contentEqual": true,
+        "approvedSha256": "c00554ad4fa5fdd0ca97278cf6fe1d6c3546145299f14af6b15198ef1b9bc801",
+        "comparedSha256": "c00554ad4fa5fdd0ca97278cf6fe1d6c3546145299f14af6b15198ef1b9bc801",
+        "approvedBytes": 7413,
+        "comparedBytes": 7413,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/tabs.json",
+        "contentEqual": true,
+        "approvedSha256": "0e69e867ffd0ea635b69520be1b45d7cc8f89f97983b5bd3f322fe0d97cbb2ac",
+        "comparedSha256": "0e69e867ffd0ea635b69520be1b45d7cc8f89f97983b5bd3f322fe0d97cbb2ac",
+        "approvedBytes": 11282,
+        "comparedBytes": 11282,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/textarea.json",
+        "contentEqual": true,
+        "approvedSha256": "4f6a2c9e1e51ffb31a4abd145c653637026946667294c1f2707c23ae4a3ec85c",
+        "comparedSha256": "4f6a2c9e1e51ffb31a4abd145c653637026946667294c1f2707c23ae4a3ec85c",
+        "approvedBytes": 11229,
+        "comparedBytes": 11229,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/time-picker.json",
+        "contentEqual": true,
+        "approvedSha256": "79edecd720a60cdb95b2f0325939a25c31708f311df6e6ee678e84c1a0080d76",
+        "comparedSha256": "79edecd720a60cdb95b2f0325939a25c31708f311df6e6ee678e84c1a0080d76",
+        "approvedBytes": 69870,
+        "comparedBytes": 69870,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/toast.json",
+        "contentEqual": true,
+        "approvedSha256": "27b5b0410701335c1a8bffaff383d0710007daee821489b0346a1fec3527c4e3",
+        "comparedSha256": "27b5b0410701335c1a8bffaff383d0710007daee821489b0346a1fec3527c4e3",
+        "approvedBytes": 18176,
+        "comparedBytes": 18176,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/toggle-group.json",
+        "contentEqual": true,
+        "approvedSha256": "14b740dedbcf96299801bee97341e5f228877b2cfab2cffb506744d0e97b185e",
+        "comparedSha256": "14b740dedbcf96299801bee97341e5f228877b2cfab2cffb506744d0e97b185e",
+        "approvedBytes": 3150,
+        "comparedBytes": 3150,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/toggle.json",
+        "contentEqual": true,
+        "approvedSha256": "4ab73727f38368e967ca098af52563c4300d64ac63f7de605a44b7ee7b9a8d3f",
+        "comparedSha256": "4ab73727f38368e967ca098af52563c4300d64ac63f7de605a44b7ee7b9a8d3f",
+        "approvedBytes": 9166,
+        "comparedBytes": 9166,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      },
+      {
+        "name": "package/registry/tooltip.json",
+        "contentEqual": true,
+        "approvedSha256": "9788a19284751d1170acb1ec035d1ad20264dc9b337cd25d2cb36abc0bb4faa1",
+        "comparedSha256": "9788a19284751d1170acb1ec035d1ad20264dc9b337cd25d2cb36abc0bb4faa1",
+        "approvedBytes": 14362,
+        "comparedBytes": 14362,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": []
+      }
+    ]
+  },
+  "pnpmComparison": {
+    "memberOrderEqual": true,
+    "memberNamesEqual": true,
+    "members": [
+      {
+        "name": "package/LICENSE",
+        "contentEqual": true,
+        "approvedSha256": "f8a9d4645ba0aa149540271a56bd6ddabe137760a27c14c83670464b6e768395",
+        "comparedSha256": "f8a9d4645ba0aa149540271a56bd6ddabe137760a27c14c83670464b6e768395",
+        "approvedBytes": 1066,
+        "comparedBytes": 1066,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/README.md",
+        "contentEqual": true,
+        "approvedSha256": "c669e67f838d9cbb8f6b7377288c11db28e46b501d76fe65a6fa162510283c24",
+        "comparedSha256": "c669e67f838d9cbb8f6b7377288c11db28e46b501d76fe65a6fa162510283c24",
+        "approvedBytes": 8833,
+        "comparedBytes": 8833,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/dist/index.d.ts",
+        "contentEqual": true,
+        "approvedSha256": "a59c47872b71f12589942892464e764c0db350c20b72228645615cc36e0a0725",
+        "comparedSha256": "a59c47872b71f12589942892464e764c0db350c20b72228645615cc36e0a0725",
+        "approvedBytes": 20,
+        "comparedBytes": 20,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/dist/index.js",
+        "contentEqual": true,
+        "approvedSha256": "645fab0dec04c83d7de36deffd701fa0791d847d8605091821ff7e0a8033e7a8",
+        "comparedSha256": "645fab0dec04c83d7de36deffd701fa0791d847d8605091821ff7e0a8033e7a8",
+        "approvedBytes": 65559,
+        "comparedBytes": 65559,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/package.json",
+        "contentEqual": false,
+        "approvedSha256": "dd7e376dee4550b0b6aacd775d5edab7d49fc1c79c48043f0648c2eeda13e544",
+        "comparedSha256": "46bf32a7dd9c2169bbfbf9b114eefff9d1cc789bf6b7b897e4bd208b4dca3098",
+        "approvedBytes": 1036,
+        "comparedBytes": 1035,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/accordion.json",
+        "contentEqual": true,
+        "approvedSha256": "da567d432bf0f93fa3e453115a8dfbd69ef3aafa0ea95a0ef7eab9d27e601de7",
+        "comparedSha256": "da567d432bf0f93fa3e453115a8dfbd69ef3aafa0ea95a0ef7eab9d27e601de7",
+        "approvedBytes": 10762,
+        "comparedBytes": 10762,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/alert-dialog.json",
+        "contentEqual": true,
+        "approvedSha256": "17308d9420be0ffb138b3407ac2261172e2e194d5158bb50f87b390e2c6b748d",
+        "comparedSha256": "17308d9420be0ffb138b3407ac2261172e2e194d5158bb50f87b390e2c6b748d",
+        "approvedBytes": 14858,
+        "comparedBytes": 14858,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/alert.json",
+        "contentEqual": true,
+        "approvedSha256": "a16b3b6bcea5b64c0a4c7d6e62fdab87dbcf3cfe02c78ca54952fcf22faa6876",
+        "comparedSha256": "a16b3b6bcea5b64c0a4c7d6e62fdab87dbcf3cfe02c78ca54952fcf22faa6876",
+        "approvedBytes": 9408,
+        "comparedBytes": 9408,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/autocomplete.json",
+        "contentEqual": true,
+        "approvedSha256": "267a54fd1263ae3fb99c72ed754dfc253466ec9ed2f584eb3432c4836b2c3111",
+        "comparedSha256": "267a54fd1263ae3fb99c72ed754dfc253466ec9ed2f584eb3432c4836b2c3111",
+        "approvedBytes": 26024,
+        "comparedBytes": 26024,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/avatar.json",
+        "contentEqual": true,
+        "approvedSha256": "c601b7d11f5f8c245995e87d0aa2d90e9db962128f1291206e3ef0f036a206c0",
+        "comparedSha256": "c601b7d11f5f8c245995e87d0aa2d90e9db962128f1291206e3ef0f036a206c0",
+        "approvedBytes": 6394,
+        "comparedBytes": 6394,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/badge.json",
+        "contentEqual": true,
+        "approvedSha256": "d3f1ef1e5a9f522279a899673694467cfec0b260554b1fa80d90cd30999589e1",
+        "comparedSha256": "d3f1ef1e5a9f522279a899673694467cfec0b260554b1fa80d90cd30999589e1",
+        "approvedBytes": 6378,
+        "comparedBytes": 6378,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/breadcrumb.json",
+        "contentEqual": true,
+        "approvedSha256": "488fe8174953a436edea638da4276c8aa9c18ecc791728bd11ffb0151f1f80ae",
+        "comparedSha256": "488fe8174953a436edea638da4276c8aa9c18ecc791728bd11ffb0151f1f80ae",
+        "approvedBytes": 11024,
+        "comparedBytes": 11024,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/button.json",
+        "contentEqual": true,
+        "approvedSha256": "3de7b2f3943a816816a0d91c373acffec9c4dff67cf568e4995ab4af53f2d489",
+        "comparedSha256": "3de7b2f3943a816816a0d91c373acffec9c4dff67cf568e4995ab4af53f2d489",
+        "approvedBytes": 9147,
+        "comparedBytes": 9147,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/card.json",
+        "contentEqual": true,
+        "approvedSha256": "8276d83fc57eabc42a7e3e63002568ca9da2d01dce2bd75a0575c079bd7d5bc0",
+        "comparedSha256": "8276d83fc57eabc42a7e3e63002568ca9da2d01dce2bd75a0575c079bd7d5bc0",
+        "approvedBytes": 12770,
+        "comparedBytes": 12770,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/checkbox-group.json",
+        "contentEqual": true,
+        "approvedSha256": "fb8f9133ce332294584178dc557b6cad998de3faace486790f16520d6a28dbba",
+        "comparedSha256": "fb8f9133ce332294584178dc557b6cad998de3faace486790f16520d6a28dbba",
+        "approvedBytes": 6016,
+        "comparedBytes": 6016,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/checkbox.json",
+        "contentEqual": true,
+        "approvedSha256": "296506f9ce596eb2a43af63b1afcbf6d4d101efa937a9a5c53b9c367b10230ec",
+        "comparedSha256": "296506f9ce596eb2a43af63b1afcbf6d4d101efa937a9a5c53b9c367b10230ec",
+        "approvedBytes": 8835,
+        "comparedBytes": 8835,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/collapsible.json",
+        "contentEqual": true,
+        "approvedSha256": "afa3f3375a7c820c4dea1c583d920c46c83edf7d9161eb27d7dd52018f2ebbf3",
+        "comparedSha256": "afa3f3375a7c820c4dea1c583d920c46c83edf7d9161eb27d7dd52018f2ebbf3",
+        "approvedBytes": 9641,
+        "comparedBytes": 9641,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/combobox.json",
+        "contentEqual": true,
+        "approvedSha256": "a9db933d90ab80bd50508a1613b9f87644afdec6cdb37596052901143a37ea7e",
+        "comparedSha256": "a9db933d90ab80bd50508a1613b9f87644afdec6cdb37596052901143a37ea7e",
+        "approvedBytes": 30441,
+        "comparedBytes": 30441,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/command.json",
+        "contentEqual": true,
+        "approvedSha256": "5a005d86c888f972b55b4e272d0bc44edca7b8037a7779910881da86ea09c8a5",
+        "comparedSha256": "5a005d86c888f972b55b4e272d0bc44edca7b8037a7779910881da86ea09c8a5",
+        "approvedBytes": 34156,
+        "comparedBytes": 34156,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/data-grid.json",
+        "contentEqual": true,
+        "approvedSha256": "c7f2d62c68ed59e4557fe5708ef2d6a4a7e23184cb829d6d32de89f02a7b0e57",
+        "comparedSha256": "c7f2d62c68ed59e4557fe5708ef2d6a4a7e23184cb829d6d32de89f02a7b0e57",
+        "approvedBytes": 177644,
+        "comparedBytes": 177644,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/date-picker.json",
+        "contentEqual": true,
+        "approvedSha256": "7eceff0291528ea38cc908483b9ffe399e007da3f4d3e8ab010439bc460308ea",
+        "comparedSha256": "7eceff0291528ea38cc908483b9ffe399e007da3f4d3e8ab010439bc460308ea",
+        "approvedBytes": 78596,
+        "comparedBytes": 78596,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/dialog.json",
+        "contentEqual": true,
+        "approvedSha256": "e4ac009f6e2ea3181d0f3e655fc59bbc3b88f78a18a3fc40aeaa18dd8517c5e3",
+        "comparedSha256": "e4ac009f6e2ea3181d0f3e655fc59bbc3b88f78a18a3fc40aeaa18dd8517c5e3",
+        "approvedBytes": 15483,
+        "comparedBytes": 15483,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/drawer.json",
+        "contentEqual": true,
+        "approvedSha256": "b089219bd5426b245c83cd968730e70e89e68f56ad66fd04bc7cd30a8455b1d7",
+        "comparedSha256": "b089219bd5426b245c83cd968730e70e89e68f56ad66fd04bc7cd30a8455b1d7",
+        "approvedBytes": 14217,
+        "comparedBytes": 14217,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/dropdown-menu.json",
+        "contentEqual": true,
+        "approvedSha256": "fb568bb97ed72eac85706067ae155cba1902f66f9f70376529ba677471924288",
+        "comparedSha256": "fb568bb97ed72eac85706067ae155cba1902f66f9f70376529ba677471924288",
+        "approvedBytes": 19629,
+        "comparedBytes": 19629,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/empty-state.json",
+        "contentEqual": true,
+        "approvedSha256": "7b02169a4171be7374723ea1f0ea3ae39b5e034ed55424cc8bc66d4221ccb19e",
+        "comparedSha256": "7b02169a4171be7374723ea1f0ea3ae39b5e034ed55424cc8bc66d4221ccb19e",
+        "approvedBytes": 6039,
+        "comparedBytes": 6039,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/field.json",
+        "contentEqual": true,
+        "approvedSha256": "f3d5a276b39a00dcd2d684eb979d6c632469affd3e804a79883770dd480bd9cb",
+        "comparedSha256": "f3d5a276b39a00dcd2d684eb979d6c632469affd3e804a79883770dd480bd9cb",
+        "approvedBytes": 5236,
+        "comparedBytes": 5236,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/fieldset.json",
+        "contentEqual": true,
+        "approvedSha256": "98156d4d409890e617ebd7667f3e22c66cc2080da21221ea86daede7a10910e3",
+        "comparedSha256": "98156d4d409890e617ebd7667f3e22c66cc2080da21221ea86daede7a10910e3",
+        "approvedBytes": 4888,
+        "comparedBytes": 4888,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/form.json",
+        "contentEqual": true,
+        "approvedSha256": "21aebd22820314b4585d60387691f1da4195a2584cd424e6fbc5cc524dc50728",
+        "comparedSha256": "21aebd22820314b4585d60387691f1da4195a2584cd424e6fbc5cc524dc50728",
+        "approvedBytes": 3973,
+        "comparedBytes": 3973,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/frame.json",
+        "contentEqual": true,
+        "approvedSha256": "6f49366d3c95df465053867bcc12ae6b25a1c6596aa690938edcffe2b17ee467",
+        "comparedSha256": "6f49366d3c95df465053867bcc12ae6b25a1c6596aa690938edcffe2b17ee467",
+        "approvedBytes": 8380,
+        "comparedBytes": 8380,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/index.json",
+        "contentEqual": true,
+        "approvedSha256": "29d161da1e3aa58540ad56ee38e9e99858231594f008939986138bb958b95b8b",
+        "comparedSha256": "29d161da1e3aa58540ad56ee38e9e99858231594f008939986138bb958b95b8b",
+        "approvedBytes": 12689,
+        "comparedBytes": 12689,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/input-group.json",
+        "contentEqual": true,
+        "approvedSha256": "cfccb9d2abe14a69936837a794b78eee4e297ac4bd4bbd408acdc99f4d7f7ede",
+        "comparedSha256": "cfccb9d2abe14a69936837a794b78eee4e297ac4bd4bbd408acdc99f4d7f7ede",
+        "approvedBytes": 12448,
+        "comparedBytes": 12448,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/input.json",
+        "contentEqual": true,
+        "approvedSha256": "c525c0113677ae41dbb7c49aba2efaaabd3747ee860edee63663c8838404719a",
+        "comparedSha256": "c525c0113677ae41dbb7c49aba2efaaabd3747ee860edee63663c8838404719a",
+        "approvedBytes": 11427,
+        "comparedBytes": 11427,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/item.json",
+        "contentEqual": true,
+        "approvedSha256": "fb01539984c50c050d9342631dedebfc5409d10f459ef2dcc07924037efa7057",
+        "comparedSha256": "fb01539984c50c050d9342631dedebfc5409d10f459ef2dcc07924037efa7057",
+        "approvedBytes": 9037,
+        "comparedBytes": 9037,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/label.json",
+        "contentEqual": true,
+        "approvedSha256": "076bfdc00b7953be2b9fa467caae4f6641c9c0786be5cf465578ef2393eebad3",
+        "comparedSha256": "076bfdc00b7953be2b9fa467caae4f6641c9c0786be5cf465578ef2393eebad3",
+        "approvedBytes": 1313,
+        "comparedBytes": 1313,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/login.json",
+        "contentEqual": true,
+        "approvedSha256": "8759269f96c1bbe5507b994c55d50b68f735350dcf72561e038b4e66bf5b9871",
+        "comparedSha256": "8759269f96c1bbe5507b994c55d50b68f735350dcf72561e038b4e66bf5b9871",
+        "approvedBytes": 58847,
+        "comparedBytes": 58847,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/menubar.json",
+        "contentEqual": true,
+        "approvedSha256": "b49da182f061a0ab32318abcb61182118a933ad47076c3ba34fd9735769c4cb8",
+        "comparedSha256": "b49da182f061a0ab32318abcb61182118a933ad47076c3ba34fd9735769c4cb8",
+        "approvedBytes": 15874,
+        "comparedBytes": 15874,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/navigation-menu.json",
+        "contentEqual": true,
+        "approvedSha256": "67a0acf733b1c4738742618d6bb1e052a4545c6c026dc50f65f35d753c9e72fa",
+        "comparedSha256": "67a0acf733b1c4738742618d6bb1e052a4545c6c026dc50f65f35d753c9e72fa",
+        "approvedBytes": 14132,
+        "comparedBytes": 14132,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/number-field.json",
+        "contentEqual": true,
+        "approvedSha256": "0ae8e09759527a02a87343230f3f8c21cc786b9946ae365acda74854526f935f",
+        "comparedSha256": "0ae8e09759527a02a87343230f3f8c21cc786b9946ae365acda74854526f935f",
+        "approvedBytes": 20951,
+        "comparedBytes": 20951,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/otp-field.json",
+        "contentEqual": true,
+        "approvedSha256": "874ad31c9ea2f1439de34e59cf640f64c59d269bfe066922217ee48cf0fd060c",
+        "comparedSha256": "874ad31c9ea2f1439de34e59cf640f64c59d269bfe066922217ee48cf0fd060c",
+        "approvedBytes": 9388,
+        "comparedBytes": 9388,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/pagination.json",
+        "contentEqual": true,
+        "approvedSha256": "3bf2491a0d359080168ee596bf161b7ce454c301bcbe51f399c73b83594a055b",
+        "comparedSha256": "3bf2491a0d359080168ee596bf161b7ce454c301bcbe51f399c73b83594a055b",
+        "approvedBytes": 11763,
+        "comparedBytes": 11763,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/popover.json",
+        "contentEqual": true,
+        "approvedSha256": "a9a67b9ebe136dddb5195981a8f8f09aaedc98e901324fe783db032ab91803ea",
+        "comparedSha256": "a9a67b9ebe136dddb5195981a8f8f09aaedc98e901324fe783db032ab91803ea",
+        "approvedBytes": 13343,
+        "comparedBytes": 13343,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/preview-card.json",
+        "contentEqual": true,
+        "approvedSha256": "730ee24419695090aef8d17e082c63593533ce64dc42f2de798adc553cfc5891",
+        "comparedSha256": "730ee24419695090aef8d17e082c63593533ce64dc42f2de798adc553cfc5891",
+        "approvedBytes": 12682,
+        "comparedBytes": 12682,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/progress.json",
+        "contentEqual": true,
+        "approvedSha256": "31dd7574494e8d1f795f8fe7d0c21f16c3254fc0b6884e9eb1115bfb21e27a8e",
+        "comparedSha256": "31dd7574494e8d1f795f8fe7d0c21f16c3254fc0b6884e9eb1115bfb21e27a8e",
+        "approvedBytes": 9562,
+        "comparedBytes": 9562,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/radio-group.json",
+        "contentEqual": true,
+        "approvedSha256": "8482c17596680897cc25d43a7add72a3080bef1265a0e1723ba06ed7e3555964",
+        "comparedSha256": "8482c17596680897cc25d43a7add72a3080bef1265a0e1723ba06ed7e3555964",
+        "approvedBytes": 7475,
+        "comparedBytes": 7475,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/scroll-area.json",
+        "contentEqual": true,
+        "approvedSha256": "0ad26d22d83c6b510d4d8e76d0b35dafff21c5a82a9c7b8b9c613a7b153388df",
+        "comparedSha256": "0ad26d22d83c6b510d4d8e76d0b35dafff21c5a82a9c7b8b9c613a7b153388df",
+        "approvedBytes": 3188,
+        "comparedBytes": 3188,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/select.json",
+        "contentEqual": true,
+        "approvedSha256": "e410dec3e93d49b0e5953c89b5a85aa7248f8435c254ac49146bc5695e053c36",
+        "comparedSha256": "e410dec3e93d49b0e5953c89b5a85aa7248f8435c254ac49146bc5695e053c36",
+        "approvedBytes": 23839,
+        "comparedBytes": 23839,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/separator.json",
+        "contentEqual": true,
+        "approvedSha256": "58d21457c869b6e6ed0348151b6f7541d1cb9ac05480808841529b7edc58bd2c",
+        "comparedSha256": "58d21457c869b6e6ed0348151b6f7541d1cb9ac05480808841529b7edc58bd2c",
+        "approvedBytes": 1177,
+        "comparedBytes": 1177,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/signup.json",
+        "contentEqual": true,
+        "approvedSha256": "d9ef3649e7d80470b4eaecc4ec106de3291f10953c29ffe19a407c38e774c513",
+        "comparedSha256": "d9ef3649e7d80470b4eaecc4ec106de3291f10953c29ffe19a407c38e774c513",
+        "approvedBytes": 58862,
+        "comparedBytes": 58862,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/skeleton.json",
+        "contentEqual": true,
+        "approvedSha256": "3b02ebdfdf752a9d981c8ce97893aa25300e3bb653bcd78af02f1e3b07f3e82c",
+        "comparedSha256": "3b02ebdfdf752a9d981c8ce97893aa25300e3bb653bcd78af02f1e3b07f3e82c",
+        "approvedBytes": 925,
+        "comparedBytes": 925,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/slider.json",
+        "contentEqual": true,
+        "approvedSha256": "e5987eb6f44e1f2335f4f06f2cd5edb35f02828c0a5f3d0195afeece7f9dc3ec",
+        "comparedSha256": "e5987eb6f44e1f2335f4f06f2cd5edb35f02828c0a5f3d0195afeece7f9dc3ec",
+        "approvedBytes": 5409,
+        "comparedBytes": 5409,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/spinner.json",
+        "contentEqual": true,
+        "approvedSha256": "0bc004980e6dd87838b3fb625ba8333a4bb1a79c415205ec62ba87e0c792c227",
+        "comparedSha256": "0bc004980e6dd87838b3fb625ba8333a4bb1a79c415205ec62ba87e0c792c227",
+        "approvedBytes": 953,
+        "comparedBytes": 953,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/switch.json",
+        "contentEqual": true,
+        "approvedSha256": "060c51ee3ab519fd24d4ac2722c7b35ad88075ce13c709cb5ce87441543e03a9",
+        "comparedSha256": "060c51ee3ab519fd24d4ac2722c7b35ad88075ce13c709cb5ce87441543e03a9",
+        "approvedBytes": 6407,
+        "comparedBytes": 6407,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/table.json",
+        "contentEqual": true,
+        "approvedSha256": "c00554ad4fa5fdd0ca97278cf6fe1d6c3546145299f14af6b15198ef1b9bc801",
+        "comparedSha256": "c00554ad4fa5fdd0ca97278cf6fe1d6c3546145299f14af6b15198ef1b9bc801",
+        "approvedBytes": 7413,
+        "comparedBytes": 7413,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/tabs.json",
+        "contentEqual": true,
+        "approvedSha256": "0e69e867ffd0ea635b69520be1b45d7cc8f89f97983b5bd3f322fe0d97cbb2ac",
+        "comparedSha256": "0e69e867ffd0ea635b69520be1b45d7cc8f89f97983b5bd3f322fe0d97cbb2ac",
+        "approvedBytes": 11282,
+        "comparedBytes": 11282,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/textarea.json",
+        "contentEqual": true,
+        "approvedSha256": "4f6a2c9e1e51ffb31a4abd145c653637026946667294c1f2707c23ae4a3ec85c",
+        "comparedSha256": "4f6a2c9e1e51ffb31a4abd145c653637026946667294c1f2707c23ae4a3ec85c",
+        "approvedBytes": 11229,
+        "comparedBytes": 11229,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/time-picker.json",
+        "contentEqual": true,
+        "approvedSha256": "79edecd720a60cdb95b2f0325939a25c31708f311df6e6ee678e84c1a0080d76",
+        "comparedSha256": "79edecd720a60cdb95b2f0325939a25c31708f311df6e6ee678e84c1a0080d76",
+        "approvedBytes": 69870,
+        "comparedBytes": 69870,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/toast.json",
+        "contentEqual": true,
+        "approvedSha256": "27b5b0410701335c1a8bffaff383d0710007daee821489b0346a1fec3527c4e3",
+        "comparedSha256": "27b5b0410701335c1a8bffaff383d0710007daee821489b0346a1fec3527c4e3",
+        "approvedBytes": 18176,
+        "comparedBytes": 18176,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/toggle-group.json",
+        "contentEqual": true,
+        "approvedSha256": "14b740dedbcf96299801bee97341e5f228877b2cfab2cffb506744d0e97b185e",
+        "comparedSha256": "14b740dedbcf96299801bee97341e5f228877b2cfab2cffb506744d0e97b185e",
+        "approvedBytes": 3150,
+        "comparedBytes": 3150,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/toggle.json",
+        "contentEqual": true,
+        "approvedSha256": "4ab73727f38368e967ca098af52563c4300d64ac63f7de605a44b7ee7b9a8d3f",
+        "comparedSha256": "4ab73727f38368e967ca098af52563c4300d64ac63f7de605a44b7ee7b9a8d3f",
+        "approvedBytes": 9166,
+        "comparedBytes": 9166,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      },
+      {
+        "name": "package/registry/tooltip.json",
+        "contentEqual": true,
+        "approvedSha256": "9788a19284751d1170acb1ec035d1ad20264dc9b337cd25d2cb36abc0bb4faa1",
+        "comparedSha256": "9788a19284751d1170acb1ec035d1ad20264dc9b337cd25d2cb36abc0bb4faa1",
+        "approvedBytes": 14362,
+        "comparedBytes": 14362,
+        "semanticMetadataDifferences": [],
+        "rawHeaderDifferences": ["raw 512-byte header differs"]
+      }
+    ]
+  },
+  "firstMemberRawTarHeaderFields": {
+    "mode": {
+      "npm": "3030303634342000",
+      "pnpm": "3030303634342000"
+    },
+    "uid": {
+      "npm": "0000000000000000",
+      "pnpm": "3030303030302000"
+    },
+    "gid": {
+      "npm": "0000000000000000",
+      "pnpm": "3030303030302000"
+    },
+    "size": {
+      "npm": "303030303030323035322000",
+      "pnpm": "303030303030303230353220"
+    },
+    "mtime": {
+      "npm": "333536303131363630342000",
+      "pnpm": "303335363031313636303420"
+    },
+    "checksum": {
+      "npm": "3031303236342000",
+      "pnpm": "3031313632342000"
+    }
+  },
+  "toolchains": {
+    "ci": {
+      "node": "20.20.2",
+      "npm": "10.8.2",
+      "pnpm": "9.0.0",
+      "os": "Linux"
+    },
+    "localReproduction": {
+      "node": "22.22.3",
+      "npm": "10.9.8",
+      "pnpm": "9.0.0",
+      "os": "macOS"
+    },
+    "originalApprovedPack": "exact historical Node/npm versions not recorded in retained pack.json"
+  },
+  "packageJsonSemanticEqual": true,
+  "workflowRunUrl": "https://github.com/baseui-cn/baseui-cn/actions/runs/41189256262"
+}

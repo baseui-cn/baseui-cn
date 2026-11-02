@@ -1,7 +1,8 @@
 name: Publish CLI
 
+# Direct manual publication is intentionally unavailable. The annotation on the
+# release tag binds the reviewed preparation run, artifact ID and independent hashes.
 on:
-  workflow_dispatch:
   push:
     tags:
       - "cli-v*"
@@ -10,51 +11,68 @@ concurrency:
   group: publish-cli-${{ github.ref }}
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
   publish:
+    if: github.repository == 'baseui-cn/baseui-cn'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
-
+      actions: read
+      id-token: write
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version: 20
-          cache: pnpm
-          registry-url: https://registry.npmjs.org
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Verify tag matches CLI version
-        if: startsWith(github.ref, 'refs/tags/cli-v')
-        shell: bash
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - name: Pin trusted-publishing npm CLI
+        run: npm install --global npm@11.16.0 --ignore-scripts
+      - name: Resolve approved tag and preparation artifact
+        id: approval
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: python3 scripts/releases/cli-artifact.py resolve --directory "$RUNNER_TEMP/approved-cli" --tag "$RELEASE_TAG" --commit "$SOURCE_COMMIT"
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ steps.approval.outputs.artifact_id }}
+          run-id: ${{ steps.approval.outputs.run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/approved-cli
+      - name: Check source registry against component sources
+        run: node scripts/check-registry-consistency.mjs
+      - name: Verify approved package and public version availability
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          SOURCE_COMMIT: ${{ github.sha }}
         run: |
-          PACKAGE_VERSION=$(node -p "require('./packages/cli/package.json').version")
-          TAG_VERSION="${GITHUB_REF_NAME#cli-v}"
-          if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
-            echo "Tag version ($TAG_VERSION) does not match packages/cli/package.json ($PACKAGE_VERSION)."
-            exit 1
-          fi
-
-      - name: Build generated registry artifacts
-        run: pnpm run build:all
-
-      - name: Type-check CLI package
-        run: pnpm --filter ./packages/cli exec tsc --noEmit
-
-      - name: Build CLI package
-        run: pnpm --filter ./packages/cli build
-
-      - name: Publish CLI to npm
-        working-directory: packages/cli
+          python3 scripts/releases/cli-artifact.py verify --directory "$RUNNER_TEMP/approved-cli" --tag "$RELEASE_TAG" --commit "$SOURCE_COMMIT" --check-npm --check-remote-tag
+          mkdir -p "$RUNNER_TEMP/npm-publish"
+      - name: Publish exact approved tarball with trusted publishing
+        if: vars.NPM_TRUSTED_PUBLISHING_ENABLED == 'true'
+        working-directory: ${{ runner.temp }}/npm-publish
+        env:
+          NPM_CONFIG_USERCONFIG: ${{ runner.temp }}/oidc-only.npmrc
+        run: npm publish "$RUNNER_TEMP/approved-cli/package.tgz" --access public --ignore-scripts --registry=https://registry.npmjs.org
+      # Retain the existing authentication path until the npm owner configures
+      # trusted publishing. Delete this step after the first verified OIDC release.
+      - name: Transitional token publication of exact approved tarball
+        if: vars.NPM_TRUSTED_PUBLISHING_ENABLED != 'true'
+        working-directory: ${{ runner.temp }}/npm-publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm publish --access public --no-git-checks
+          NPM_CONFIG_USERCONFIG: ${{ runner.temp }}/legacy-publish.npmrc
+        run: |
+          test -n "$NODE_AUTH_TOKEN"
+          # Keep the variable reference literal in npmrc; never write the token value.
+          # shellcheck disable=SC2016
+          printf '%s\n' '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}' > "$NPM_CONFIG_USERCONFIG"
+          npm publish "$RUNNER_TEMP/approved-cli/package.tgz" --access public --ignore-scripts --registry=https://registry.npmjs.org
