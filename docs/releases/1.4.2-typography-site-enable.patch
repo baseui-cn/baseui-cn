@@ -1,0 +1,449 @@
+diff --git a/apps/www/app/docs/installation/page.tsx b/apps/www/app/docs/installation/page.tsx
+--- a/apps/www/app/docs/installation/page.tsx
++++ b/apps/www/app/docs/installation/page.tsx
+@@ -59,15 +59,30 @@
+       <section id="setup-theme" className="flex flex-col gap-4">
+         <h2>Choose a theme</h2>
+         <p className="text-sm text-muted-foreground">
+-          Fresh setup defaults to Iris and Rounded. Create and init accept --color and --radius.
+-          Existing themes are preserved unless you explicitly pass those flags or choose new values
+-          interactively.
+-        </p>
+-        <CodeBlock
+-          code={`npx baseui-cn@latest create my-app --framework next --color emerald --radius xl
+-npx baseui-cn@latest init --color iris --radius lg`}
++          Fresh setup defaults to Iris, Rounded and system typography. Create and init accept
++          --color, --radius, --body-font and --heading-font. Existing appearance is preserved unless
++          you explicitly pass those flags or choose new values interactively. Color applies the
++          complete light/dark palette, including border, input and ring; radius controls the derived
++          radii.
++        </p>
++        <CodeBlock
++          code={`pnpm dlx baseui-cn@latest create my-app --framework next --package-manager pnpm --color iris --radius lg --body-font inter --heading-font space-grotesk
++npx baseui-cn@latest init --body-font inter --heading-font montserrat`}
+           language="bash"
+         />
++        <p className="text-sm text-muted-foreground">
++          Body fonts: system, inter, geist, manrope, roboto. Heading fonts: system, inter, geist,
++          manrope, montserrat, poppins, space-grotesk. Non-system fonts are installed from pinned
++          Fontsource npm packages and bundled by your app; no Google Fonts runtime service is used.
++          Matching selections install/import once. System adds no font dependency. Poppins uses
++          static weights 400–900; other selections use variable normal faces. Add italic or extra
++          faces in your own app when needed.
++        </p>
++        <p className="text-sm text-muted-foreground">
++          Consumers own --font-body and --font-heading. Body and semantic h1–h6 headings use their
++          respective tokens; code and icons keep their own typography. Interactive init offers “Keep
++          existing typography” first, even when custom typography cannot be detected.
++        </p>
+         <a href="/docs/theming#theme-presets" className="underline underline-offset-4">
+           View color and radius presets
+         </a>
+diff --git a/apps/www/components/shared/home-theme-provider.tsx b/apps/www/components/shared/home-theme-provider.tsx
+--- a/apps/www/components/shared/home-theme-provider.tsx
++++ b/apps/www/components/shared/home-theme-provider.tsx
+@@ -1,6 +1,7 @@
+ "use client"
+ 
+ import * as React from "react"
++import { typography, type BodyFont, type HeadingFont } from "@/lib/typography-presets"
+ import { Drawer } from "@/components/ui/drawer"
+ import {
+   defaultColor,
+@@ -10,6 +11,10 @@
+ } from "@/lib/theme-presets"
+ 
+ const HomeThemeContext = React.createContext<{
++  bodyFont: BodyFont
++  headingFont: HeadingFont
++  setBodyFont: (font: BodyFont) => void
++  setHeadingFont: (font: HeadingFont) => void
+   color: ColorPreset
+   radius: RadiusPreset
+   setColor: (color: ColorPreset) => void
+@@ -21,10 +26,25 @@
+   return value
+ }
+ export function HomeThemeProvider({ children }: { children: React.ReactNode }) {
++  const [bodyFont, setBodyFont] = React.useState<BodyFont>(typography.defaultBodyFont as BodyFont)
++  const [headingFont, setHeadingFont] = React.useState<HeadingFont>(
++    typography.defaultHeadingFont as HeadingFont
++  )
+   const [color, setColor] = React.useState(defaultColor)
+   const [radius, setRadius] = React.useState(defaultRadius)
+   return (
+-    <HomeThemeContext.Provider value={{ color, radius, setColor, setRadius }}>
++    <HomeThemeContext.Provider
++      value={{
++        color,
++        radius,
++        setColor,
++        setRadius,
++        bodyFont,
++        headingFont,
++        setBodyFont,
++        setHeadingFont,
++      }}
++    >
+       <Drawer swipeDirection="right">
+         <div className="flex min-h-screen flex-col">{children}</div>
+       </Drawer>
+diff --git a/apps/www/components/shared/setup-builder.tsx b/apps/www/components/shared/setup-builder.tsx
+--- a/apps/www/components/shared/setup-builder.tsx
++++ b/apps/www/components/shared/setup-builder.tsx
+@@ -21,6 +21,12 @@
+   SelectContent,
+   SelectItem,
+ } from "@/components/ui/select"
++import {
++  typography,
++  typographyVariables,
++  type BodyFont,
++  type HeadingFont,
++} from "@/lib/typography-presets"
+ import { CopyButton } from "./copy-button"
+ import { useHomeTheme } from "./home-theme-provider"
+ import {
+@@ -85,16 +91,30 @@
+   const { resolvedTheme } = useTheme()
+   const [mode, setMode] = React.useState<"light" | "dark" | null>(null)
+   const actualMode = mode ?? (resolvedTheme === "dark" ? "dark" : "light")
+-  const values = themeVariables(selection.color, selection.radius, actualMode)
++  const fonts = typographyVariables(selection.bodyFont, selection.headingFont)
++  const values = { ...themeVariables(selection.color, selection.radius, actualMode), ...fonts }
+   const color = themePresets.colors[selection.color]
+-  const css = `:root {\n${Object.entries({
+-    ...color.light,
+-    "--radius": themePresets.radii[selection.radius].value,
+-  })
++  const fontImports = [
++    ...new Set([
++      ...typography.fonts[selection.bodyFont].imports,
++      ...typography.fonts[selection.headingFont].imports,
++    ]),
++  ]
++    .map((entry) => `@import "${entry}";`)
++    .join("\n")
++  const css = `${fontImports ? "/* Font dependencies are installed by the setup command. */\n" + fontImports + "\n\n" : ""}:root {\n${Object.entries(
++    {
++      ...color.light,
++      ...fonts,
++      "--radius": themePresets.radii[selection.radius].value,
++    }
++  )
+     .map(([key, value]) => `  ${key}: ${value};`)
+     .join("\n")}\n}\n.dark {\n${Object.entries(color.dark)
+     .map(([key, value]) => `  ${key}: ${value};`)
+-    .join("\n")}\n}`
++    .join(
++      "\n"
++    )}\n}\nbody { font-family: var(--font-body); }\nh1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }`
+   return (
+     <div
+       className="setup-theme-preview"
+@@ -119,6 +139,8 @@
+           )}
+         </Button>
+       </div>
++      <h4 className="setup-preview-title">Make something your own.</h4>
++      <p className="setup-preview-body">Pair a clear heading with comfortable body text.</p>
+       <div className="setup-preview-controls">
+         <Input aria-label="Try your starting theme input" placeholder="Try a focus state…" />
+         <CopyButton key={css} text={css} showLabel label="Copy theme CSS" variant="default" />
+@@ -168,6 +190,8 @@
+           ...input,
+           color: preview.color,
+           radius: preview.radius,
++          bodyFont: preview.bodyFont,
++          headingFont: preview.headingFont,
+         }
+       : input
+   )
+@@ -293,10 +317,55 @@
+                   set("radius", value)
+                 }}
+               />
++              {(["bodyFont", "headingFont"] as const).map((key) => {
++                const label = key === "bodyFont" ? "Body font" : "Heading font"
++                const presets = key === "bodyFont" ? typography.bodyFonts : typography.headingFonts
++                const selected =
++                  input.projectMode === "existing" ? (input[key] ?? "keep") : preview[key]
++                const options = [
++                  ...(input.projectMode === "existing"
++                    ? [{ value: "keep", label: "Keep existing typography" }]
++                    : []),
++                  ...presets.map((value) => ({
++                    value,
++                    label: typography.fonts[value as keyof typeof typography.fonts].label,
++                  })),
++                ]
++                return (
++                  <div className="setup-framework" key={key}>
++                    <label id={`${key}-label`}>{label}</label>
++                    <Select
++                      value={selected}
++                      items={Object.fromEntries(options.map((o) => [o.value, o.label]))}
++                      onValueChange={(value) => {
++                        if (!value) return
++                        if (key === "bodyFont") {
++                          if (value !== "keep") preview.setBodyFont(value as BodyFont)
++                          set("bodyFont", value === "keep" ? undefined : (value as BodyFont))
++                        } else {
++                          if (value !== "keep") preview.setHeadingFont(value as HeadingFont)
++                          set("headingFont", value === "keep" ? undefined : (value as HeadingFont))
++                        }
++                      }}
++                    >
++                      <SelectTrigger aria-labelledby={`${key}-label`} className="w-full">
++                        <SelectValue />
++                      </SelectTrigger>
++                      <SelectContent>
++                        {options.map((o) => (
++                          <SelectItem key={o.value} value={o.value}>
++                            {o.label}
++                          </SelectItem>
++                        ))}
++                      </SelectContent>
++                    </Select>
++                  </div>
++                )
++              })}
+               <StartingThemePreview />
+               {input.projectMode === "existing" && (
+                 <p className="setup-theme-safety">
+-                  {input.color || input.radius ? (
++                  {input.color || input.radius || input.bodyFont || input.headingFont ? (
+                     <>
+                       Selected appearance values will replace existing CSS.{" "}
+                       <button
+diff --git a/apps/www/lib/setup-command.ts b/apps/www/lib/setup-command.ts
+--- a/apps/www/lib/setup-command.ts
++++ b/apps/www/lib/setup-command.ts
+@@ -1,4 +1,4 @@
+-import { type BodyFont, type HeadingFont } from "./typography-presets"
++import { typography, type BodyFont, type HeadingFont } from "./typography-presets"
+ 
+ import {
+   themePresets,
+@@ -49,15 +49,20 @@
+   const invoke = `${packageInvocation(input.packageManager)} baseui-cn@latest`
+   if (
+     (input.color !== undefined && !Object.hasOwn(themePresets.colors, input.color)) ||
+-    (input.radius !== undefined && !Object.hasOwn(themePresets.radii, input.radius))
++    (input.radius !== undefined && !Object.hasOwn(themePresets.radii, input.radius)) ||
++    (input.bodyFont !== undefined && !typography.bodyFonts.includes(input.bodyFont)) ||
++    (input.headingFont !== undefined && !typography.headingFonts.includes(input.headingFont))
+   )
+     return { primary: "", description: "", error: "Choose supported appearance presets." }
+   const themeFlags =
+     input.projectMode === "new"
+       ? ` --color ${input.color ?? defaultColor} --radius ${input.radius ?? defaultRadius}`
+       : `${input.color ? ` --color ${input.color}` : ""}${input.radius ? ` --radius ${input.radius}` : ""}`
+-  // Public npm latest is 1.4.1. Hidden typography state must never affect copied commands.
+-  const appearanceFlags = themeFlags
++  const fontFlags =
++    input.projectMode === "new"
++      ? ` --body-font ${input.bodyFont ?? typography.defaultBodyFont} --heading-font ${input.headingFont ?? typography.defaultHeadingFont}`
++      : `${input.bodyFont ? ` --body-font ${input.bodyFont}` : ""}${input.headingFont ? ` --heading-font ${input.headingFont}` : ""}`
++  const appearanceFlags = themeFlags + fontFlags
+   const label = setupFrameworks.find((f) => f.value === input.framework)!.label
+   if (input.projectMode === "new") {
+     if (input.framework === "react")
+diff --git a/apps/www/package.json b/apps/www/package.json
+--- a/apps/www/package.json
++++ b/apps/www/package.json
+@@ -15,6 +15,13 @@
+     "@dnd-kit/modifiers": "^9.0.0",
+     "@dnd-kit/sortable": "^10.0.0",
+     "@dnd-kit/utilities": "^3.2.2",
++    "@fontsource-variable/geist": "5.3.0",
++    "@fontsource-variable/inter": "5.3.0",
++    "@fontsource-variable/manrope": "5.3.0",
++    "@fontsource-variable/montserrat": "5.3.0",
++    "@fontsource-variable/roboto": "5.3.0",
++    "@fontsource-variable/space-grotesk": "5.3.0",
++    "@fontsource/poppins": "5.3.0",
+     "@tanstack/react-table": "^8.21.3",
+     "@tanstack/react-virtual": "^3.13.23",
+     "@vercel/analytics": "^2.0.1",
+diff --git a/apps/www/styles/globals.css b/apps/www/styles/globals.css
+--- a/apps/www/styles/globals.css
++++ b/apps/www/styles/globals.css
+@@ -1,3 +1,15 @@
++@import "@fontsource-variable/inter/index.css";
++@import "@fontsource-variable/geist/index.css";
++@import "@fontsource-variable/manrope/index.css";
++@import "@fontsource-variable/roboto/index.css";
++@import "@fontsource-variable/montserrat/index.css";
++@import "@fontsource/poppins/400.css";
++@import "@fontsource/poppins/500.css";
++@import "@fontsource/poppins/600.css";
++@import "@fontsource/poppins/700.css";
++@import "@fontsource/poppins/800.css";
++@import "@fontsource/poppins/900.css";
++@import "@fontsource-variable/space-grotesk/index.css";
+ @import "tailwindcss";
+ @import "./theme.generated.css";
+ @import "./website.css";
+diff --git a/apps/www/styles/landing.css b/apps/www/styles/landing.css
+--- a/apps/www/styles/landing.css
++++ b/apps/www/styles/landing.css
+@@ -2384,3 +2384,22 @@
+     min-width: 44px;
+   }
+ }
++
++/* Typography is scoped to the setup sample, never the marketing page. */
++.setup-theme-preview .setup-preview-title {
++  font-family: var(--font-heading);
++  font-size: 20px;
++  line-height: 1.3;
++  margin-bottom: 6px;
++}
++.setup-theme-preview .setup-preview-body {
++  font-family: var(--font-body);
++  font-size: 14px;
++  line-height: 1.5;
++  margin-bottom: 12px;
++}
++.setup-theme-preview .setup-preview-controls,
++.setup-theme-preview .setup-preview-controls input,
++.setup-theme-preview .setup-preview-controls button {
++  font-family: var(--font-body);
++}
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -38,6 +38,27 @@
+       '@dnd-kit/utilities':
+         specifier: ^3.2.2
+         version: 3.2.2(react@19.2.4)
++      '@fontsource-variable/geist':
++        specifier: 5.3.0
++        version: 5.3.0
++      '@fontsource-variable/inter':
++        specifier: 5.3.0
++        version: 5.3.0
++      '@fontsource-variable/manrope':
++        specifier: 5.3.0
++        version: 5.3.0
++      '@fontsource-variable/montserrat':
++        specifier: 5.3.0
++        version: 5.3.0
++      '@fontsource-variable/roboto':
++        specifier: 5.3.0
++        version: 5.3.0
++      '@fontsource-variable/space-grotesk':
++        specifier: 5.3.0
++        version: 5.3.0
++      '@fontsource/poppins':
++        specifier: 5.3.0
++        version: 5.3.0
+       '@tanstack/react-table':
+         specifier: ^8.21.3
+         version: 8.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+@@ -675,6 +696,27 @@
+   '@floating-ui/utils@0.2.12':
+     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
+ 
++  '@fontsource-variable/geist@5.3.0':
++    resolution: {integrity: sha512-j0m+vLQuG5XAYoHtGCVu0spvlGreR3EzpECUVzkFmI1mTVnAO38l/NEPDCFgZ177JxzYJCLSmTQibIiYPilGrA==}
++
++  '@fontsource-variable/inter@5.3.0':
++    resolution: {integrity: sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA==}
++
++  '@fontsource-variable/manrope@5.3.0':
++    resolution: {integrity: sha512-6D5dgokHsWDDMtmXHznKa0hK229NN+1a4BLPmUCLqcO1Pw5EEhWY5RFt0AcXnVRAljFFPfRtLkJePQj6LSsV6g==}
++
++  '@fontsource-variable/montserrat@5.3.0':
++    resolution: {integrity: sha512-7PaZoxaxrWLAyrhO46v65An9LhUhfkTExWLhfbywYZCnZEgg/W1rEHnlNmZKjNZ3nJTVYyicqxlJt10z/26yTA==}
++
++  '@fontsource-variable/roboto@5.3.0':
++    resolution: {integrity: sha512-BoaaZiQf8fgtxv07KXkTwx1bKz/EoqIlTXq2OOKKXINxp6qXWdnlChqV+hSaDANS49yyUASFl3OVBMMDTCIHFA==}
++
++  '@fontsource-variable/space-grotesk@5.3.0':
++    resolution: {integrity: sha512-2IxmvfB08i9vnGB3Ym/AXvhRE+8XOjWMXIyDum03c+tPwH0FUoMNQfGpU8NXPxjbws0Vvss3AH0Zqt4oJBBAdw==}
++
++  '@fontsource/poppins@5.3.0':
++    resolution: {integrity: sha512-cms1nM7U6SN8epIV1WMVOV8VsA645aSm3wHfzIQnkk188U341ThbJGSl2Sv54V29gnDbT2arMPfLzvVIIVCceQ==}
++
+   '@formatjs/intl-localematcher@0.6.2':
+     resolution: {integrity: sha512-XOMO2Hupl0wdd172Y06h6kLpBz6Dv+J4okPLl4LPtzbr8f66WbIoy4ev98EBuZ6ZK4h5ydTN6XneT4QVpD7cdA==}
+ 
+@@ -4048,6 +4090,20 @@
+       react-dom: 19.2.4(react@19.2.4)
+ 
+   '@floating-ui/utils@0.2.12': {}
++
++  '@fontsource-variable/geist@5.3.0': {}
++
++  '@fontsource-variable/inter@5.3.0': {}
++
++  '@fontsource-variable/manrope@5.3.0': {}
++
++  '@fontsource-variable/montserrat@5.3.0': {}
++
++  '@fontsource-variable/roboto@5.3.0': {}
++
++  '@fontsource-variable/space-grotesk@5.3.0': {}
++
++  '@fontsource/poppins@5.3.0': {}
+ 
+   '@formatjs/intl-localematcher@0.6.2':
+     dependencies:
+diff --git a/scripts/check-cli-onboarding.mjs b/scripts/check-cli-onboarding.mjs
+--- a/scripts/check-cli-onboarding.mjs
++++ b/scripts/check-cli-onboarding.mjs
+@@ -569,7 +569,7 @@
+           }
+           assert.equal(
+             setup.setupCommand(input).primary,
+-            `${setup.packageInvocation(manager)} baseui-cn@latest create my-app --framework ${framework} --package-manager ${manager} --color ${color} --radius ${radius}`
++            `${setup.packageInvocation(manager)} baseui-cn@latest create my-app --framework ${framework} --package-manager ${manager} --color ${color} --radius ${radius} --body-font system --heading-font system`
+           )
+           assert.equal(
+             setup.setupCommand({ ...input, projectMode: "existing" }).primary,
+diff --git a/scripts/check-setup-contract.mjs b/scripts/check-setup-contract.mjs
+--- a/scripts/check-setup-contract.mjs
++++ b/scripts/check-setup-contract.mjs
+@@ -69,28 +69,18 @@
+     ` --body-font ${input.bodyFont} --heading-font ${input.headingFont}`
+   )
+ }
+-await test("pre-publish website ignores all hidden typography state and exposes no font flags", () => {
+-  for (const packageManager of setup.setupManagers)
+-    for (const projectMode of ["new", "existing"])
+-      for (const structure of ["single", "monorepo"])
+-        for (const framework of ["next", "tanstack-start", "react-router", "vite"])
+-          for (const fonts of [
+-            { bodyFont: "inter", headingFont: "poppins" },
+-            { bodyFont: "bad;id", headingFont: "" },
+-          ]) {
+-            const input = {
+-              ...base,
+-              packageManager,
+-              projectMode,
+-              structure,
+-              framework,
+-              workspace: "apps/web",
+-            }
+-            const plain = setup.setupCommand(input)
+-            assert.deepEqual(setup.setupCommand({ ...input, ...fonts }), plain)
+-            assert.doesNotMatch(plain.primary, /--body-font|--heading-font/)
+-          }
+-})
++await test("post-publish website exposes selected and default typography", () => {
++  assert.match(setup.setupCommand(base).primary, /--body-font system --heading-font system/)
++  assert.match(
++    setup.setupCommand({ ...base, bodyFont: "inter", headingFont: "poppins" }).primary,
++    /--body-font inter --heading-font poppins/
++  )
++  assert.doesNotMatch(
++    setup.setupCommand({ ...base, projectMode: "existing" }).primary,
++    /--body-font|--heading-font/
++  )
++})
++
+ for (const packageManager of setup.setupManagers) {
+   for (const projectMode of ["new", "existing"])
+     for (const structure of ["single", "monorepo"])

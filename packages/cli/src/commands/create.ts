@@ -3,6 +3,7 @@ import fs from "fs-extra"
 import execa from "execa"
 import prompts from "prompts"
 import { init } from "./init"
+import { typography } from "../utils/typography.generated"
 import { themePresets } from "../utils/theme.generated"
 import {
   themeQuestions,
@@ -33,6 +34,8 @@ export interface CreateOptions {
   yes?: boolean
   color?: string
   radius?: string
+  bodyFont?: string
+  headingFont?: string
 }
 export interface CreatePlan {
   name: string
@@ -41,6 +44,8 @@ export interface CreatePlan {
   monorepo: boolean
   color: ColorPreset
   radius: RadiusPreset
+  bodyFont: keyof typeof typography.fonts
+  headingFont: keyof typeof typography.fonts
 }
 export function validateProjectName(name: string): true | string {
   return /^[a-z0-9][a-z0-9-]*$/.test(name) &&
@@ -149,6 +154,7 @@ export async function resolveCreatePlan(
     )
   if (name && validateProjectName(name) !== true) throw new Error(String(validateProjectName(name)))
   const detectedPm = await detectPackageManager()
+  const useDefaults = options.yes || !!(options.framework && options.packageManager)
   const answers = await ask(
     [
       {
@@ -159,7 +165,7 @@ export async function resolveCreatePlan(
         validate: validateProjectName,
       },
       {
-        type: options.framework || options.yes ? null : "select",
+        type: options.framework || useDefaults ? null : "select",
         name: "framework",
         message: "Framework",
         choices: ["next", "tanstack-start", "react-router", "vite"].map((value) => ({
@@ -168,14 +174,14 @@ export async function resolveCreatePlan(
         })),
       },
       {
-        type: options.packageManager || options.yes ? null : "select",
+        type: options.packageManager || useDefaults ? null : "select",
         name: "packageManager",
         message: "Package manager",
         choices: packageManagers.map((value) => ({ title: value, value })),
         initial: packageManagers.indexOf(detectedPm),
       },
       {
-        type: options.monorepo !== undefined || options.yes ? null : "select",
+        type: options.monorepo !== undefined || useDefaults ? null : "select",
         name: "monorepo",
         message: "Project structure",
         choices: [
@@ -185,7 +191,7 @@ export async function resolveCreatePlan(
       },
       ...themeQuestions(options).map((question) => ({
         ...question,
-        type: options.yes ? null : question.type,
+        type: useDefaults ? null : question.type,
       })),
     ],
     promptOptions
@@ -196,7 +202,9 @@ export async function resolveCreatePlan(
     throw new Error(String(validateProjectName(resolvedName)))
   const color = options.color ?? answers.color ?? themePresets.defaultColor
   const radius = options.radius ?? answers.radius ?? themePresets.defaultRadius
-  validateThemeOptions({ color, radius })
+  const bodyFont = options.bodyFont ?? answers.bodyFont ?? typography.defaultBodyFont
+  const headingFont = options.headingFont ?? answers.headingFont ?? typography.defaultHeadingFont
+  validateThemeOptions({ color, radius, bodyFont, headingFont })
   return {
     name: resolvedName,
     framework: (options.framework as CreateFramework) ?? answers.framework ?? "next",
@@ -205,6 +213,8 @@ export async function resolveCreatePlan(
     monorepo: options.monorepo ?? answers.monorepo ?? false,
     color: color as ColorPreset,
     radius: radius as RadiusPreset,
+    bodyFont,
+    headingFont,
   }
 }
 
@@ -304,6 +314,18 @@ export async function create(
       if (plan.packageManager === "yarn")
         await fs.writeFile(path.join(destination, ".yarnrc.yml"), "nodeLinker: node-modules\n")
     }
+    if (plan.packageManager === "yarn" && !plan.monorepo)
+      await fs.writeFile(path.join(destination, ".yarnrc.yml"), "nodeLinker: node-modules\n")
+    // Record the selected manager, including scaffolders that do not write it.
+    const manifestFile = path.join(destination, "package.json")
+    const manifest = await fs.readJson(manifestFile)
+    const { stdout: managerVersion } = overrides.run
+      ? { stdout: "" }
+      : await execa(plan.packageManager, ["--version"], { cwd: destination })
+    if (managerVersion) {
+      manifest.packageManager = `${plan.packageManager}@${managerVersion.trim()}`
+      await fs.writeJson(manifestFile, manifest, { spaces: 2 })
+    }
     // Install from the workspace root so all four PMs own one workspace graph.
     await api.run(plan.packageManager, ["install"], destination)
     if (plan.framework === "vite")
@@ -317,7 +339,12 @@ export async function create(
         ],
         app
       )
-    await api.initialize(app, { color: plan.color, radius: plan.radius })
+    await api.initialize(app, {
+      color: plan.color,
+      radius: plan.radius,
+      bodyFont: plan.bodyFont,
+      headingFont: plan.headingFont,
+    })
   } catch (error) {
     throw new Error(
       `Project setup stopped at ${app}. Files are retained for inspection. ${error instanceof Error ? error.message : String(error)}`

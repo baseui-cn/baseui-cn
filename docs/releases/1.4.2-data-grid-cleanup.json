@@ -1,0 +1,51 @@
+[
+  {
+    "path": ".github/workflows/publish-cli.yml",
+    "headPresent": true,
+    "dirtySha256": "959bb45698244a02363a6b22383df30c6c7ba2e1a13dd22d66297b4d73625f93",
+    "mainSha256": "959bb45698244a02363a6b22383df30c6c7ba2e1a13dd22d66297b4d73625f93",
+    "identicalToMain": true
+  },
+  {
+    "path": ".github/workflows/prepare-cli.yml",
+    "headPresent": false,
+    "dirtySha256": "911647f5624441e98aef0dcadfea0fb1cba5c535c24f05592e0d076d77d99cc5",
+    "mainSha256": "911647f5624441e98aef0dcadfea0fb1cba5c535c24f05592e0d076d77d99cc5",
+    "identicalToMain": true
+  },
+  {
+    "path": "docs/releases/1.4.1-package-drift.json",
+    "headPresent": false,
+    "dirtySha256": "20e3c4a5b5d2a08daf086b0d91140adac554daa2485b50cd0b334d0affa010d2",
+    "mainSha256": "20e3c4a5b5d2a08daf086b0d91140adac554daa2485b50cd0b334d0affa010d2",
+    "identicalToMain": true
+  },
+  {
+    "path": "docs/releases/npm-publish-automation-hardening.md",
+    "headPresent": false,
+    "dirtySha256": "b4424877dc8d69c36888ebce3fe962125b22a0b5bcdc8c2eb422d014675b8814",
+    "mainSha256": "95fa3402ebf23e6e1435fddf1fc22fbc62f0c153a290072b0466330b40206967",
+    "identicalToMain": false
+  },
+  {
+    "path": "scripts/releases/audit-pack-drift.py",
+    "headPresent": false,
+    "dirtySha256": "8759b332b8813132bda7aa25028ed4e19db2a034f76093f97e598ed03e07a4b4",
+    "mainSha256": "8759b332b8813132bda7aa25028ed4e19db2a034f76093f97e598ed03e07a4b4",
+    "identicalToMain": true
+  },
+  {
+    "path": "scripts/releases/cli-artifact.py",
+    "headPresent": false,
+    "dirtySha256": "c8d78c91cb471db4530b5458aec530fafcfbb4ed12c6c920b1b08c518ab8f5ba",
+    "mainSha256": "16e22de973eb9f5e7f19b3162ca84acf9a4f5e47fd3b66ecc39d984858617105",
+    "identicalToMain": false
+  },
+  {
+    "path": "scripts/releases/test_cli_artifact.py",
+    "headPresent": false,
+    "dirtySha256": "7627f67ced40b0bbcab484860b86542f0169e449bca08214e45758bdc7bdea74",
+    "mainSha256": "0fe235c560ff0567257784fd009887928863135bde976a40fc94589489eab2c7",
+    "identicalToMain": false
+  }
+]

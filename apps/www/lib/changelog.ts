@@ -23,6 +23,22 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "baseui-cn-1-4-2-create-theme-typography",
+    date: "November 3, 2026",
+    isoDate: "2026-11-03",
+    title: "baseui-cn 1.4.2 — Create, theme and typography",
+    badge: "Upcoming",
+    summary:
+      "Prepared CLI improvements for project creation, complete theme palettes and optional typography. npm publication is pending.",
+    notes: [
+      "Separated new project creation from existing application initialization, with clearer workspace guidance and hidden-state isolation.",
+      "Prepared complete light/dark palettes, radius application and optional body/heading typography with pinned Fontsource packages and preservation of existing customizations.",
+      "Website setup commands remain compatible with public npm 1.4.1. Typography controls will follow after npm 1.4.2 is published and verified.",
+      "Base UI remains 1.9.0 and the public Data Grid remains on TanStack Table v8.",
+    ],
+    links: [{ href: "/docs/installation", label: "View installation docs" }],
+  },
+  {
     slug: "baseui-cn-1-4-1-time-picker-keyboard-fix",
     date: "October 31, 2026",
     isoDate: "2026-10-31",

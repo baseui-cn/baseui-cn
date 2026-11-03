@@ -1,4 +1,5 @@
 import prompts from "prompts"
+import { typography } from "./typography.generated"
 import { promptOptions } from "./project"
 import { themePresets } from "./theme.generated"
 
@@ -7,8 +8,16 @@ export type RadiusPreset = keyof typeof themePresets.radii
 export interface ThemeOptions {
   color?: string
   radius?: string
+  bodyFont?: string
+  headingFont?: string
 }
 export function validateThemeOptions(options: ThemeOptions) {
+  for (const key of ["bodyFont", "headingFont"] as const) {
+    const allowed: readonly string[] =
+      key === "bodyFont" ? typography.bodyFonts : typography.headingFonts
+    if (options[key] !== undefined && !allowed.includes(options[key]!))
+      throw new Error(`Invalid ${key}: ${options[key]}. Choose ${allowed.join(", ")}.`)
+  }
   if (options.color !== undefined && !Object.hasOwn(themePresets.colors, options.color))
     throw new Error(
       `Invalid color: ${options.color}. Choose ${Object.keys(themePresets.colors).join(", ")}.`
@@ -20,7 +29,8 @@ export function validateThemeOptions(options: ThemeOptions) {
 }
 export function themeQuestions(
   options: ThemeOptions,
-  existing = { color: false, radius: false }
+  existing = { color: false, radius: false },
+  preserveTypography = false
 ): prompts.PromptObject[] {
   return [
     {
@@ -53,6 +63,21 @@ export function themeQuestions(
         })),
       ],
     },
+    ...(["bodyFont", "headingFont"] as const).map(
+      (key): prompts.PromptObject => ({
+        type: options[key] ? null : "select",
+        name: key,
+        message: key === "bodyFont" ? "Body font" : "Heading font",
+        initial: 0,
+        choices: [
+          ...(preserveTypography ? [{ title: "Keep existing typography", value: "keep" }] : []),
+          ...(key === "bodyFont" ? typography.bodyFonts : typography.headingFonts).map((value) => ({
+            title: typography.fonts[value].label,
+            value,
+          })),
+        ],
+      })
+    ),
   ]
 }
 export async function chooseThemeOptions(
@@ -63,11 +88,14 @@ export async function chooseThemeOptions(
 ): Promise<ThemeOptions> {
   validateThemeOptions(options)
   const answers = interactive
-    ? await ask(themeQuestions(options, existing) as prompts.PromptObject[], promptOptions)
+    ? await ask(themeQuestions(options, existing, true) as prompts.PromptObject[], promptOptions)
     : {}
   const selected = {
     color: options.color ?? (answers.color === "keep" ? undefined : answers.color),
     radius: options.radius ?? (answers.radius === "keep" ? undefined : answers.radius),
+    bodyFont: options.bodyFont ?? (answers.bodyFont === "keep" ? undefined : answers.bodyFont),
+    headingFont:
+      options.headingFont ?? (answers.headingFont === "keep" ? undefined : answers.headingFont),
   }
   validateThemeOptions(selected)
   return selected

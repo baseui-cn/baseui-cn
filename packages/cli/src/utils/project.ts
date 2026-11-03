@@ -100,6 +100,14 @@ export async function applicationWorkspaces(root: string): Promise<string[]> {
       await walk(full, depth + 1)
     }
   }
+  // Some official single-app scaffolders declare packages: ["."] in pnpm YAML.
+  // Treat the explicitly listed root as an app only when it is a known framework.
+  if (
+    positives.some((pattern) => matches(".", pattern)) &&
+    !negatives.some((pattern) => matches(".", pattern)) &&
+    ["next", "tanstack-start", "react-router", "vite"].includes(await detectFramework(root))
+  )
+    found.push(".")
   await walk(root, 0)
   return found.sort()
 }
@@ -121,10 +129,13 @@ export async function resolveProjectTarget(
   if (options.workspace) {
     if (!root)
       throw new Error(
-        "--workspace requires a workspace root (package.json workspaces or pnpm-workspace.yaml)."
+        "--workspace requires a workspace root (package.json workspaces or pnpm-workspace.yaml).\n" +
+          "--workspace targets an app inside an existing monorepo.\n\n" +
+          "To create a new project:\n  pnpm dlx baseui-cn@latest create my-app\n\n" +
+          "To create a new monorepo:\n  pnpm dlx baseui-cn@latest create my-app --monorepo"
       )
     const target = path.resolve(root, options.workspace)
-    const relative = path.relative(root, target)
+    const relative = path.relative(root, target) || "."
     const candidates = await applicationWorkspaces(root)
     if (!candidates.includes(relative.split(path.sep).join("/")))
       throw new Error(

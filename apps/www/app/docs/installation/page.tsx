@@ -20,7 +20,7 @@ export default function InstallationPage() {
       </div>
 
       <section id="new-project" className="flex flex-col gap-4">
-        <h2>Start a new project</h2>
+        <h2>Create a new application</h2>
         <p className="text-muted-foreground">
           The create command runs your framework’s official scaffolder, installs dependencies and
           initializes baseui-cn. Run it without flags for guided setup.
@@ -32,9 +32,8 @@ npx baseui-cn@latest create my-app --framework tanstack-start
 npx baseui-cn@latest create my-app --framework react-router
 npx baseui-cn@latest create my-app --framework vite
 
-# Choose a package manager and workspace structure
-npx baseui-cn@latest create my-app --framework next --package-manager pnpm --monorepo
-# Your application lives in my-app/apps/web`}
+# Choose a package manager
+pnpm dlx baseui-cn@latest create my-app --framework next --package-manager pnpm`}
           language="bash"
         />
         <p className="text-sm text-muted-foreground">
@@ -43,6 +42,14 @@ npx baseui-cn@latest create my-app --framework next --package-manager pnpm --mon
           requirements apply. Existing/custom React apps use init with their own Tailwind CSS v4
           pipeline and @/* source alias.
         </p>
+      </section>
+      <section id="new-monorepo" className="flex flex-col gap-4">
+        <h2>Create a new monorepo</h2>
+        <p className="text-muted-foreground">
+          Run create with --monorepo to generate a new workspace root and its application in
+          apps/web. The project name is a new directory, never an existing workspace path.
+        </p>
+        <PackageManagerTabs command="baseui-cn@latest create my-app --framework next --package-manager pnpm --monorepo" />
       </section>
       <p className="text-sm text-muted-foreground">
         New apps retain strict TypeScript checks and match the registry’s compiler policy:
@@ -66,17 +73,21 @@ npx baseui-cn@latest init --color iris --radius lg`}
         </a>
       </section>
       <section id="workspaces" className="flex flex-col gap-4">
-        <h2>Existing apps and monorepos</h2>
+        <h2>Initialize an existing application</h2>
         <p className="text-muted-foreground">
           Run init inside your app or at your workspace root. The CLI detects frameworks, lockfiles,
           packageManager declarations and common workspace configurations. A single app is selected
           automatically; multiple apps prompt for a target. Noninteractive runs with multiple apps
           require --workspace.
         </p>
+        <PackageManagerTabs command="baseui-cn@latest init" />
+        <h3>Initialize an app in an existing monorepo</h3>
+        <p className="text-muted-foreground">
+          Run this from the existing workspace root. --workspace is an optional existing member path
+          such as apps/web. It never creates a new project or monorepo.
+        </p>
         <CodeBlock
-          code={`npx baseui-cn@latest init
-
-# Paths are relative to the workspace root
+          code={`# Paths are relative to the existing workspace root
 npx baseui-cn@latest init --workspace apps/web
 npx baseui-cn@latest add button --workspace apps/web
 npx baseui-cn@latest update button --workspace apps/web
