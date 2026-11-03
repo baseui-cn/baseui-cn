@@ -1,0 +1,82 @@
+name: Prepare CLI artifact
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Full reviewed source commit (must contain this workflow and release helpers)
+        required: true
+        type: string
+      version:
+        description: Stable CLI version X.Y.Z (no tag is created and nothing is published)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    if: github.repository == 'baseui-cn/baseui-cn'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Validate exact preparation inputs
+        env:
+          SOURCE_COMMIT: ${{ inputs.commit }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$SOURCE_COMMIT" == "$GITHUB_SHA" ]]
+          [[ "$RELEASE_VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.commit }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - uses: pnpm/action-setup@d9184bf108216479bc5a137cc391f4d7b14c870b # v6.1.0
+        with:
+          cache: false
+      - name: Pin npm packing tool
+        run: npm install --global npm@11.16.0 --ignore-scripts
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:all
+      - run: pnpm --filter ./packages/cli exec tsc --noEmit
+      - run: pnpm --filter ./packages/cli build
+      - run: pnpm run registry:check
+      - name: Pack once and record content manifest
+        env:
+          SOURCE_COMMIT: ${{ inputs.commit }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_DIR: ${{ runner.temp }}/cli-release
+        run: |
+          mkdir -p "$RELEASE_DIR"
+          npm pack ./packages/cli --ignore-scripts --pack-destination "$RELEASE_DIR"
+          mv "$RELEASE_DIR/baseui-cn-$RELEASE_VERSION.tgz" "$RELEASE_DIR/package.tgz"
+          python3 scripts/releases/cli-artifact.py prepare --directory "$RELEASE_DIR" --version "$RELEASE_VERSION" --commit "$SOURCE_COMMIT"
+      - name: Preserve the candidate (no overwrite)
+        id: upload
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cli-${{ inputs.version }}-${{ inputs.commit }}
+          path: |
+            ${{ runner.temp }}/cli-release/package.tgz
+            ${{ runner.temp }}/cli-release/release-manifest.json
+          if-no-files-found: error
+          retention-days: 30
+          overwrite: false
+      - name: Record approval-tag message for owner review
+        env:
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact-id }}
+        run: |
+          python3 scripts/releases/cli-artifact.py approval --directory "$RUNNER_TEMP/cli-release" --run-id "$GITHUB_RUN_ID" --artifact-id "$ARTIFACT_ID" > "$RUNNER_TEMP/tag-approval.json"
+          {
+            echo 'Review the downloaded package.tgz and release-manifest.json before authorizing a release.'
+            echo 'The following JSON is the complete annotated tag message; it is not approval by itself.'
+            echo '```json'
+            cat "$RUNNER_TEMP/tag-approval.json"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
