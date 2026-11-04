@@ -1,0 +1,70 @@
+[
+  {
+    "input": {
+      "framework": "next",
+      "packageManager": "pnpm",
+      "projectMode": "new",
+      "structure": "single",
+      "projectName": "my-app-online",
+      "workspace": "apps/web",
+      "color": "iris",
+      "radius": "lg",
+      "bodyFont": "inter",
+      "headingFont": "space-grotesk"
+    },
+    "primary": "pnpm dlx baseui-cn@latest create my-app-online --framework next --package-manager pnpm --color iris --radius lg --body-font inter --heading-font space-grotesk",
+    "followUp": "cd my-app-online && pnpm run dev",
+    "description": "Official Next.js scaffold + baseui-cn. Ready to add components."
+  },
+  {
+    "input": {
+      "framework": "next",
+      "packageManager": "pnpm",
+      "projectMode": "new",
+      "structure": "monorepo",
+      "projectName": "my-app-online",
+      "workspace": "apps/web",
+      "color": "iris",
+      "radius": "lg",
+      "bodyFont": "inter",
+      "headingFont": "space-grotesk"
+    },
+    "primary": "pnpm dlx baseui-cn@latest create my-app-online --framework next --package-manager pnpm --monorepo --color iris --radius lg --body-font inter --heading-font space-grotesk",
+    "followUp": "cd my-app-online/apps/web && pnpm run dev",
+    "description": "Official Next.js scaffold + baseui-cn. App in apps/web."
+  },
+  {
+    "input": {
+      "framework": "next",
+      "packageManager": "pnpm",
+      "projectMode": "existing",
+      "structure": "single",
+      "projectName": "my-app-online",
+      "workspace": "apps/web",
+      "color": "iris",
+      "radius": "lg",
+      "bodyFont": "inter",
+      "headingFont": "space-grotesk"
+    },
+    "primary": "pnpm dlx baseui-cn@latest init --color iris --radius lg --body-font inter --heading-font space-grotesk",
+    "followUp": "pnpm dlx baseui-cn@latest add button",
+    "description": "Run this from your existing Next.js app. Framework and package manager are detected automatically. Applies your selected appearance values."
+  },
+  {
+    "input": {
+      "framework": "next",
+      "packageManager": "pnpm",
+      "projectMode": "existing",
+      "structure": "monorepo",
+      "projectName": "my-app-online",
+      "workspace": "apps/web",
+      "color": "iris",
+      "radius": "lg",
+      "bodyFont": "inter",
+      "headingFont": "space-grotesk"
+    },
+    "primary": "pnpm dlx baseui-cn@latest init --workspace apps/web --color iris --radius lg --body-font inter --heading-font space-grotesk",
+    "followUp": "pnpm dlx baseui-cn@latest add button --workspace apps/web",
+    "description": "Run this from the existing workspace root. Framework and package manager are detected automatically. Applies your selected appearance values."
+  }
+]

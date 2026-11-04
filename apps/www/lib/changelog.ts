@@ -23,6 +23,23 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "baseui-cn-1-4-2-create-theme-typography",
+    date: "November 4, 2026",
+    isoDate: "2026-11-04",
+    title: "baseui-cn 1.4.2 — Create, theme and typography",
+    badge: "Release",
+    summary:
+      "CLI 1.4.2 is published with project creation, complete theme palettes and optional typography flags.",
+    notes: [
+      "New project creation and existing application initialization now use separate paths, with clearer workspace guidance and hidden-state isolation.",
+      "Released complete light/dark palettes and radius application while preserving existing customizations.",
+      "Optional body and heading font CLI flags are available with pinned Fontsource packages.",
+      "Website typography selectors are being enabled separately after release verification. Current website setup commands expose project creation and theme capabilities.",
+      "Base UI remains 1.9.0 and the public Data Grid remains on TanStack Table v8.",
+    ],
+    links: [{ href: "/docs/installation", label: "View installation docs" }],
+  },
+  {
     slug: "baseui-cn-1-4-1-time-picker-keyboard-fix",
     date: "October 31, 2026",
     isoDate: "2026-10-31",

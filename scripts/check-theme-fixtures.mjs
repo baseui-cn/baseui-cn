@@ -183,17 +183,17 @@ assert.ok(changedColor.includes("--radius: 19px"))
 assert.ok(changedColor.includes('content: "--primary: ignored;"'))
 assert.ok(changedColor.includes(".other { --primary: tomato; }"))
 for (const value of ["--success: #123456", "--success: #654321"])
-  assert.ok(changedColor.includes(value))
+  assert.ok(!changedColor.includes(value), "explicit color replaces complete light/dark palette")
 await ensureThemeCSS(customConfig, { silent: true, radius: "xl" })
 const changedRadius = await fs.readFile(customFile, "utf8")
-assert.equal((changedRadius.match(/--radius: 1rem/g) || []).length, 2)
+assert.equal(readVars(changedRadius, ".dark")["--radius"], "1rem")
 assert.ok(changedRadius.includes("--primary: " + presets.colors.emerald.light["--primary"]))
 assert.equal(
   await ensureThemeCSS(customConfig, { silent: true, color: "emerald", radius: "xl" }),
   false
 )
 console.log(
-  "PASS 28 color/radius combinations, generic variables, default Iris/Rounded, invalid options, light/dark semantic preservation, repeated explicit init and customized CSS boundaries"
+  "PASS 28 color/radius combinations, generic variables, default Iris/Rounded, invalid options, default theme preservation and explicit palette ownership, repeated explicit init and customized CSS boundaries"
 )
 
 const luminance = (hex) => {

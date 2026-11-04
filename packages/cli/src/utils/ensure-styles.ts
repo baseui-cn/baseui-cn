@@ -3,6 +3,7 @@ import fs from "fs-extra"
 import chalk from "chalk"
 import ora from "ora"
 import type { Config } from "./config"
+import { applyTypography } from "./typography"
 import {
   validateThemeOptions,
   type ThemeOptions,
@@ -64,9 +65,12 @@ function extractVarNames(blockContent: string): Set<string> {
  * Ignore comments, quoted strings and their braces. Missing defaults go into
  * the first matching block; values in every existing matching block win.
  */
-function findBlocks(css: string, selector: string): Array<{ start: number; end: number }> {
-  const blocks: Array<{ start: number; end: number }> = []
-  const stack: Array<{ start: number; matches: boolean }> = []
+function findBlocks(
+  css: string,
+  selector: string
+): Array<{ start: number; end: number; layered: boolean }> {
+  const blocks: Array<{ start: number; end: number; layered: boolean }> = []
+  const stack: Array<{ start: number; matches: boolean; layered: boolean }> = []
   let headerStart = 0
   let quote = ""
   let comment = false
@@ -103,11 +107,15 @@ function findBlocks(css: string, selector: string): Array<{ start: number; end: 
         .replace(/\s+/g, " ")
         .trim()
       const matches = header.split(",").some((part) => part.trim() === selector)
-      stack.push({ start: i + 1, matches })
+      stack.push({
+        start: i + 1,
+        matches,
+        layered: stack.some((block) => block.layered) || /^@layer\b/.test(header),
+      })
       headerStart = i + 1
     } else if (ch === "}") {
       const block = stack.pop()
-      if (block?.matches) blocks.push({ start: block.start, end: i })
+      if (block?.matches) blocks.push({ start: block.start, end: i, layered: block.layered })
       headerStart = i + 1
     } else if (ch === ";") headerStart = i + 1
   }
@@ -117,9 +125,10 @@ function findBlocks(css: string, selector: string): Array<{ start: number; end: 
 function mergeVarsIntoBlock(
   css: string,
   selector: string,
-  required: Record<string, string>
+  required: Record<string, string>,
+  unlayered = false
 ): { css: string; changed: boolean; found: boolean } {
-  const blocks = findBlocks(css, selector)
+  const blocks = findBlocks(css, selector).filter((block) => !unlayered || !block.layered)
   const first = blocks[0]
   if (!first) return { css, changed: false, found: false }
   const existing = new Set(
@@ -189,7 +198,7 @@ export async function ensureThemeCSS(
 ): Promise<boolean> {
   validateThemeOptions(options)
   if (!config.tailwind) {
-    if (options.color || options.radius)
+    if (options.color || options.radius || options.bodyFont || options.headingFont)
       throw new Error(
         "Theme flags require theme CSS initialization. Enable tailwind in baseui-cn.json and omit --skip-tailwind."
       )
@@ -234,10 +243,6 @@ export async function ensureThemeCSS(
       css += "\n\n" + themeStrategy
       changed = true
     }
-    if (!css.includes("/* baseui-cn foundation */")) {
-      css += "\n\n" + themeFoundation
-      changed = true
-    }
 
     // ── Step 2: @theme inline — merge or create ───────────────────
     const themeResult = mergeVarsIntoBlock(css, "@theme inline", REQUIRED_THEME_INLINE)
@@ -269,12 +274,24 @@ export async function ensureThemeCSS(
     }
 
     // ── Step 4: .dark — merge or create ───────────────────────────
-    const darkResult = mergeVarsIntoBlock(css, ".dark", darkDefaults)
+    const darkResult = mergeVarsIntoBlock(
+      css,
+      ".dark",
+      darkDefaults,
+      !!(options.color || options.radius)
+    )
     if (darkResult.changed) {
       css = darkResult.css
       changed = true
     } else if (!darkResult.found) {
       css += "\n\n" + buildBlock(".dark", darkDefaults)
+      changed = true
+    }
+
+    // Add foundation after palettes, so its layered color-scheme selector is
+    // never mistaken for the consumer's unlayered dark palette.
+    if (!css.includes("/* baseui-cn foundation */")) {
+      css += "\n\n" + themeFoundation
       changed = true
     }
 
@@ -287,6 +304,7 @@ export async function ensureThemeCSS(
     const beforeSelection = css
     css = replaceRequestedVars(css, ":root", requestedRoot)
     css = replaceRequestedVars(css, ".dark", requestedDark)
+    css = applyTypography(css, options)
     if (css !== beforeSelection) changed = true
 
     if (changed) {
@@ -317,7 +335,7 @@ export async function ensureThemeCSS(
     themeFoundation,
     "",
   ].join("\n")
-  await fs.writeFile(cssPath, fresh)
+  await fs.writeFile(cssPath, applyTypography(fresh, options))
   spinner?.succeed(`Global CSS created at ${chalk.cyan(config.globalCss)}`)
   return true
 }

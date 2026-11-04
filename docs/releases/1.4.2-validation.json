@@ -1,0 +1,377 @@
+{
+  "date": "2026-11-03",
+  "sourceAuthority": "86c148363de388787228da71d0ac257074a0491a",
+  "featureAuthority": "c203d6bc2ba6b63388a52cb7b740750012bf0253",
+  "sourceState": "Layer A checkpoint approved; focused checks complete before commit/push. Earlier integration statuses below are a historical uncommitted snapshot.",
+  "publicNpmGate": {
+    "latest": "1.4.1",
+    "candidate142Exists": false,
+    "public141Sha256": "929569083c0caf3aea2b01189bcb9cedd013b8d065e50c432bcb96f39bc4a6a7",
+    "bytes": 198149
+  },
+  "checks": {
+    "frozenInstall": "PASS",
+    "cliTypeScript": "PASS",
+    "websiteTypeScript": "PASS",
+    "lint": {
+      "result": "PASS",
+      "errors": 0,
+      "knownDataGridWarnings": 1
+    },
+    "buildAll": "PASS",
+    "cliBuild": "PASS",
+    "websiteProductionBuild": "PASS",
+    "registryCheck": "PASS",
+    "themeCheck": "PASS",
+    "themeFixtures": "PASS",
+    "setupContract": {
+      "passed": 64,
+      "failed": 0
+    },
+    "onboarding": {
+      "passed": 59,
+      "failed": 0,
+      "newThemeCommandCombinations": 448,
+      "existingThemeCommandCombinations": 448
+    },
+    "cliFixtures": "PASS",
+    "releaseHardeningTests": {
+      "passed": 29,
+      "failed": 0
+    },
+    "endpoints": {
+      "passed": 173,
+      "registryByteMatches": 55
+    },
+    "landingBrowser": {
+      "passed": 93,
+      "runtimeErrors": []
+    },
+    "releaseBrowser": {
+      "copiedCommands": 20,
+      "viewportThemeStates": 4,
+      "runtimeErrors": []
+    },
+    "public141Parser": {
+      "passed": 40,
+      "actionsIntercepted": true
+    },
+    "finalPackedConsumers": {
+      "passed": 8,
+      "renderedLightDarkStates": 16,
+      "candidateSha256": "bcf23b1cedf7ed7684fc0f00dd8335082fc1de74a85cd1ae3972c0cb7d78d314",
+      "cases": [
+        {
+          "id": "next-pnpm-single",
+          "passed": true,
+          "siteCommand": "pnpm dlx baseui-cn@latest create next-pnpm-single --framework next --package-manager pnpm --color emerald --radius xl",
+          "candidateCommand": "pnpm dlx baseui-cn@latest create next-pnpm-single --framework next --package-manager pnpm --color emerald --radius xl --body-font inter --heading-font space-grotesk"
+        },
+        {
+          "id": "next-npm-single",
+          "passed": true,
+          "siteCommand": "npx baseui-cn@latest create next-npm-single --framework next --package-manager npm --color emerald --radius xl",
+          "candidateCommand": "npx baseui-cn@latest create next-npm-single --framework next --package-manager npm --color emerald --radius xl --body-font geist --heading-font manrope"
+        },
+        {
+          "id": "start-pnpm-single",
+          "passed": true,
+          "siteCommand": "pnpm dlx baseui-cn@latest create start-pnpm-single --framework tanstack-start --package-manager pnpm --color emerald --radius xl",
+          "candidateCommand": "pnpm dlx baseui-cn@latest create start-pnpm-single --framework tanstack-start --package-manager pnpm --color emerald --radius xl --body-font roboto --heading-font montserrat"
+        },
+        {
+          "id": "router-yarn-single",
+          "passed": true,
+          "siteCommand": "yarn dlx baseui-cn@latest create router-yarn-single --framework react-router --package-manager yarn --color emerald --radius xl",
+          "candidateCommand": "yarn dlx baseui-cn@latest create router-yarn-single --framework react-router --package-manager yarn --color emerald --radius xl --body-font manrope --heading-font poppins"
+        },
+        {
+          "id": "vite-bun-single",
+          "passed": true,
+          "siteCommand": "bunx baseui-cn@latest create vite-bun-single --framework vite --package-manager bun --color emerald --radius xl",
+          "candidateCommand": "bunx baseui-cn@latest create vite-bun-single --framework vite --package-manager bun --color emerald --radius xl --body-font system --heading-font inter"
+        },
+        {
+          "id": "vite-pnpm-monorepo",
+          "passed": true,
+          "siteCommand": "pnpm dlx baseui-cn@latest create vite-pnpm-monorepo --framework vite --package-manager pnpm --monorepo --color emerald --radius xl",
+          "candidateCommand": "pnpm dlx baseui-cn@latest create vite-pnpm-monorepo --framework vite --package-manager pnpm --monorepo --color emerald --radius xl --body-font inter --heading-font inter"
+        },
+        {
+          "id": "next-npm-existing",
+          "passed": true,
+          "siteCommand": "npx baseui-cn@latest init --color emerald --radius xl",
+          "candidateCommand": "npx baseui-cn@latest init --color emerald --radius xl --body-font system --heading-font system"
+        },
+        {
+          "id": "next-npm-existing-monorepo",
+          "passed": true,
+          "siteCommand": "npx baseui-cn@latest init --workspace apps/web --color emerald --radius xl",
+          "candidateCommand": "npx baseui-cn@latest init --workspace apps/web --color emerald --radius xl --body-font inter --heading-font space-grotesk"
+        }
+      ]
+    },
+    "artifactInspector": {
+      "passed": true,
+      "version": "1.4.2",
+      "sha256": "bcf23b1cedf7ed7684fc0f00dd8335082fc1de74a85cd1ae3972c0cb7d78d314",
+      "bytes": 201343,
+      "registryFiles": 55,
+      "packageMembers": 60
+    },
+    "protectedBoundaries": {
+      "passed": true,
+      "protectedFiles": 24,
+      "versionOnlyRegistryFiles": 165,
+      "baseUI": "1.9.0",
+      "publicTable": "^8.21.3"
+    },
+    "layerB": {
+      "frozenInstall": "PASS",
+      "cliTypeScript": "PASS",
+      "websiteTypeScript": "PASS",
+      "lint": "PASS with same known warning",
+      "cliBuild": "PASS",
+      "websiteProductionBuild": "PASS",
+      "setupContract": 64,
+      "onboarding": 59,
+      "copiedCommandChecks": 20,
+      "allFontBrowserStates": 4,
+      "runtimeErrors": []
+    },
+    "gitDiffCheck": "PASS",
+    "splitPatchForwardAndReverseCheck": "PASS",
+    "splitPatchReconstructsLayerBBytes": true
+  },
+  "layerBPatch": {
+    "paths": [
+      "apps/www/app/docs/installation/page.tsx",
+      "apps/www/components/shared/home-theme-provider.tsx",
+      "apps/www/components/shared/setup-builder.tsx",
+      "apps/www/lib/setup-command.ts",
+      "apps/www/package.json",
+      "apps/www/styles/globals.css",
+      "apps/www/styles/landing.css",
+      "pnpm-lock.yaml",
+      "scripts/check-cli-onboarding.mjs",
+      "scripts/check-setup-contract.mjs"
+    ],
+    "patchSha256": "f9affed086ffec3b96fb36cefba7a0bc1d85862e68931ebf2141215d8aef3cb7"
+  },
+  "fullEvidenceRoot": "/private/tmp/baseui-cn-1.4.2-evidence",
+  "finalGitStatuses": {
+    "layerA": {
+      "path": "/private/tmp/baseui-cn-1.4.2-integration",
+      "branch": "release/1.4.2-integration",
+      "head": "86c148363de388787228da71d0ac257074a0491a",
+      "modifiedTracked": 188,
+      "untrackedFiles": 27,
+      "stagedFiles": 0,
+      "clean": false
+    },
+    "layerB": {
+      "path": "/private/tmp/baseui-cn-1.4.2-typography-site-enable",
+      "branch": "feature/1.4.2-typography-site-enable",
+      "head": "86c148363de388787228da71d0ac257074a0491a",
+      "modifiedTracked": 193,
+      "untrackedFiles": 27,
+      "stagedFiles": 0,
+      "clean": false
+    },
+    "dataGrid": {
+      "path": "/Users/jaspreet/Workspace/baseui-cn-work/baseui-cn",
+      "branch": "integration/data-grid-v9",
+      "head": "aa3744d329621fb1d6e70d68d396e1e6c3d051a6",
+      "modifiedTracked": 0,
+      "untrackedFiles": 0,
+      "stagedFiles": 0,
+      "clean": true
+    },
+    "pro": {
+      "path": "/Users/jaspreet/Workspace/baseui-cn-work/baseui-cn-pro",
+      "branch": "main",
+      "head": "4754ac8d292436ee1b74989584dad81cf285fbc4",
+      "modifiedTracked": 0,
+      "untrackedFiles": 0,
+      "stagedFiles": 0,
+      "clean": true
+    },
+    "main": {
+      "path": "/private/tmp/baseui-cn-hardening-merged-main",
+      "branch": "main",
+      "head": "86c148363de388787228da71d0ac257074a0491a",
+      "modifiedTracked": 0,
+      "untrackedFiles": 0,
+      "stagedFiles": 0,
+      "clean": true
+    },
+    "feature": {
+      "path": "/private/tmp/baseui-cn-create-theme",
+      "branch": "fix/create-project-theme-typography",
+      "head": "c203d6bc2ba6b63388a52cb7b740750012bf0253",
+      "modifiedTracked": 0,
+      "untrackedFiles": 0,
+      "stagedFiles": 0,
+      "clean": true
+    },
+    "hardening": {
+      "path": "/private/tmp/baseui-cn-npm-release-hardening",
+      "branch": "chore/npm-release-hardening",
+      "head": "74d3fbe62dd25b50b6dafd01ac543e9cef754204",
+      "modifiedTracked": 0,
+      "untrackedFiles": 0,
+      "stagedFiles": 0,
+      "clean": true
+    }
+  },
+  "remoteAuthoritiesReverifiedAtHandoff": true,
+  "focusedCheckpoint": {
+    "authorizedAction": "commit/push Layer A only",
+    "releaseBranch": "release/1.4.2-integration",
+    "mainMustRemain": "86c148363de388787228da71d0ac257074a0491a",
+    "mergeGate": "npm 1.4.2/latest/exact tarball/provenance successfully published and verified before Layer A main merge",
+    "releaseSequence": [
+      "commit/push Layer A",
+      "prepare exact hosted artifact from Layer A commit",
+      "review artifact",
+      "configure Trusted Publisher",
+      "tag exact approved Layer A commit",
+      "publish exact artifact",
+      "verify npm 1.4.2/latest/tarball/provenance",
+      "merge Layer A to main",
+      "verify production site/registry",
+      "recreate Layer B on committed Layer A",
+      "merge/deploy Layer B"
+    ],
+    "checks": {
+      "frozenInstall": "PASS",
+      "cliTypeScript": "PASS",
+      "websiteTypeScript": "PASS",
+      "lint": "PASS; zero errors, one existing Data Grid warning",
+      "buildAll": "PASS",
+      "freshCliBuild": "PASS; exact retained tarball bytes",
+      "registryCheck": "PASS",
+      "themeCheck": "PASS",
+      "themeFixtures": "PASS",
+      "setupContract": "64/64 PASS",
+      "onboarding": "59/59 PASS",
+      "commandBrowser": "20/20 PASS",
+      "public141Parser": "40/40 PASS; actions intercepted",
+      "hardenedHelper": "29/29 PASS",
+      "hardenedInspector": "PASS; all 60 package members match source",
+      "gitDiffCheck": "PASS"
+    },
+    "consumerEvidenceReused": {
+      "passed": 8,
+      "reason": "all implementation inputs unchanged; fresh build matches every retained package member; all candidate execution receipts match rebuilt CLI SHA-256",
+      "candidateAudit": {
+        "passed": true,
+        "candidateSha256": "bcf23b1cedf7ed7684fc0f00dd8335082fc1de74a85cd1ae3972c0cb7d78d314",
+        "candidateBytes": 201343,
+        "matchedPackageMembers": 60,
+        "distSha256": "6c793721fe249635a359b1ea0a88fb4ddc4c61908a6ddd912fe340e3d498811a",
+        "matchingCandidateReceipts": 16,
+        "durableConsumersPassed": 8,
+        "allImplementationInputsUnchanged": true,
+        "hardenedInspector": "PASS",
+        "siteLayerAExposure": "PASS",
+        "version": "1.4.2",
+        "baseUI": "1.9.0",
+        "publicDataGrid": "@tanstack/react-table@^8.21.3",
+        "layerBPatchSha256": "f9affed086ffec3b96fb36cefba7a0bc1d85862e68931ebf2141215d8aef3cb7",
+        "packageMemberSha256": {
+          "LICENSE": "f8a9d4645ba0aa149540271a56bd6ddabe137760a27c14c83670464b6e768395",
+          "dist/index.js": "6c793721fe249635a359b1ea0a88fb4ddc4c61908a6ddd912fe340e3d498811a",
+          "registry/accordion.json": "aacb3030a104ea5db556d4c8ebbcfccfdfcfdcb74b66503882a7aa4095a8fdba",
+          "registry/alert-dialog.json": "f68248257be1016a3287e7816268aa4c8dd3378f3f5a9eb5fbcfb1a865f9c04a",
+          "registry/alert.json": "102f02bcfb26a0e961a92ba69901dca5fa99c3ba7c5ea45e0ee4cebc169f2aff",
+          "registry/autocomplete.json": "c0b20c536f84bc80213d5bbe8ced488dfe2e2da3401d1717b19866ca4940d0d6",
+          "registry/avatar.json": "a9726cde4752cc44912ec1c87619f1eaa87fd81565c79123bf3160c70b7874d1",
+          "registry/badge.json": "0e738efece560e619d68390eb5a2872f9b8501bb20e07cc265236a7261459be0",
+          "registry/breadcrumb.json": "f31a62e9abb5c68840c39762b8853d5573a6461dbba82d19f3e5ce15f4426559",
+          "registry/button.json": "31a241dbe6eb318be4b0c50be93831919aaeffbdf56440029e8fb828d1202444",
+          "registry/card.json": "2056ed41cf2a7282f40e217c34e6f314e935c1c4dc9e655bd658e320f54d5169",
+          "registry/checkbox-group.json": "4faad605d4973ec6c5c2bc66a2c5b758b5397ec28e750432566c9b23405f6a7c",
+          "registry/checkbox.json": "9d720356e1578eca181774683a2a72c93b2fff4e9eb26e6f2588a1b56553fe7b",
+          "registry/collapsible.json": "cba2038bcf6c2afb0e0171929c929fb6b3fa214c99fd20eee18ad6cf930b3e02",
+          "registry/combobox.json": "f41bbb3efde3f6ad87eff654e371edb8e23a41882eed935499231655f58f0242",
+          "registry/command.json": "7a5f6eba3dd59296fd05e9b83072310a3902f3d91c074831b924e61c0865d66d",
+          "registry/data-grid.json": "e7b630f7df70b357768c4d8e255dc8afc59f97a0dd611cfbca7a30a5010708a4",
+          "registry/date-picker.json": "e14d0b653cd4e10593627860b240755a5e16da5562f0420a40625a44a42ca9a8",
+          "registry/dialog.json": "5b979ca215003ab5038a178a3ba7cc69c123cca4104a034b29b99b6f8657362e",
+          "registry/drawer.json": "a93a37f785889a71412bc5cc9ed31931607cadd67c7c75c96a3958c07cc44ac8",
+          "registry/dropdown-menu.json": "6ca3f8b26bafbd92135df89a22644bfbc08e125f3246c19cbbfd1f30726c42aa",
+          "registry/empty-state.json": "3c61dbdae94e5dfb84bf28872161a20034024a4129e296dbf0a1149a8ec47fc6",
+          "registry/field.json": "c8fdabaa5aa9ea2cb1ecdd6ef1b6afdae586a718b6b0bbdd11152fbdeffc50e1",
+          "registry/fieldset.json": "f9718d9045125b858c3a9084054fc766b7b04c2c4e06efad698946f0662cc0a7",
+          "registry/form.json": "4c8dccc49aedb3bdfbbf1e16d25d7894f7ea5ff1cf1db5bfd1e20e1873aa791b",
+          "registry/frame.json": "5fc3620c68b935ff52b5afb35f89160e968a5243c965d976721bb7c7642ec8e1",
+          "registry/index.json": "a08134422bdae51791b74dae34a684187ea11b92223c5bcc9ab0e3b649828fb2",
+          "registry/input-group.json": "6a7cda65230b7283bb952334228e2d2e21aa5ebb18a04018323391e70e19b46a",
+          "registry/input.json": "2fc39b6b54bdd8a079507e8612629699fbaf8d5e7c7251030e55473f3445b081",
+          "registry/item.json": "fdaf5c470943cd8be2a330c2ea34da243664d3e216da4abf1403fcbf9096afa4",
+          "registry/label.json": "95d9888bcfac5b89145fd26932f790ce3a886aa33ab6a82060bf6b83ac6e4133",
+          "registry/login.json": "caeae07170fea29f097ae973912ce4223c46b34b7a0c0e4ba5d1fb3decbcd384",
+          "registry/menubar.json": "80392ac58490434f1cb3747b75ef0f9a428c71d54f39d90a037f6a57bdab0942",
+          "registry/navigation-menu.json": "f18c06342f7aa87a57e97b1522cbf01b898f9c87ec5e11f9f6262786716b56f6",
+          "registry/number-field.json": "728e84a7608aa63a8759e2a7db35d3cb7a8649869161fe8ebc304b3d06a1eb9e",
+          "registry/otp-field.json": "1d9808effd12f8c3880416c4e71b55ada4f505ad95d0c56429d0cfbead4388b1",
+          "package.json": "26e6f8aed11ac5cc96003f0a2b5a439f5a2662ea0089855c0abb08629d386b81",
+          "registry/pagination.json": "5907d872810511ef8debdcc51654acdf693d450de53524e216e593083ea13a06",
+          "registry/popover.json": "62962a1e86bea9dd28b7e9eb90719649887a6e72c29e52b3c57ababdb48bff92",
+          "registry/preview-card.json": "2718819f43fa5b520fc83c4cd5677e37c7d9c00b6135484b4343eb72b125f858",
+          "registry/progress.json": "8bb59323eb8157e08c0b690cc6e2c184036cd05c31f804ebb8e1327ab32765bf",
+          "registry/radio-group.json": "818f722d939f90f2e01281bae6203b79152a60ad61095ae5fb77fa3632cf1b7f",
+          "registry/scroll-area.json": "910dc3a43b7d9eb8f1dc40dc2ef9931a145a21cab32ef134d1f5e9e056ada6f4",
+          "registry/select.json": "a0309d0de8c0adcc20e45f91effa536019d9fcad510220cf720dcef098d1c0c3",
+          "registry/separator.json": "c9849255a7aefa3143817390ab21ec70ccc5cd2fea0baab234fdb081318a666c",
+          "registry/signup.json": "d486e8bccff21bf48959ee438d69cc23b7b3e5331692653973646320efc977a7",
+          "registry/skeleton.json": "46a5589e09d3ab7231176af4f897c469239e10ed99b08bdc4f25e3e54a6666a1",
+          "registry/slider.json": "9b3d888e5f31a01f3b6094074f094fce26ab602d0c489667b8badbacfad9afeb",
+          "registry/spinner.json": "4dcddf9c23f3ea0ab86c9042876bb25b276f9585da781ac57bf14d4f322a67ff",
+          "registry/switch.json": "00d7ddf97b9b4c0da8c7b9446913ff6c35a4bd9649f6c80fcb9c21ccd95ff919",
+          "registry/table.json": "f8d0cc0f3f42b90188e402dde004e0f36b97891e4c00ef01dd4a0b6276d8c5cf",
+          "registry/tabs.json": "5294302a44bba581bf22296c7a6822099b89eafb13227f07819498523b3f5a44",
+          "registry/textarea.json": "ec1e50fccb759799832050045173f190051a4d18f48b5ed9f06da7cb21dd7cbb",
+          "registry/time-picker.json": "46d43f22eead2762ebbfcf0e177b32d70629b35fd8c05a8b5212b81af7cb4854",
+          "registry/toast.json": "4125825d79c9792184d0457cdb04fe2a7da24da95e0c76af802e3bb7b4234084",
+          "registry/toggle-group.json": "734cfb61bee85dcc5d6a68b839646555d6488716831bd4e9376a027bb203025b",
+          "registry/toggle.json": "2290c541a158f21b778f8d4efda7cda6b5f76255a5ff7baba4ebb71b77b1b008",
+          "registry/tooltip.json": "c6c7d24ef7262212566ed82eb513ab90d52a3d30e14461bf231c9902faf005bc",
+          "README.md": "eccc823ddce30de37b293d417eb7a80bdd294efa404fbd456facb0cb3bc65c2d",
+          "dist/index.d.ts": "a59c47872b71f12589942892464e764c0db350c20b72228645615cc36e0a0725"
+        }
+      },
+      "cliSourceSha256": {
+        "packages/cli/src/commands/add.ts": "8e447f3f7519dbf1a3fe62e4931ee495828a76d9dced63973f9719e4db229a7c",
+        "packages/cli/src/commands/create.ts": "2b9a92b1ebb7940e7654e29992beef67552182d36ab95129d71ec8cfcf6ddc34",
+        "packages/cli/src/commands/init.ts": "eadf1bf7d633676a5bf8a71941019cc13ce2231a75bea32dd0a6bcee3380ed7c",
+        "packages/cli/src/commands/list.ts": "274e74d0d6c8806c11afac200218da9d5d97558a9b28584ca871bb2cbe815028",
+        "packages/cli/src/commands/update.ts": "6e7531d092e481589ea8c01a3a7b240a33bacb4c98fc207c3b4b90311efb7a45",
+        "packages/cli/src/index.ts": "e482bd69f4c0ea528f94ff80c3fe7b261ce907e01a5bd9c1d3387fc095ab17ee",
+        "packages/cli/src/program.ts": "042301449c1037552efbf6672a497b782085723e1c1850b16b16c6b4705f11d2",
+        "packages/cli/src/utils/config.ts": "408d0d1188977ea2d29de74f5e6b1b68b84090be3f20359f22a535abbb81e35b",
+        "packages/cli/src/utils/ensure-styles.ts": "6fb434f5e1b531ab446acb42af07d55f858e69756687d10588babce395fe3333",
+        "packages/cli/src/utils/package-manager.ts": "69caf8b18870d9f05881d75ab11affeb9a99e5c26eafd48e0f0d3d3d66ea3b1f",
+        "packages/cli/src/utils/project.ts": "0eee433d8cdadc12e5ad1e3b44bcf5e13d10c02677eaab85c90b442a306ede95",
+        "packages/cli/src/utils/registry.ts": "faebec9e8b3a1865aabd23c9780443fa2fee8efb95b464ce3189d5231f4c4a20",
+        "packages/cli/src/utils/style-file.ts": "5a5f5a80b02757d5e0ca878df254d12deab69506332797f2642f32f78bdd2362",
+        "packages/cli/src/utils/theme-options.ts": "82b4b7a27e61ea9248f5e73bcef307c064c9f1626ae088ddb884cf74f8fe8739",
+        "packages/cli/src/utils/theme.generated.ts": "8ef35cf7a6e32b6f5cb8a5cc48298efe50cf6eb8722756fead57c2eeaeaf0ed0",
+        "packages/cli/src/utils/typography.generated.ts": "b1cc30359ac3001e7746bc1ee50bae6291f5fc459fc4ebd5ee81480b19c31dc7",
+        "packages/cli/src/utils/typography.ts": "8c155b469d645259910487257f3fa191074fa97cf199cfc9b6e2e239b1408f15"
+      }
+    },
+    "layerBPatchPreserved": true,
+    "layerBWorktreeNotCommitted": true,
+    "evidenceRoot": "/private/tmp/baseui-cn-1.4.2-checkpoint",
+    "postCommitReceipt": "/private/tmp/baseui-cn-1.4.2-checkpoint/checkpoint-receipt.json",
+    "whitespaceReconciliation": {
+      "reportTrailingSpacesRemoved": true,
+      "approvedPatchBytesUnchanged": true,
+      "attributePath": ".gitattributes",
+      "scope": "docs/releases/1.4.2-typography-site-enable.patch whitespace=-blank-at-eol",
+      "finalAllowlistFiles": 216
+    }
+  }
+}

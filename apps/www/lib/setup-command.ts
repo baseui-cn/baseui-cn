@@ -1,3 +1,5 @@
+import { type BodyFont, type HeadingFont } from "./typography-presets"
+
 import {
   themePresets,
   defaultColor,
@@ -25,6 +27,8 @@ export interface SetupInput {
   workspace: string
   color?: ColorPreset
   radius?: RadiusPreset
+  bodyFont?: BodyFont
+  headingFont?: HeadingFont
 }
 export function packageInvocation(pm: SetupManager) {
   return { npm: "npx", pnpm: "pnpm dlx", yarn: "yarn dlx", bun: "bunx" }[pm]
@@ -35,16 +39,25 @@ export function setupCommand(input: SetupInput): {
   description: string
   error?: string
 } {
+  if (
+    !setupManagers.includes(input.packageManager) ||
+    !setupFrameworks.some((f) => f.value === input.framework) ||
+    !["new", "existing"].includes(input.projectMode) ||
+    !["single", "monorepo"].includes(input.structure)
+  )
+    return { primary: "", description: "", error: "Choose a supported setup configuration." }
   const invoke = `${packageInvocation(input.packageManager)} baseui-cn@latest`
   if (
     (input.color !== undefined && !Object.hasOwn(themePresets.colors, input.color)) ||
     (input.radius !== undefined && !Object.hasOwn(themePresets.radii, input.radius))
   )
-    return { primary: "", description: "", error: "Choose a supported theme color and radius." }
+    return { primary: "", description: "", error: "Choose supported appearance presets." }
   const themeFlags =
     input.projectMode === "new"
       ? ` --color ${input.color ?? defaultColor} --radius ${input.radius ?? defaultRadius}`
       : `${input.color ? ` --color ${input.color}` : ""}${input.radius ? ` --radius ${input.radius}` : ""}`
+  // Public npm latest is 1.4.1. Hidden typography state must never affect copied commands.
+  const appearanceFlags = themeFlags
   const label = setupFrameworks.find((f) => f.value === input.framework)!.label
   if (input.projectMode === "new") {
     if (input.framework === "react")
@@ -63,7 +76,7 @@ export function setupCommand(input: SetupInput): {
         error: "Use lowercase letters, numbers and hyphens for the project name.",
       }
     return {
-      primary: `${invoke} create ${input.projectName} --framework ${input.framework} --package-manager ${input.packageManager}${input.structure === "monorepo" ? " --monorepo" : ""}${themeFlags}`,
+      primary: `${invoke} create ${input.projectName} --framework ${input.framework} --package-manager ${input.packageManager}${input.structure === "monorepo" ? " --monorepo" : ""}${appearanceFlags}`,
       followUp: `cd ${input.projectName}${input.structure === "monorepo" ? "/apps/web" : ""} && ${input.packageManager} run dev`,
       description: `Official ${label} scaffold + baseui-cn.${input.structure === "monorepo" ? " App in apps/web." : " Ready to add components."}${input.packageManager === "yarn" ? " Requires Yarn 2+." : ""}`,
     }
@@ -79,8 +92,27 @@ export function setupCommand(input: SetupInput): {
       error: "Enter a relative workspace path, such as apps/web.",
     }
   return {
-    primary: `${invoke} init${themeFlags}${input.structure === "monorepo" && input.workspace ? ` --workspace ${input.workspace}` : ""}`,
+    primary: `${invoke} init${input.structure === "monorepo" && input.workspace ? ` --workspace ${input.workspace}` : ""}${appearanceFlags}`,
     followUp: `${invoke} add button${input.structure === "monorepo" && input.workspace ? ` --workspace ${input.workspace}` : ""}`,
-    description: `Run in your ${input.structure === "monorepo" ? "workspace root" : label + " app"}. Framework and package manager are detected automatically.${themeFlags ? " Applies your selected theme values." : " Preserves your existing theme."}${input.structure === "monorepo" && !input.workspace ? " Choose an app when prompted." : ""}${input.packageManager === "yarn" ? " Runner requires Yarn 2+." : ""}`,
+    description: `${input.structure === "monorepo" ? "Run this from the existing workspace root." : `Run this from your existing ${label} app.`} Framework and package manager are detected automatically.${appearanceFlags ? " Applies your selected appearance values." : " Preserves your existing theme."}${input.structure === "monorepo" && !input.workspace ? " Choose an app when prompted." : ""}${input.packageManager === "yarn" ? " Runner requires Yarn 2+." : ""}`,
+  }
+}
+
+/** Mode changes never reuse a hidden workspace or implicitly opt existing apps into styling. */
+export function changeProjectMode(
+  input: SetupInput,
+  projectMode: SetupInput["projectMode"]
+): SetupInput {
+  if (input.projectMode === projectMode) return input
+  return {
+    ...input,
+    projectMode,
+    workspace: "",
+    projectName: "my-app",
+    framework: projectMode === "new" && input.framework === "react" ? "next" : input.framework,
+    color: undefined,
+    radius: undefined,
+    bodyFont: undefined,
+    headingFont: undefined,
   }
 }

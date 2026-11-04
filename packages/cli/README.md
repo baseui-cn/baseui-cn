@@ -154,13 +154,61 @@ Blocks: `empty-state`, `login`, `signup`
 
 ## Maintainer release flow
 
-The publish workflow accepts tags named `cli-v<version>` and supports manual dispatch. A matching tag must equal `packages/cli/package.json`. Both paths publish to npm; run them only after the hosted registry gate passes.
+The 1.4.2 candidate is unpublished. Public website setup commands remain compatible with npm latest 1.4.1 until the new package is verified. Typography controls and public font-flag examples are a separate post-publication website change.
 
-1. Synchronize the CLI package version, CLI `--version` banner, and site release metadata. Run `pnpm build:all` to generate registry versions from the CLI manifest; leave private workspace package versions independent.
-2. Validate and approve/merge the release code, including the changelog, package, and packed consumer.
-3. Deploy baseui-cn.com with the approved website and all three registry distributions generated from that release code.
-4. Verify the hosted registry version **and bytes** against the approved local output, preferably every registry JSON. At minimum compare `index.json`, `button.json`, `data-grid.json`, a shared-CSS component such as `select.json`, a modal such as `dialog.json`, and `date-picker.json` / `time-picker.json`.
-5. Only after alignment, create/push the matching `cli-v<version>` tag and publish through the approved workflow. For 1.4.1, the tag is `cli-v1.4.1`.
-6. Run an ordinary remote-first fresh consumer using the published package. Mark the release complete only after it passes.
+1. Synchronize package, CLI banner and site release metadata, then generate all registry distributions with `pnpm build:all`.
+2. Validate and review the release code and packed consumer. Merge/deploy only with separate release authorization; verify every hosted registry JSON against the approved bytes.
+3. Run `prepare-cli.yml` on the exact approved source commit. Review its immutable tarball, manifest, artifact ID, run ID and independent SHA-256 values.
+4. After separate approval, create an annotated `cli-v1.4.2` tag that directly targets that exact commit and contains the reviewed JSON approval. Nested/lightweight tags fail closed.
+5. `publish-cli.yml` accepts release-tag pushes only. It verifies and publishes the exact prepared tarball, without rebuilding or repacking. The existing token path remains until the owner separately configures Trusted Publisher; preparation does not authorize configuration or publication.
+6. Verify public npm version, latest tag and tarball SHA-256, then run a remote-first consumer. Only then enable the separate website typography follow-up.
 
-The workflow installs frozen dependencies, generates registry artifacts, checks and builds the CLI, then publishes `baseui-cn` using the repository `NPM_TOKEN`. It does not deploy or verify the hosted registry. Because the CLI is remote-first, index version equality alone cannot establish alignment; component source and shared styles must match too.
+See [release automation hardening](../../docs/releases/npm-publish-automation-hardening.md) for the authoritative artifact and approval contract. No release action is authorized by this README.
+
+## Create versus initialize (1.4.2 candidate)
+
+```bash
+# Create a new application (new directory)
+pnpm dlx baseui-cn@1.4.2 create my-app --framework next --package-manager pnpm
+
+# Create a new monorepo (new root, application in apps/web)
+pnpm dlx baseui-cn@1.4.2 create my-app --framework next --package-manager pnpm --monorepo
+
+# Initialize an existing application, from inside the application
+pnpm dlx baseui-cn@1.4.2 init
+
+# Initialize an existing member; run from the existing workspace root
+pnpm dlx baseui-cn@1.4.2 init --workspace apps/web
+```
+
+`--workspace` always targets an existing workspace member. It never takes a new project name.
+Create supports `next`, `tanstack-start`, `react-router`, `vite` and npm, pnpm, Yarn 2+, Bun.
+
+## Appearance and typography
+
+```bash
+pnpm dlx baseui-cn@1.4.2 create my-app --framework next --package-manager pnpm --color iris --radius lg --body-font inter --heading-font space-grotesk
+pnpm dlx baseui-cn@1.4.2 init --color emerald --radius xl --body-font geist --heading-font montserrat
+```
+
+- `--color`: iris, blue, violet, emerald, orange, rose, neutral. Explicit selection owns the complete light/dark palette, including border, input and ring. There is no independent border flag.
+- `--radius`: sm (Sharp), md (Medium), lg (Rounded), xl (Extra), including derived control radii.
+- `--body-font`: system, inter, geist, manrope, roboto.
+- `--heading-font`: system, inter, geist, manrope, montserrat, poppins, space-grotesk.
+
+New apps default to Iris, Rounded and system typography. Existing `init` preserves typography
+when flags are omitted; interactive setup defaults each font to “Keep existing typography”.
+Unknown/custom setups are preserved. Each font can be changed independently.
+
+Non-system fonts use pinned Fontsource 5.3.0 npm packages, imported in the app's own global CSS.
+Inter, Geist, Manrope, Roboto, Montserrat and Space Grotesk use `@fontsource-variable/*` normal
+faces; Poppins has no variable package and uses `@fontsource/poppins` normal weights 400–900.
+Packages include OFL-1.1 licenses. Fonts are bundled/self-hosted by the consumer, with no
+baseui-cn.com or Google Fonts runtime dependency. Equal font choices deduplicate dependencies
+and imports. System installs nothing. Existing font imports/dependencies are never removed.
+Add extra styles or weights in your own app as needed.
+
+The generic `--font-body` and `--font-heading` tokens remain editable in consumer CSS. Body and
+semantic h1–h6 headings use their respective tokens. Inputs inherit body typography; code,
+monospace content and icons are not targeted by the heading rule. Explicit consumer selectors
+can still override semantic heading defaults.

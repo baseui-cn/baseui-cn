@@ -1,0 +1,2 @@
+# Unified patch blank context lines are required; retain the approved patch bytes.
+docs/releases/1.4.2-typography-site-enable.patch whitespace=-blank-at-eol

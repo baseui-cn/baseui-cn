@@ -31,6 +31,7 @@ import {
 } from "@/lib/theme-presets"
 import {
   setupCommand,
+  changeProjectMode,
   setupFrameworks,
   setupManagers,
   packageInvocation,
@@ -158,15 +159,30 @@ export function SetupBuilder() {
   })
   const set = <K extends keyof SetupInput>(key: K, value: SetupInput[K]) =>
     setInput((previous) => ({ ...previous, [key]: value }))
+  const availableFrameworks = frameworkOptions.filter(
+    (f) => input.projectMode === "existing" || f.value !== "react"
+  )
   const command = setupCommand(
-    input.projectMode === "new" ? { ...input, color: preview.color, radius: preview.radius } : input
+    input.projectMode === "new"
+      ? {
+          ...input,
+          color: preview.color,
+          radius: preview.radius,
+        }
+      : input
   )
   return (
     <DrawerContent ref={viewportRef} side="right" className="project-setup-drawer">
       <DrawerHeader className="project-setup-header">
         <div>
-          <DrawerTitle>Create your project</DrawerTitle>
-          <DrawerDescription>Choose your stack and copy the command.</DrawerDescription>
+          <DrawerTitle>
+            {input.projectMode === "new" ? "Create new project" : "Initialize existing project"}
+          </DrawerTitle>
+          <DrawerDescription>
+            {input.projectMode === "new"
+              ? "Create a fresh application in a new directory."
+              : "Set up components inside an application you already have."}
+          </DrawerDescription>
         </div>
         <DrawerClose
           render={<Button variant="ghost" size="icon-xl" aria-label="Close project setup" />}
@@ -188,13 +204,12 @@ export function SetupBuilder() {
                 <label id="framework-label">Framework</label>
                 <Select
                   value={input.framework}
-                  items={Object.fromEntries(frameworkOptions.map((f) => [f.value, f.label]))}
+                  items={Object.fromEntries(availableFrameworks.map((f) => [f.value, f.label]))}
                   onValueChange={(value) => {
                     if (value)
                       setInput((previous) => ({
                         ...previous,
                         framework: value,
-                        projectMode: value === "react" ? "existing" : previous.projectMode,
                       }))
                   }}
                 >
@@ -202,7 +217,7 @@ export function SetupBuilder() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {frameworkOptions.map((f) => (
+                    {availableFrameworks.map((f) => (
                       <SelectItem key={f.value} value={f.value}>
                         {f.label}
                       </SelectItem>
@@ -213,15 +228,11 @@ export function SetupBuilder() {
               <Choices
                 label="Project"
                 value={input.projectMode}
-                choices={
-                  input.framework === "react"
-                    ? [{ value: "existing", label: "Existing project" }]
-                    : [
-                        { value: "new", label: "New project" },
-                        { value: "existing", label: "Existing project" },
-                      ]
-                }
-                onChange={(value) => set("projectMode", value)}
+                choices={[
+                  { value: "new", label: "New project" },
+                  { value: "existing", label: "Existing project" },
+                ]}
+                onChange={(value) => setInput((previous) => changeProjectMode(previous, value))}
               />
               <Choices
                 label="Structure"
@@ -287,7 +298,7 @@ export function SetupBuilder() {
                 <p className="setup-theme-safety">
                   {input.color || input.radius ? (
                     <>
-                      Selected theme values will replace existing CSS.{" "}
+                      Selected appearance values will replace existing CSS.{" "}
                       <button
                         type="button"
                         onClick={() =>
@@ -295,6 +306,8 @@ export function SetupBuilder() {
                             ...previous,
                             color: undefined,
                             radius: undefined,
+                            bodyFont: undefined,
+                            headingFont: undefined,
                           }))
                         }
                       >
@@ -302,7 +315,7 @@ export function SetupBuilder() {
                       </button>
                     </>
                   ) : (
-                    "Your existing theme is preserved. Choose a color or radius to explicitly change it."
+                    "Your existing theme is preserved. Choose appearance values to explicitly change it."
                   )}
                 </p>
               )}
@@ -327,6 +340,7 @@ export function SetupBuilder() {
                   </div>
                 ) : (
                   <div className="setup-name">
+                    <p>Run this from the existing workspace root.</p>
                     <label htmlFor="setup-workspace">
                       Workspace <span>(optional)</span>
                     </label>
@@ -334,7 +348,7 @@ export function SetupBuilder() {
                       id="setup-workspace"
                       value={input.workspace}
                       onChange={(e) => set("workspace", e.target.value)}
-                      placeholder="Choose in CLI, or enter apps/web"
+                      placeholder="apps/web"
                       spellCheck={false}
                       autoComplete="off"
                       aria-invalid={!!command.error}
