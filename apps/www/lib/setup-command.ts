@@ -1,4 +1,4 @@
-import { type BodyFont, type HeadingFont } from "./typography-presets"
+import { typography, type BodyFont, type HeadingFont } from "./typography-presets"
 
 import {
   themePresets,
@@ -49,15 +49,20 @@ export function setupCommand(input: SetupInput): {
   const invoke = `${packageInvocation(input.packageManager)} baseui-cn@latest`
   if (
     (input.color !== undefined && !Object.hasOwn(themePresets.colors, input.color)) ||
-    (input.radius !== undefined && !Object.hasOwn(themePresets.radii, input.radius))
+    (input.radius !== undefined && !Object.hasOwn(themePresets.radii, input.radius)) ||
+    (input.bodyFont !== undefined && !typography.bodyFonts.includes(input.bodyFont)) ||
+    (input.headingFont !== undefined && !typography.headingFonts.includes(input.headingFont))
   )
     return { primary: "", description: "", error: "Choose supported appearance presets." }
   const themeFlags =
     input.projectMode === "new"
       ? ` --color ${input.color ?? defaultColor} --radius ${input.radius ?? defaultRadius}`
       : `${input.color ? ` --color ${input.color}` : ""}${input.radius ? ` --radius ${input.radius}` : ""}`
-  // Public npm latest is 1.4.1. Hidden typography state must never affect copied commands.
-  const appearanceFlags = themeFlags
+  const fontFlags =
+    input.projectMode === "new"
+      ? ` --body-font ${input.bodyFont ?? typography.defaultBodyFont} --heading-font ${input.headingFont ?? typography.defaultHeadingFont}`
+      : `${input.bodyFont ? ` --body-font ${input.bodyFont}` : ""}${input.headingFont ? ` --heading-font ${input.headingFont}` : ""}`
+  const appearanceFlags = themeFlags + fontFlags
   const label = setupFrameworks.find((f) => f.value === input.framework)!.label
   if (input.projectMode === "new") {
     if (input.framework === "react")

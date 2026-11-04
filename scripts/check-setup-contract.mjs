@@ -69,28 +69,18 @@ function cliTypographyCommand(input) {
     ` --body-font ${input.bodyFont} --heading-font ${input.headingFont}`
   )
 }
-await test("pre-publish website ignores all hidden typography state and exposes no font flags", () => {
-  for (const packageManager of setup.setupManagers)
-    for (const projectMode of ["new", "existing"])
-      for (const structure of ["single", "monorepo"])
-        for (const framework of ["next", "tanstack-start", "react-router", "vite"])
-          for (const fonts of [
-            { bodyFont: "inter", headingFont: "poppins" },
-            { bodyFont: "bad;id", headingFont: "" },
-          ]) {
-            const input = {
-              ...base,
-              packageManager,
-              projectMode,
-              structure,
-              framework,
-              workspace: "apps/web",
-            }
-            const plain = setup.setupCommand(input)
-            assert.deepEqual(setup.setupCommand({ ...input, ...fonts }), plain)
-            assert.doesNotMatch(plain.primary, /--body-font|--heading-font/)
-          }
+await test("post-publish website exposes selected and default typography", () => {
+  assert.match(setup.setupCommand(base).primary, /--body-font system --heading-font system/)
+  assert.match(
+    setup.setupCommand({ ...base, bodyFont: "inter", headingFont: "poppins" }).primary,
+    /--body-font inter --heading-font poppins/
+  )
+  assert.doesNotMatch(
+    setup.setupCommand({ ...base, projectMode: "existing" }).primary,
+    /--body-font|--heading-font/
+  )
 })
+
 for (const packageManager of setup.setupManagers) {
   for (const projectMode of ["new", "existing"])
     for (const structure of ["single", "monorepo"])

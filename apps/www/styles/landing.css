@@ -2384,3 +2384,22 @@
     min-width: 44px;
   }
 }
+
+/* Typography is scoped to the setup sample, never the marketing page. */
+.setup-theme-preview .setup-preview-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+.setup-theme-preview .setup-preview-body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.setup-theme-preview .setup-preview-controls,
+.setup-theme-preview .setup-preview-controls input,
+.setup-theme-preview .setup-preview-controls button {
+  font-family: var(--font-body);
+}

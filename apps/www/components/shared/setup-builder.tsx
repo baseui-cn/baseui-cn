@@ -21,6 +21,12 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select"
+import {
+  typography,
+  typographyVariables,
+  type BodyFont,
+  type HeadingFont,
+} from "@/lib/typography-presets"
 import { CopyButton } from "./copy-button"
 import { useHomeTheme } from "./home-theme-provider"
 import {
@@ -85,16 +91,30 @@ function StartingThemePreview() {
   const { resolvedTheme } = useTheme()
   const [mode, setMode] = React.useState<"light" | "dark" | null>(null)
   const actualMode = mode ?? (resolvedTheme === "dark" ? "dark" : "light")
-  const values = themeVariables(selection.color, selection.radius, actualMode)
+  const fonts = typographyVariables(selection.bodyFont, selection.headingFont)
+  const values = { ...themeVariables(selection.color, selection.radius, actualMode), ...fonts }
   const color = themePresets.colors[selection.color]
-  const css = `:root {\n${Object.entries({
-    ...color.light,
-    "--radius": themePresets.radii[selection.radius].value,
-  })
+  const fontImports = [
+    ...new Set([
+      ...typography.fonts[selection.bodyFont].imports,
+      ...typography.fonts[selection.headingFont].imports,
+    ]),
+  ]
+    .map((entry) => `@import "${entry}";`)
+    .join("\n")
+  const css = `${fontImports ? "/* Font dependencies are installed by the setup command. */\n" + fontImports + "\n\n" : ""}:root {\n${Object.entries(
+    {
+      ...color.light,
+      ...fonts,
+      "--radius": themePresets.radii[selection.radius].value,
+    }
+  )
     .map(([key, value]) => `  ${key}: ${value};`)
     .join("\n")}\n}\n.dark {\n${Object.entries(color.dark)
     .map(([key, value]) => `  ${key}: ${value};`)
-    .join("\n")}\n}`
+    .join(
+      "\n"
+    )}\n}\nbody { font-family: var(--font-body); }\nh1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }`
   return (
     <div
       className="setup-theme-preview"
@@ -119,6 +139,8 @@ function StartingThemePreview() {
           )}
         </Button>
       </div>
+      <h4 className="setup-preview-title">Make something your own.</h4>
+      <p className="setup-preview-body">Pair a clear heading with comfortable body text.</p>
       <div className="setup-preview-controls">
         <Input aria-label="Try your starting theme input" placeholder="Try a focus state…" />
         <CopyButton key={css} text={css} showLabel label="Copy theme CSS" variant="default" />
@@ -168,6 +190,8 @@ export function SetupBuilder() {
           ...input,
           color: preview.color,
           radius: preview.radius,
+          bodyFont: preview.bodyFont,
+          headingFont: preview.headingFont,
         }
       : input
   )
@@ -293,10 +317,55 @@ export function SetupBuilder() {
                   set("radius", value)
                 }}
               />
+              {(["bodyFont", "headingFont"] as const).map((key) => {
+                const label = key === "bodyFont" ? "Body font" : "Heading font"
+                const presets = key === "bodyFont" ? typography.bodyFonts : typography.headingFonts
+                const selected =
+                  input.projectMode === "existing" ? (input[key] ?? "keep") : preview[key]
+                const options = [
+                  ...(input.projectMode === "existing"
+                    ? [{ value: "keep", label: "Keep existing typography" }]
+                    : []),
+                  ...presets.map((value) => ({
+                    value,
+                    label: typography.fonts[value as keyof typeof typography.fonts].label,
+                  })),
+                ]
+                return (
+                  <div className="setup-framework" key={key}>
+                    <label id={`${key}-label`}>{label}</label>
+                    <Select
+                      value={selected}
+                      items={Object.fromEntries(options.map((o) => [o.value, o.label]))}
+                      onValueChange={(value) => {
+                        if (!value) return
+                        if (key === "bodyFont") {
+                          if (value !== "keep") preview.setBodyFont(value as BodyFont)
+                          set("bodyFont", value === "keep" ? undefined : (value as BodyFont))
+                        } else {
+                          if (value !== "keep") preview.setHeadingFont(value as HeadingFont)
+                          set("headingFont", value === "keep" ? undefined : (value as HeadingFont))
+                        }
+                      }}
+                    >
+                      <SelectTrigger aria-labelledby={`${key}-label`} className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {options.map((o) => (
+                          <SelectItem key={o.value} value={o.value}>
+                            {o.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )
+              })}
               <StartingThemePreview />
               {input.projectMode === "existing" && (
                 <p className="setup-theme-safety">
-                  {input.color || input.radius ? (
+                  {input.color || input.radius || input.bodyFont || input.headingFont ? (
                     <>
                       Selected appearance values will replace existing CSS.{" "}
                       <button
