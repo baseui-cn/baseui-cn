@@ -569,7 +569,7 @@ await check("all framework/runner/color/radius commands exactly use supported CL
           }
           assert.equal(
             setup.setupCommand(input).primary,
-            `${setup.packageInvocation(manager)} baseui-cn@latest create my-app --framework ${framework} --package-manager ${manager} --color ${color} --radius ${radius}`
+            `${setup.packageInvocation(manager)} baseui-cn@latest create my-app --framework ${framework} --package-manager ${manager} --color ${color} --radius ${radius} --body-font system --heading-font system`
           )
           assert.equal(
             setup.setupCommand({ ...input, projectMode: "existing" }).primary,

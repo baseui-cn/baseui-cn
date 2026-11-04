@@ -59,15 +59,30 @@ pnpm dlx baseui-cn@latest create my-app --framework next --package-manager pnpm`
       <section id="setup-theme" className="flex flex-col gap-4">
         <h2>Choose a theme</h2>
         <p className="text-sm text-muted-foreground">
-          Fresh setup defaults to Iris and Rounded. Create and init accept --color and --radius.
-          Existing themes are preserved unless you explicitly pass those flags or choose new values
-          interactively.
+          Fresh setup defaults to Iris, Rounded and system typography. Create and init accept
+          --color, --radius, --body-font and --heading-font. Existing appearance is preserved unless
+          you explicitly pass those flags or choose new values interactively. Color applies the
+          complete light/dark palette, including border, input and ring; radius controls the derived
+          radii.
         </p>
         <CodeBlock
-          code={`npx baseui-cn@latest create my-app --framework next --color emerald --radius xl
-npx baseui-cn@latest init --color iris --radius lg`}
+          code={`pnpm dlx baseui-cn@latest create my-app --framework next --package-manager pnpm --color iris --radius lg --body-font inter --heading-font space-grotesk
+npx baseui-cn@latest init --body-font inter --heading-font montserrat`}
           language="bash"
         />
+        <p className="text-sm text-muted-foreground">
+          Body fonts: system, inter, geist, manrope, roboto. Heading fonts: system, inter, geist,
+          manrope, montserrat, poppins, space-grotesk. Non-system fonts are installed from pinned
+          Fontsource npm packages and bundled by your app; no Google Fonts runtime service is used.
+          Matching selections install/import once. System adds no font dependency. Poppins uses
+          static weights 400–900; other selections use variable normal faces. Add italic or extra
+          faces in your own app when needed.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Consumers own --font-body and --font-heading. Body and semantic h1–h6 headings use their
+          respective tokens; code and icons keep their own typography. Interactive init offers “Keep
+          existing typography” first, even when custom typography cannot be detected.
+        </p>
         <a href="/docs/theming#theme-presets" className="underline underline-offset-4">
           View color and radius presets
         </a>
