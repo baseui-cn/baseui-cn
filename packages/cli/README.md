@@ -154,18 +154,18 @@ Blocks: `empty-state`, `login`, `signup`
 
 ## Maintainer release flow
 
-The 1.4.2 candidate is unpublished. Public website setup commands remain compatible with npm latest 1.4.1 until the new package is verified. Typography controls and public font-flag examples are a separate post-publication website change.
+The 1.5.0 Data Grid v9 engineering candidate is unpublished. Published 1.4.2 create/theme/typography capabilities and Layer B are retained. Candidate metadata and local test artifacts do not authorize a release.
 
 1. Synchronize package, CLI banner and site release metadata, then generate all registry distributions with `pnpm build:all`.
 2. Validate and review the release code and packed consumer. Merge/deploy only with separate release authorization; verify every hosted registry JSON against the approved bytes.
 3. Run `prepare-cli.yml` on the exact approved source commit. Review its immutable tarball, manifest, artifact ID, run ID and independent SHA-256 values.
-4. After separate approval, create an annotated `cli-v1.4.2` tag that directly targets that exact commit and contains the reviewed JSON approval. Nested/lightweight tags fail closed.
-5. `publish-cli.yml` accepts release-tag pushes only. It verifies and publishes the exact prepared tarball, without rebuilding or repacking. The existing token path remains until the owner separately configures Trusted Publisher; preparation does not authorize configuration or publication.
-6. Verify public npm version, latest tag and tarball SHA-256, then run a remote-first consumer. Only then enable the separate website typography follow-up.
+4. After separate approval, create an annotated version tag (for example, `cli-v1.5.0`) that directly targets that exact commit and contains the reviewed JSON approval. Nested/lightweight tags fail closed.
+5. `publish-cli.yml` accepts release-tag pushes only. It verifies and publishes the exact prepared tarball, without rebuilding or repacking. The preserved workflow supports trusted publishing and retains its transitional token fallback. Preparation does not authorize changing either authentication configuration or publication.
+6. Verify public npm version, latest tag and tarball SHA-256, then run a remote-first consumer. Verify hosted component source/styles and the remote-first consumer against the approved artifact; keep the already released typography controls enabled.
 
 See [release automation hardening](../../docs/releases/npm-publish-automation-hardening.md) for the authoritative artifact and approval contract. No release action is authorized by this README.
 
-## Create versus initialize (1.4.2 candidate)
+## Create versus initialize (published 1.4.2 capabilities)
 
 ```bash
 # Create a new application (new directory)
@@ -227,3 +227,11 @@ operation including Data Grid fail as a whole with the current Node version and
 an upgrade/retry command. No components are silently skipped or partially installed.
 Use named compatible components on Node 18, or upgrade Node and retry.
 
+
+## Data Grid v9 engineering candidate
+
+The 1.5.0 candidate includes the full v9 integration and audited editing, pinning,
+virtualization, accessibility, persistence and date fixes. See the repository
+[v8 to v9 migration guide](../../docs/data-grid-v9-migration.md). The published
+1.4.2 commands above illustrate existing capabilities; use the locally packed
+candidate for v9 qualification until a separate release is approved.

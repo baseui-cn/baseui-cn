@@ -1,0 +1,86 @@
+{
+  "version": "1.5.0",
+  "status": "engineering candidate, unreleased",
+  "baseMain": "17873a6a2a4d2396e4668649602d11018df1b93b",
+  "sourceGrid": "aa3744d329621fb1d6e70d68d396e1e6c3d051a6",
+  "approvedFix": "a69a2e7f9a0ea7085610aaa556bfd81229474eaa",
+  "approvedFixPushed": true,
+  "featureReplay": "0ffd0404f76818ac9fc26fab4df53ebbc428976f",
+  "auditReplay": "b7e1b95319f402d13b32eb79b638f6d3cb56119e",
+  "preservation": {
+    "mainChangedPathsExact": 60,
+    "nonGridRegistryMetadataOnly": 164,
+    "approvedGridRuntimeFilesExact": 29,
+    "cliMainSourceFilesExact": 15,
+    "siteMainSourceFilesExact": 125,
+    "releaseHardeningFilesExact": 5,
+    "websiteDependencyOnlyChange": "@tanstack/react-table ^8.21.3 -> ^9.2.8",
+    "themeAndTypographySourceExact": true
+  },
+  "validation": {
+    "frozenInstall": "pass",
+    "websiteTypes": "pass",
+    "cliTypes": "pass",
+    "lint": "pass, zero warnings",
+    "gridModels": 50,
+    "addedModelGroups": 7,
+    "strictApiConsumerTypeFixtures": 3,
+    "threeBrowserGroups": 42,
+    "strictModeGroups": 12,
+    "consumer9.3.1Groups": 35,
+    "consumer9.2.8Groups": 35,
+    "cliFixtureGroups": 60,
+    "onboardingTests": 59,
+    "setupContractTests": 64,
+    "node18CompatibilityCases": 20,
+    "releaseHardeningUnitTests": 29,
+    "themeColorRadiusMatrices": 28,
+    "productionEndpoints": 173,
+    "exactServedRegistryMatches": 55,
+    "copiedSetupCommandChecks": 20,
+    "drawerChecks": 93,
+    "typographyViewportThemeStates": 4,
+    "realCreateInitConsumers": 8,
+    "realConsumerCases": [
+      "next-pnpm-single",
+      "next-npm-single",
+      "start-pnpm-single",
+      "router-yarn-single",
+      "vite-bun-single",
+      "vite-pnpm-monorepo",
+      "next-npm-existing",
+      "next-npm-existing-monorepo"
+    ],
+    "minimumConsumer": {
+      "node": "v20.20.2",
+      "table": "9.2.8",
+      "cli": "1.5.0",
+      "fonts": {
+        "body": "5.3.0",
+        "heading": "5.3.0"
+      }
+    },
+    "repeatAdd": {
+      "passed": true,
+      "sourceFiles": 61,
+      "customizationPreserved": true,
+      "typographyPreserved": true
+    }
+  },
+  "artifact": {
+    "passed": true,
+    "version": "1.5.0",
+    "tarballSha256": "005bb16bf69c4a8282413bd783221070c48dffb99c9c78310960aa1fd45f296c",
+    "registryFiles": 55,
+    "members": 60,
+    "sourceInventoryMatched": true
+  },
+  "deferred": [
+    "F18 optional feature bundles"
+  ],
+  "releaseReady": false,
+  "productionPromotionAuthorized": false,
+  "releaseTagCreated": false,
+  "npmPublished": false,
+  "hostedPreparationDispatched": false
+}

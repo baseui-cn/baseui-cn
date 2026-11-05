@@ -75,7 +75,7 @@ async function snapshot(dir) {
 
 const normal = await fixture("normal", false)
 let result = run(normal, ["--version"])
-assert.equal(result.status, 0, result.stderr); assert.match(result.stdout, /1\.4\.0/); pass("Node 18 CLI starts")
+assert.equal(result.status, 0, result.stderr); assert.equal(result.stdout.trim(), JSON.parse(await fs.readFile(path.join(repo, "packages/cli/package.json"), "utf8")).version); pass("Node 18 CLI starts")
 result = run(normal, ["create", "--help"])
 assert.equal(result.status, 0, result.stderr); assert.match(result.stdout, /--framework/); pass("Node 18 create command remains available; upstream requirements unchanged")
 result = run(normal, ["list", "--json"])

@@ -45,7 +45,7 @@ Works with **Next.js**, **Vite**, **Remix**, **Astro**, and any React project.
 The Data Grid integration uses `@tanstack/react-table@^9.2.8` and requires Node 20+
 and an ES2022-capable consumer. Review the [v8 to v9 migration guide](docs/data-grid-v9-migration.md)
 for hook/type changes, persisted pinning, editing, server adapters and CSS verification.
-The current integration checkpoint is not a published 1.5.0 release.
+The 1.5.0 engineering candidate is based on production 1.4.2 and is not published.
 
 ### Display
 `button` · `badge` · `avatar` · `card` · `item` · `separator` · `scroll-area` · `skeleton` · `spinner` · `progress` · `toggle` · `toggle-group`
