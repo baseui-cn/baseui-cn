@@ -627,6 +627,8 @@ await check(
       !changed.includes("--success: #123456"),
       "explicit color replaces the complete palette"
     )
+    assert.ok(changed.includes("--success: " + generatedTheme.themeRoot["--success"]))
+    assert.ok(changed.includes("--success: " + generatedTheme.themeDark["--success"]))
     run(["init", "--radius", "xl"])
     changed = await fs.readFile(file, "utf8")
     assert.ok(!changed.includes("--radius: 13px"))

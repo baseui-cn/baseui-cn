@@ -12,6 +12,7 @@ const output = process.env.EVIDENCE_DIR ?? "/private/tmp/baseui-grid-v9-browser"
 await fs.mkdir(output, { recursive: true })
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", headless: true })
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
+await page.clock.setFixedTime(new Date("2026-10-29T12:00:00Z"))
 page.setDefaultTimeout(8000)
 const errors = []
 const results = []
@@ -309,11 +310,17 @@ for (const width of [320, 390, 768, 1280]) for (const dark of [false, true]) for
     assert.equal(await page.evaluate(() => getComputedStyle(document.body).getPropertyValue("--background").trim()), dark ? "#101011" : "#f8f9fb")
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1))
     const pinned = page.locator('th[data-pinned="start"]').first()
-    assert.equal(await pinned.evaluate((node) => getComputedStyle(node).position), "sticky")
+    const shouldStick = await api(() => {
+      const { table } = window.gridAcceptance
+      return table.getStartTotalSize() + table.getEndTotalSize() < document.querySelector('[data-slot="scroll-area-viewport"]').clientWidth
+    })
+    assert.equal(await pinned.evaluate((node) => getComputedStyle(node).position), shouldStick ? "sticky" : "relative")
     const beforeScroll = await pinned.boundingBox()
     await viewport().evaluate((node, rtl) => { node.scrollLeft = rtl ? -300 : 300 }, rtl); await settle()
     const afterScroll = await pinned.boundingBox()
-    assert.ok(beforeScroll && afterScroll && Math.abs(beforeScroll.x - afterScroll.x) < 1)
+    assert.ok(beforeScroll && afterScroll)
+    if (shouldStick) assert.ok(Math.abs(beforeScroll.x - afterScroll.x) < 1)
+    assert.equal(await api(() => window.gridAcceptance.table.getColumn("name").getIsPinned()), "start")
     await page.getByRole("button", { name: "Filter Name", exact: true }).click(); await settle()
     const popup = page.locator('[data-slot="popover-content"]'); const box = await popup.boundingBox()
     assert.ok(box && box.x >= -1 && box.x + box.width <= width + 1, JSON.stringify(box))

@@ -536,6 +536,14 @@ export const componentMeta = {
         targetPath: "components/data-grid/data-grid.tsx",
       },
       {
+        sourcePath: "apps/www/components/data-grid/data-grid-utils.ts",
+        targetPath: "components/data-grid/data-grid-utils.ts",
+      },
+      {
+        sourcePath: "apps/www/components/data-grid/data-grid-mutations.ts",
+        targetPath: "components/data-grid/data-grid-mutations.ts",
+      },
+      {
         sourcePath: "apps/www/components/data-grid/table-features.ts",
         targetPath: "components/data-grid/table-features.ts",
       },

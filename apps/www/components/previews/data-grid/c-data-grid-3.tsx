@@ -464,7 +464,7 @@ export function PatternEdit2() {
       })
       return normalizedRow
     },
-    onError: (_error, context) => {
+    onError: (_error) => {
       add({
         title: "Update failed",
         description: "The optimistic update was rolled back. Retry the change when you are ready.",

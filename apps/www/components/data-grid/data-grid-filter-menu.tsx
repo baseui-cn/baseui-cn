@@ -27,6 +27,7 @@ import {
   validateTextFilter,
   isColumnFilterState,
   parseDataGridDate,
+  formatDataGridDate,
 } from "@/components/data-grid/data-grid-filter-client"
 import type {
   ColumnFilterState,
@@ -44,13 +45,6 @@ export interface DataGridFilterMenuProps<TData extends RowData, TValue> {
   title?: string
 }
 
-
-function fromDate(value: Date | undefined) {
-  if (!value) return ""
-  return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(
-    value.getDate()
-  ).padStart(2, "0")}`
-}
 
 function initialFilter(type: ExcelFilterType, value: unknown): ColumnFilterState {
   if (typeof value === "object" && value !== null && "type" in value && value.type === type && isColumnFilterState(value)) {
@@ -311,7 +305,7 @@ export function DataGridFilterMenu<TData extends RowData, TValue>({
             />
             <DatePickerInput
               value={parseDataGridDate(draft.value)}
-              onValueChange={(value) => updateDraft({ ...draft, value: fromDate(value) })}
+              onValueChange={(value) => updateDraft({ ...draft, value: formatDataGridDate(value) })}
               formatPreset="iso"
               size="sm"
               placeholder="Select date"
@@ -320,7 +314,7 @@ export function DataGridFilterMenu<TData extends RowData, TValue>({
             {draft.operator === "between" && (
               <DatePickerInput
                 value={parseDataGridDate(draft.secondValue ?? "")}
-                onValueChange={(value) => updateDraft({ ...draft, secondValue: fromDate(value) })}
+                onValueChange={(value) => updateDraft({ ...draft, secondValue: formatDataGridDate(value) })}
                 formatPreset="iso"
                 size="sm"
                 placeholder="Select end date"

@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
 } from "react"
-import { useDataGrid } from "@/components/data-grid/data-grid"
+import { canSkipDataGridBodyRender, DataGridBodySnapshot, type DataGridContextProps, useDataGrid } from "@/components/data-grid/data-grid"
 import {
   DataGridTableBase,
   DataGridTableBody,
@@ -27,7 +27,6 @@ import { flexRender, type RowData } from "@tanstack/react-table"
 import type {
   DataGridHeaderGroup,
   DataGridRow,
-  DataGridTable,
 } from "@/components/data-grid/table-features"
 import {
   useVirtualizer,
@@ -36,6 +35,7 @@ import {
   type VirtualizerOptions,
 } from "@tanstack/react-virtual"
 
+import { getDataGridVisibleColumns } from "./data-grid-utils"
 import { cn } from "@/lib/utils"
 import { Spinner } from "@/components/ui/spinner"
 
@@ -49,8 +49,10 @@ type DataGridTableVirtualizerInstance = Virtualizer<
   HTMLTableRowElement
 >
 
+const EMPTY_VIRTUAL_ITEMS: VirtualItem[] = []
+
 type DataGridTableVirtualizerOptions<TData extends RowData> = Omit<
-  VirtualizerOptions<HTMLElement, HTMLTableRowElement>,
+  Partial<VirtualizerOptions<HTMLElement, HTMLTableRowElement>>,
   "count" | "estimateSize" | "getItemKey" | "getScrollElement"
 > & {
   estimateSize?: (index: number, row: DataGridRow<TData>) => number
@@ -74,7 +76,7 @@ interface DataGridTableVirtualProps<TData extends RowData> {
 }
 
 interface VirtualBodyProps<TData extends RowData> {
-  table: DataGridTable<TData>
+  grid: DataGridContextProps<TData>
   columnCount: number
   topRows: DataGridRow<TData>[]
   centerRows: DataGridRow<TData>[]
@@ -89,6 +91,8 @@ interface VirtualBodyProps<TData extends RowData> {
   allRowsLoadedMessage: ReactNode
   indexAttribute: string
   measureRowRef?: (element: HTMLTableRowElement | null) => void
+  rowIndices: ReadonlyMap<string, number>
+  statusRowIndex: number
 }
 
 function DataGridTableVirtualSpacer({
@@ -111,13 +115,15 @@ function DataGridTableVirtualStatusRow({
   children,
   className,
   columnCount,
+  rowIndex,
 }: {
   children: ReactNode
   className?: string
   columnCount: number
+  rowIndex: number
 }) {
   return (
-    <tr>
+    <tr aria-rowindex={rowIndex}>
       <td
         colSpan={columnCount}
         className={cn(
@@ -132,7 +138,6 @@ function DataGridTableVirtualStatusRow({
 }
 
 function DataGridTableVirtualBody<TData extends RowData>({
-  table,
   columnCount,
   topRows,
   centerRows,
@@ -147,10 +152,12 @@ function DataGridTableVirtualBody<TData extends RowData>({
   allRowsLoadedMessage,
   measureRowRef,
   indexAttribute,
+  rowIndices,
+  statusRowIndex,
 }: VirtualBodyProps<TData>) {
   const totalRows = topRows.length + centerRows.length + bottomRows.length
 
-  if (!totalRows) return <DataGridTableEmpty />
+  if (!totalRows) return <DataGridTableEmpty rowIndex={statusRowIndex} />
 
   const hasCenterRows = centerRows.length > 0
   const showFetchingRow = isInfiniteMode && isFetchingMore
@@ -175,6 +182,7 @@ function DataGridTableVirtualBody<TData extends RowData>({
       <DataGridTableRenderedRow
         key={row.id}
         row={row}
+        rowIndex={rowIndices.get(row.id)}
         pinnedBoundary={
           index === topRows.length - 1 && hasMiddleSection ? "top" : undefined
         }
@@ -202,6 +210,7 @@ function DataGridTableVirtualBody<TData extends RowData>({
         <DataGridTableRenderedRow
           key={row.id}
           row={row}
+          rowIndex={rowIndices.get(row.id)}
           rowRef={measureRowRef ? (element) => {
             if (element) element.setAttribute(indexAttribute, String(virtualRow.index))
             measureRowRef(element)
@@ -221,7 +230,7 @@ function DataGridTableVirtualBody<TData extends RowData>({
     }
   } else {
     centerRows.forEach((row) => {
-      renderedRows.push(<DataGridTableRenderedRow key={row.id} row={row} />)
+      renderedRows.push(<DataGridTableRenderedRow key={row.id} row={row} rowIndex={rowIndices.get(row.id)} />)
     })
   }
 
@@ -230,6 +239,7 @@ function DataGridTableVirtualBody<TData extends RowData>({
       <DataGridTableVirtualStatusRow
         key="virtual-status-loading"
         columnCount={columnCount}
+        rowIndex={statusRowIndex}
       >
         <div className="flex items-center justify-center gap-2">
           <Spinner className="size-4 opacity-60" />
@@ -244,6 +254,7 @@ function DataGridTableVirtualBody<TData extends RowData>({
       <DataGridTableVirtualStatusRow
         key="virtual-status-complete"
         columnCount={columnCount}
+        rowIndex={statusRowIndex + Number(showFetchingRow)}
         className="py-3 text-xs"
       >
         {allRowsLoadedMessage}
@@ -256,6 +267,7 @@ function DataGridTableVirtualBody<TData extends RowData>({
       <DataGridTableRenderedRow
         key={row.id}
         row={row}
+        rowIndex={rowIndices.get(row.id)}
         pinnedBoundary={
           index === 0 && (topRows.length > 0 || hasMiddleSection)
             ? "bottom"
@@ -273,10 +285,21 @@ function DataGridTableVirtualBody<TData extends RowData>({
  * Column widths update via CSS variables on the <table> element,
  * so the browser handles width changes without React re-renders.
  */
-const MemoizedVirtualBody = memo(
-  DataGridTableVirtualBody,
-  (_prev, next) => !!next.table.store.state.columnResizing.isResizingColumn
-) as typeof DataGridTableVirtualBody
+function DataGridTableVirtualBodySnapshot<TData extends RowData>(props: VirtualBodyProps<TData>) {
+  return <DataGridBodySnapshot value={props.grid}><DataGridTableVirtualBody {...props} /></DataGridBodySnapshot>
+}
+
+const MemoizedVirtualBody = memo(DataGridTableVirtualBodySnapshot,
+  (previous, next) => canSkipDataGridBodyRender(previous.grid, next.grid) &&
+    previous.virtualItems === next.virtualItems && previous.totalSize === next.totalSize &&
+    previous.rowIndices === next.rowIndices && previous.isFetchingMore === next.isFetchingMore &&
+    previous.hasMore === next.hasMore && previous.isVirtualizationEnabled === next.isVirtualizationEnabled
+) as typeof DataGridTableVirtualBodySnapshot
+
+function DataGridTableVirtualBodyAdapter<TData extends RowData>(props: Omit<VirtualBodyProps<TData>, "grid">) {
+  const grid = useDataGrid<TData>()
+  return <MemoizedVirtualBody {...props} grid={grid} />
+}
 
 function DataGridTableVirtual<TData extends RowData>({
   height,
@@ -290,13 +313,22 @@ function DataGridTableVirtual<TData extends RowData>({
   fetchMoreOffset = 0,
   virtualizerOptions,
 }: DataGridTableVirtualProps<TData>) {
-  const { table, props, scrollToRowRef } = useDataGrid<TData>()
-  const { topRows, centerRows, bottomRows } = getDataGridTableRowSections(
-    table,
-    props.tableLayout?.rowsPinnable
+  const grid = useDataGrid<TData>()
+  const { table, props, scrollToRowRef } = grid
+  const rows = table.getRowModel().rows
+  const prePaginationRows = table.getPrePaginatedRowModel().rows
+  const coreRows = table.getCoreRowModel().rows
+  const rowPinning = table.store.state.rowPinning
+  const expanded = table.store.state.expanded
+  // v9 row-section methods allocate arrays. Cache against their actual inputs,
+  // rather than the render-facing table wrapper or sizing-only state.
+  const { topRows, centerRows, bottomRows } = useMemo(
+    () => getDataGridTableRowSections(table, props.tableLayout?.rowsPinnable),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [table.store, rows, prePaginationRows, coreRows, rowPinning, expanded, table.options.keepPinnedRows, props.tableLayout?.rowsPinnable]
   )
   const columnCount =
-    table.getVisibleFlatColumns().length +
+    getDataGridVisibleColumns(table).length +
     (props.tableLayout?.columnsResizable ? 1 : 0)
   const isInfiniteMode = typeof onFetchMore === "function"
   const [viewportElements, setViewportElements] =
@@ -319,6 +351,31 @@ function DataGridTableVirtual<TData extends RowData>({
     props.fetchingMoreMessage || props.loadingMessage || "Loading..."
   const allRowsLoadedMessage =
     props.allRowsLoadedMessage || "All records loaded"
+  const headerRowCount = renderHeader ? table.getHeaderGroups().length : 0
+  const pageOffset = table.store.state.pagination.pageIndex * table.store.state.pagination.pageSize
+  const statusRowCount = Number(isInfiniteMode && isFetchingMore) + Number(isInfiniteMode && hasMore === false)
+  const rowAccessibility = useMemo(() => {
+    const indices = new Map<string, number>()
+    let index = headerRowCount + pageOffset + 1
+    let expandedCount = 0
+    const addRow = (row: DataGridRow<TData>) => {
+      indices.set(row.id, index++)
+      if (row.getIsExpanded()) { index++; expandedCount++ }
+    }
+    topRows.forEach(addRow)
+    centerRows.forEach(addRow)
+    const statusRowIndex = index
+    index += statusRowCount
+    bottomRows.forEach(addRow)
+    return { indices, statusRowIndex, lastIndex: indices.size ? index - 1 : index, expandedCount }
+    // Expanded changes affect the additional detail rows' indices.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topRows, centerRows, bottomRows, headerRowCount, pageOffset, expanded, statusRowCount])
+  const availableRows = table.options.manualPagination ? props.recordCount : table.getPrePaginatedRowModel().rows.length
+  const accessibleRowCount = isInfiniteMode && hasMore !== false ? -1 : Math.max(
+    rowAccessibility.lastIndex,
+    headerRowCount + availableRows + rowAccessibility.expandedCount + statusRowCount
+  )
 
   const handleViewportRef = useCallback((node: HTMLDivElement | null) => {
     setViewportElements({
@@ -376,8 +433,7 @@ function DataGridTableVirtual<TData extends RowData>({
 
   // The instance is stable while its visible window changes on scroll.
   // Intentionally read the live window: memoizing by instance reintroduces stale rows.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const virtualItems = isVirtualizationEnabled ? virtualizer.getVirtualItems() : []
+  const virtualItems = isVirtualizationEnabled ? virtualizer.getVirtualItems() : EMPTY_VIRTUAL_ITEMS
   useEffect(() => {
     const scrollToRow = (rowId: string) => {
       const index = centerRows.findIndex((row) => row.id === rowId)
@@ -435,13 +491,13 @@ function DataGridTableVirtual<TData extends RowData>({
           : { height, overflow: "auto", position: "relative" }
       }
     >
-      <DataGridTableBase>
+      <DataGridTableBase rowCount={accessibleRowCount}>
         {renderHeader && (
           <DataGridTableHead>
             {table
               .getHeaderGroups()
               .map((headerGroup: DataGridHeaderGroup<TData>, index: number) => (
-                <DataGridTableHeadRow headerGroup={headerGroup} key={index}>
+                <DataGridTableHeadRow headerGroup={headerGroup} key={index} rowIndex={index + 1}>
                   {headerGroup.headers.map((header, hIndex) => {
                     const { column } = header
 
@@ -479,8 +535,7 @@ function DataGridTableVirtual<TData extends RowData>({
           )}
 
         <DataGridTableBody>
-          <MemoizedVirtualBody
-            table={table}
+          <DataGridTableVirtualBodyAdapter
             columnCount={columnCount}
             topRows={topRows}
             centerRows={centerRows}
@@ -495,6 +550,8 @@ function DataGridTableVirtual<TData extends RowData>({
             allRowsLoadedMessage={allRowsLoadedMessage}
             indexAttribute={virtualizer.options.indexAttribute}
             measureRowRef={measureRowRef}
+            rowIndices={rowAccessibility.indices}
+            statusRowIndex={rowAccessibility.statusRowIndex}
           />
         </DataGridTableBody>
 

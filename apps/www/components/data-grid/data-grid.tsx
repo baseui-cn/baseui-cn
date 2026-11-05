@@ -88,6 +88,10 @@ export interface DataGridColumnEditor<TData extends RowData = RowData, TValue = 
 }
 
 export interface DataGridEditingTableMeta<TData extends RowData = RowData> {
+  /** Stable identity of rendered editing state, independent of callback identities. */
+  renderVersion?: object
+  /** Capture ownership before an async commit; a new edit invalidates the guard. */
+  captureCellNavigation?: () => () => boolean
   activeCell: { rowId: string; columnId: string } | null
   dialogOpen: boolean
   dialogRow: TData | null
@@ -173,6 +177,11 @@ export interface DataGridContextProps<TData extends RowData> {
   recordCount: number
   isLoading: boolean
   scrollToRowRef: { current: ((rowId: string) => void) | null }
+  /** Immutable state snapshot used to distinguish geometry from body changes. */
+  renderState?: DataGridTable<TData>["store"]["state"]
+  renderRows?: readonly unknown[]
+  /** Preferred pins remain in state when a narrow viewport needs scrolling. */
+  pinningEnabled?: boolean
 }
 
 export type DataGridRequestParams = {
@@ -251,6 +260,53 @@ type ErasedDataGridRowData = ErasedDataGridContextProps["table"] extends DataGri
 
 const DataGridContext = createContext<ErasedDataGridContextProps | undefined>(undefined)
 
+export function DataGridBodySnapshot<TData extends RowData>({
+  value, children,
+}: { value: DataGridContextProps<TData>; children: ReactNode }) {
+  return <DataGridContext.Provider value={value as ErasedDataGridContextProps}>{children}</DataGridContext.Provider>
+}
+
+/** Only hold a body's committed snapshot for a geometry-only resize update. */
+export function canSkipDataGridBodyRender<TData extends RowData>(
+  previous: DataGridContextProps<TData>, next: DataGridContextProps<TData>
+) {
+  if (!next.table.store.state.columnResizing.isResizingColumn ||
+      previous.table.store !== next.table.store ||
+      previous.renderRows !== next.renderRows ||
+      previous.pinningEnabled !== next.pinningEnabled ||
+      previous.table.options.data !== next.table.options.data ||
+      previous.table.options.columns !== next.table.options.columns) return false
+  for (const key of ["manualFiltering", "manualSorting", "manualPagination", "enableRowSelection", "enableRowPinning", "keepPinnedRows", "enableColumnPinning"] as const) {
+    if (previous.table.options[key] !== next.table.options[key]) return false
+  }
+  for (const key of new Set([...Object.keys(previous.props), ...Object.keys(next.props)])) {
+    const prop = key as keyof typeof next.props
+    if (prop === "tableLayout" || prop === "tableClassNames") {
+      if (JSON.stringify(previous.props[prop]) !== JSON.stringify(next.props[prop])) return false
+    } else if (previous.props[prop] !== next.props[prop]) return false
+  }
+  const previousState = previous.renderState
+  const nextState = next.renderState
+  if (!previousState || !nextState) return false
+  for (const key of Object.keys(nextState)) {
+    if (key === "columnSizing" || key === "columnResizing") continue
+    const stateKey = key as keyof typeof nextState
+    if (previousState[stateKey] !== nextState[stateKey]) return false
+  }
+  const previousMeta = previous.table.options.meta
+  const nextMeta = next.table.options.meta
+  for (const key of new Set([...Object.keys(previousMeta ?? {}), ...Object.keys(nextMeta ?? {})])) {
+    if (key === "editing") {
+      const previousEditing = previousMeta?.editing
+      const nextEditing = nextMeta?.editing
+      if ((previousEditing?.renderVersion ?? previousEditing) !==
+          (nextEditing?.renderVersion ?? nextEditing)) return false
+    } else if ((previousMeta as Record<string, unknown> | undefined)?.[key] !==
+        (nextMeta as Record<string, unknown> | undefined)?.[key]) return false
+  }
+  return true
+}
+
 /** Internal bridge for keyboard navigation into an unmounted virtual row. */
 export function useDataGridNavigation() {
   const context = useContext(DataGridContext)
@@ -271,12 +327,6 @@ function DataGridProvider<TData extends RowData>({
   ...props
 }: Omit<DataGridProps<TData>, "featureControls"> & { table: DataGridTable<TData> }) {
   const scrollToRowRef = useRef<((rowId: string) => void) | null>(null)
-  // Keep the Grid resize mode authoritative, including after consumer option updates.
-  if (props.tableLayout?.columnsResizable) {
-    const columnResizeMode = props.tableLayout.columnsResizeMode ?? "onEnd"
-    table.setOptions((options) => ({ ...options, columnResizeMode }))
-    table.options.columnResizeMode = columnResizeMode
-  }
   const tableState = table.store.state
   const tableLayoutKey = JSON.stringify(props.tableLayout)
   const tableClassNamesKey = JSON.stringify(props.tableClassNames)
@@ -291,6 +341,8 @@ function DataGridProvider<TData extends RowData>({
       recordCount: props.recordCount,
       isLoading: props.isLoading || false,
       scrollToRowRef,
+      renderState: tableState,
+      renderRows: table.getRowModel().rows,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [

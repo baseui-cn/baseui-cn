@@ -1,5 +1,7 @@
 "use client"
 
+import { getDataGridVisibleColumns } from "./data-grid-utils"
+
 import {
   createContext,
   type CSSProperties,
@@ -68,7 +70,7 @@ const SortableRowContext = createContext<Pick<
   "attributes" | "listeners" | "isDragging"
 > & { disabled: boolean } | null>(null)
 
-export interface DataGridTableDndCombinedProps<TData extends RowData> {
+export interface DataGridTableDndCombinedProps {
   onRowDragEnd?: (event: DragEndEvent) => void
   onColumnDragEnd?: (event: DragEndEvent) => void
   footerContent?: ReactNode
@@ -206,8 +208,8 @@ function DataGridTableDndCombined<TData extends RowData>({
   onRowDragEnd,
   onColumnDragEnd,
   footerContent,
-}: DataGridTableDndCombinedProps<TData>) {
-  const { table, isLoading, props } = useDataGrid()
+}: DataGridTableDndCombinedProps) {
+  const { table, isLoading, props } = useDataGrid<TData>()
   const pagination = table.store.state.pagination
   const viewportRef = useRef<HTMLDivElement>(null)
   const [draggingType, setDraggingType] = useState<DragType | null>(null)
@@ -318,7 +320,7 @@ function DataGridTableDndCombined<TData extends RowData>({
             {props.loadingMode === "skeleton" && isLoading && pagination?.pageSize ? (
               Array.from({ length: pagination.pageSize }).map((_, rowIndex) => (
                 <DataGridTableBodyRowSkeleton key={rowIndex}>
-                  {table.getVisibleFlatColumns().map((column, columnIndex) => (
+                  {getDataGridVisibleColumns(table).map((column, columnIndex) => (
                     <DataGridTableBodyRowSkeletonCell column={column} key={columnIndex}>
                       {column.columnDef.meta?.skeleton}
                     </DataGridTableBodyRowSkeletonCell>

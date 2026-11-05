@@ -34,6 +34,7 @@ export function useDataGridFeatureData<TData extends { id: string }>({
   const [rowError, setRowError] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [refreshVersion, setRefreshVersion] = useState(0)
+  const [readRevision, setReadRevision] = useState(0)
 
   useEffect(() => {
     let cancelled = false
@@ -75,6 +76,7 @@ export function useDataGridFeatureData<TData extends { id: string }>({
         const page = await dataSource.getRows(requestQuery)
         if (cancelled) return
         setRows(page.rows)
+        setReadRevision((revision) => revision + 1)
         setTotal(page.total)
         setRowError(null)
       } catch (loadError) {
@@ -107,6 +109,7 @@ export function useDataGridFeatureData<TData extends { id: string }>({
 
   return {
     rows,
+    readRevision,
     setRows,
     total,
     rowPinning,

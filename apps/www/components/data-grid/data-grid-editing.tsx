@@ -3,6 +3,7 @@
 import {
   type KeyboardEvent as ReactKeyboardEvent,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -26,7 +27,8 @@ import type { DataGridCell, DataGridTable } from "@/components/data-grid/table-f
 
 import { cn } from "@/lib/utils"
 import { DataGridInlineEditor } from "./data-grid-inline-editor"
-import { parseDataGridDate } from "./data-grid-filter-client"
+import { findAdjacentDataGridEditor, isDataGridComposing } from "./data-grid-utils"
+import { formatDataGridDate, parseDataGridDate } from "./data-grid-filter-client"
 import { DatePickerInput } from "@/components/ui/date-picker"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -81,7 +83,7 @@ function getOptionValue<TData extends EditableRow>(
     (option) => normalizeOptionValue(option.value) === value
   )
 
-  return matchedOption?.value ?? value
+  return matchedOption ? matchedOption.value : value
 }
 
 function getOptionLabel<TData extends EditableRow>(
@@ -163,12 +165,18 @@ function renderSelectField<TData extends EditableRow>({
   onOpenChange,
   triggerAutoFocus,
   onTriggerKeyDown,
+  label,
+  error,
+  errorId,
 }: {
   editor: DataGridColumnEditor<TData, unknown>
   value: unknown
   setValue: (value: unknown) => void
   isPending: boolean
   isInline?: boolean
+  label?: string
+  error?: string | null
+  errorId?: string
   open?: boolean
   onOpenChange?: (open: boolean) => void
   triggerAutoFocus?: boolean
@@ -178,13 +186,16 @@ function renderSelectField<TData extends EditableRow>({
 
   return (
     <Select
-      value={normalizedValue}
-      onValueChange={(nextValue) => setValue(getOptionValue(editor, nextValue || ""))}
+      value={`value:${normalizedValue}`}
+      onValueChange={(nextValue) => { if (nextValue !== null) setValue(getOptionValue(editor, nextValue.slice(6))) }}
       disabled={isPending}
       open={open}
       onOpenChange={onOpenChange}
     >
       <SelectTrigger
+        aria-label={isInline ? label ?? editor.label ?? "Edit selection" : undefined}
+        aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
         className={cn(
           "w-full px-4",
           isInline && "data-grid-inline-control-layout rounded-none border-0 bg-transparent shadow-none"
@@ -198,7 +209,7 @@ function renderSelectField<TData extends EditableRow>({
         {(editor.options ?? []).map((option) => {
           const optionValue = normalizeOptionValue(option.value)
           return (
-            <SelectItem key={`${optionValue || "empty"}-${option.label}`} value={optionValue}>
+            <SelectItem key={`${optionValue || "empty"}-${option.label}`} value={`value:${optionValue}`} disabled={option.disabled}>
               {option.label}
             </SelectItem>
           )
@@ -223,6 +234,7 @@ function DataGridInlineSelectEditor<TData extends EditableRow>(
     isEditing,
     isPending,
   } = props
+  const errorId = useId()
   const [open, setOpen] = useState(false)
   const ignoreCloseCancelRef = useRef(false)
 
@@ -259,8 +271,11 @@ function DataGridInlineSelectEditor<TData extends EditableRow>(
   }
 
   // eslint-disable-next-line react-hooks/refs
-  return renderSelectField({
+  return <>{renderSelectField({
     editor,
+    label: editor.label ?? columnId,
+    error: props.error,
+    errorId,
     value,
     setValue: (nextValue) => {
       ignoreCloseCancelRef.current = true
@@ -284,6 +299,7 @@ function DataGridInlineSelectEditor<TData extends EditableRow>(
     },
     triggerAutoFocus: true,
     onTriggerKeyDown: (event) => {
+      if (isDataGridComposing(event)) return
       if (event.key === "Escape") {
         event.preventDefault()
         cancel()
@@ -294,7 +310,7 @@ function DataGridInlineSelectEditor<TData extends EditableRow>(
         })
       }
     },
-  })
+  })}{props.error && <span id={errorId} className="sr-only">{props.error}</span>}</>
 }
 
 function DataGridInlineCellEditor<TData extends EditableRow>({
@@ -333,6 +349,7 @@ function DataGridInlineCellEditor<TData extends EditableRow>({
   }
 
   const handleTextKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (isDataGridComposing(event)) return
     if (event.key === "Enter") {
       event.preventDefault()
       void commit()
@@ -387,7 +404,7 @@ function DataGridInlineCellEditor<TData extends EditableRow>({
 
   if (editor.kind === "date" && isEditing) {
     return <DataGridInlineEditor value={value} editorType="date" disabled={isPending}
-      placeholder={editor.label ?? columnId} onDraftChange={setValue} onCommit={commit}
+      label={editor.label ?? columnId} error={error} onDraftChange={setValue} onCommit={commit}
       onCancel={cancel} onNavigate={navigate} />
   }
 
@@ -410,6 +427,7 @@ function DataGridInlineCellEditor<TData extends EditableRow>({
 
     return (
       <NumberField
+        disabled={isPending}
         value={typeof value === "number" ? value : undefined}
         onValueChange={(nextValue) => setValue(nextValue)}
         min={editor.min}
@@ -427,6 +445,7 @@ function DataGridInlineCellEditor<TData extends EditableRow>({
             autoFocus
             onBlur={() => void commit()}
             onKeyDown={(event) => {
+              if (isDataGridComposing(event)) return
               if (event.key === "Tab") {
                 event.preventDefault()
                 void commit().then((saved) => {
@@ -603,8 +622,7 @@ function renderDialogField<TData extends EditableRow>({
   if (editor.kind === "date") {
     return <DatePickerInput label={editor.label ?? columnId}
       value={parseDataGridDate(typeof value === "string" ? value : "")}
-      onValueChange={(date) => setValue(date
-        ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}` : "")}
+      onValueChange={(date) => setValue(formatDataGridDate(date))}
       formatPreset="iso" disabled={isPending} />
   }
 
@@ -623,6 +641,7 @@ function renderDialogField<TData extends EditableRow>({
   if (editor.kind === "number") {
     return (
       <NumberField
+        disabled={isPending}
         value={typeof value === "number" ? value : undefined}
         onValueChange={(nextValue) => setValue(nextValue)}
         min={editor.min}
@@ -664,7 +683,7 @@ function renderDialogField<TData extends EditableRow>({
             >
               <RadioGroupItem
                 id={optionId}
-                disabled={isPending}
+                disabled={isPending || option.disabled}
                 value={optionValue}
                 className="mt-0.5"
               />
@@ -776,6 +795,8 @@ export function DataGridEditableCell<TData extends EditableRow, TValue = unknown
 }: DataGridEditableCellProps<TData, TValue>) {
   const editorRef = useRef<HTMLDivElement>(null)
   const ownerTableRef = useRef<HTMLTableElement | null>(null)
+  const navigationGuard = useRef<(() => boolean) | undefined>(undefined)
+  const committing = useRef(false)
   const { scrollToRowRef, rowsPinnable } = useDataGridNavigation()
   const table = cell.getContext().table
   const editing = table.options.meta?.editing
@@ -805,31 +826,29 @@ export function DataGridEditableCell<TData extends EditableRow, TValue = unknown
   const isPending = editing.isCellPending(rowId, columnId)
   const error = editing.getCellError(rowId, columnId)
   const value = editing.getCellDraftValue(row, columnId)
+  const commit = async (nextValue?: unknown) => {
+    if (committing.current) return false
+    committing.current = true
+    navigationGuard.current = editing.captureCellNavigation?.()
+    try { return await editing.commitCellEdit(row, columnId, nextValue) }
+    finally { committing.current = false }
+  }
   const navigate = (direction: "next" | "previous") => {
-    const visibleRows = rowsPinnable
-      ? [...table.getTopRows(), ...table.getCenterRows(), ...table.getBottomRows()]
-      : table.getRowModel().rows
-    const editableCells = visibleRows.flatMap((visibleRow) =>
-      visibleRow.getVisibleCells().filter((visibleCell) => {
-        const visibleEditor = getDataGridColumnEditor(visibleCell.column)
-        return visibleEditor && !visibleEditor.dialogOnly &&
-          !editing.isCellPending(visibleRow.id, visibleCell.column.id)
-      })
-    )
-    const activeIndex = editableCells.findIndex(
-      (visibleCell) => visibleCell.row.id === rowId && visibleCell.column.id === columnId
-    )
-    if (activeIndex < 0) return
-
-    const nextCell = editableCells[activeIndex + (direction === "next" ? 1 : -1)]
+    if (navigationGuard.current && !navigationGuard.current()) return
+    const currentEditing = table.options.meta?.editing
+    if (!currentEditing) return
+    const nextCell = findAdjacentDataGridEditor({
+      table, rowId, columnId, direction, rowsPinnable, isPending: currentEditing.isCellPending,
+    })
 
     if (nextCell) {
       scrollToRowRef?.current?.(nextCell.row.id)
-      editing.startCellEdit(nextCell.row.original, nextCell.column.id)
+      currentEditing.startCellEdit(nextCell.row.original, nextCell.column.id)
     } else {
       // Keep the start/end boundary reachable after its editor unmounts on commit.
       let frames = 0
       const focusTrigger = () => {
+        if (navigationGuard.current && !navigationGuard.current()) return
         // Column renderers can remount during a save. Retain the owning table,
         // then locate this cell's replacement without crossing into another Grid.
         const owner = ownerTableRef.current
@@ -847,10 +866,11 @@ export function DataGridEditableCell<TData extends EditableRow, TValue = unknown
   return (
     <div ref={editorRef} data-row-id={rowId} data-column-id={columnId} data-slot="data-grid-editable-cell" aria-busy={isPending || undefined}
       onKeyDown={(event) => {
+        if (isDataGridComposing(event)) return
         if (!isEditing || !["checkbox", "switch", "rating", "radio"].includes(editor.kind)) return
         if (event.key === "Tab" || event.key === "Enter") {
           event.preventDefault()
-          if (!isPending) void editing.commitCellEdit(row, columnId).then((saved) => {
+          if (!isPending) void commit().then((saved) => {
             if (saved && event.key === "Tab") navigate(event.shiftKey ? "previous" : "next")
           })
         } else if (event.key === "Escape") {
@@ -861,7 +881,7 @@ export function DataGridEditableCell<TData extends EditableRow, TValue = unknown
       <DataGridInlineCellEditor
         table={table} row={row} rowId={rowId} columnId={columnId} editor={editor} value={value}
         setValue={(nextValue) => editing.updateCellDraft(rowId, columnId, nextValue)}
-        commit={(nextValue) => editing.commitCellEdit(row, columnId, nextValue)}
+        commit={commit}
         cancel={() => editing.cancelCellEdit(rowId, columnId)} navigate={navigate}
         isEditing={isEditing} isPending={isPending} error={error}
       />
@@ -954,21 +974,21 @@ export function DataGridEditDialog<TData extends EditableRow>({
 
                   if (editor.kind === "checkbox" || editor.kind === "switch") {
                     return (
-                      <div key={columnId}>
+                      <Field key={columnId} invalid={Boolean(error)}>
                         {renderedField}
-                        {error ? <FieldError>{error}</FieldError> : null}
-                      </div>
+                        {error ? <FieldError match>{error}</FieldError> : null}
+                      </Field>
                     )
                   }
 
                   return (
-                    <Field key={columnId}>
+                    <Field key={columnId} invalid={Boolean(error)}>
                       <FieldLabel>{editor.label ?? column.id}</FieldLabel>
                       {editor.description ? (
                         <FieldDescription>{editor.description}</FieldDescription>
                       ) : null}
                       {renderedField}
-                      {error ? <FieldError>{error}</FieldError> : null}
+                      {error ? <FieldError match>{error}</FieldError> : null}
                     </Field>
                   )
                 })}

@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
+import { isDataGridComposing } from "./data-grid-utils"
 import type { KeyboardEvent as ReactKeyboardEvent } from "react"
 import { Input } from "@/components/ui/input"
-import { parseDataGridDate } from "./data-grid-filter-client"
+import { formatDataGridDate, parseDataGridDate } from "./data-grid-filter-client"
 import { cn } from "@/lib/utils"
 import { DatePickerInput } from "@/components/ui/date-picker"
 import {
@@ -20,13 +21,17 @@ export type DataGridInlineEditorNavigation = "next" | "previous"
 export interface DataGridInlineEditorOption<TValue> {
   label: string
   value: TValue
+  disabled?: boolean
 }
 
 export interface DataGridInlineEditorProps<TValue> {
+  error?: string | null
   value: TValue
   editorType?: DataGridInlineEditorKind
   options?: readonly DataGridInlineEditorOption<TValue>[]
   placeholder?: string
+  label?: string
+  "aria-labelledby"?: string
   disabled?: boolean
   className?: string
   initialDraft?: string
@@ -44,13 +49,6 @@ function formatDefaultValue<TValue>(value: TValue) {
 }
 
 
-function formatDate(value: Date | undefined) {
-  if (!value) return ""
-  return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(
-    value.getDate()
-  ).padStart(2, "0")}`
-}
-
 function errorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Invalid value."
 }
@@ -60,7 +58,10 @@ export function DataGridInlineEditor<TValue>({
   editorType = "text",
   options = [],
   placeholder,
+  label = "Edit value",
+  "aria-labelledby": labelledBy,
   disabled = false,
+  error: externalError,
   className,
   initialDraft,
   parseValue,
@@ -72,20 +73,32 @@ export function DataGridInlineEditor<TValue>({
   onNavigate,
 }: DataGridInlineEditorProps<TValue>) {
   const [draft, setDraft] = useState(initialDraft ?? formatValue(value))
+  const draftRef = useRef(initialDraft ?? formatValue(value))
+  const committedDraft = useRef<string | undefined>(undefined)
+  const mounted = useRef(true)
   const [error, setError] = useState<string | null>(null)
+  const errorId = useId()
+  const displayError = externalError ?? error
   const editorRef = useRef<HTMLDivElement>(null)
   const isCommitting = useRef(false)
   const popupOpen = useRef(false)
 
   useEffect(() => {
+    mounted.current = true
     const focusable = editorRef.current?.querySelector<HTMLElement>(
       'input, button, select, [tabindex]:not([tabindex="-1"])'
     )
     focusable?.focus()
+    return () => { mounted.current = false }
   }, [])
 
   const resolveValue = (raw: string): TValue => {
     if (editorType === "date" && !parseDataGridDate(raw)) throw new Error("Please enter a valid date.")
+    if (editorType === "select") {
+      const option = options.find((option) => formatDefaultValue(option.value) === raw)
+      if (!option || (option.disabled && !Object.is(option.value, value))) throw new Error("Choose an available option.")
+      return parseValue ? parseValue(raw) : option.value
+    }
     if (parseValue) return parseValue(raw)
     if (editorType === "number") {
       const number = Number(raw)
@@ -94,17 +107,12 @@ export function DataGridInlineEditor<TValue>({
       }
       return number as TValue
     }
-    if (editorType === "date" && !parseDataGridDate(raw)) throw new Error("Please enter a valid date.")
-    if (editorType === "select") {
-      const option = options.find((option) => String(option.value) === raw)
-      if (!option) throw new Error("Choose a valid option.")
-      return option.value
-    }
     return raw as TValue
   }
 
-  const commit = async (nextDraft = draft, direction?: DataGridInlineEditorNavigation) => {
-    if (isCommitting.current || disabled) return
+  const commit = async (nextDraft = draftRef.current, direction?: DataGridInlineEditorNavigation) => {
+    if (isCommitting.current || disabled || !mounted.current) return
+    if (committedDraft.current === nextDraft) { if (direction) onNavigate?.(direction); return }
     isCommitting.current = true
 
     try {
@@ -122,6 +130,7 @@ export function DataGridInlineEditor<TValue>({
         editorRef.current?.querySelector<HTMLElement>("input, button")?.focus()
         return
       }
+      committedDraft.current = nextDraft
       if (direction) onNavigate?.(direction)
     } catch (commitError) {
       setError(errorMessage(commitError))
@@ -131,15 +140,16 @@ export function DataGridInlineEditor<TValue>({
   }
 
   const changeDraft = (nextDraft: string) => {
+    draftRef.current = nextDraft
     setDraft(nextDraft)
     onDraftChange?.(nextDraft)
     setError(null)
   }
 
   const commitOption = (raw: string) => {
-    const option = options.find(({ value: optionValue }) => String(optionValue) === raw)
-    if (!option) {
-      setError("Choose a valid option.")
+    const option = options.find(({ value: optionValue }) => formatDefaultValue(optionValue) === raw)
+    if (!option || option.disabled) {
+      setError("Choose an available option.")
       return
     }
     changeDraft(raw)
@@ -147,6 +157,7 @@ export function DataGridInlineEditor<TValue>({
   }
 
   const handleKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
+    if (isDataGridComposing(event)) return
     if (event.key === "Escape") {
       event.preventDefault()
       setError(null)
@@ -175,15 +186,19 @@ export function DataGridInlineEditor<TValue>({
     return (
       <div ref={editorRef} className="relative flex h-full min-h-8 w-full items-center">
         <Select
-          value={draft}
+          value={`value:${draft}`}
           disabled={disabled}
-          onValueChange={(nextValue) => nextValue && commitOption(nextValue)}
+          onValueChange={(nextValue) => nextValue !== null && commitOption(nextValue.slice(6))}
           onOpenChange={(open) => {
             popupOpen.current = open
             if (!open) handlePopupBlur()
           }}
         >
           <SelectTrigger
+            aria-label={labelledBy ? undefined : label}
+            aria-labelledby={labelledBy}
+            aria-invalid={!!displayError}
+            aria-describedby={displayError ? errorId : undefined}
             size="sm"
             className={cn("h-7 w-full rounded-none border-0 px-2 text-sm shadow-none", className)}
             onKeyDown={handleKeyDown}
@@ -192,13 +207,13 @@ export function DataGridInlineEditor<TValue>({
           </SelectTrigger>
           <SelectContent align="start">
             {options.map((option) => (
-              <SelectItem key={String(option.value)} value={String(option.value)}>
+              <SelectItem key={formatDefaultValue(option.value)} value={`value:${formatDefaultValue(option.value)}`} disabled={option.disabled}>
                 {option.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
-        {error && <div role="alert" className="px-2 text-[10px] font-medium text-destructive">{error}</div>}
+        {displayError && <div id={errorId} role="alert" className="px-2 text-[10px] font-medium text-destructive">{displayError}</div>}
       </div>
     )
   }
@@ -212,10 +227,10 @@ export function DataGridInlineEditor<TValue>({
         onKeyDown={handleKeyDown}
       >
         <DatePickerInput
-          label={placeholder ?? "Edit date"}
+          label={label}
           value={parseDataGridDate(draft)}
           onValueChange={(nextValue) => {
-            const nextDraft = formatDate(nextValue)
+            const nextDraft = formatDataGridDate(nextValue)
             changeDraft(nextDraft)
             void commit(nextDraft)
           }}
@@ -233,7 +248,7 @@ export function DataGridInlineEditor<TValue>({
           )}
           className="w-full"
         />
-        {error && <div role="alert" className="px-2 text-[10px] font-medium text-destructive">{error}</div>}
+        {displayError && <div id={errorId} role="alert" className="px-2 text-[10px] font-medium text-destructive">{displayError}</div>}
       </div>
     )
   }
@@ -241,8 +256,10 @@ export function DataGridInlineEditor<TValue>({
   return (
     <div ref={editorRef} className="relative flex min-h-[28px] w-full items-center">
       <Input
-        aria-label={placeholder ?? "Edit value"}
-        aria-invalid={!!error}
+        aria-label={labelledBy ? undefined : label}
+        aria-labelledby={labelledBy}
+        aria-invalid={!!displayError}
+        aria-describedby={displayError ? errorId : undefined}
         type={editorType === "number" ? "number" : "text"}
         value={draft}
         disabled={disabled}
@@ -258,9 +275,9 @@ export function DataGridInlineEditor<TValue>({
           if (!popupOpen.current) void commit()
         }}
       />
-      {error && (
-        <div role="alert" className="absolute start-0 top-full z-10 px-2 text-[10px] font-medium text-destructive">
-          {error}
+      {displayError && (
+        <div id={errorId} role="alert" className="absolute start-0 top-full z-10 px-2 text-[10px] font-medium text-destructive">
+          {displayError}
         </div>
       )}
     </div>
