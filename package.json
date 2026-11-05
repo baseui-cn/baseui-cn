@@ -18,7 +18,9 @@
     "theme:fixtures": "node scripts/check-theme-fixtures.mjs",
     "registry:check": "node scripts/check-registry-consistency.mjs",
     "cli:fixtures": "node scripts/check-cli-install-fixtures.mjs",
-    "cli:onboarding": "node scripts/check-cli-onboarding.mjs"
+    "cli:onboarding": "node scripts/check-cli-onboarding.mjs",
+    "grid:regressions": "node scripts/check-data-grid.mjs && node scripts/check-data-grid-regressions.mjs && node scripts/check-data-grid-api-types.mjs",
+    "grid:regressions:browser": "node scripts/check-data-grid-regressions-browser.mjs"
   },
   "devDependencies": {
     "turbo": "latest",

@@ -111,7 +111,7 @@ function toDateKey(value: unknown): string {
   if (value instanceof Date) {
     if (Number.isNaN(value.getTime())) return ""
     const key = [
-      value.getFullYear(),
+      String(value.getFullYear()).padStart(4, "0"),
       String(value.getMonth() + 1).padStart(2, "0"),
       String(value.getDate()).padStart(2, "0"),
     ].join("-")
@@ -119,9 +119,15 @@ function toDateKey(value: unknown): string {
   }
 
   // Calendar keys and ISO timestamps only; never locale-dependent Date parsing.
-  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}(?:$|T\d{2}:\d{2})/.test(value)) return ""
-  const date = value.slice(0, 10)
-  return isValidDate(date) ? date : ""
+  if (typeof value !== "string") return ""
+  const match = /^(\d{4}-\d{2}-\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2})(?:\.\d{1,9})?)?(?:Z|([+-])(\d{2}):(\d{2}))?)?$/.exec(value)
+  if (!match || !isValidDate(match[1])) return ""
+  if ((match[2] !== undefined && Number(match[2]) > 23) ||
+      (match[3] !== undefined && Number(match[3]) > 59) ||
+      (match[4] !== undefined && Number(match[4]) > 59) ||
+      (match[6] !== undefined && Number(match[6]) > 23) ||
+      (match[7] !== undefined && Number(match[7]) > 59)) return ""
+  return match[1]
 }
 
 export function matchesDateFilter(
@@ -132,16 +138,18 @@ export function matchesDateFilter(
 ): boolean {
   const actualDate = toDateKey(value)
   if (!actualDate || !validateDateFilter(operator, query, secondQuery).valid) return false
+  const first = query.trim()
+  const second = secondQuery?.trim()
 
   switch (operator) {
     case "before":
-      return actualDate < query
+      return actualDate < first
     case "after":
-      return actualDate > query
+      return actualDate > first
     case "on":
-      return actualDate === query
+      return actualDate === first
     case "between":
-      return Boolean(secondQuery && actualDate >= query && actualDate <= secondQuery)
+      return Boolean(second && actualDate >= first && actualDate <= second)
   }
 }
 
@@ -201,6 +209,11 @@ export function parseDataGridDate(value: string): Date | undefined {
   date.setFullYear(year, month - 1, day)
   date.setHours(0, 0, 0, 0)
   return date
+}
+
+/** Date picker output follows the same four-digit calendar grammar as filters. */
+export function formatDataGridDate(value: Date | undefined): string {
+  return value ? toDateKey(value) : ""
 }
 
 export function validateDateFilter(

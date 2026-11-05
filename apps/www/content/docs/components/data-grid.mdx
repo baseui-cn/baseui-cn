@@ -16,7 +16,7 @@ component: true
 <InstallTabs
   slug="data-grid"
   addCmd="baseui-cn add data-grid"
-  manualDeps="npm install @tanstack/react-table @tanstack/react-virtual @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities class-variance-authority lucide-react"
+  manualDeps="npm install @tanstack/react-table@^9.2.8 @tanstack/react-virtual @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities class-variance-authority lucide-react"
 />
 
 ## Usage
@@ -115,10 +115,31 @@ const table = useTable({ features: dataGridFeatures, columns, data })
 The feature object explicitly registers selection, visibility, sizing/resizing, ordering,
 pinning, filtering/faceting, sorting, pagination and expansion with their row models and
 built-in filter/sort functions. Column pinning uses logical `start` / `end`, including in
-RTL. Unpin a column before dragging it; pinned rows cannot be reordered. Combined DnD
+RTL. Unpin a column before dragging it; pinned rows cannot be reordered. Pins temporarily
+scroll with the table when their combined width fills the viewport; preferences are retained. Combined DnD
 namespaces row/column IDs internally and returns original IDs in callbacks.
 
 ## Excel Filters And Server Queries
+
+The complete [v8 to v9 migration guide](https://github.com/baseui-cn/baseui-cn/blob/main/docs/data-grid-v9-migration.md)
+covers generic types, hook/state changes, persisted preferences, server adapters,
+keyboard behavior and CSS verification. During this unpublished integration, use the
+guide shipped with the checked-out source.
+
+### Migrating from v8
+
+Replace `useReactTable` and its `getCoreRowModel`/`getSortedRowModel` options with
+`useTable({ features: dataGridFeatures, data, columns })`. Use `DataGridTable<Person>`
+and `DataGridColumnDef<Person, Value>` from `table-features`: they bind v9's leading
+feature generic. Read `table.store.state` instead of `table.getState()`.
+`columnSizingInfo` and `setColumnSizingInfo` become `columnResizing` and
+`setColumnResizing`; sizes remain in `columnSizing`.
+
+Convert legacy physical `{ left, right }` pinning to `{ start, end }` once in storage:
+LTR maps left to start and right to end; RTL maps right to start and left to end.
+Version the converted preferences. Keep stable `getRowId` values. Review customized
+source before selecting replacement in `baseui-cn update data-grid`. Node 18 remains
+supported for unrelated CLI components; Grid selections require Node 20+ atomically.
 
 Text comparisons trim and ignore case: contains, notContains, equals, notEquals,
 startsWith, endsWith, blank and notBlank. Blank includes null, undefined and whitespace.
@@ -160,6 +181,15 @@ Optimistic edits show pending/error state and roll back on failure. Responses on
 replace the optimistic row they started from: a refresh, deletion or replacement of
 that row is preserved. Updates to one row are serialized while its save is pending.
 
+Dialog saves provide changed fields in `onSaveRow`'s `draft` and a `nextRow` merged
+against the latest row. A conflicting change to a dirty field asks the user to reopen
+the record. Backends still need versioned writes. Editing IDs address direct properties;
+computed/nested accessors need custom adapters. Inline selects have field names and
+disabled options; standalone editors accept `label`, `aria-labelledby` and `error`.
+Composition Enter does not save. Async navigation retains edit-session ownership.
+Number controls are disabled while pending. Resize separators support Left/Right,
+Shift+Left/Right, Home/End and Enter, with RTL-aware direction.
+
 ## Data Sources And Preferences
 
 `DataGridFeatureDataSource<TData>` describes getRows, updateRow, reorderRows,
@@ -174,6 +204,12 @@ The feature preview uses an in-memory mock that retains preferences on rerender 
 data refresh. Durable storage and backend conflict/version checks belong to the data
 source. Mutation callbacks must await authoritative saves and handle rollback/errors.
 
+The feature example serializes writes and does not save initial/refresh preference
+reads back to the source. An older failed reorder cannot undo a newer operation;
+rollback restores only its owned ordering and keeps newer row values and membership.
+Use `manualFiltering`, `manualSorting`, `manualPagination` and authoritative `rowCount`
+with a memoized server source/query. The migration guide includes an adapter example.
+
 ## Virtualization And Feature Combinations
 
 `DataGridTableVirtual` measures rows and reads the visible window on every render;
@@ -183,3 +219,8 @@ fetch-more pending/error/retry/all-loaded states. The combined DnD renderer is a
 separate, nonvirtual renderer; virtual DnD is not supported. Column drag handles are
 restricted to unpinned columns and row handles to unpinned rows. Stable getRowId values
 are required for persisted state, edits, row measurement and reorder callbacks.
+
+Virtual tables expose logical row indices, sorting metadata and unknown infinite totals
+with `aria-rowcount=-1`. Native table semantics are retained. Minimal overrides such as
+`virtualizerOptions={{ enabled: false }}` or `{ overscan: 5 }` use the React adapter's
+default observer and scrolling functions.

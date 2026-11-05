@@ -2,11 +2,10 @@
 
 import { useMemo, useState } from "react"
 import { Badge } from "@/components/ui/badge"
-import { DataGrid, DataGridContainer } from "@/components/data-grid/data-grid"
+import { DataGrid } from "@/components/data-grid/data-grid"
 import { DataGridColumnHeader } from "@/components/data-grid/data-grid-column-header"
 import { DataGridPagination } from "@/components/data-grid/data-grid-pagination"
 import { DataGridScrollArea } from "@/components/data-grid/data-grid-scroll-area"
-import { DataGridTable } from "@/components/data-grid/data-grid-table"
 import { createExcelFilterFn } from "@/components/data-grid/data-grid-filter-client"
 import {
   type PaginationState,

@@ -1,5 +1,7 @@
 "use client"
 
+import { getDataGridVisibleColumns } from "./data-grid-utils"
+
 import {
   type CSSProperties,
   Fragment,
@@ -49,7 +51,6 @@ import type {
   DataGridCell,
   DataGridHeader,
   DataGridHeaderGroup,
-  DataGridRow,
 } from "@/components/data-grid/table-features"
 
 import { Button } from "@/components/ui/button"
@@ -241,7 +242,7 @@ function DataGridTableDnd<TData extends RowData>({
             {props.loadingMode === "skeleton" && isLoading && pagination?.pageSize ? (
               Array.from({ length: pagination.pageSize }).map((_, rowIndex) => (
                 <DataGridTableBodyRowSkeleton key={rowIndex}>
-                  {table.getVisibleFlatColumns().map((column, colIndex) => {
+                  {getDataGridVisibleColumns(table).map((column, colIndex) => {
                     return (
                       <DataGridTableBodyRowSkeletonCell column={column} key={colIndex}>
                         {column.columnDef.meta?.skeleton}

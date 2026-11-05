@@ -136,7 +136,7 @@ export default function App() {
     setTimeout(() => { setRows((value) => [...value, ...seed(50).map((row, index) => ({ ...row, id: `more-${index}`, name: `More ${index}` }))]); setFetching(false); setHasMore(false) }, 100)
   }
   return <DirectionProvider direction={rtl ? "rtl" : "ltr"}>
-    <main className="min-w-0 p-3">
+    <main className="min-w-0 bg-background text-foreground p-3">
       <h1 className="mb-3 text-xl font-semibold">Data Grid v9 consumer acceptance</h1>
       <div className="mb-3 flex flex-wrap gap-2" aria-label="Acceptance controls">
         {(["basic", "virtual", "combined", "rows", "columns"] as Mode[]).map((value) => <Button key={value} variant="outline" onClick={() => { setMode(value); table.setPageSize(value === "virtual" ? 500 : 10) }}>{value}</Button>)}

@@ -64,9 +64,9 @@ function extractVarNames(blockContent: string): Set<string> {
  * Ignore comments, quoted strings and their braces. Missing defaults go into
  * the first matching block; values in every existing matching block win.
  */
-function findBlocks(css: string, selector: string): Array<{ start: number; end: number }> {
-  const blocks: Array<{ start: number; end: number }> = []
-  const stack: Array<{ start: number; matches: boolean }> = []
+function findBlocks(css: string, selector: string): Array<{ start: number; end: number; layered: boolean }> {
+  const blocks: Array<{ start: number; end: number; layered: boolean }> = []
+  const stack: Array<{ start: number; matches: boolean; layered: boolean }> = []
   let headerStart = 0
   let quote = ""
   let comment = false
@@ -103,11 +103,11 @@ function findBlocks(css: string, selector: string): Array<{ start: number; end: 
         .replace(/\s+/g, " ")
         .trim()
       const matches = header.split(",").some((part) => part.trim() === selector)
-      stack.push({ start: i + 1, matches })
+      stack.push({ start: i + 1, matches, layered: stack.some((block) => block.layered) || /^@layer\b/.test(header) })
       headerStart = i + 1
     } else if (ch === "}") {
       const block = stack.pop()
-      if (block?.matches) blocks.push({ start: block.start, end: i })
+      if (block?.matches) blocks.push({ start: block.start, end: i, layered: block.layered })
       headerStart = i + 1
     } else if (ch === ";") headerStart = i + 1
   }
@@ -117,9 +117,10 @@ function findBlocks(css: string, selector: string): Array<{ start: number; end: 
 function mergeVarsIntoBlock(
   css: string,
   selector: string,
-  required: Record<string, string>
+  required: Record<string, string>,
+  unlayered = false
 ): { css: string; changed: boolean; found: boolean } {
-  const blocks = findBlocks(css, selector)
+  const blocks = findBlocks(css, selector).filter((block) => !unlayered || !block.layered)
   const first = blocks[0]
   if (!first) return { css, changed: false, found: false }
   const existing = new Set(
@@ -202,11 +203,11 @@ export async function ensureThemeCSS(
   const rootVars = { ...REQUIRED_ROOT_VARS, ...color.light, "--radius": radius }
   const darkVars = { ...REQUIRED_DARK_VARS, ...color.dark }
   const requestedRoot: Record<string, string> = {
-    ...(options.color ? color.light : {}),
+    ...(options.color ? Object.fromEntries(Object.entries({ ...REQUIRED_ROOT_VARS, ...color.light }).filter(([name]) => name !== "--radius")) : {}),
     ...(options.radius ? { "--radius": radius } : {}),
   }
   const requestedDark: Record<string, string> = {
-    ...(options.color ? color.dark : {}),
+    ...(options.color ? { ...REQUIRED_DARK_VARS, ...color.dark } : {}),
     ...(options.radius ? { "--radius": radius } : {}),
   }
 
@@ -232,10 +233,6 @@ export async function ensureThemeCSS(
     // Preserve all existing CSS, including customized legacy injection blocks.
     if (!/@custom-variant\s+dark\b/.test(css.replace(/\/\*[\s\S]*?\*\//g, ""))) {
       css += "\n\n" + themeStrategy
-      changed = true
-    }
-    if (!css.includes("/* baseui-cn foundation */")) {
-      css += "\n\n" + themeFoundation
       changed = true
     }
 
@@ -269,12 +266,18 @@ export async function ensureThemeCSS(
     }
 
     // ── Step 4: .dark — merge or create ───────────────────────────
-    const darkResult = mergeVarsIntoBlock(css, ".dark", darkDefaults)
+    const darkResult = mergeVarsIntoBlock(css, ".dark", darkDefaults, !!(options.color || options.radius))
     if (darkResult.changed) {
       css = darkResult.css
       changed = true
     } else if (!darkResult.found) {
       css += "\n\n" + buildBlock(".dark", darkDefaults)
+      changed = true
+    }
+
+    // Palette defaults must not land in the foundation's layered color-scheme rule.
+    if (!css.includes("/* baseui-cn foundation */")) {
+      css += "\n\n" + themeFoundation
       changed = true
     }
 

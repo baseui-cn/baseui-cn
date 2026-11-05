@@ -1,5 +1,7 @@
 "use client"
 
+import { getDataGridVisibleColumns } from "./data-grid-utils"
+
 import {
   createContext,
   type CSSProperties,
@@ -244,7 +246,7 @@ function DataGridTableDndRows<TData extends RowData>({
             {props.loadingMode === "skeleton" && isLoading && pagination?.pageSize ? (
               Array.from({ length: pagination.pageSize }).map((_, rowIndex) => (
                 <DataGridTableBodyRowSkeleton key={rowIndex}>
-                  {table.getVisibleFlatColumns().map((column, colIndex) => {
+                  {getDataGridVisibleColumns(table).map((column, colIndex) => {
                     return (
                       <DataGridTableBodyRowSkeletonCell column={column} key={colIndex}>
                         {column.columnDef.meta?.skeleton}

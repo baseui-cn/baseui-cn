@@ -1,6 +1,7 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { createDataGridMutationQueue, createDataGridPreferenceWriter, rollbackDataGridRowOrder } from "@/components/data-grid/data-grid-mutations"
 import { Button } from "@/components/ui/button"
 import { arrayMove } from "@dnd-kit/sortable"
 import type { DragEndEvent } from "@dnd-kit/core"
@@ -46,7 +47,9 @@ import {
 } from "@/hooks/data-grid-features-data"
 import { createExcelFilterFn } from "@/components/data-grid/data-grid-filter-client"
 import { useDataGridFeatureData } from "@/hooks/use-data-grid-feature-data"
-import type { DataGridColumnPreference } from "@/types/data-grid-data-source"
+import type { DataGridColumnPreference, DataGridFeatureDataSource } from "@/types/data-grid-data-source"
+import type { DataGridRowMove } from "@/types/data-grid-data-source"
+import type { RowPinningState } from "@tanstack/react-table"
 import { useEditableDataGrid, type EditableDataGridColumn } from "@/hooks/use-editable-data-grid"
 
 type StateUpdater<T> = T | ((previous: T) => T)
@@ -85,6 +88,7 @@ function createInlineRenderer(editorType: DataGridInlineEditorKind) {
     navigate,
     isEditing,
     isPending,
+    error,
     editor,
   }: Parameters<NonNullable<DataGridColumnEditor<StaffMember, unknown>["renderInline"]>>[0]) {
     const optionLabel = editor.options?.find(
@@ -110,8 +114,10 @@ function createInlineRenderer(editorType: DataGridInlineEditorKind) {
         value={value}
         editorType={editorType}
         options={editor.options}
+        label={editor.label ?? columnId}
         placeholder={editor.placeholder}
         disabled={isPending}
+        error={error}
         parseValue={(raw) => {
           if (editorType === "number") {
             const number = Number(raw)
@@ -175,8 +181,9 @@ function toColumnPreferences(order: ColumnOrderState, pinning: ColumnPinningStat
   }))
 }
 
-export function DataGridFeaturesPreview() {
-  const dataSource = useMemo(() => createMockStaffDataSource(), [])
+export function DataGridFeaturesPreview({ dataSource: suppliedSource }: { dataSource?: DataGridFeatureDataSource<StaffMember> } = {}) {
+  const defaultSource = useMemo(() => createMockStaffDataSource(), [])
+  const dataSource = suppliedSource ?? defaultSource
   const [features, setFeatures] = useState<DataGridFeatures>(() => ({ ...defaultDataGridFeatures }))
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -197,6 +204,7 @@ export function DataGridFeaturesPreview() {
   const sourceData = useDataGridFeatureData({ dataSource, query })
   const {
     rows,
+    readRevision,
     setRows,
     total,
     rowPinning,
@@ -208,6 +216,17 @@ export function DataGridFeaturesPreview() {
     reportError,
     clearError,
   } = sourceData
+  const readRevisionRef = useRef(readRevision)
+  const reorderVersion = useRef(0)
+  const reorderPending = useRef(false)
+  const [isReordering, setIsReordering] = useState(false)
+  useEffect(() => { readRevisionRef.current = readRevision }, [readRevision])
+  useEffect(() => () => { reorderVersion.current++ }, [dataSource])
+  const writers = useMemo(() => ({
+    columns: createDataGridPreferenceWriter((value: DataGridColumnPreference[]) => dataSource.saveColumnState(value)),
+    rows: createDataGridPreferenceWriter((value: RowPinningState) => dataSource.saveRowPinning(value)),
+    reorder: createDataGridMutationQueue((value: DataGridRowMove) => dataSource.reorderRows(value)),
+  }), [dataSource])
 
   const handleRowPinningChange = useCallback(
     (updater: Parameters<typeof setRowPinning>[0]) => {
@@ -220,7 +239,8 @@ export function DataGridFeaturesPreview() {
     () => [
       {
         id: "rowActions",
-        header: "",
+        header: () => <span className="sr-only">Row actions</span>,
+        meta: { cellClassName: "relative !p-0", headerTitle: "Row actions" },
         cell: ({ row }) => (
           <RowActions
             row={row}
@@ -233,7 +253,6 @@ export function DataGridFeaturesPreview() {
         enableColumnOrdering: false,
         enableColumnPinning: false,
         enableHiding: false,
-        meta: { cellClassName: "relative !p-0" },
       },
       {
         accessorKey: "name",
@@ -488,28 +507,18 @@ export function DataGridFeaturesPreview() {
   })
 
   useEffect(() => {
-    if (isLoading) return
-    const save = async () => {
-      try {
-        await dataSource.saveColumnState(toColumnPreferences(columnOrder, columnPinning))
-      } catch (saveError) {
-        reportError(saveError)
-      }
-    }
-    void save()
-  }, [columnOrder, columnPinning, dataSource, isLoading, reportError])
+    let cancelled = false
+    const operation = writers.columns(toColumnPreferences(columnOrder, columnPinning), !isLoading)
+    void operation?.catch((error: unknown) => { if (!cancelled) reportError(error) })
+    return () => { cancelled = true }
+  }, [columnOrder, columnPinning, writers, isLoading, reportError])
 
   useEffect(() => {
-    if (isLoading) return
-    const save = async () => {
-      try {
-        await dataSource.saveRowPinning(rowPinning)
-      } catch (saveError) {
-        reportError(saveError)
-      }
-    }
-    void save()
-  }, [dataSource, isLoading, reportError, rowPinning])
+    let cancelled = false
+    const operation = writers.rows(rowPinning, !isLoading)
+    void operation?.catch((error: unknown) => { if (!cancelled) reportError(error) })
+    return () => { cancelled = true }
+  }, [writers, isLoading, reportError, rowPinning])
 
   const updateFeature = (feature: keyof DataGridFeatures, checked: boolean) => {
     setFeatures((currentFeatures) => ({ ...currentFeatures, [feature]: checked }))
@@ -517,13 +526,17 @@ export function DataGridFeaturesPreview() {
 
   const handleRowDragEnd = useCallback(
     async ({ active, over }: DragEndEvent) => {
-      if (!features.rowReordering || !over || active.id === over.id) return
+      if (!features.rowReordering || !over || active.id === over.id || reorderPending.current) return
 
       const from = rows.findIndex((row) => row.id === String(active.id))
       const to = rows.findIndex((row) => row.id === String(over.id))
       if (from < 0 || to < 0) return
 
+      reorderPending.current = true
+      setIsReordering(true)
       const nextRows = arrayMove(rows, from, to)
+      const operation = ++reorderVersion.current
+      const revision = readRevision
       const movedRow = nextRows[to]
       const move = {
         rowId: movedRow.id,
@@ -532,14 +545,18 @@ export function DataGridFeaturesPreview() {
       }
       setRows(nextRows)
       try {
-        await dataSource.reorderRows(move)
-        clearError()
+        await writers.reorder(move)
+        if (operation === reorderVersion.current) clearError()
       } catch (reorderError) {
-        setRows(rows)
+        if (operation !== reorderVersion.current || revision !== readRevisionRef.current) return
+        setRows((current) => rollbackDataGridRowOrder(current, rows.map((row) => row.id), nextRows.map((row) => row.id)))
         reportError(reorderError)
+      } finally {
+        reorderPending.current = false
+        setIsReordering(false)
       }
     },
-    [clearError, dataSource, features.rowReordering, reportError, rows, setRows]
+    [clearError, writers, readRevision, features.rowReordering, reportError, rows, setRows]
   )
 
   const handleColumnDragEnd = useCallback(
@@ -565,6 +582,7 @@ export function DataGridFeaturesPreview() {
         </div>
       )}
 
+      <Button variant="outline" onClick={refresh} disabled={isLoading}>Refresh rows</Button>
       <DataGridContainer>
         <DataGrid
           table={table}
@@ -583,7 +601,7 @@ export function DataGridFeaturesPreview() {
             columnsDraggable: features.columnDragAndDrop,
             columnsPinnable: features.columnPinning,
             columnsMovable: features.columnReordering,
-            rowsDraggable: features.rowReordering,
+            rowsDraggable: features.rowReordering && !isReordering,
             rowsPinnable: features.rowPinning,
           }}
         >

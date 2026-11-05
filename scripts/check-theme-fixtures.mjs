@@ -171,6 +171,8 @@ for (const value of [
   "--primary: #c0ffee !important",
   "--radius: 13px",
   "--radius: 19px",
+  "--success: #123456",
+  "--success: #654321",
 ])
   assert.ok(preserved.includes(value))
 await ensureThemeCSS(customConfig, { silent: true, color: "emerald" })
@@ -182,11 +184,18 @@ assert.ok(changedColor.includes("--radius: 13px"))
 assert.ok(changedColor.includes("--radius: 19px"))
 assert.ok(changedColor.includes('content: "--primary: ignored;"'))
 assert.ok(changedColor.includes(".other { --primary: tomato; }"))
-for (const value of ["--success: #123456", "--success: #654321"])
-  assert.ok(changedColor.includes(value))
+// Explicit color selection replaces the full semantic palette; ordinary init
+// above preserves custom values. Radius remains independently controlled.
+assert.ok(!changedColor.includes("--success: #123456"))
+assert.ok(!changedColor.includes("--success: #654321"))
+assert.ok(changedColor.includes("--success: " + definition.light["--success"]))
+assert.ok(changedColor.includes("--success: " + definition.dark["--success"]))
 await ensureThemeCSS(customConfig, { silent: true, radius: "xl" })
 const changedRadius = await fs.readFile(customFile, "utf8")
-assert.equal((changedRadius.match(/--radius: 1rem/g) || []).length, 2)
+// Explicit selection covers root, the retained layered custom rule, and the
+// unlayered dark palette needed to win the cascade against an unlayered root.
+assert.equal((changedRadius.match(/--radius: 1rem/g) || []).length, 3)
+assert.match(changedRadius, /\n\.dark \{[^}]*--radius: 1rem/s)
 assert.ok(changedRadius.includes("--primary: " + presets.colors.emerald.light["--primary"]))
 assert.equal(
   await ensureThemeCSS(customConfig, { silent: true, color: "emerald", radius: "xl" }),
