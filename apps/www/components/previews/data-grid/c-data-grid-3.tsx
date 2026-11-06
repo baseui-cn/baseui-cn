@@ -509,8 +509,8 @@ export function PatternEdit2() {
       }}
     >
       <Card variant="elevated" className="w-full gap-0 p-0">
-        <CardHeader className="flex items-center justify-between gap-3 px-4 py-3">
-          <div className="flex items-center gap-2">
+        <CardHeader className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className="text-foreground text-sm font-medium">Async Editing Sandbox</span>
             <Badge variant="info-outline">Optimistic API</Badge>
             {isGridPending ? (
@@ -537,12 +537,12 @@ export function PatternEdit2() {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="border-y p-0">
+        <CardContent className="border-t p-0">
           <DataGridScrollArea className="h-[460px]">
             <DataGridTable />
           </DataGridScrollArea>
         </CardContent>
-        <CardFooter className="border-none bg-transparent! px-4 py-3">
+        <CardFooter className="border-none bg-transparent! p-0">
           <DataGridPagination />
         </CardFooter>
       </Card>

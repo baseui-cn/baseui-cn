@@ -56,7 +56,7 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
   const btnArrowClasses = btnBaseClasses + " rtl:transform rtl:rotate-180"
   const pageIndex = table.store.state.pagination.pageIndex
   const pageSize = table.store.state.pagination.pageSize
-  const from = pageIndex * pageSize + 1
+  const from = recordCount === 0 ? 0 : pageIndex * pageSize + 1
   const to = Math.min((pageIndex + 1) * pageSize, recordCount)
   const pageCount = table.getPageCount()
 
@@ -110,6 +110,7 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
           size="icon-sm"
           className={btnBaseClasses}
           variant="ghost"
+          aria-label="Go to previous pages"
           onClick={() => table.setPageIndex(currentGroupStart - 1)}
         >
           {mergedProps.ellipsisText}
@@ -127,6 +128,7 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
           className={btnBaseClasses}
           variant="ghost"
           size="icon-sm"
+          aria-label="Go to next pages"
           onClick={() => table.setPageIndex(currentGroupEnd)}
         >
           {mergedProps.ellipsisText}
@@ -140,11 +142,11 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
     <div
       data-slot="data-grid-pagination"
       className={cn(
-        "flex grow flex-col flex-wrap items-center justify-between gap-2.5 py-2.5 sm:flex-row sm:py-0",
+        "flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-3 border-t border-border px-4 py-3",
         mergedProps?.className
       )}
     >
-      <div className="order-2 flex flex-wrap items-center space-x-2.5 pb-2.5 sm:order-1 sm:pb-0">
+      <div className="flex shrink-0 items-center gap-2.5">
         {isLoading ? (
           mergedProps?.sizesSkeleton
         ) : (
@@ -157,7 +159,7 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
                 table.setPageSize(newPageSize)
               }}
             >
-              <SelectTrigger aria-label="Rows per page" className="w-14" size="sm">
+              <SelectTrigger aria-label={mergedProps.rowsPerPageLabel} className="w-20 shrink-0" size="sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent side="top" className="min-w-18">
@@ -171,16 +173,16 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
           </>
         )}
       </div>
-      <div className="order-1 flex flex-col items-center justify-center gap-2.5 pt-2.5 sm:order-2 sm:flex-row sm:justify-end sm:pt-0">
+      <div className="ms-auto flex max-w-full flex-wrap items-center justify-end gap-x-3 gap-y-2">
         {isLoading ? (
           mergedProps?.infoSkeleton
         ) : (
           <>
-            <div className="text-muted-foreground text-sm order-2 text-nowrap sm:order-1">
+            <div dir="auto" className="text-muted-foreground text-sm text-nowrap tabular-nums">
               {paginationInfo}
             </div>
             {pageCount > 1 && (
-              <div className="order-1 flex max-w-full flex-wrap items-center justify-center gap-1 sm:order-2">
+              <nav aria-label="Pagination" className="flex max-w-full flex-wrap items-center justify-end gap-1">
                 <Button
                   size="icon-sm"
                   variant="ghost"
@@ -208,7 +210,7 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
                   <span className="sr-only">{mergedProps.nextPageLabel}</span>
                   <ChevronRightIcon className="size-4" />
                 </Button>
-              </div>
+              </nav>
             )}
           </>
         )}

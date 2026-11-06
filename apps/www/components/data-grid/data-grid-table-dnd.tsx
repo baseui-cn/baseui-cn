@@ -41,7 +41,7 @@ import {
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core"
-import { horizontalListSortingStrategy, SortableContext, useSortable } from "@dnd-kit/sortable"
+import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates, useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import {
   flexRender,
@@ -159,7 +159,7 @@ function DataGridTableDnd<TData extends RowData>({
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
 
   useEffect(() => {

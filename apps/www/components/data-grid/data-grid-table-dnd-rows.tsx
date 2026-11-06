@@ -44,7 +44,7 @@ import {
   type Modifier,
 } from "@dnd-kit/core"
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
-import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { flexRender, type RowData } from "@tanstack/react-table"
 import type {
@@ -149,7 +149,7 @@ function DataGridTableDndRows<TData extends RowData>({
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
 
   useEffect(() => {

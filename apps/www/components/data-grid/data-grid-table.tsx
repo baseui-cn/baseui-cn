@@ -1132,8 +1132,8 @@ function DataGridTableRowPin<TData extends RowData>({ row }: { row: DataGridRow<
   const { props } = useDataGrid()
   if (!props.tableLayout?.rowsPinnable || !row.getCanPin()) return null
 
-  const isPinned = row.getIsPinned()
-  const label = isPinned ? `Row pinned to ${isPinned}` : "Pin row"
+  const isPinned = Boolean(row.getIsPinned())
+  const label = isPinned ? "Unpin row" : "Pin row"
 
   return (
     <DropdownMenu>
@@ -1144,6 +1144,7 @@ function DataGridTableRowPin<TData extends RowData>({ row }: { row: DataGridRow<
             variant="ghost"
             size="icon-sm"
             aria-label={label}
+            aria-pressed={isPinned}
             title={label}
             className={cn(
               "text-muted-foreground hover:text-foreground",
@@ -1153,7 +1154,7 @@ function DataGridTableRowPin<TData extends RowData>({ row }: { row: DataGridRow<
           />
         }
       >
-        <PinIcon className="size-4" aria-hidden="true" />
+        <PinIcon className="size-4" fill={isPinned ? "currentColor" : "none"} aria-hidden="true" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="min-w-36">
         <DropdownMenuItem onClick={() => row.pin("top")}>

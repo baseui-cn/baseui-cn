@@ -612,9 +612,7 @@ export function DataGridFeaturesPreview({ dataSource: suppliedSource }: { dataSo
               onColumnDragEnd={handleColumnDragEnd}
             />
           </DataGridScrollArea>
-          <div className="border-t px-4 py-3">
-            <DataGridPagination />
-          </div>
+          <DataGridPagination />
         </DataGrid>
       </DataGridContainer>
     </div>

@@ -359,20 +359,20 @@ export function Pattern() {
       }}
     >
       <Card variant="elevated" className="w-full gap-0 p-0">
-        <CardHeader className="flex items-center justify-between gap-3 px-4 py-3">
-          <div className="flex items-center gap-2">
+        <CardHeader className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className="text-foreground text-sm font-medium">Basic Data Grid</span>
-            <Badge variant="info-outline" size="sm">
+            <span className="text-muted-foreground text-xs">
               Sorting, pagination, resizable columns, and drag-and-drop rows
-            </Badge>
+            </span>
           </div>
         </CardHeader>
-        <CardContent className="border-y p-0">
+        <CardContent className="border-t p-0">
           <DataGridScrollArea className="h-[460px]">
             <DataGridTableDndRows handleDragEnd={handleDragEnd} dataIds={dataIds} />
           </DataGridScrollArea>
         </CardContent>
-        <CardFooter className="border-none bg-transparent! px-4 py-3">
+        <CardFooter className="border-none bg-transparent! p-0">
           <DataGridPagination />
         </CardFooter>
       </Card>
