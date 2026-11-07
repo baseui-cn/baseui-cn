@@ -23,6 +23,28 @@ export interface ChangelogRelease {
 
 export const changelogEntries: ChangelogRelease[] = [
   {
+    slug: "baseui-cn-1-5-0-data-grid-v9",
+    date: "November 7, 2026",
+    isoDate: "2026-11-07",
+    title: "baseui-cn 1.5.0 — Data Grid v9",
+    badge: "Release",
+    summary:
+      "CLI 1.5.0 is published with TanStack Table v9, audited editing and persistence, and refined Grid interactions.",
+    notes: [
+      "Upgraded Data Grid to TanStack Table v9 with explicit feature registration, strict consumer types, and a complete v8-to-v9 migration guide.",
+      "Inline editors preserve row dimensions during editing, saving and errors. Date editing opens in one interaction and retains the owning focus contour while its calendar is open.",
+      "Improved async edit ownership, composition handling, keyboard navigation, virtual table semantics, column resizing, and preference and reorder persistence.",
+      "Refined row pin state, pagination alignment and keyboard/pointer dragging across responsive, light/dark and LTR/RTL layouts.",
+      "Base UI remains 1.9.0. Data Grid uses @tanstack/react-table@^9.2.8 and requires Node 20+, while the CLI retains Node 18 support for other components.",
+      "Thanks to @abhishekkumarwhiteleaf for the original Data Grid contribution in PR #3, reconciled and audited for this release.",
+    ],
+    links: [
+      { href: "/docs/components/data-grid", label: "View Data Grid docs" },
+      { href: "https://github.com/baseui-cn/baseui-cn/blob/main/docs/data-grid-v9-migration.md", label: "Read the v9 migration guide" },
+      { href: "https://github.com/baseui-cn/baseui-cn/pull/3", label: "Original Data Grid contribution" },
+    ],
+  },
+  {
     slug: "baseui-cn-1-4-2-create-theme-typography",
     date: "November 4, 2026",
     isoDate: "2026-11-04",
