@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { useTable } from "@tanstack/react-table"
 import AcceptanceApp from "./data-grid-v9"
+import GeometryFixture from "./data-grid-inline-geometry"
 import { DataGrid, DataGridContainer, type DataGridColumnEditor } from "@/components/data-grid/data-grid"
 import { DataGridTable } from "@/components/data-grid/data-grid-table"
 import { DataGridTableVirtual } from "@/components/data-grid/data-grid-table-virtual"
@@ -64,13 +65,14 @@ function DynamicGrid({ mode }: { mode: string }) {
   </div>
 }
 
-function Standalone({ text = false }: { text?: boolean }) {
-  const [value, setValue] = useState<string | null>(text ? "Alpha" : "Active")
-  useEffect(() => { Object.assign(window, { regressionInline: { value } }) })
-  return <DataGridInlineEditor value={value} label={text ? "Standalone text" : "Standalone status"}
-    editorType={text ? "text" : "select"}
+function Standalone({ text = false, date = false }: { text?: boolean; date?: boolean }) {
+  const [value, setValue] = useState<string | null>(date ? "2026-10-29" : text ? "Alpha" : "Active")
+  const [cancels, setCancels] = useState(0)
+  useEffect(() => { Object.assign(window, { regressionInline: { value, cancels } }) })
+  return <DataGridInlineEditor value={value} label={date ? "Standalone date" : text ? "Standalone text" : "Standalone status"}
+    editorType={date ? "date" : text ? "text" : "select"}
     options={[{ label: "Active", value: "Active" }, { label: "Unavailable", value: "Away", disabled: true }, { label: "No status", value: null }]}
-    onCommit={setValue} />
+    onCommit={setValue} onCancel={() => setCancels(count => count + 1)} />
 }
 
 interface PendingCall { value: unknown; resolve: () => void; reject: (error: Error) => void }
@@ -95,7 +97,8 @@ function Preferences() {
 export default function RegressionApp() {
   const mode = new URLSearchParams(window.location.search).get("mode") ?? "acceptance"
   if (mode === "acceptance") return <AcceptanceApp />
+  if (mode === "geometry") return <GeometryFixture />
   return <main><h1>Data Grid regression verification</h1>
-    {mode === "preferences" ? <Preferences /> : mode.startsWith("inline") ? <Standalone text={mode === "inline-text"} /> : <DynamicGrid mode={mode} />}
+    {mode === "preferences" ? <Preferences /> : mode.startsWith("inline") ? <Standalone text={mode === "inline-text"} date={mode === "inline-date"} /> : <DynamicGrid mode={mode} />}
   </main>
 }

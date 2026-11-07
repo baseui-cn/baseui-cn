@@ -148,7 +148,6 @@ await run("select/date/checkbox/switch/rating and generated dialog", async () =>
   assert.equal(await api(() => window.gridAcceptance.rows[0].status), "Active")
   await api(() => window.gridAcceptance.table.getColumn("date").pin("start")); await settle()
   await cell("date").getByRole("button").click(); await settle()
-  await cell("date").getByRole("button").click(); await settle()
   await page.getByRole("button", { name: "Friday, October 30th, 2026", exact: true }).click(); await settle()
   assert.equal(await api(() => window.gridAcceptance.rows[0].date), "2026-10-30")
   await cell("active").getByRole("checkbox").click(); await settle()

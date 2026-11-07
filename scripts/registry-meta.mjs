@@ -580,6 +580,15 @@ export const componentMeta = {
         targetPath: "components/data-grid/data-grid-inline-editor.tsx",
       },
       {
+        sourcePath: "apps/www/components/data-grid/data-grid-inline-layout.tsx",
+        targetPath: "components/data-grid/data-grid-inline-layout.tsx",
+      },
+      {
+        sourcePath: "apps/www/styles/data-grid-editing.styles.css",
+        targetPath: "styles/data-grid-editing.styles.css",
+        type: "style",
+      },
+      {
         sourcePath: "apps/www/components/data-grid/data-grid-pagination.tsx",
         targetPath: "components/data-grid/data-grid-pagination.tsx",
       },

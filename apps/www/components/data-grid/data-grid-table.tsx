@@ -1070,9 +1070,12 @@ function DataGridTableRenderedRow<TData extends RowData>({
   const isPendingRow =
     props.loadingMode === "skeleton" && Boolean(table.options.meta?.editing?.isRowPending(row.id))
 
-  // Keep an active inline editor mounted so pending/failed saves retain focus and draft.
-  // Row skeletons remain available for dialog/other row-level operations.
-  if (isPendingRow && table.options.meta?.editing?.activeCell?.rowId !== row.id) {
+  const editing = table.options.meta?.editing
+  // Boolean controls commit directly without opening activeCell. Keep those
+  // controls and the measured row mounted too; only row/dialog operations use skeletons.
+  const hasPendingInlineCell = isPendingRow && editing?.dialogRowId !== row.id &&
+    row.getVisibleCells().some(cell => editing?.isCellPending(row.id, cell.column.id))
+  if (isPendingRow && editing?.activeCell?.rowId !== row.id && !hasPendingInlineCell) {
     return (
       <DataGridTableBodyRowSkeleton rowIndex={rowIndex} rowRef={rowRef}>
         {row.getVisibleCells().map((cell: DataGridCell<TData, unknown>) => (

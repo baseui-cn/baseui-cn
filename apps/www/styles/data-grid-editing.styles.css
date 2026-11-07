@@ -1,0 +1,67 @@
+/* Measured, layout-neutral inline editing; never imposes a row height. */
+@layer components {
+  [data-slot="data-grid-table"] td:has([data-slot="data-grid-editable-cell"]) {
+    position: relative;
+  }
+  .data-grid-editable-cell-layout {
+    box-sizing: border-box;
+  }
+  .data-grid-editable-cell-layout[data-inline-editor-active] {
+    /* Preserve the measured idle content, not a new fixed row height. */
+    position: static !important;
+    block-size: var(--data-grid-editor-content-height);
+  }
+  .data-grid-editable-cell-layout[data-inline-editor-active] > [data-slot="data-grid-inline-editor-content"] {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    overflow: clip;
+    min-block-size: 0;
+    min-inline-size: 0;
+  }
+  .data-grid-editable-cell-layout[data-inline-editor-active] > [data-slot="data-grid-inline-editor-content"] > * {
+    max-block-size: 100%;
+    min-block-size: 0 !important;
+    min-inline-size: 0;
+  }
+  .data-grid-inline-editor-layout {
+    position: relative;
+    display: flex;
+    align-items: center;
+    block-size: 100%;
+    min-block-size: 0;
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
+  [data-slot="data-grid-inline-editor-content"] :is(.data-grid-inline-control-layout, .number-field-layout, .number-input-layout) {
+    box-sizing: border-box;
+    block-size: 100%;
+    max-block-size: 100%;
+    min-block-size: 0 !important;
+    padding-block: 0;
+    margin-block: 0;
+  }
+  [data-slot="data-grid-inline-editor-content"] .number-group-layout {
+    display: flex;
+    flex-direction: row;
+  }
+  .data-grid-editable-cell-layout[data-inline-editor-active] > [data-slot="data-grid-inline-editor-content"]:focus-within:not(:has(.data-grid-inline-date-trigger-layout)) {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+  }
+}
+
+/* Match the existing unlayered V2 Button contour so keyboard focus cannot
+   replace the cell-inset outline with a clipped outside outline. */
+.data-grid-inline-editor-layout .data-grid-inline-date-trigger-layout:is(:focus-visible, [data-popup-open]) {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+  box-shadow: none;
+}
+@media (forced-colors: active) {
+  .data-grid-inline-editor-layout .data-grid-inline-date-trigger-layout:is(:focus-visible, [data-popup-open]) {
+    outline-color: Highlight;
+  }
+}

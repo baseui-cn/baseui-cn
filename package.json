@@ -21,7 +21,7 @@
     "cli:onboarding": "node scripts/check-cli-onboarding.mjs",
     "cli:setup-contract": "node scripts/check-setup-contract.mjs",
     "grid:regressions": "node scripts/check-data-grid.mjs && node scripts/check-data-grid-regressions.mjs && node scripts/check-data-grid-api-types.mjs",
-    "grid:regressions:browser": "node scripts/check-data-grid-regressions-browser.mjs"
+    "grid:regressions:browser": "node scripts/check-data-grid-regressions-browser.mjs && node scripts/check-data-grid-geometry-browser.mjs && node scripts/check-data-grid-date-browser.mjs"
   },
   "devDependencies": {
     "turbo": "latest",

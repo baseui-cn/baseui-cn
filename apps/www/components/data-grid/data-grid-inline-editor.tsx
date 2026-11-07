@@ -6,7 +6,11 @@ import type { KeyboardEvent as ReactKeyboardEvent } from "react"
 import { Input } from "@/components/ui/input"
 import { formatDataGridDate, parseDataGridDate } from "./data-grid-filter-client"
 import { cn } from "@/lib/utils"
-import { DatePickerInput } from "@/components/ui/date-picker"
+import { DatePicker } from "@/components/ui/date-picker"
+import { Button } from "@/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { CalendarIcon } from "lucide-react"
+import { DataGridInlineError } from "./data-grid-inline-layout"
 import {
   Select,
   SelectContent,
@@ -26,6 +30,7 @@ export interface DataGridInlineEditorOption<TValue> {
 
 export interface DataGridInlineEditorProps<TValue> {
   error?: string | null
+  errorId?: string
   value: TValue
   editorType?: DataGridInlineEditorKind
   options?: readonly DataGridInlineEditorOption<TValue>[]
@@ -62,6 +67,7 @@ export function DataGridInlineEditor<TValue>({
   "aria-labelledby": labelledBy,
   disabled = false,
   error: externalError,
+  errorId: externalErrorId,
   className,
   initialDraft,
   parseValue,
@@ -77,11 +83,14 @@ export function DataGridInlineEditor<TValue>({
   const committedDraft = useRef<string | undefined>(undefined)
   const mounted = useRef(true)
   const [error, setError] = useState<string | null>(null)
-  const errorId = useId()
+  const generatedErrorId = useId()
+  const errorId = externalErrorId ?? generatedErrorId
   const displayError = externalError ?? error
   const editorRef = useRef<HTMLDivElement>(null)
   const isCommitting = useRef(false)
   const popupOpen = useRef(false)
+  const dateEscapeClosing = useRef(false)
+  const [dateOpen, setDateOpen] = useState(false)
 
   useEffect(() => {
     mounted.current = true
@@ -158,6 +167,13 @@ export function DataGridInlineEditor<TValue>({
 
   const handleKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
     if (isDataGridComposing(event)) return
+    // The calendar button owns Enter/Space. Escape from an open popup is
+    // handled by the Popover so its close/focus lifecycle runs exactly once.
+    if (editorType === "date") {
+      if (event.key === "Enter" || event.key === " ") return
+      if (event.key === "Tab" && popupOpen.current) return
+      if (event.key === "Escape" && (dateEscapeClosing.current || popupOpen.current || !editorRef.current?.contains(event.target as Node))) return
+    }
     if (event.key === "Escape") {
       event.preventDefault()
       setError(null)
@@ -184,7 +200,7 @@ export function DataGridInlineEditor<TValue>({
 
   if (editorType === "select") {
     return (
-      <div ref={editorRef} className="relative flex h-full min-h-8 w-full items-center">
+      <div ref={editorRef} className="data-grid-inline-editor-layout">
         <Select
           value={`value:${draft}`}
           disabled={disabled}
@@ -200,10 +216,12 @@ export function DataGridInlineEditor<TValue>({
             aria-invalid={!!displayError}
             aria-describedby={displayError ? errorId : undefined}
             size="sm"
-            className={cn("h-7 w-full rounded-none border-0 px-2 text-sm shadow-none", className)}
+            className={cn("data-grid-inline-control-layout h-full w-full rounded-none border-0 px-2 text-sm shadow-none", className)}
             onKeyDown={handleKeyDown}
           >
-            <SelectValue placeholder={placeholder} />
+            <SelectValue placeholder={placeholder}>
+              {options.find(option => formatDefaultValue(option.value) === draft)?.label ?? placeholder ?? draft}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent align="start">
             {options.map((option) => (
@@ -213,7 +231,7 @@ export function DataGridInlineEditor<TValue>({
             ))}
           </SelectContent>
         </Select>
-        {displayError && <div id={errorId} role="alert" className="px-2 text-[10px] font-medium text-destructive">{displayError}</div>}
+        <DataGridInlineError error={externalErrorId && externalError ? null : displayError} id={errorId} anchor={editorRef} />
       </div>
     )
   }
@@ -222,39 +240,52 @@ export function DataGridInlineEditor<TValue>({
     return (
       <div
         ref={editorRef}
-        className="relative flex h-full min-h-8 w-full items-center"
+        className="data-grid-inline-editor-layout"
         onBlurCapture={handlePopupBlur}
         onKeyDown={handleKeyDown}
       >
-        <DatePickerInput
-          label={label}
-          value={parseDataGridDate(draft)}
-          onValueChange={(nextValue) => {
-            const nextDraft = formatDataGridDate(nextValue)
-            changeDraft(nextDraft)
-            void commit(nextDraft)
-          }}
-          onOpenChange={(open) => {
+        <Popover open={dateOpen}
+          onOpenChange={(open, details) => {
+            setDateOpen(open)
             popupOpen.current = open
-            if (!open) handlePopupBlur()
-          }}
-          formatPreset="iso"
-          size="sm"
-          placeholder={placeholder ?? "Select date"}
-          clearable={false}
-          triggerClassName={cn(
-            "h-full min-h-7 w-full rounded-none border-0 px-2 text-sm shadow-none",
-            className
-          )}
-          className="w-full"
-        />
-        {displayError && <div id={errorId} role="alert" className="px-2 text-[10px] font-medium text-destructive">{displayError}</div>}
+            if (!open && details.reason === "escape-key") {
+              dateEscapeClosing.current = true
+              queueMicrotask(() => { dateEscapeClosing.current = false })
+              setError(null)
+              onCancel?.()
+            } else if (!open) handlePopupBlur()
+          }}>
+          <PopoverTrigger disabled={disabled} render={
+            <Button type="button" variant="ghost" disabled={disabled}
+              aria-label={labelledBy ? undefined : `${draft ? "Change" : "Choose"} ${label}${draft ? `: ${draft}` : ""}`}
+              aria-labelledby={labelledBy} aria-invalid={Boolean(displayError)}
+              aria-describedby={displayError ? errorId : undefined}
+              className={cn("data-grid-inline-date-trigger-layout data-grid-inline-control-layout h-full w-full justify-start rounded-none border-0 px-2 text-sm shadow-none", className)}>
+              <CalendarIcon className="size-4 shrink-0" aria-hidden="true" />
+              <span className="truncate">{draft || placeholder || "Select date"}</span>
+            </Button>
+          } />
+          <PopoverContent align="start" sideOffset={4} initialFocus={(openType) => openType === "keyboard"}
+            className="rdp-popover_content">
+            <DatePicker size="sm" disabled={disabled} value={parseDataGridDate(draft)}
+              onValueChange={(nextValue) => {
+                const nextDraft = formatDataGridDate(nextValue)
+                changeDraft(nextDraft)
+                void commit(nextDraft)
+                if (nextValue) {
+                  setDateOpen(false)
+                  popupOpen.current = false
+                }
+              }} />
+          </PopoverContent>
+        </Popover>
+        <DataGridInlineError error={externalErrorId && externalError ? null : displayError} id={errorId} anchor={editorRef} />
       </div>
     )
   }
 
   return (
-    <div ref={editorRef} className="relative flex min-h-[28px] w-full items-center">
+    <div ref={editorRef} className="data-grid-inline-editor-layout">
       <Input
         aria-label={labelledBy ? undefined : label}
         aria-labelledby={labelledBy}
@@ -266,7 +297,7 @@ export function DataGridInlineEditor<TValue>({
         placeholder={placeholder}
         step={editorType === "number" ? "any" : undefined}
         className={cn(
-          "box-border h-auto w-full min-w-0 border-0 bg-transparent px-2 text-sm text-foreground outline-none shadow-none ring-0 focus:border-0 focus:outline-none focus:ring-0",
+          "data-grid-inline-control-layout box-border h-full w-full min-w-0 border-0 bg-transparent px-2 text-sm text-foreground shadow-none",
           className
         )}
         onChange={(event) => changeDraft(event.target.value)}
@@ -275,11 +306,7 @@ export function DataGridInlineEditor<TValue>({
           if (!popupOpen.current) void commit()
         }}
       />
-      {displayError && (
-        <div id={errorId} role="alert" className="absolute start-0 top-full z-10 px-2 text-[10px] font-medium text-destructive">
-          {displayError}
-        </div>
-      )}
+      <DataGridInlineError error={externalErrorId && externalError ? null : displayError} id={errorId} anchor={editorRef} />
     </div>
   )
 }
