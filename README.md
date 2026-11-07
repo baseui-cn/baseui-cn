@@ -45,7 +45,7 @@ Works with **Next.js**, **Vite**, **Remix**, **Astro**, and any React project.
 The Data Grid integration uses `@tanstack/react-table@^9.2.8` and requires Node 20+
 and an ES2022-capable consumer. Review the [v8 to v9 migration guide](docs/data-grid-v9-migration.md)
 for hook/type changes, persisted pinning, editing, server adapters and CSS verification.
-The 1.5.0 engineering candidate is based on production 1.4.2 and is not published.
+Data Grid v9 is the 1.5.0 upgrade on the released 1.4.2 foundation, retaining create, theme, typography and Layer B behavior.
 
 ### Display
 `button` · `badge` · `avatar` · `card` · `item` · `separator` · `scroll-area` · `skeleton` · `spinner` · `progress` · `toggle` · `toggle-group`
@@ -143,6 +143,9 @@ Node <20 before project writes or dependency installation. `--all` rejects the
 whole operation when Data Grid is included; it does not silently skip the Grid.
 Install named compatible components instead, or upgrade Node and retry.
 The Grid registry uses `@tanstack/react-table@^9.2.8` (integration lockfile: 9.3.1).
-This keeps the feature suitable for a future 1.5.0 release without globally dropping
-CLI Node 18 compatibility. Any future CLI-wide runtime drop needs its own explicit
-compatibility/versioning decision. Versions remain 1.4.0 pending review.
+This scopes the 1.5.0 Grid requirement without globally dropping CLI Node 18 compatibility.
+Any future CLI-wide runtime drop needs its own explicit compatibility/versioning decision.
+
+## Data Grid contribution
+
+Thanks to [@abhishekkumarwhiteleaf](https://github.com/abhishekkumarwhiteleaf) for the original Data Grid v9 feature contribution in [PR #3](https://github.com/baseui-cn/baseui-cn/pull/3). The feature was selectively reconciled with released 1.4.2, audited and corrected, and integrated into 1.5.0; compatibility, accessibility and release validation were completed separately.

@@ -46,7 +46,7 @@ npx baseui-cn@latest update button --workspace apps/web
 npx baseui-cn@latest init --customize
 ```
 
-Use `--customize` to choose paths and RSC settings. Detected settings use defaults without unnecessary confirmation; multiple possible stylesheets still prompt. Repeated init preserves configured paths, custom CSS and existing utils. Existing/custom apps must already configure Tailwind CSS v4 and their `@/*` source alias; init preserves their build configuration. New scaffolds receive alias and Tailwind integration where needed. They retain strict TypeScript checking while disabling upstream `noUnusedLocals`/`noUnusedParameters` compiler lint options to match the approved registry source contract. Existing app compiler settings are not changed; Data Grid currently needs those two unused-symbol checks disabled or local cleanup of unused bindings.
+Use `--customize` to choose paths and RSC settings. Detected settings use defaults without unnecessary confirmation; multiple possible stylesheets still prompt. Repeated init preserves configured paths, custom CSS and existing utils. Existing/custom apps must already configure Tailwind CSS v4 and their `@/*` source alias; init preserves their build configuration. New scaffolds receive alias and Tailwind integration where needed. They retain strict TypeScript checking while disabling upstream `noUnusedLocals`/`noUnusedParameters` compiler lint options to match the approved registry source contract. Existing app compiler settings are not changed. The audited Data Grid source closure passes both unused-symbol checks; unrelated component families retain their own compiler-lint requirements.
 
 Workspace patterns support literal paths, `*`, `**`, and exclusions in package.json workspaces or pnpm-workspace.yaml. Brace/extglob patterns, symlink targets, shared UI generation and custom nonstandard app detection are outside automated workspace selection; run directly inside a custom app.
 
@@ -154,7 +154,7 @@ Blocks: `empty-state`, `login`, `signup`
 
 ## Maintainer release flow
 
-The 1.5.0 Data Grid v9 engineering candidate is unpublished. Published 1.4.2 create/theme/typography capabilities and Layer B are retained. Candidate metadata and local test artifacts do not authorize a release.
+The 1.5.0 Data Grid v9 upgrade retains the released 1.4.2 create/theme/typography capabilities and Layer B. Publication requires the exact-source, immutable-artifact process below; package metadata or local test artifacts alone do not authorize it.
 
 1. Synchronize package, CLI banner and site release metadata, then generate all registry distributions with `pnpm build:all`.
 2. Validate and review the release code and packed consumer. Merge/deploy only with separate release authorization; verify every hosted registry JSON against the approved bytes.
@@ -165,20 +165,20 @@ The 1.5.0 Data Grid v9 engineering candidate is unpublished. Published 1.4.2 cre
 
 See [release automation hardening](../../docs/releases/npm-publish-automation-hardening.md) for the authoritative artifact and approval contract. No release action is authorized by this README.
 
-## Create versus initialize (published 1.4.2 capabilities)
+## Create versus initialize
 
 ```bash
 # Create a new application (new directory)
-pnpm dlx baseui-cn@1.4.2 create my-app --framework next --package-manager pnpm
+pnpm dlx baseui-cn@1.5.0 create my-app --framework next --package-manager pnpm
 
 # Create a new monorepo (new root, application in apps/web)
-pnpm dlx baseui-cn@1.4.2 create my-app --framework next --package-manager pnpm --monorepo
+pnpm dlx baseui-cn@1.5.0 create my-app --framework next --package-manager pnpm --monorepo
 
 # Initialize an existing application, from inside the application
-pnpm dlx baseui-cn@1.4.2 init
+pnpm dlx baseui-cn@1.5.0 init
 
 # Initialize an existing member; run from the existing workspace root
-pnpm dlx baseui-cn@1.4.2 init --workspace apps/web
+pnpm dlx baseui-cn@1.5.0 init --workspace apps/web
 ```
 
 `--workspace` always targets an existing workspace member. It never takes a new project name.
@@ -187,8 +187,8 @@ Create supports `next`, `tanstack-start`, `react-router`, `vite` and npm, pnpm, 
 ## Appearance and typography
 
 ```bash
-pnpm dlx baseui-cn@1.4.2 create my-app --framework next --package-manager pnpm --color iris --radius lg --body-font inter --heading-font space-grotesk
-pnpm dlx baseui-cn@1.4.2 init --color emerald --radius xl --body-font geist --heading-font montserrat
+pnpm dlx baseui-cn@1.5.0 create my-app --framework next --package-manager pnpm --color iris --radius lg --body-font inter --heading-font space-grotesk
+pnpm dlx baseui-cn@1.5.0 init --color emerald --radius xl --body-font geist --heading-font montserrat
 ```
 
 - `--color`: iris, blue, violet, emerald, orange, rose, neutral. Explicit selection owns the complete light/dark palette, including border, input and ring. There is no independent border flag.
@@ -228,10 +228,12 @@ an upgrade/retry command. No components are silently skipped or partially instal
 Use named compatible components on Node 18, or upgrade Node and retry.
 
 
-## Data Grid v9 engineering candidate
+## Data Grid v9 in 1.5.0
 
-The 1.5.0 candidate includes the full v9 integration and audited editing, pinning,
-virtualization, accessibility, persistence and date fixes. See the repository
-[v8 to v9 migration guide](../../docs/data-grid-v9-migration.md). The published
-1.4.2 commands above illustrate existing capabilities; use the locally packed
-candidate for v9 qualification until a separate release is approved.
+The 1.5.0 upgrade includes the full v9 integration and audited editing, pinning,
+virtualization, accessibility, persistence, stable inline geometry and Date interactions.
+See the repository [v8 to v9 migration guide](../../docs/data-grid-v9-migration.md).
+
+## Data Grid contribution
+
+Thanks to [@abhishekkumarwhiteleaf](https://github.com/abhishekkumarwhiteleaf) for the original Data Grid v9 feature contribution in [PR #3](https://github.com/baseui-cn/baseui-cn/pull/3). The feature was selectively reconciled with released 1.4.2, audited and corrected, and integrated into 1.5.0; compatibility, accessibility and validation were completed separately.
