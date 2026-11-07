@@ -2,7 +2,7 @@
 import { createProgram } from "./program"
 
 createProgram()
-  .version("1.4.2")
+  .version("1.5.0")
   .parseAsync()
   .catch((error: Error) => {
     console.error(`\n${error.message}\n`)

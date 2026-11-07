@@ -5,6 +5,7 @@ import { ToastProvider } from "@/components/ui/toast"
 import { Pattern as DataGridBasicPreview } from "@/components/previews/data-grid/c-data-grid-1"
 import { PatternEdit1 as DataGridEditingPreview } from "@/components/previews/data-grid/c-data-grid-2"
 import { PatternEdit2 as DataGridAsyncEditingPreview } from "@/components/previews/data-grid/c-data-grid-3"
+import { DataGridFeaturesPreview } from "@/components/previews/data-grid/c-data-grid-features"
 
 function DataGridEditingToastPreview() {
   return (
@@ -25,6 +26,7 @@ function DataGridAsyncEditingToastPreview() {
 export const dataGridPreviewMap: Record<string, React.ComponentType> = {
   "data-grid": DataGridBasicPreview,
   "data-grid-demo": DataGridBasicPreview,
+  "data-grid-features": DataGridFeaturesPreview,
   "data-grid-basic": DataGridBasicPreview,
   "data-grid-editing": DataGridEditingToastPreview,
   "data-grid-async-editing": DataGridAsyncEditingToastPreview,

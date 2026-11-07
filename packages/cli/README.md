@@ -46,7 +46,7 @@ npx baseui-cn@latest update button --workspace apps/web
 npx baseui-cn@latest init --customize
 ```
 
-Use `--customize` to choose paths and RSC settings. Detected settings use defaults without unnecessary confirmation; multiple possible stylesheets still prompt. Repeated init preserves configured paths, custom CSS and existing utils. Existing/custom apps must already configure Tailwind CSS v4 and their `@/*` source alias; init preserves their build configuration. New scaffolds receive alias and Tailwind integration where needed. They retain strict TypeScript checking while disabling upstream `noUnusedLocals`/`noUnusedParameters` compiler lint options to match the approved registry source contract. Existing app compiler settings are not changed; Data Grid currently needs those two unused-symbol checks disabled or local cleanup of unused bindings.
+Use `--customize` to choose paths and RSC settings. Detected settings use defaults without unnecessary confirmation; multiple possible stylesheets still prompt. Repeated init preserves configured paths, custom CSS and existing utils. Existing/custom apps must already configure Tailwind CSS v4 and their `@/*` source alias; init preserves their build configuration. New scaffolds receive alias and Tailwind integration where needed. They retain strict TypeScript checking while disabling upstream `noUnusedLocals`/`noUnusedParameters` compiler lint options to match the approved registry source contract. Existing app compiler settings are not changed. The audited Data Grid source closure passes both unused-symbol checks; unrelated component families retain their own compiler-lint requirements.
 
 Workspace patterns support literal paths, `*`, `**`, and exclusions in package.json workspaces or pnpm-workspace.yaml. Brace/extglob patterns, symlink targets, shared UI generation and custom nonstandard app detection are outside automated workspace selection; run directly inside a custom app.
 
@@ -154,31 +154,31 @@ Blocks: `empty-state`, `login`, `signup`
 
 ## Maintainer release flow
 
-The 1.4.2 candidate is unpublished. Public website setup commands remain compatible with npm latest 1.4.1 until the new package is verified. Typography controls and public font-flag examples are a separate post-publication website change.
+The 1.5.0 Data Grid v9 upgrade retains the released 1.4.2 create/theme/typography capabilities and Layer B. Publication requires the exact-source, immutable-artifact process below; package metadata or local test artifacts alone do not authorize it.
 
 1. Synchronize package, CLI banner and site release metadata, then generate all registry distributions with `pnpm build:all`.
 2. Validate and review the release code and packed consumer. Merge/deploy only with separate release authorization; verify every hosted registry JSON against the approved bytes.
 3. Run `prepare-cli.yml` on the exact approved source commit. Review its immutable tarball, manifest, artifact ID, run ID and independent SHA-256 values.
-4. After separate approval, create an annotated `cli-v1.4.2` tag that directly targets that exact commit and contains the reviewed JSON approval. Nested/lightweight tags fail closed.
-5. `publish-cli.yml` accepts release-tag pushes only. It verifies and publishes the exact prepared tarball, without rebuilding or repacking. The existing token path remains until the owner separately configures Trusted Publisher; preparation does not authorize configuration or publication.
-6. Verify public npm version, latest tag and tarball SHA-256, then run a remote-first consumer. Only then enable the separate website typography follow-up.
+4. After separate approval, create an annotated version tag (for example, `cli-v1.5.0`) that directly targets that exact commit and contains the reviewed JSON approval. Nested/lightweight tags fail closed.
+5. `publish-cli.yml` accepts release-tag pushes only. It verifies and publishes the exact prepared tarball, without rebuilding or repacking. The preserved workflow supports trusted publishing and retains its transitional token fallback. Preparation does not authorize changing either authentication configuration or publication.
+6. Verify public npm version, latest tag and tarball SHA-256, then run a remote-first consumer. Verify hosted component source/styles and the remote-first consumer against the approved artifact; keep the already released typography controls enabled.
 
 See [release automation hardening](../../docs/releases/npm-publish-automation-hardening.md) for the authoritative artifact and approval contract. No release action is authorized by this README.
 
-## Create versus initialize (1.4.2 candidate)
+## Create versus initialize
 
 ```bash
 # Create a new application (new directory)
-pnpm dlx baseui-cn@1.4.2 create my-app --framework next --package-manager pnpm
+pnpm dlx baseui-cn@1.5.0 create my-app --framework next --package-manager pnpm
 
 # Create a new monorepo (new root, application in apps/web)
-pnpm dlx baseui-cn@1.4.2 create my-app --framework next --package-manager pnpm --monorepo
+pnpm dlx baseui-cn@1.5.0 create my-app --framework next --package-manager pnpm --monorepo
 
 # Initialize an existing application, from inside the application
-pnpm dlx baseui-cn@1.4.2 init
+pnpm dlx baseui-cn@1.5.0 init
 
 # Initialize an existing member; run from the existing workspace root
-pnpm dlx baseui-cn@1.4.2 init --workspace apps/web
+pnpm dlx baseui-cn@1.5.0 init --workspace apps/web
 ```
 
 `--workspace` always targets an existing workspace member. It never takes a new project name.
@@ -187,8 +187,8 @@ Create supports `next`, `tanstack-start`, `react-router`, `vite` and npm, pnpm, 
 ## Appearance and typography
 
 ```bash
-pnpm dlx baseui-cn@1.4.2 create my-app --framework next --package-manager pnpm --color iris --radius lg --body-font inter --heading-font space-grotesk
-pnpm dlx baseui-cn@1.4.2 init --color emerald --radius xl --body-font geist --heading-font montserrat
+pnpm dlx baseui-cn@1.5.0 create my-app --framework next --package-manager pnpm --color iris --radius lg --body-font inter --heading-font space-grotesk
+pnpm dlx baseui-cn@1.5.0 init --color emerald --radius xl --body-font geist --heading-font montserrat
 ```
 
 - `--color`: iris, blue, violet, emerald, orange, rose, neutral. Explicit selection owns the complete light/dark palette, including border, input and ring. There is no independent border flag.
@@ -212,3 +212,28 @@ The generic `--font-body` and `--font-heading` tokens remain editable in consume
 semantic h1–h6 headings use their respective tokens. Inputs inherit body typography; code,
 monospace content and icons are not targeted by the heading rule. Explicit consumer selectors
 can still override semantic heading defaults.
+
+### Runtime
+
+The published CLI supports Node 18+. Init, list, non-Grid add/update commands and
+create remain available; current upstream scaffolders retain their own runtime
+requirements. Repository/website development requires Node 20.9+.
+
+Data Grid uses TanStack Table v9 (`@tanstack/react-table@^9.2.8`) and requires
+Node 20+ with an ES2022-capable application runtime. Add/update checks the selected
+components and dependency closure before init, source/CSS/config writes or package
+installation. On Node <20, `add data-grid`, `update data-grid` and either `--all`
+operation including Data Grid fail as a whole with the current Node version and
+an upgrade/retry command. No components are silently skipped or partially installed.
+Use named compatible components on Node 18, or upgrade Node and retry.
+
+
+## Data Grid v9 in 1.5.0
+
+The 1.5.0 upgrade includes the full v9 integration and audited editing, pinning,
+virtualization, accessibility, persistence, stable inline geometry and Date interactions.
+See the repository [v8 to v9 migration guide](../../docs/data-grid-v9-migration.md).
+
+## Data Grid contribution
+
+Thanks to [@abhishekkumarwhiteleaf](https://github.com/abhishekkumarwhiteleaf) for the original Data Grid v9 feature contribution in [PR #3](https://github.com/baseui-cn/baseui-cn/pull/3). The feature was selectively reconciled with released 1.4.2, audited and corrected, and integrated into 1.5.0; compatibility, accessibility and validation were completed separately.

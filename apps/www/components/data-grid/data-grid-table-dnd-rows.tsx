@@ -1,5 +1,7 @@
 "use client"
 
+import { getDataGridVisibleColumns } from "./data-grid-utils"
+
 import {
   createContext,
   type CSSProperties,
@@ -27,6 +29,7 @@ import {
   DataGridTableHeadRowCellResize,
   DataGridTableRowSpacer,
   DataGridTableViewport,
+  getDataGridTableResolvedRows,
 } from "@/components/data-grid/data-grid-table"
 import {
   closestCenter,
@@ -41,9 +44,14 @@ import {
   type Modifier,
 } from "@dnd-kit/core"
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
-import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { type Cell, flexRender, type HeaderGroup, type Row } from "@tanstack/react-table"
+import { flexRender, type RowData } from "@tanstack/react-table"
+import type {
+  DataGridCell,
+  DataGridHeaderGroup,
+  DataGridRow,
+} from "@/components/data-grid/table-features"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -69,6 +77,7 @@ function DataGridTableDndRowHandle({ className }: { className?: string }) {
           "size-7 cursor-grab opacity-70 hover:bg-transparent hover:opacity-100 active:cursor-grabbing",
           className
         )}
+        aria-label="Drag to reorder row"
         disabled
       >
         <GripHorizontalIcon />
@@ -84,6 +93,7 @@ function DataGridTableDndRowHandle({ className }: { className?: string }) {
         "size-7 cursor-grab opacity-70 hover:bg-transparent hover:opacity-100 active:cursor-grabbing",
         className
       )}
+      aria-label="Drag to reorder row"
       {...context.attributes}
       {...context.listeners}
     >
@@ -92,9 +102,10 @@ function DataGridTableDndRowHandle({ className }: { className?: string }) {
   )
 }
 
-function DataGridTableDndRow<TData>({ row }: { row: Row<TData> }) {
+function DataGridTableDndRow<TData extends RowData>({ row, pinnedBoundary }: { row: DataGridRow<TData>; pinnedBoundary?: "top" | "bottom" }) {
   const { transform, transition, setNodeRef, isDragging, attributes, listeners } = useSortable({
     id: row.id,
+    disabled: !!row.getIsPinned(),
   })
 
   const style: CSSProperties = {
@@ -107,9 +118,9 @@ function DataGridTableDndRow<TData>({ row }: { row: Row<TData> }) {
   }
 
   return (
-    <SortableRowContext.Provider value={{ attributes, listeners }}>
-      <DataGridTableBodyRow row={row} dndRef={setNodeRef} dndStyle={style} key={row.id}>
-        {row.getVisibleCells().map((cell: Cell<TData, unknown>, colIndex) => {
+    <SortableRowContext.Provider value={row.getIsPinned() ? null : { attributes, listeners }}>
+      <DataGridTableBodyRow row={row} pinnedBoundary={pinnedBoundary} dndRef={setNodeRef} dndStyle={style} key={row.id}>
+        {row.getVisibleCells().map((cell: DataGridCell<TData, unknown>, colIndex) => {
           return (
             <DataGridTableBodyRowCell cell={cell} key={colIndex}>
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -121,7 +132,7 @@ function DataGridTableDndRow<TData>({ row }: { row: Row<TData> }) {
   )
 }
 
-function DataGridTableDndRows<TData>({
+function DataGridTableDndRows<TData extends RowData>({
   handleDragEnd,
   dataIds,
   footerContent,
@@ -131,14 +142,14 @@ function DataGridTableDndRows<TData>({
   footerContent?: ReactNode
 }) {
   const { table, isLoading, props } = useDataGrid()
-  const pagination = table.getState().pagination
+  const pagination = table.store.state.pagination
   const tableContainerRef = useRef<HTMLDivElement>(null)
   const [isDraggingRow, setIsDraggingRow] = useState(false)
 
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
 
   useEffect(() => {
@@ -200,7 +211,7 @@ function DataGridTableDndRows<TData>({
       >
         <DataGridTableBase>
           <DataGridTableHead>
-            {table.getHeaderGroups().map((headerGroup: HeaderGroup<TData>, index) => {
+            {table.getHeaderGroups().map((headerGroup: DataGridHeaderGroup<TData>, index) => {
               return (
                 <DataGridTableHeadRow headerGroup={headerGroup} key={index}>
                   {headerGroup.headers.map((header, index) => {
@@ -235,7 +246,7 @@ function DataGridTableDndRows<TData>({
             {props.loadingMode === "skeleton" && isLoading && pagination?.pageSize ? (
               Array.from({ length: pagination.pageSize }).map((_, rowIndex) => (
                 <DataGridTableBodyRowSkeleton key={rowIndex}>
-                  {table.getVisibleFlatColumns().map((column, colIndex) => {
+                  {getDataGridVisibleColumns(table).map((column, colIndex) => {
                     return (
                       <DataGridTableBodyRowSkeletonCell column={column} key={colIndex}>
                         {column.columnDef.meta?.skeleton}
@@ -244,10 +255,10 @@ function DataGridTableDndRows<TData>({
                   })}
                 </DataGridTableBodyRowSkeleton>
               ))
-            ) : table.getRowModel().rows.length ? (
-              <SortableContext items={dataIds} strategy={verticalListSortingStrategy}>
-                {table.getRowModel().rows.map((row: Row<TData>) => {
-                  return <DataGridTableDndRow row={row} key={row.id} />
+            ) : getDataGridTableResolvedRows(table, props.tableLayout?.rowsPinnable).length ? (
+              <SortableContext items={dataIds.filter((id) => !table.getRow(String(id))?.getIsPinned())} strategy={verticalListSortingStrategy}>
+                {getDataGridTableResolvedRows(table, props.tableLayout?.rowsPinnable).map(({ row, pinnedBoundary }) => {
+                  return <DataGridTableDndRow row={row} pinnedBoundary={pinnedBoundary} key={row.id} />
                 })}
               </SortableContext>
             ) : (

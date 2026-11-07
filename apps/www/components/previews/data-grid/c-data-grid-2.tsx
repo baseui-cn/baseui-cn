@@ -14,17 +14,17 @@ import { DataGridPagination } from "@/components/data-grid/data-grid-pagination"
 import { DataGridScrollArea } from "@/components/data-grid/data-grid-scroll-area"
 import { DataGridTable } from "@/components/data-grid/data-grid-table"
 import {
-  type ColumnDef,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
+  type ColumnVisibilityState,
   type PaginationState,
-  type Row,
   type SortingState,
-  type Table,
-  useReactTable,
-  type VisibilityState,
+  useTable,
 } from "@tanstack/react-table"
+import type {
+  DataGridColumnDef,
+  DataGridRow,
+  DataGridTable as DataGridTableInstance,
+} from "@/components/data-grid/table-features"
+import { dataGridFeatures } from "@/components/data-grid/table-features"
 import { useToast } from "@/components/ui/toast"
 
 import { Button } from "@/components/ui/button"
@@ -200,8 +200,8 @@ function ActionsCell({
   table,
   onRestoreRow,
 }: {
-  row: Row<TeamMember>
-  table: Table<TeamMember>
+  row: DataGridRow<TeamMember>
+  table: DataGridTableInstance<TeamMember>
   onRestoreRow: (rowId: string) => void
 }) {
   return (
@@ -233,7 +233,7 @@ export function PatternEdit1() {
     pageSize: 5,
   })
   const [sorting, setSorting] = useState<SortingState>([{ id: "name", desc: false }])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+  const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
     notes: false,
   })
 
@@ -258,7 +258,7 @@ export function PatternEdit1() {
     })
   }, [add])
 
-  const columns = useMemo<ColumnDef<TeamMember>[]>(
+  const columns = useMemo<DataGridColumnDef<TeamMember>[]>(
     () => [
       {
         accessorKey: "name",
@@ -464,7 +464,8 @@ export function PatternEdit1() {
     },
   })
 
-  const table = useReactTable({
+  const table = useTable({
+    features: dataGridFeatures,
     data,
     columns,
     pageCount: Math.ceil(data.length / pagination.pageSize),
@@ -481,9 +482,6 @@ export function PatternEdit1() {
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
   })
 
   return (
@@ -499,8 +497,8 @@ export function PatternEdit1() {
       }}
     >
       <Card variant="elevated" className="w-full gap-0 p-0">
-        <CardHeader className="flex items-center justify-between gap-3 px-4 py-3">
-          <div className="flex items-center gap-2">
+        <CardHeader className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className="text-foreground text-sm font-medium">Team Editing Sandbox</span>
             <Badge variant="info-outline" size="sm">
               Inline + Dialog
@@ -513,12 +511,12 @@ export function PatternEdit1() {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="border-y p-0">
+        <CardContent className="border-t p-0">
           <DataGridScrollArea className="h-[460px]">
             <DataGridTable />
           </DataGridScrollArea>
         </CardContent>
-        <CardFooter className="border-none bg-transparent! px-4 py-3">
+        <CardFooter className="border-none bg-transparent! p-0">
           <DataGridPagination />
         </CardFooter>
       </Card>
