@@ -68,11 +68,13 @@ function DynamicGrid({ mode }: { mode: string }) {
 function Standalone({ text = false, date = false }: { text?: boolean; date?: boolean }) {
   const [value, setValue] = useState<string | null>(date ? "2026-10-29" : text ? "Alpha" : "Active")
   const [cancels, setCancels] = useState(0)
-  useEffect(() => { Object.assign(window, { regressionInline: { value, cancels } }) })
+  const [commits, setCommits] = useState(0)
+  useEffect(() => { Object.assign(window, { regressionInline: { value, cancels, commits } }) })
   return <DataGridInlineEditor value={value} label={date ? "Standalone date" : text ? "Standalone text" : "Standalone status"}
     editorType={date ? "date" : text ? "text" : "select"}
     options={[{ label: "Active", value: "Active" }, { label: "Unavailable", value: "Away", disabled: true }, { label: "No status", value: null }]}
-    onCommit={setValue} onCancel={() => setCancels(count => count + 1)} />
+    onCommit={(nextValue) => { setCommits(count => count + 1); setValue(nextValue) }}
+    onCancel={() => setCancels(count => count + 1)} />
 }
 
 interface PendingCall { value: unknown; resolve: () => void; reject: (error: Error) => void }

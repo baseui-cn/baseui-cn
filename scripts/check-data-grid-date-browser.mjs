@@ -193,6 +193,7 @@ for (const engine of (process.env.GRID_BROWSERS ?? "chromium,firefox,webkit").sp
   }
   const standalone = await browser.newPage()
   try {
+    await standalone.clock.setFixedTime(new Date("2026-10-29T12:00:00Z"))
     await standalone.goto(`${process.env.GRID_CONSUMER_URL ?? "http://127.0.0.1:4196"}/?mode=inline-date`)
     await standalone.waitForFunction(() => !!window.regressionInline)
     const button = standalone.locator(".data-grid-inline-date-trigger-layout")
@@ -202,8 +203,32 @@ for (const engine of (process.env.GRID_BROWSERS ?? "chromium,firefox,webkit").sp
       await standalone.locator('[data-slot="popover-content"]').waitFor({ state: "hidden" })
       assert.equal(await standalone.evaluate(() => window.regressionInline.cancels), count)
       assert.equal(await button.evaluate(node => node === document.activeElement), true)
+      // Terminal Escape ownership survives microtasks, repeated Escape and
+      // later focus/blur notifications until a genuinely new popup opens.
+      await standalone.keyboard.press("Escape")
+      await standalone.evaluate(() => {
+        const outside = document.createElement("button")
+        outside.id = "outside-date-editor"; outside.textContent = "Outside editor"
+        document.body.append(outside); outside.focus()
+      })
+      await standalone.waitForTimeout(100)
+      assert.equal(await standalone.evaluate(() => window.regressionInline.cancels), count)
+      assert.equal(await standalone.evaluate(() => window.regressionInline.commits), 0)
+      await standalone.locator("#outside-date-editor").evaluate(node => node.remove())
     }
-    standaloneResults.push({ engine, pass: true, escapes: 2, cancelCallbacks: 2 })
+    // A new session still selects and commits once; later blur cannot repeat it.
+    await button.click(); await standalone.locator('[data-slot="popover-content"]').waitFor()
+    await standalone.getByRole("button", { name: "Friday, October 30th, 2026", exact: true }).click()
+    await standalone.locator('[data-slot="popover-content"]').waitFor({ state: "hidden" })
+    await standalone.waitForFunction(() => window.regressionInline.value === "2026-10-30")
+    await standalone.evaluate(() => {
+      const outside = document.createElement("button")
+      outside.textContent = "After selection"; document.body.append(outside); outside.focus()
+    })
+    await standalone.waitForTimeout(100)
+    assert.equal(await standalone.evaluate(() => window.regressionInline.commits), 1)
+    assert.equal(await standalone.evaluate(() => window.regressionInline.cancels), 2)
+    standaloneResults.push({ engine, pass: true, popupSessions: 3, terminalEscapes: 2, repeatedClosedEscapes: 2, cancelCallbacks: 2, commitsAfterCancel: 0, selectionCommits: 1, lateBlurCallbacksIgnored: true })
   } catch (error) { standaloneResults.push({ engine, pass: false, error: error.message }) }
   finally {
     await standalone.close()

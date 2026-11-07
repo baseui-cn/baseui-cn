@@ -90,6 +90,7 @@ export function DataGridInlineEditor<TValue>({
   const isCommitting = useRef(false)
   const popupOpen = useRef(false)
   const dateEscapeClosing = useRef(false)
+  const datePopupSession = useRef<{ terminal: "cancel" | "commit" | null }>({ terminal: null })
   const [dateOpen, setDateOpen] = useState(false)
 
   useEffect(() => {
@@ -171,11 +172,15 @@ export function DataGridInlineEditor<TValue>({
     // handled by the Popover so its close/focus lifecycle runs exactly once.
     if (editorType === "date") {
       if (event.key === "Enter" || event.key === " ") return
-      if (event.key === "Tab" && popupOpen.current) return
-      if (event.key === "Escape" && (dateEscapeClosing.current || popupOpen.current || !editorRef.current?.contains(event.target as Node))) return
+      if (event.key === "Tab" && (popupOpen.current || datePopupSession.current.terminal)) return
+      if (event.key === "Escape" && (dateEscapeClosing.current || datePopupSession.current.terminal || popupOpen.current || !editorRef.current?.contains(event.target as Node))) return
     }
     if (event.key === "Escape") {
       event.preventDefault()
+      if (editorType === "date") {
+        datePopupSession.current.terminal = "cancel"
+        dateEscapeClosing.current = true
+      }
       setError(null)
       onCancel?.()
     } else if (event.key === "Enter" && !popupOpen.current) {
@@ -188,12 +193,14 @@ export function DataGridInlineEditor<TValue>({
   }
 
   const handlePopupBlur = () => {
+    const session = editorType === "date" ? datePopupSession.current : null
     window.setTimeout(() => {
-      if (disabled || popupOpen.current) return
+      if (disabled || popupOpen.current || (session && (session !== datePopupSession.current || session.terminal))) return
       const activeElement = document.activeElement
       if (activeElement instanceof HTMLElement && editorRef.current?.contains(activeElement)) {
         return
       }
+      if (session) session.terminal = "commit"
       void commit()
     }, 0)
   }
@@ -246,11 +253,20 @@ export function DataGridInlineEditor<TValue>({
       >
         <Popover open={dateOpen}
           onOpenChange={(open, details) => {
+            if (open) {
+              // Duplicate open notifications share ownership. Only a new
+              // closed-to-open session can clear a terminal close decision.
+              if (!popupOpen.current) {
+                datePopupSession.current = { terminal: null }
+                dateEscapeClosing.current = false
+              }
+            } else if (datePopupSession.current.terminal) return
+
             setDateOpen(open)
             popupOpen.current = open
             if (!open && details.reason === "escape-key") {
+              datePopupSession.current.terminal = "cancel"
               dateEscapeClosing.current = true
-              queueMicrotask(() => { dateEscapeClosing.current = false })
               setError(null)
               onCancel?.()
             } else if (!open) handlePopupBlur()
@@ -269,6 +285,8 @@ export function DataGridInlineEditor<TValue>({
             className="rdp-popover_content">
             <DatePicker size="sm" disabled={disabled} value={parseDataGridDate(draft)}
               onValueChange={(nextValue) => {
+                if (datePopupSession.current.terminal) return
+                if (nextValue) datePopupSession.current.terminal = "commit"
                 const nextDraft = formatDataGridDate(nextValue)
                 changeDraft(nextDraft)
                 void commit(nextDraft)
