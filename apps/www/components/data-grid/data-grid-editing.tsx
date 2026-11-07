@@ -411,7 +411,7 @@ function DataGridInlineCellEditor<TData extends EditableRow>({
   if (editor.kind === "date") {
     if (!isEditing) return (
       <button type="button" disabled={isPending}
-        className={cn("data-grid-edit-trigger-layout text-foreground flex w-full items-center rounded-md px-2 py-1 text-left transition-colors", !value && "text-muted-foreground")}
+        className={cn("data-grid-edit-trigger-layout data-grid-date-edit-trigger-layout text-foreground flex w-full items-center rounded-md px-2 py-1 text-left transition-colors", !value && "text-muted-foreground")}
         onClick={(event) => {
           const root = event.currentTarget.closest<HTMLElement>('[data-slot="data-grid-editable-cell"]')
           const detail = event.detail

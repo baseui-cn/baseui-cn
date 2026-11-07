@@ -54,13 +54,16 @@
 }
 
 /* Match the existing unlayered V2 Button contour so keyboard focus cannot
-   replace the cell-inset outline with a clipped outside outline. */
+   replace the cell-inset outline with a clipped outside outline. Include the
+   restored display trigger so Tailwind base cannot override it after Escape. */
+.data-grid-editable-cell-layout .data-grid-date-edit-trigger-layout:focus-visible,
 .data-grid-inline-editor-layout .data-grid-inline-date-trigger-layout:is(:focus-visible, [data-popup-open]) {
   outline: 2px solid var(--ring);
   outline-offset: -2px;
   box-shadow: none;
 }
 @media (forced-colors: active) {
+  .data-grid-editable-cell-layout .data-grid-date-edit-trigger-layout:focus-visible,
   .data-grid-inline-editor-layout .data-grid-inline-date-trigger-layout:is(:focus-visible, [data-popup-open]) {
     outline-color: Highlight;
   }

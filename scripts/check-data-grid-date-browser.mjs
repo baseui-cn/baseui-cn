@@ -54,15 +54,36 @@ for (const engine of (process.env.GRID_BROWSERS ?? "chromium,firefox,webkit").sp
       await measure(state)
       return value
     }
-    const closeWithEscape = async () => {
+    const closeWithEscape = async ({ requireFocusVisible = false } = {}) => {
       await page.keyboard.press("Escape"); await popup.waitFor({ state: "hidden" })
       await page.waitForFunction(() => {
         const node = document.querySelector('[data-row-id="record-0"][data-column-id="date"] button')
         return node === document.activeElement
       })
-      const value = await cell("date").getByRole("button").evaluate(node => ({ open: node.hasAttribute("data-popup-open"), visible: node.matches(":focus-visible"), width: parseFloat(getComputedStyle(node).outlineWidth), style: getComputedStyle(node).outlineStyle }))
+      // The display button retains its existing transition-colors behavior.
+      // Compare the resolved token after that transition, not its first frame.
+      await page.waitForFunction(() => {
+        const node = document.querySelector('[data-row-id="record-0"][data-column-id="date"] button')
+        if (!node.matches(":focus-visible")) return true
+        const css = getComputedStyle(node), probe = document.createElement("span")
+        probe.style.color = css.getPropertyValue("--ring"); document.body.append(probe)
+        const expected = getComputedStyle(probe).color; probe.remove()
+        return css.outlineColor === expected
+      })
+      const value = await cell("date").getByRole("button").evaluate(node => {
+        const css = getComputedStyle(node), probe = document.createElement("span")
+        probe.style.position = "fixed"; probe.style.color = css.getPropertyValue("--ring")
+        document.body.append(probe); const expected = getComputedStyle(probe).color; probe.remove()
+        return { open: node.hasAttribute("data-popup-open"), visible: node.matches(":focus-visible"), focused: node === document.activeElement, width: parseFloat(css.outlineWidth), style: css.outlineStyle, offset: parseFloat(css.outlineOffset), color: css.outlineColor, expected }
+      })
       assert.equal(value.open, false)
-      if (value.visible) { assert.equal(value.width, 2); assert.equal(value.style, "solid") }
+      assert.equal(value.focused, true)
+      assert.equal(await popup.isVisible(), false)
+      if (requireFocusVisible) assert.equal(value.visible, true)
+      if (value.visible) {
+        assert.equal(value.width, 2); assert.equal(value.style, "solid")
+        assert.equal(value.offset, -2); assert.equal(value.color, value.expected)
+      }
       else assert.equal(value.style, "none")
       assert.equal(await page.evaluate(() => window.geometryGrid.rows[0].date), "2026-10-29")
       await measure("escape-restored-focus")
@@ -104,7 +125,10 @@ for (const engine of (process.env.GRID_BROWSERS ?? "chromium,firefox,webkit").sp
       assert.equal(await popup.evaluate(node => node.contains(document.activeElement)), true)
       assert.equal(await page.evaluate(() => window.geometryGrid.editing.activeCell?.columnId), "date")
       await ring("tab-within-calendar-retains-owner")
-      await page.getByRole("button", { name: /next month/i }).focus(); await closeWithEscape()
+      await page.getByRole("button", { name: /next month/i }).focus()
+      const restoredDateFocus = await closeWithEscape({ requireFocusVisible: true })
+      await measure("number-tab-date-enter-calendar-escape-restored-contour")
+      if (width === 1280) await page.screenshot({ path: path.join(output, `${id}-restored-focus.png`) })
       await reset()
       await cell("date").getByRole("button").click(); await popup.waitFor()
       await trigger().click(); await popup.waitFor({ state: "hidden" })
@@ -156,7 +180,7 @@ for (const engine of (process.env.GRID_BROWSERS ?? "chromium,firefox,webkit").sp
       await page.waitForTimeout(100); assert.equal(await popup.count(), 0)
       await measure("pending-row-activation-remains-blocked")
       assert.deepEqual(errors, [])
-      results.push({ id, engine, width, dark, rtl, pass: true, nativeTabKey, pointerClosed, activations, samples })
+      results.push({ id, engine, width, dark, rtl, pass: true, nativeTabKey, pointerClosed, restoredDateFocus, activations, samples })
       console.log(`PASS ${id}: pointer/Enter/Space, Tab, open ring, Escape focus, saved date, ownership, geometry`)
     } catch (error) {
       results.push({ id, engine, width, dark, rtl, pass: false, error: error.message, errors, activations, samples })
