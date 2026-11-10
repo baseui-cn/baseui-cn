@@ -1,5 +1,7 @@
 # Data Grid v9 integration review
 
+> Historical integration evidence from October 2026. PR #3's open status and release boundaries below apply to that review. See the [final 1.5.0 release receipt](./releases/1.5.0-release-receipt.md) for publication, production verification, contributor credit and subsequent PR closure.
+
 Status: final integration approved; checkpoint validation completed October 30, 2026. Original integration review date: October 29, 2026.
 
 ## 1. PR #3 audit

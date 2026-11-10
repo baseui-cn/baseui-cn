@@ -11,6 +11,8 @@ npx baseui-cn add drawer select combobox
 
 [Documentation](https://baseui-cn.com) · [Component list](https://baseui-cn.com/docs/components/button) · [llms.txt](https://baseui-cn.com/llms.txt)
 
+[1.5.0 final release receipt](docs/releases/1.5.0-release-receipt.md) — publication and production verified; physical Safari/VoiceOver/Japanese IME acceptance remains **POST-RELEASE PENDING, NOT PASS**.
+
 ---
 
 ## Why

@@ -82,5 +82,10 @@
   "productionPromotionAuthorized": false,
   "releaseTagCreated": false,
   "npmPublished": false,
-  "hostedPreparationDispatched": false
+  "hostedPreparationDispatched": false,
+  "historicalNotice": {
+    "asOf": "2026-11-05",
+    "scope": "Pre-release engineering candidate only; original results and release flags are preserved.",
+    "finalReleaseReceipt": "./1.5.0-release-receipt.md"
+  }
 }

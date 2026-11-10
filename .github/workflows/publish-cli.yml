@@ -57,22 +57,8 @@ jobs:
           python3 scripts/releases/cli-artifact.py verify --directory "$RUNNER_TEMP/approved-cli" --tag "$RELEASE_TAG" --commit "$SOURCE_COMMIT" --check-npm --check-remote-tag
           mkdir -p "$RUNNER_TEMP/npm-publish"
       - name: Publish exact approved tarball with trusted publishing
-        if: vars.NPM_TRUSTED_PUBLISHING_ENABLED == 'true'
+        # OIDC is mandatory. No npm token is supplied; publication failure stops the job.
         working-directory: ${{ runner.temp }}/npm-publish
         env:
           NPM_CONFIG_USERCONFIG: ${{ runner.temp }}/oidc-only.npmrc
         run: npm publish "$RUNNER_TEMP/approved-cli/package.tgz" --access public --ignore-scripts --registry=https://registry.npmjs.org
-      # Retain the existing authentication path until the npm owner configures
-      # trusted publishing. Delete this step after the first verified OIDC release.
-      - name: Transitional token publication of exact approved tarball
-        if: vars.NPM_TRUSTED_PUBLISHING_ENABLED != 'true'
-        working-directory: ${{ runner.temp }}/npm-publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_USERCONFIG: ${{ runner.temp }}/legacy-publish.npmrc
-        run: |
-          test -n "$NODE_AUTH_TOKEN"
-          # Keep the variable reference literal in npmrc; never write the token value.
-          # shellcheck disable=SC2016
-          printf '%s\n' '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}' > "$NPM_CONFIG_USERCONFIG"
-          npm publish "$RUNNER_TEMP/approved-cli/package.tgz" --access public --ignore-scripts --registry=https://registry.npmjs.org

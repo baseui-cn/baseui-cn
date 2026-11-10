@@ -170,6 +170,10 @@ does not remove custom root styles or unlayered demo `h1` rules. Verify both a m
 Vite stylesheet and a clean explicit CSS destination, including computed dark colors
 and dialog typography; adapt conflicting consumer CSS deliberately.
 
+The following release checklist was recorded at the pre-release fix checkpoint; see
+the [final 1.5.0 release receipt](./releases/1.5.0-release-receipt.md) for the completed
+publication and production verification, with physical acceptance still pending.
+
 Before a release, qualify a real packed CLI in fresh Next/Vite consumers, exact/minimum
 Table versions, customized-source preservation, three browser engines, responsive/RTL
 combinations, and coordinated hosted registry/package delivery. This fix checkpoint

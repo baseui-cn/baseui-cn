@@ -1,5 +1,38 @@
 # npm release automation hardening
 
+## Current operation — November 10, 2026
+
+The remainder of this document preserves the November 2 engineering checkpoint,
+including its then-unqualified OIDC status and transitional setup instructions.
+OIDC Trusted Publishing subsequently published 1.4.2 and 1.5.0 successfully. See the
+[final 1.5.0 release receipt](./1.5.0-release-receipt.md) and
+[post-release housekeeping audit](./1.5.0-housekeeping.md).
+
+`publish-cli.yml` now has one unconditional OIDC publish step after the unchanged
+annotated-tag, stored-artifact, hash, source, version-availability and remote-tag
+checks. It publishes the reviewed `package.tgz` directly, without rebuilding or
+repacking. It supplies no npm token and has no publication retry or alternate
+authentication step. An OIDC failure fails the job. The old
+`NPM_TRUSTED_PUBLISHING_ENABLED` variable no longer selects an authentication path.
+
+Owner-side cleanup remains separate from code cleanup. GitHub's repository secret
+listing on November 10 still contains `NPM_TOKEN`; its value was not read. The
+repository variable listing still contains `NPM_TRUSTED_PUBLISHING_ENABLED=true`.
+After this cleanup reaches main, remove the obsolete GitHub secret and variable;
+revoke the corresponding npm write token in the owner account after checking for
+other consumers. Inspect organization/environment secrets for any inherited copies.
+No secret, token, repository variable or npm setting was deleted or changed here.
+The current npm account token inventory and package policy were not inspected.
+
+Keep the qualified npm Trusted Publisher for `baseui-cn/baseui-cn`, workflow filename
+`publish-cli.yml`, with direct publish permission and no GitHub Environment binding.
+The owner should review npm's package publishing policy to restrict token-based
+publishing after migration, following [npm's trusted-publishing guidance](https://docs.npmjs.com/trusted-publishers/).
+Future releases still require explicit approval of the exact prepared artifact and
+annotated tag; this housekeeping is not release authorization.
+
+## Historical engineering checkpoint
+
 Review checkpoint — 2026-11-02. Uncommitted; no release authorized by this document.
 
 ## 1. Scope and 1.4.1 incident
