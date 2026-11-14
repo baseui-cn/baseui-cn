@@ -7,7 +7,11 @@
 import { useCallback, useMemo, useState } from "react"
 import { type EditableDataGridColumn, useEditableDataGrid } from "@/hooks/use-editable-data-grid"
 import { Badge } from "@/components/ui/badge"
-import { DataGrid, type DataGridColumnEditor } from "@/components/data-grid/data-grid"
+import {
+  DataGrid,
+  DataGridContainer,
+  type DataGridColumnEditor,
+} from "@/components/data-grid/data-grid"
 import { DataGridColumnHeader } from "@/components/data-grid/data-grid-column-header"
 import { DataGridEditableCell, DataGridEditDialog } from "@/components/data-grid/data-grid-editing"
 import { DataGridPagination } from "@/components/data-grid/data-grid-pagination"
@@ -28,7 +32,6 @@ import { dataGridFeatures } from "@/components/data-grid/table-features"
 import { useToast } from "@/components/ui/toast"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -468,7 +471,7 @@ export function PatternEdit1() {
     features: dataGridFeatures,
     data,
     columns,
-    pageCount: Math.ceil(data.length / pagination.pageSize),
+    autoResetPageIndex: false,
     getRowId: (row) => row.id,
     state: {
       pagination,
@@ -480,24 +483,27 @@ export function PatternEdit1() {
     },
     columnResizeMode: "onChange",
     onPaginationChange: setPagination,
-    onSortingChange: setSorting,
+    onSortingChange: (updater) => {
+      setSorting(updater)
+      setPagination((current) => ({ ...current, pageIndex: 0 }))
+    },
     onColumnVisibilityChange: setColumnVisibility,
   })
 
   return (
-    <DataGrid
-      table={table}
-      recordCount={data.length}
-      tableLayout={{
-        columnsResizable: true,
-        headerSticky: true,
-      }}
-      tableClassNames={{
-        headerSticky: "sticky top-0 z-10 bg-background/90 backdrop-blur-xs",
-      }}
-    >
-      <Card variant="elevated" className="w-full gap-0 p-0">
-        <CardHeader className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+    <DataGridContainer>
+      <DataGrid
+        table={table}
+        recordCount={data.length}
+        tableLayout={{
+          columnsResizable: true,
+          headerSticky: true,
+        }}
+        tableClassNames={{
+          headerSticky: "sticky top-0 z-10 bg-background/90 backdrop-blur-xs",
+        }}
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className="text-foreground text-sm font-medium">Team Editing Sandbox</span>
             <Badge variant="info-outline" size="sm">
@@ -510,22 +516,18 @@ export function PatternEdit1() {
               Reset all
             </Button>
           </div>
-        </CardHeader>
-        <CardContent className="border-t p-0">
-          <DataGridScrollArea className="h-[460px]">
-            <DataGridTable />
-          </DataGridScrollArea>
-        </CardContent>
-        <CardFooter className="border-none bg-transparent! p-0">
-          <DataGridPagination />
-        </CardFooter>
-      </Card>
+        </div>
+        <DataGridScrollArea className="h-[460px]">
+          <DataGridTable />
+        </DataGridScrollArea>
+        <DataGridPagination />
 
-      <DataGridEditDialog
-        table={table}
-        title="Edit teammate"
-        description="This dialog is generated from the same column metadata that powers inline editing."
-      />
-    </DataGrid>
+        <DataGridEditDialog
+          table={table}
+          title="Edit teammate"
+          description="This dialog is generated from the same column metadata that powers inline editing."
+        />
+      </DataGrid>
+    </DataGridContainer>
   )
 }

@@ -2,12 +2,14 @@
 
 import { useMemo, useState } from "react"
 import { Badge } from "@/components/ui/badge"
-import { DataGrid } from "@/components/data-grid/data-grid"
+import { DataGrid, DataGridContainer } from "@/components/data-grid/data-grid"
 import { DataGridColumnHeader } from "@/components/data-grid/data-grid-column-header"
 import { DataGridPagination } from "@/components/data-grid/data-grid-pagination"
 import { DataGridScrollArea } from "@/components/data-grid/data-grid-scroll-area"
 import { createExcelFilterFn } from "@/components/data-grid/data-grid-filter-client"
 import {
+  type ColumnOrderState,
+  type ColumnFiltersState,
   type PaginationState,
   type SortingState,
   useTable,
@@ -15,14 +17,13 @@ import {
 import type { DataGridColumnDef } from "@/components/data-grid/table-features"
 import { dataGridFeatures } from "@/components/data-grid/table-features"
 
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import {
-  DataGridTableDndRows,
-  DataGridTableDndRowHandle,
-} from "@/components/data-grid/data-grid-table-dnd-rows"
-import { type DragEndEvent, type UniqueIdentifier } from "@dnd-kit/core"
+  DataGridTableDndCombined,
+  DataGridTableDndCombinedRowHandle,
+} from "@/components/data-grid/data-grid-table-dnd-combined"
+import { type DragEndEvent } from "@dnd-kit/core"
 import { arrayMove } from "@dnd-kit/sortable"
 
 interface IData {
@@ -216,18 +217,24 @@ export function Pattern() {
     pageIndex: 0,
     pageSize: 5,
   })
-  const [sorting, setSorting] = useState<SortingState>([{ id: "name", desc: true }])
+  const [sorting, setSorting] = useState<SortingState>([])
 
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [data, setData] = useState(demoData)
-  const dataIds = useMemo<UniqueIdentifier[]>(() => data?.map(({ id }) => id), [data])
+  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([
+    "drag",
+    "name",
+    "role",
+    "status",
+  ])
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
     if (active && over && active.id !== over.id) {
       setData((data) => {
-        const oldIndex = dataIds.indexOf(active.id)
-        const newIndex = dataIds.indexOf(over.id)
-        return arrayMove(data, oldIndex, newIndex)
+        const oldIndex = data.findIndex((row) => row.id === String(active.id))
+        const newIndex = data.findIndex((row) => row.id === String(over.id))
+        return oldIndex < 0 || newIndex < 0 ? data : arrayMove(data, oldIndex, newIndex)
       })
     }
   }
@@ -236,7 +243,8 @@ export function Pattern() {
     () => [
       {
         id: "drag",
-        cell: () => <DataGridTableDndRowHandle />,
+        cell: () => <DataGridTableDndCombinedRowHandle />,
+        enableColumnOrdering: false,
         size: 30,
         meta: { cellClassName: "px-4 py-2" },
       },
@@ -333,49 +341,65 @@ export function Pattern() {
   const table = useTable({
     features: dataGridFeatures,
     columns,
-    data: demoData,
-    pageCount: Math.ceil((demoData?.length || 0) / pagination.pageSize),
+    data,
+    autoResetPageIndex: false,
     getRowId: (row: IData) => row.id,
     state: {
       pagination,
       sorting,
+      columnOrder,
+      columnFilters,
     },
     columnResizeMode: "onChange",
     onPaginationChange: setPagination,
-    onSortingChange: setSorting,
+    onSortingChange: (updater) => {
+      setSorting(updater)
+      setPagination((current) => ({ ...current, pageIndex: 0 }))
+    },
+    onColumnOrderChange: setColumnOrder,
+    onColumnFiltersChange: (updater) => {
+      setColumnFilters(updater)
+      setPagination((current) => ({ ...current, pageIndex: 0 }))
+    },
   })
 
   return (
-    <DataGrid
-      table={table}
-      recordCount={demoData?.length || 0}
-      tableLayout={{
-        columnsResizable: true,
-        columnsDraggable: true,
-        columnsPinnable: true,
-        columnsMovable: true,
-        rowsDraggable: true,
-        width: "auto",
-      }}
-    >
-      <Card variant="elevated" className="w-full gap-0 p-0">
-        <CardHeader className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-          <div className="flex min-w-0 flex-wrap items-center gap-2">
-            <span className="text-foreground text-sm font-medium">Basic Data Grid</span>
-            <span className="text-muted-foreground text-xs">
-              Sorting, pagination, resizable columns, and drag-and-drop rows
-            </span>
-          </div>
-        </CardHeader>
-        <CardContent className="border-t p-0">
+    <div className="w-full space-y-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-foreground text-sm font-medium">Basic Data Grid</span>
+        <span className="text-muted-foreground text-xs">
+          Sorting, pagination, resizable columns, and drag-and-drop rows
+        </span>
+      </div>
+      <DataGridContainer>
+        <DataGrid
+          table={table}
+          recordCount={table.getFilteredRowModel().rows.length}
+          tableLayout={{
+            columnsResizable: true,
+            columnsDraggable: true,
+            columnsPinnable: true,
+            columnsMovable: true,
+            rowsDraggable: true,
+            width: "auto",
+          }}
+        >
           <DataGridScrollArea className="h-[460px]">
-            <DataGridTableDndRows handleDragEnd={handleDragEnd} dataIds={dataIds} />
+            <DataGridTableDndCombined
+              onRowDragEnd={handleDragEnd}
+              onColumnDragEnd={({ active, over }) => {
+                if (!over) return
+                setColumnOrder((order) => {
+                  const from = order.indexOf(String(active.id))
+                  const to = order.indexOf(String(over.id))
+                  return from < 0 || to < 0 ? order : arrayMove(order, from, to)
+                })
+              }}
+            />
           </DataGridScrollArea>
-        </CardContent>
-        <CardFooter className="border-none bg-transparent! p-0">
           <DataGridPagination />
-        </CardFooter>
-      </Card>
-    </DataGrid>
+        </DataGrid>
+      </DataGridContainer>
+    </div>
   )
 }

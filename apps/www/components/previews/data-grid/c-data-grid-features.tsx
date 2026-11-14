@@ -482,7 +482,8 @@ export function DataGridFeaturesPreview({ dataSource: suppliedSource }: { dataSo
     features: dataGridFeatures,
     data: rows,
     columns,
-    pageCount: Math.ceil(total / pagination.pageSize),
+    pageCount: dataSource.mode === "server" ? Math.ceil(total / pagination.pageSize) : undefined,
+    autoResetPageIndex: false,
     getRowId: (row) => row.id,
     state: {
       pagination,
@@ -496,8 +497,14 @@ export function DataGridFeaturesPreview({ dataSource: suppliedSource }: { dataSo
     enableRowPinning: features.rowPinning,
     enableColumnPinning: features.columnPinning,
     onPaginationChange: setPagination,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onSortingChange: (updater) => {
+      setSorting(updater)
+      setPagination((current) => ({ ...current, pageIndex: 0 }))
+    },
+    onColumnFiltersChange: (updater) => {
+      setColumnFilters(updater)
+      setPagination((current) => ({ ...current, pageIndex: 0 }))
+    },
     onColumnOrderChange: handleColumnOrderChange,
     onColumnPinningChange: handleColumnPinningChange,
     onRowPinningChange: handleRowPinningChange,
@@ -522,6 +529,7 @@ export function DataGridFeaturesPreview({ dataSource: suppliedSource }: { dataSo
 
   const updateFeature = (feature: keyof DataGridFeatures, checked: boolean) => {
     setFeatures((currentFeatures) => ({ ...currentFeatures, [feature]: checked }))
+    if (feature === "excelFilters") setPagination((current) => ({ ...current, pageIndex: 0 }))
   }
 
   const handleRowDragEnd = useCallback(
@@ -586,7 +594,7 @@ export function DataGridFeaturesPreview({ dataSource: suppliedSource }: { dataSo
       <DataGridContainer>
         <DataGrid
           table={table}
-          recordCount={total}
+          recordCount={dataSource.mode === "server" ? total : table.getFilteredRowModel().rows.length}
           isLoading={isLoading}
           featureControls={{
             features: dataGridFeatureOptions.map(([id, label]) => ({

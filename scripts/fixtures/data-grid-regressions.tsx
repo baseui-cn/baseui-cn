@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useTable } from "@tanstack/react-table"
 import AcceptanceApp from "./data-grid-v9"
 import GeometryFixture from "./data-grid-inline-geometry"
+import { DataGridDemoFixture } from "./data-grid-demos"
 import { DataGrid, DataGridContainer, type DataGridColumnEditor } from "@/components/data-grid/data-grid"
 import { DataGridTable } from "@/components/data-grid/data-grid-table"
 import { DataGridTableVirtual } from "@/components/data-grid/data-grid-table-virtual"
@@ -98,6 +99,7 @@ function Preferences() {
 
 export default function RegressionApp() {
   const mode = new URLSearchParams(window.location.search).get("mode") ?? "acceptance"
+  if (mode.startsWith("demo-")) return <DataGridDemoFixture mode={mode} />
   if (mode === "acceptance") return <AcceptanceApp />
   if (mode === "geometry") return <GeometryFixture />
   return <main><h1>Data Grid regression verification</h1>

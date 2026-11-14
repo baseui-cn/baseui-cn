@@ -10,6 +10,11 @@ export function getDataGridVisibleColumns<TData extends RowData>(table: DataGrid
   ]
 }
 
+/** A sorted view cannot display a manual backing-data order. */
+export function getDataGridRowReorderDisabledReason<TData extends RowData>(table: DataGridTable<TData>) {
+  return table.store.state.sorting.length ? "Clear column sorting to reorder rows" : undefined
+}
+
 export function isDataGridComposing(event: {
   nativeEvent?: { isComposing?: boolean; keyCode?: number }
   isComposing?: boolean

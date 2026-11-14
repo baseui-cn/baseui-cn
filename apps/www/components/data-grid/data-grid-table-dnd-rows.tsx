@@ -1,6 +1,6 @@
 "use client"
 
-import { getDataGridVisibleColumns } from "./data-grid-utils"
+import { getDataGridRowReorderDisabledReason, getDataGridVisibleColumns } from "./data-grid-utils"
 
 import {
   createContext,
@@ -44,7 +44,12 @@ import {
   type Modifier,
 } from "@dnd-kit/core"
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
-import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { flexRender, type RowData } from "@tanstack/react-table"
 import type {
@@ -62,7 +67,7 @@ type SortableContextValue = ReturnType<typeof useSortable>
 const SortableRowContext = createContext<Pick<
   SortableContextValue,
   "attributes" | "listeners"
-> | null>(null)
+> & { disabled?: boolean; disabledReason?: string } | null>(null)
 
 function DataGridTableDndRowHandle({ className }: { className?: string }) {
   const context = useContext(SortableRowContext)
@@ -94,6 +99,9 @@ function DataGridTableDndRowHandle({ className }: { className?: string }) {
         className
       )}
       aria-label="Drag to reorder row"
+      title={context.disabledReason}
+      aria-description={context.disabledReason}
+      disabled={context.disabled}
       {...context.attributes}
       {...context.listeners}
     >
@@ -102,10 +110,20 @@ function DataGridTableDndRowHandle({ className }: { className?: string }) {
   )
 }
 
-function DataGridTableDndRow<TData extends RowData>({ row, pinnedBoundary }: { row: DataGridRow<TData>; pinnedBoundary?: "top" | "bottom" }) {
+function DataGridTableDndRow<TData extends RowData>({
+  row,
+  pinnedBoundary,
+}: {
+  row: DataGridRow<TData>
+  pinnedBoundary?: "top" | "bottom"
+}) {
+  const { table } = useDataGrid()
+  const disabled =
+    !!row.getIsPinned() ||
+    !!getDataGridRowReorderDisabledReason(table)
   const { transform, transition, setNodeRef, isDragging, attributes, listeners } = useSortable({
     id: row.id,
-    disabled: !!row.getIsPinned(),
+    disabled,
   })
 
   const style: CSSProperties = {
@@ -118,8 +136,14 @@ function DataGridTableDndRow<TData extends RowData>({ row, pinnedBoundary }: { r
   }
 
   return (
-    <SortableRowContext.Provider value={row.getIsPinned() ? null : { attributes, listeners }}>
-      <DataGridTableBodyRow row={row} pinnedBoundary={pinnedBoundary} dndRef={setNodeRef} dndStyle={style} key={row.id}>
+    <SortableRowContext.Provider value={{ attributes, listeners, disabled, disabledReason: getDataGridRowReorderDisabledReason(table) }}>
+      <DataGridTableBodyRow
+        row={row}
+        pinnedBoundary={pinnedBoundary}
+        dndRef={setNodeRef}
+        dndStyle={style}
+        key={row.id}
+      >
         {row.getVisibleCells().map((cell: DataGridCell<TData, unknown>, colIndex) => {
           return (
             <DataGridTableBodyRowCell cell={cell} key={colIndex}>
@@ -134,7 +158,6 @@ function DataGridTableDndRow<TData extends RowData>({ row, pinnedBoundary }: { r
 
 function DataGridTableDndRows<TData extends RowData>({
   handleDragEnd,
-  dataIds,
   footerContent,
 }: {
   handleDragEnd: (event: DragEndEvent) => void
@@ -145,6 +168,10 @@ function DataGridTableDndRows<TData extends RowData>({
   const pagination = table.store.state.pagination
   const tableContainerRef = useRef<HTMLDivElement>(null)
   const [isDraggingRow, setIsDraggingRow] = useState(false)
+  const resolvedRows = getDataGridTableResolvedRows(table, props.tableLayout?.rowsPinnable)
+  // dataIds remains accepted for source compatibility; the rendered row model
+  // owns sortable order, including filtering, pagination and pinned boundaries.
+  const rowIds = resolvedRows.filter(({ row }) => !row.getIsPinned()).map(({ row }) => row.id)
 
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
@@ -200,6 +227,13 @@ function DataGridTableDndRows<TData extends RowData>({
       onDragCancel={() => setIsDraggingRow(false)}
       onDragEnd={(event) => {
         setIsDraggingRow(false)
+        if (
+          getDataGridRowReorderDisabledReason(table) ||
+          !event.over ||
+          !rowIds.includes(String(event.active.id)) ||
+          !rowIds.includes(String(event.over.id))
+        )
+          return
         handleDragEnd(event)
       }}
       onDragStart={() => setIsDraggingRow(true)}
@@ -255,10 +289,12 @@ function DataGridTableDndRows<TData extends RowData>({
                   })}
                 </DataGridTableBodyRowSkeleton>
               ))
-            ) : getDataGridTableResolvedRows(table, props.tableLayout?.rowsPinnable).length ? (
-              <SortableContext items={dataIds.filter((id) => !table.getRow(String(id))?.getIsPinned())} strategy={verticalListSortingStrategy}>
-                {getDataGridTableResolvedRows(table, props.tableLayout?.rowsPinnable).map(({ row, pinnedBoundary }) => {
-                  return <DataGridTableDndRow row={row} pinnedBoundary={pinnedBoundary} key={row.id} />
+            ) : resolvedRows.length ? (
+              <SortableContext items={rowIds} strategy={verticalListSortingStrategy}>
+                {resolvedRows.map(({ row, pinnedBoundary }) => {
+                  return (
+                    <DataGridTableDndRow row={row} pinnedBoundary={pinnedBoundary} key={row.id} />
+                  )
                 })}
               </SortableContext>
             ) : (

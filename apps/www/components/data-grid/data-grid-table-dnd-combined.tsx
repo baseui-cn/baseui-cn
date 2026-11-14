@@ -1,6 +1,6 @@
 "use client"
 
-import { getDataGridVisibleColumns } from "./data-grid-utils"
+import { getDataGridRowReorderDisabledReason, getDataGridVisibleColumns } from "./data-grid-utils"
 
 import {
   createContext,
@@ -65,10 +65,10 @@ import { GripHorizontalIcon, GripVerticalIcon } from "lucide-react"
 type DragType = "column" | "row"
 type SortableContextValue = ReturnType<typeof useSortable>
 
-const SortableRowContext = createContext<Pick<
-  SortableContextValue,
-  "attributes" | "listeners" | "isDragging"
-> & { disabled: boolean } | null>(null)
+const SortableRowContext = createContext<
+  | (Pick<SortableContextValue, "attributes" | "listeners" | "isDragging"> & { disabled: boolean; disabledReason?: string })
+  | null
+>(null)
 
 export interface DataGridTableDndCombinedProps {
   onRowDragEnd?: (event: DragEndEvent) => void
@@ -86,6 +86,8 @@ function DataGridTableDndCombinedRowHandle({ disabled = false }: { disabled?: bo
       className="size-7 cursor-grab opacity-70 hover:bg-transparent hover:opacity-100 active:cursor-grabbing"
       aria-label="Drag to reorder row"
       disabled={disabled || !context || context.disabled}
+      title={context?.disabledReason}
+      aria-description={context?.disabledReason}
       {...context?.attributes}
       {...context?.listeners}
     >
@@ -164,7 +166,7 @@ function DataGridTableDndCombinedRow<TData extends RowData>({
   pinnedBoundary?: "top" | "bottom"
   enabled: boolean
 }) {
-  const { props } = useDataGrid()
+  const { table, props } = useDataGrid()
   const { transform, transition, setNodeRef, isDragging, attributes, listeners } = useSortable({
     id: `row:${row.id}`,
     disabled: !enabled || (props.tableLayout?.rowsPinnable === true && Boolean(row.getIsPinned())),
@@ -181,7 +183,15 @@ function DataGridTableDndCombinedRow<TData extends RowData>({
   }
 
   return (
-    <SortableRowContext.Provider value={{ attributes, listeners, isDragging, disabled: !enabled || Boolean(row.getIsPinned()) }}>
+    <SortableRowContext.Provider
+      value={{
+        attributes,
+        listeners,
+        isDragging,
+        disabled: !enabled || Boolean(row.getIsPinned()),
+        disabledReason: getDataGridRowReorderDisabledReason(table),
+      }}
+    >
       <DataGridTableBodyRow
         row={row}
         pinnedBoundary={pinnedBoundary}
@@ -218,9 +228,11 @@ function DataGridTableDndCombined<TData extends RowData>({
     useSensor(TouchSensor, {}),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
-  const columnOrder = table.store.state.columnOrder.length
-    ? table.store.state.columnOrder
-    : table.getAllLeafColumns().map((column) => column.id)
+  const columnIds = getDataGridVisibleColumns(table)
+    .filter((column) => !column.getIsPinned())
+    .map((column) => `column:${column.id}`)
+  const rowsEnabled =
+    props.tableLayout?.rowsDraggable === true && !getDataGridRowReorderDisabledReason(table)
   const resolvedRows = getDataGridTableResolvedRows(table, props.tableLayout?.rowsPinnable)
   const rowIds = resolvedRows
     .filter(({ row }) => !props.tableLayout?.rowsPinnable || !row.getIsPinned())
@@ -252,10 +264,23 @@ function DataGridTableDndCombined<TData extends RowData>({
     const overId = event.over.data.current?.originalId
     if (typeof activeId !== "string" || typeof overId !== "string") return
     // Namespace internal IDs; preserve consumer callback IDs and event API.
-    const resolvedEvent = { ...event, active: { ...event.active, id: activeId }, over: { ...event.over, id: overId } }
+    const resolvedEvent = {
+      ...event,
+      active: { ...event.active, id: activeId },
+      over: { ...event.over, id: overId },
+    }
     if (type === "row") {
+      if (
+        !props.tableLayout?.rowsDraggable ||
+        getDataGridRowReorderDisabledReason(table) ||
+        !rowIds.includes(`row:${activeId}`) ||
+        !rowIds.includes(`row:${overId}`)
+      )
+        return
       onRowDragEnd?.(resolvedEvent)
     } else if (type === "column") {
+      if (!props.tableLayout?.columnsDraggable ||
+        !columnIds.includes(`column:${activeId}`) || !columnIds.includes(`column:${overId}`)) return
       onColumnDragEnd?.(resolvedEvent)
     }
   }
@@ -297,7 +322,7 @@ function DataGridTableDndCombined<TData extends RowData>({
             {table.getHeaderGroups().map((headerGroup: DataGridHeaderGroup<TData>) => (
               <DataGridTableHeadRow headerGroup={headerGroup} key={headerGroup.id}>
                 <SortableContext
-                  items={columnOrder.filter((id) => !table.getColumn(id)?.getIsPinned()).map((id) => `column:${id}`) as UniqueIdentifier[]}
+                  items={columnIds as UniqueIdentifier[]}
                   strategy={horizontalListSortingStrategy}
                 >
                   {headerGroup.headers.map((header) => (
@@ -336,7 +361,7 @@ function DataGridTableDndCombined<TData extends RowData>({
                   <DataGridTableDndCombinedRow
                     row={row}
                     pinnedBoundary={pinnedBoundary}
-                    enabled={props.tableLayout?.rowsDraggable === true}
+                    enabled={rowsEnabled}
                     key={row.id}
                   />
                 ))}

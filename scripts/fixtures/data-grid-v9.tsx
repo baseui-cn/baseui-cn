@@ -107,6 +107,7 @@ export default function App() {
   ], [mode, editing.openDialog])
   const table = useTable({ features: dataGridFeatures, data: rows, columns, getRowId: (row) => row.id,
     initialState: { pagination: { pageIndex: 0, pageSize: 500 } },
+    autoResetPageIndex: false,
     state: { columnOrder: order, columnPinning: pinning, rowPinning },
     onColumnOrderChange: setOrder, onColumnPinningChange: setPinning, onRowPinningChange: setRowPinning,
     columnResizeDirection: rtl ? "rtl" : "ltr", enableRowSelection: true, enableRowPinning: true,
